@@ -49,7 +49,7 @@
 		.sidebar-divider { height: 1px; flex: 0 0 1px; margin: 9px 3px 3px; background: rgba(255,255,255,.16); }
 		.side-label { display: flex; align-items: center; gap: 9px; padding: 22px 9px 10px; color: #a9bbb0; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
 		.side-count { margin-left: auto; }
-		.day-list { display: grid; flex: 1; min-height: 0; gap: 4px; overflow-y: auto; padding-right: 3px; scrollbar-color: rgba(233,239,189,.38) transparent; scrollbar-width: thin; }
+		.day-list { display: grid; grid-auto-rows: 43px; align-content: start; flex: 1; min-height: 0; gap: 4px; overflow-y: auto; padding-right: 3px; scrollbar-color: rgba(233,239,189,.38) transparent; scrollbar-width: thin; }
 		.day-list::-webkit-scrollbar { width: 5px; height: 5px; }
 		.day-list::-webkit-scrollbar-track { background: transparent; }
 		.day-list::-webkit-scrollbar-thumb { border: 1px solid transparent; border-radius: 99px; background: rgba(233,239,189,.35); background-clip: padding-box; }
@@ -61,6 +61,7 @@
 		.day-label { min-width: 0; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 		.add-day { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; margin-top: 12px; border: 1px dashed rgba(255,255,255,.35); border-radius: 7px; background: transparent; color: #eff4ec; font-size: 12px; }
 		.add-day:hover { background: rgba(255,255,255,.08); }
+		.add-day:disabled { cursor: not-allowed; opacity: .45; }
 		.side-bottom { margin-top: auto; padding: 15px 9px 2px; color: #a9bbb0; font-size: 11px; line-height: 1.7; }
 		.main { min-width: 0; }
 		.topbar { position: sticky; z-index: 5; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; padding: 12px clamp(18px, 4vw, 54px); border-bottom: 1px solid var(--line); background: rgba(244,245,240,.94); backdrop-filter: blur(14px); }
@@ -202,7 +203,7 @@
 			.day-list::-webkit-scrollbar { width: auto; height: 4px; }
 			.day-list::-webkit-scrollbar-thumb { background: rgba(233,239,189,.42); }
 			.day-list::-webkit-scrollbar-thumb:hover { background: rgba(233,239,189,.72); }
-			.day-link { width: auto; min-width: max-content; min-height: 34px; gap: 6px; padding: 4px 8px; }
+			.day-link { width: auto; min-width: max-content; height: 34px; min-height: 34px; gap: 6px; padding: 4px 8px; }
 			.day-number { width: 22px; height: 22px; flex-basis: 22px; }
 			.day-label { max-width: 94px; font-size: 10px; }
 			.spot-fields { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -246,7 +247,6 @@
 	</style>
 </head>
 <body>
-	<script src="WebPage/data.js"></script>
 	<div class="shell">
 		<aside class="sidebar">
 			<div class="brand">
@@ -258,7 +258,7 @@
 				<div class="sidebar-divider" aria-hidden="true"></div>
 				<div class="side-label"><span>每日行程</span><span id="side-count" class="side-count">10 DAYS</span></div>
 				<nav id="day-list" class="day-list" aria-label="每日行程"></nav>
-				<button id="add-day" class="add-day" type="button"><i class="ph ph-plus"></i> 新增一天</button>
+				<button id="add-day" class="add-day" type="button" disabled><i class="ph ph-plus"></i> 新增一天</button>
 			</div>
 			<div class="side-bottom">本機編輯模式<br>修改後請匯出並取代來源 JS</div>
 		</aside>
@@ -267,9 +267,9 @@
 			<header class="topbar">
 				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
 				<div class="top-actions">
-					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">已載入資料</span></div>
+					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">尚未載入資料</span></div>
 					<button id="save-source" class="button" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><i class="ph ph-floppy-disk"></i>儲存</button>
-					<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 14.5v5h14v-5"/></svg></button>
+					<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 14.5v5h14v-5"/></svg></button>
 				</div>
 			</header>
 
@@ -278,7 +278,7 @@
 						<section class="journey-settings" aria-label="行程設置">
 							<header class="panel-intro"><div class="eyebrow">JOURNEY SETTINGS</div><h2>行程設置</h2><p>選擇資料來源，並設定此行程在前台顯示的網站標題。</p></header>
 							<section class="source-picker" aria-label="選擇行程資料檔">
-								<div class="source-info"><strong>資料來源</strong><span id="source-name">WebPage/data.js</span><small id="source-write-status">選取本機 JS 後，編輯變更可授權回寫原檔。</small></div>
+								<div class="source-info"><strong>資料來源</strong><span id="source-name">尚未選取</span><small id="source-write-status">選取本機 JS 後才會載入行程資料。</small></div>
 								<div class="source-actions"><button id="choose-source-file" class="button" type="button"><i class="ph ph-folder-open"></i>選取本機 JS</button><input id="source-file" type="file" accept=".js,application/javascript,text/javascript"></div>
 							</section>
 							<section id="site-settings" class="site-settings" aria-label="網站標題設定"></section>
@@ -294,8 +294,8 @@
 						<div class="export-head">
 							<div><h3>更新檔案預覽</h3><p>下載後以此檔案取代來源：<span id="export-target-label">data.js</span></p></div>
 							<div class="export-actions">
-								<button id="copy-code" class="button" type="button"><i class="ph ph-copy"></i>複製</button>
-								<button id="download-code" class="button primary" type="button"><i class="ph ph-download-simple"></i>下載 <span id="download-file-label">data.js</span></button>
+								<button id="copy-code" class="button" type="button" disabled><i class="ph ph-copy"></i>複製</button>
+								<button id="download-code" class="button primary" type="button" disabled><i class="ph ph-download-simple"></i>下載 <span id="download-file-label">data.js</span></button>
 							</div>
 						</div>
 						<textarea id="code-output" class="code-output" readonly spellcheck="false" aria-label="產生的行程資料 JS" placeholder="點擊右上角「產生更新檔」以預覽匯出內容"></textarea>
@@ -312,6 +312,8 @@
 		const codeOutput = document.getElementById('code-output');
 		const stateText = document.getElementById('state-text');
 		const stateDot = document.getElementById('state-dot');
+		let itineraryData = [];
+		let hasLoadedSource = false;
 		const siteSettingsDefaults = {
 			pageTitle: '土耳其傳奇 11 日',
 			heroTitle: '星月傳奇．土耳其11日',
@@ -439,6 +441,7 @@
 				const source = await file.text();
 				const { itinerary, settings } = parseSourceFile(source);
 				itineraryData.splice(0, itineraryData.length, ...itinerary);
+				hasLoadedSource = true;
 				siteSettingsDraft = { ...siteSettingsDefaults, ...settings };
 				exportFileName = file.name;
 				sourceFileHandle = fileHandle;
@@ -447,6 +450,10 @@
 				document.getElementById('source-write-status').textContent = fileHandle ? '已選取原檔；儲存時仍會要求明確寫入權限。' : '此瀏覽器選檔模式僅能讀取；請下載更新檔取代原檔。';
 				document.getElementById('export-target-label').textContent = file.name;
 				document.getElementById('download-file-label').textContent = file.name;
+				document.getElementById('add-day').disabled = false;
+				document.getElementById('export-top').disabled = false;
+				document.getElementById('copy-code').disabled = false;
+				document.getElementById('download-code').disabled = false;
 				codeOutput.value = '';
 				hasChanges = false;
 				stateText.textContent = `已載入 ${file.name}`;
@@ -838,11 +845,13 @@
 			event.returnValue = '';
 		});
 
-		if (typeof itineraryData === 'undefined' || !Array.isArray(itineraryData)) {
-			editor.innerHTML = '<div class="empty">找不到有效的行程資料。請確認 admin.html 與 data.js 位於同一個資料夾。</div>';
-		} else {
+		if (hasLoadedSource) {
 			renderSiteSettings();
 			renderEditor();
+		} else {
+			renderSidebar();
+			document.getElementById('site-settings').innerHTML = '<div class="empty">請先選取本機 JS 資料檔，載入後即可編輯行程與網站設定。</div>';
+			editor.innerHTML = '<div class="empty">尚未載入行程資料。請先在「行程設置」選取本機 JS 檔。</div>';
 		}
 		activateJourneyPanel(activeJourneyPanel);
 	</script>

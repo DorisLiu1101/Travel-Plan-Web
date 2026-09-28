@@ -1,9 +1,10 @@
 const siteSettings = {
     "pageTitle": "測試行程頁面",
-    "heroTitle": "星月傳奇．土耳其11日",
+    "heroTitle": "示範頁",
     "dateText": "2026/10/8(四) ~ 2026/10/18(日)",
-    "subtitle": "跟團行程 · 11 天",
-    "mapEngine": "google"
+    "subtitle": "自由行 / 13天",
+    "heroImage": "",
+    "mapEngine": "amap"
 };
 
 const itineraryData = [
