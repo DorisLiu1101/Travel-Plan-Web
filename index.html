@@ -78,10 +78,9 @@
         <div class="max-w-4xl mx-auto px-4 flex flex-col items-center text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-wider">星月傳奇．土耳其11日</h1>
             <p class="text-lg opacity-90 flex items-center gap-2">
-                <i class="ph ph-calendar-blank"></i> 2026/10/8(四) ~ 2026/10/18(日) [跟團行健]
+                <i class="ph ph-calendar-blank"></i> 2026/10/8(四) ~ 2026/10/18(日)
             </p>
-            <p class="text-lg opacity-90 flex items-center gap-2">
-                <i class="ph ph-calendar-blank"></i> [跟團行健]
+            <p class="text-lg opacity-90 flex items-center gap-2"> [跟團行健]
             </p>
 
         </div>
@@ -329,11 +328,19 @@
                         const parts = spot.split(' ｜ ');
                         const name = parts[0];
                         const desc = parts[1] || '';
+                        // 建立 Google Maps 搜尋連結，自動加上「土耳其」提高定位精準度
+                        const mapQuery = encodeURIComponent(name + ' 土耳其');
                         return `
                         <li class="relative flex items-start pl-12 md:pl-16 group">
                             <div class="absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white bg-[#c88d75] shadow z-10 transition-transform group-hover:scale-125"></div>
                             <div class="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-xl shadow-sm border border-gray-100 w-full text-left transition-all duration-300 hover:shadow-md hover:bg-white">
-                                <h4 class="font-bold text-gray-800 text-lg md:text-xl mb-2">${name}</h4>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-bold text-gray-800 text-lg md:text-xl">${name}</h4>
+                                    <!-- Google Map 連結按鈕 -->
+                                    <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" rel="noopener noreferrer" class="text-[#c88d75] hover:text-white bg-[#c88d75]/10 hover:bg-[#c88d75] transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 Google Maps 查看位置">
+                                        <i class="ph ph-map-pin text-lg"></i>
+                                    </a>
+                                </div>
                                 <p class="text-base md:text-lg text-gray-700 leading-relaxed">${desc}</p>
                             </div>
                         </li>
