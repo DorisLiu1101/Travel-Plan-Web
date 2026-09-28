@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行程排版管理後台</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 font-sans">
+  <div id="app" class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">📖 雜誌風行程管理後台</h1>
+      <button @click="generateOutput" class="bg-teal-700 text-white px-6 py-2 rounded shadow hover:bg-teal-800">產生更新檔案 (data.js)</button>
+    </div>
+
+    <div v-for="(day, index) in itinerary" :key="index" class="bg-white p-6 rounded-lg shadow-lg mb-6 border-l-4 border-teal-700 relative">
+      <button @click="removeDay(index)" class="absolute top-4 right-4 text-red-500 hover:text-red-700 font-bold">刪除此天</button>
+      <h2 class="text-xl font-bold mb-4 text-teal-800">第 {{ index + 1 }} 區塊卡片</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">天數標籤 (Day)</label>
+          <input v-model="day.day" type="text" class="mt-1 w-full border p-2 rounded" placeholder="Day 1-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">日期 (Date)</label>
+          <input v-model="day.date" type="text" class="mt-1 w-full border p-2 rounded" placeholder="2026/10/8 (四)">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700">行程標題</label>
+          <input v-model="day.title" type="text" class="mt-1 w-full border p-2 rounded">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-bold text-teal-700">全版背景圖片 (URL)</label>
+          <input v-model="day.bgImage" type="text" class="mt-1 w-full border border-teal-300 bg-teal-50 p-2 rounded" placeholder="Unsplash 圖片網址">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">氣溫 (如: 10-18°C)</label>
+          <input v-model="day.temp" type="text" class="mt-1 w-full border p-2 rounded">
+        </div>
+      </div>
+      
+      <div class="mb-4">
+         <label class="block text-sm font-medium text-amber-700">航班資訊或警示 (可留白)</label>
+         <textarea v-model="day.flight" rows="2" class="mt-1 w-full border border-amber-300 bg-amber-50 p-2 rounded"></textarea>
+      </div>
+
+      <!-- 地點管理 -->
+      <div class="bg-gray-50 p-4 rounded mb-4">
+         <h3 class="font-bold mb-2">景點節點</h3>
+         <div v-for="(pt, pIdx) in day.points" :key="pIdx" class="flex gap-2 mb-2">
+            <input v-model="pt.name" class="border p-2 rounded w-1/4" placeholder="景點名稱">
+            <input v-model="pt.desc" class="border p-2 rounded w-full" placeholder="敘述說明">
+            <button @click="day.points.splice(pIdx, 1)" class="text-red-500 font-bold px-2">X</button>
+         </div>
+         <button @click="day.points.push({name:'', desc:''})" class="text-sm bg-gray-200 px-3 py-1 rounded"> + 新增景點</button>
+      </div>
+
+      <!-- 網格照片 -->
+      <div class="bg-gray-50 p-4 rounded mb-4">
+         <h3 class="font-bold mb-2">排版展示照片 (3張最佳)</h3>
+         <div v-for="(img, iIdx) in day.gridImages" :key="iIdx" class="flex gap-2 mb-2">
+            <input v-model="day.gridImages[iIdx]" class="border p-2 rounded w-full" placeholder="圖片網址">
+            <button @click="day.gridImages.splice(iIdx, 1)" class="text-red-500 font-bold px-2">X</button>
+         </div>
+         <button @click="day.gridImages.push('')" class="text-sm bg-gray-200 px-3 py-1 rounded"> + 新增展示照</button>
+      </div>
+
+      <!-- 三欄資訊 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+         <div>
+            <label class="block text-sm font-medium text-gray-700">必買/必吃</label>
+            <textarea v-model="day.mustBuyEat" rows="3" class="mt-1 w-full border p-2 rounded"></textarea>
+         </div>
+         <div>
+            <label class="block text-sm font-medium text-gray-700">膳宿</label>
+            <textarea v-model="day.mealsSleep" rows="3" class="mt-1 w-full border p-2 rounded"></textarea>
+         </div>
+         <div>
+            <label class="block text-sm font-medium text-gray-700">穿搭建議</label>
+            <textarea v-model="day.outfit" rows="3" class="mt-1 w-full border p-2 rounded"></textarea>
+         </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">底部 Tips</label>
+        <input v-model="day.tips" type="text" class="mt-1 w-full border p-2 rounded">
+      </div>
+    </div>
+
+    <button @click="addDay" class="w-full bg-gray-200 text-gray-700 py-3 rounded border-2 border-dashed border-gray-400 hover:bg-gray-300 font-bold mb-8">
+      + 新增卡片區塊
+    </button>
+
+    <div v-if="outputCode" class="bg-gray-800 text-green-400 p-6 rounded-lg overflow-x-auto shadow-inner mb-20">
+      <p class="text-white mb-2 font-bold">✅ 產生成功！請複製以下代碼並完全覆蓋專案中的 <code>data.js</code>：</p>
+      <pre><code>{{ outputCode }}</code></pre>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          itinerary: [{
+            day: "Day X", date: "2026/X/X", title: "標題", bgImage: "", temp: "", flight: "", alert: "",
+            points: [{name: "", desc: ""}], gridImages: [""], mustBuyEat: "", mealsSleep: "", outfit: "", tips: ""
+          }],
+          outputCode: ""
+        }
+      },
+      mounted() {
+          // 如果想讀取預設，可自行引入 data.js 的變數，此處預設留空防錯
+      },
+      methods: {
+        addDay() {
+          this.itinerary.push({ day: "", date: "", title: "", bgImage: "", temp: "", flight: "", alert: "", points: [], gridImages: [], mustBuyEat: "", mealsSleep: "", outfit: "", tips: "" });
+        },
+        removeDay(index) { this.itinerary.splice(index, 1); },
+        generateOutput() {
+          this.outputCode = `const itineraryData = ${JSON.stringify(this.itinerary, null, 2)};`;
+          setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
