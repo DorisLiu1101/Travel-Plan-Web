@@ -24,7 +24,7 @@
 			--shadow: 0 12px 36px rgba(37, 57, 47, .07);
 		}
 		* { box-sizing: border-box; }
-		body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', 'DM Sans', sans-serif; }
+		body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', 'DM Sans', sans-serif; font-size: 15px; }
 		button { cursor: pointer; }
 		.shell { display: grid; grid-template-columns: 216px minmax(0, 1fr); min-height: 100vh; }
 		.shell.sidebar-collapsed { grid-template-columns: minmax(0, 1fr); }
@@ -49,11 +49,8 @@
 		.sidebar-divider { height: 1px; flex: 0 0 1px; margin: 9px 3px 3px; background: rgba(255,255,255,.16); }
 		.side-label { display: flex; align-items: center; gap: 9px; padding: 22px 9px 10px; color: #a9bbb0; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
 		.side-count { margin-left: auto; }
-		.day-list { display: grid; grid-auto-rows: 43px; align-content: start; flex: 1; min-height: 0; gap: 4px; overflow-y: auto; padding-right: 3px; scrollbar-color: rgba(233,239,189,.38) transparent; scrollbar-width: thin; }
-		.day-list::-webkit-scrollbar { width: 5px; height: 5px; }
-		.day-list::-webkit-scrollbar-track { background: transparent; }
-		.day-list::-webkit-scrollbar-thumb { border: 1px solid transparent; border-radius: 99px; background: rgba(233,239,189,.35); background-clip: padding-box; }
-		.day-list::-webkit-scrollbar-thumb:hover { background: rgba(233,239,189,.68); background-clip: padding-box; }
+		.day-list { display: grid; grid-auto-rows: 43px; align-content: start; flex: 1; min-height: 0; gap: 4px; overflow-y: auto; padding-right: 3px; scrollbar-width: none; -ms-overflow-style: none; }
+		.day-list::-webkit-scrollbar { display: none; }
 		.day-link { display: flex; align-items: center; gap: 11px; width: 100%; min-height: 43px; padding: 8px 10px; border: 0; border-radius: 7px; background: transparent; color: #dce5dc; text-align: left; transition: background .18s, color .18s; }
 		.day-link:hover { background: rgba(255,255,255,.08); }
 		.day-link.active { background: var(--lime); color: var(--green-deep); }
@@ -116,9 +113,10 @@
 		.visible-tabs-setting { grid-column: 1 / -1; padding: 0; margin: 2px 0 0; border: 0; }
 		.visible-tabs-setting legend { margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700; }
 		.visible-tabs-options { display: flex; flex-wrap: wrap; gap: 8px; }
-		.visible-tab-option { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; background: #fbfcfa; color: var(--ink); font-size: 10px; cursor: pointer; }
-		.visible-tab-option:has(input:checked) { border-color: var(--green); background: #eef4ed; box-shadow: inset 0 0 0 1px var(--green); }
-		.visible-tab-option input { width: auto; height: auto; padding: 0; accent-color: var(--green); }
+		.visible-tab-option { position: relative; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border: 1px solid #dce2da; border-radius: 999px; background: #fbfcfa; color: var(--ink); font-size: 11px; font-weight: 600; cursor: pointer; transition: all .18s ease; }
+		.visible-tab-option:has(input:checked) { border-color: var(--green); background: #edf4ee; color: var(--green-deep); box-shadow: inset 0 0 0 1px rgba(49,90,76,.12); }
+		.visible-tab-option input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+		.visible-tab-option span { pointer-events: none; }
 		.site-setting { display: grid; gap: 5px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
 		.site-setting input { width: 100%; min-width: 0; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px; }
 		.site-setting textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
@@ -169,7 +167,8 @@
 		.section-body { padding-top: 2px; }
 		.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
 		.section-heading .section-title { margin: 0; }
-		.clear-notes-button { width: 32px; min-height: 32px; height: 32px; padding: 0; }
+		.notes-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+		.clear-notes-button, .restore-notes-button { width: 32px; min-height: 32px; height: 32px; padding: 0; }
 		.field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 17px; }
 		.field { display: grid; gap: 6px; min-width: 0; }
 		.field.full { grid-column: 1 / -1; }
@@ -179,9 +178,9 @@
 		.field textarea, .list-item textarea { min-height: 70px; padding: 10px 11px; line-height: 1.65; resize: vertical; }
 		.field input:focus, .field textarea:focus, .list-item textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); background: #fff; }
 		.image-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: stretch; gap: 13px; }
-		.image-row textarea { min-height: 0; overflow-wrap: anywhere; word-break: break-all; resize: none; }
+		.image-row textarea { height: 100%; min-height: 0; overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; resize: none; }
 		.image-preview { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(135deg, #e8eddf, #f5e7d7); }
-		.image-preview img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+		.image-preview img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center; }
 		.list-block + .list-block { margin-top: 19px; }
 		.list-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; list-style: none; cursor: pointer; }
 		.list-top::-webkit-details-marker { display: none; }
@@ -294,8 +293,6 @@
 				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
 				<div class="top-actions">
 					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">尚未載入資料</span></div>
-					<button id="save-source" class="button icon-only" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><i class="ph ph-floppy-disk"></i></button>
-					<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 14.5v5h14v-5"/></svg></button>
 				</div>
 			</header>
 
@@ -312,6 +309,7 @@
 								<div class="export-head">
 									<div><h3>更新檔案預覽</h3><p>可直接儲存或下載取代：<span id="export-target-label">data.js</span></p></div>
 									<div class="export-actions">
+										<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔" disabled><i class="ph ph-floppy-disk" aria-hidden="true"></i></button>
 										<button id="copy-code" class="button" type="button" disabled><i class="ph ph-copy"></i>複製</button>
 										<button id="download-code" class="button primary" type="button" disabled><i class="ph ph-download-simple"></i>下載 <span id="download-file-label">data.js</span></button>
 									</div>
@@ -363,14 +361,14 @@
 		}
 		normalizeVisibleTabs();
 		let exportFileName = 'data.js';
-		let sourceFileHandle = null;
-		let sourceSnapshot = '';
 		let useFallbackSourcePicker = false;
 		let selectedDay = 0;
 		let hasChanges = false;
 		let toastTimer;
 		let pendingConfirmAction = null;
 		const editorSectionState = new Map();
+		const travelNoteFields = ['outfit', 'buy', 'eat', 'meals', 'lodging', 'tips'];
+		const clearedNotesSnapshots = new WeakMap();
 
 		function isEditorSectionOpen(sectionId) {
 			return editorSectionState.get(`${selectedDay}:${sectionId}`) ?? sectionId === 'day';
@@ -450,7 +448,6 @@
 			stateDot.classList.add('dirty');
 			document.getElementById('day-total').textContent = itineraryData.length;
 			document.getElementById('side-count').textContent = `${itineraryData.length} DAYS`;
-			updateSourceSaveButton();
 		}
 
 		function getDayLabel(index) {
@@ -546,7 +543,7 @@
 			}
 		}
 
-		async function loadSourceFile(file, fileHandle = null) {
+		async function loadSourceFile(file) {
 			if (hasChanges && !window.confirm('目前有尚未匯出的修改。切換資料來源會捨棄這些修改，確定繼續嗎？')) return;
 			try {
 				const source = await file.text();
@@ -557,10 +554,8 @@
 				siteSettingsDraft = { ...siteSettingsDefaults, ...settings };
 				normalizeVisibleTabs();
 				exportFileName = file.name;
-				sourceFileHandle = fileHandle;
-				sourceSnapshot = source;
 				document.getElementById('source-name').textContent = file.name;
-				document.getElementById('source-write-status').textContent = fileHandle ? '已選取原檔；儲存時仍會要求明確寫入權限。' : '此瀏覽器選檔模式僅能讀取；請下載更新檔取代原檔。';
+				document.getElementById('source-write-status').textContent = '已載入資料；編輯後可產生更新檔下載取代原檔。';
 				document.getElementById('export-target-label').textContent = file.name;
 				document.getElementById('download-file-label').textContent = file.name;
 				document.getElementById('add-day').disabled = false;
@@ -571,7 +566,6 @@
 				hasChanges = false;
 				stateText.textContent = `已載入 ${file.name}`;
 				stateDot.classList.remove('dirty');
-				updateSourceSaveButton();
 				renderSiteSettings();
 				renderEditor();
 				updateWorkspaceTitle();
@@ -579,10 +573,6 @@
 			} catch (error) {
 				showToast(`無法讀取此檔案：${error.message}`);
 			}
-		}
-
-		function updateSourceSaveButton() {
-			document.getElementById('save-source').disabled = !sourceFileHandle || !hasChanges;
 		}
 
 		async function chooseSourceFile() {
@@ -599,14 +589,12 @@
 					multiple: false
 				});
 				const file = await fileHandle.getFile();
-				await loadSourceFile(file, fileHandle);
+				await loadSourceFile(file);
 			} catch (error) {
 				if (error.name === 'AbortError') return;
 				useFallbackSourcePicker = true;
-				sourceFileHandle = null;
-				updateSourceSaveButton();
-				document.getElementById('source-write-status').textContent = '瀏覽器限制直接讀取檔案；請在接續的檔案視窗重新選取，並以下載方式更新原檔。';
-				showToast('無法直接讀取檔案，改用一般選檔；回寫不可用，請使用下載。');
+				document.getElementById('source-write-status').textContent = '瀏覽器限制檔案存取；請重新選取檔案，編輯後下載更新檔取代原檔。';
+				showToast('無法直接讀取檔案，改用一般選檔；更新後請下載檔案。');
 				fileInput.click();
 			}
 		}
@@ -635,7 +623,7 @@
 					if (error.name === 'AbortError') return;
 					fileHandle = null;
 					useFallbackSourcePicker = true;
-					showToast('無法建立可回寫檔案，將下載新 JS 草稿。');
+					showToast('無法建立新檔，將下載新 JS 草稿。');
 				}
 			} else {
 				useFallbackSourcePicker = true;
@@ -651,36 +639,9 @@
 			}
 			hasChanges = false;
 			stateDot.classList.remove('dirty');
-			await loadSourceFile(new File([source], fileHandle?.name || fileName, { type: 'text/javascript' }), fileHandle);
-			if (!fileHandle) document.getElementById('source-write-status').textContent = '新 JS 草稿已下載；此模式修改後請再次下載更新檔。';
+			await loadSourceFile(new File([source], fileHandle?.name || fileName, { type: 'text/javascript' }));
+			document.getElementById('source-write-status').textContent = fileHandle ? '已建立新 JS；編輯後可產生更新檔下載。' : '新 JS 草稿已下載；編輯後可再次下載更新檔。';
 			showToast(fileHandle ? '已建立新行程 JS' : '已下載新行程 JS 草稿');
-		}
-
-		async function saveSourceFile() {
-			if (!sourceFileHandle || !hasChanges) return;
-			let writable;
-			try {
-				let permission = await sourceFileHandle.queryPermission({ mode: 'readwrite' });
-				if (permission !== 'granted') permission = await sourceFileHandle.requestPermission({ mode: 'readwrite' });
-				if (permission !== 'granted') throw new Error('未取得寫入權限。');
-				const currentSource = await (await sourceFileHandle.getFile()).text();
-				if (currentSource !== sourceSnapshot) throw new Error('原檔在載入後已有變更，請重新選取檔案以避免覆蓋。');
-				const source = buildExportSource();
-				parseSourceFile(source);
-				writable = await sourceFileHandle.createWritable();
-				await writable.write(source);
-				await writable.close();
-				sourceSnapshot = source;
-				codeOutput.value = source;
-				hasChanges = false;
-				stateText.textContent = `已回寫 ${exportFileName}`;
-				stateDot.classList.remove('dirty');
-				updateSourceSaveButton();
-				showToast(`已儲存回 ${exportFileName}`);
-			} catch (error) {
-				if (writable) await writable.abort().catch(() => {});
-				showToast(`無法回寫檔案：${error.message}`);
-			}
 		}
 
 		function parseSpot(spot) {
@@ -758,7 +719,10 @@
 						</div>
 					</details>
 					<details class="section" data-editor-section="notes" ${isEditorSectionOpen('notes') ? 'open' : ''}>
-						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-notebook"></i>旅遊備註</h4><button class="button icon-only danger clear-notes-button" type="button" data-clear-travel-notes title="一鍵清空旅遊備註" aria-label="一鍵清空旅遊備註"><i class="ph ph-eraser"></i></button><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-notebook"></i>旅遊備註</h4><div class="notes-actions">
+							<button class="button icon-only danger clear-notes-button" type="button" data-clear-travel-notes title="清空旅遊備註" aria-label="清空旅遊備註"><i class="ph ph-eraser" aria-hidden="true"></i></button>
+							<button class="button icon-only restore-notes-button" type="button" data-restore-travel-notes title="恢復清空前的旅遊備註" aria-label="恢復清空前的旅遊備註" ${clearedNotesSnapshots.has(day) ? '' : 'disabled'}><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i></button>
+						</div><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
 						<div class="section-body field-grid">
 							${inputField('穿搭建議', 'outfit', day.outfit, { textarea: true, full: true })}
 							${inputField('必買', 'buy', day.buy, { textarea: true })}
@@ -816,6 +780,10 @@
 
 		editor.addEventListener('input', (event) => {
 			const target = event.target;
+			if (travelNoteFields.includes(target.dataset.path)) {
+				clearedNotesSnapshots.delete(itineraryData[selectedDay]);
+				editor.querySelector('[data-restore-travel-notes]').disabled = true;
+			}
 			if (target.dataset.path) updatePath(target.dataset.path, target.value);
 			if (target.id === 'weather-icon-select') editor.querySelector('#weather-icon-preview').className = `ph ${target.value}`;
 			if (target.dataset.spotField) {
@@ -857,15 +825,27 @@
 			if (clearNotesButton) {
 				event.preventDefault();
 				event.stopPropagation();
-				const noteFields = ['outfit', 'buy', 'eat', 'meals', 'lodging', 'tips'];
 				const day = itineraryData[selectedDay];
-				if (!noteFields.some((field) => String(day[field] || '').trim())) return showToast('旅遊備註已經是空白');
-				openConfirmDialog('清空旅遊備註', `確定清空「${getDayLabel(selectedDay)}」的所有旅遊備註嗎？`, '清空', () => {
-					noteFields.forEach((field) => { day[field] = ''; });
-					markChanged();
-					renderEditor();
-					showToast('已清空旅遊備註');
-				});
+				if (!travelNoteFields.some((field) => String(day[field] || '').trim())) return showToast('旅遊備註已經是空白');
+				clearedNotesSnapshots.set(day, Object.fromEntries(travelNoteFields.map((field) => [field, day[field]])));
+				travelNoteFields.forEach((field) => { day[field] = ''; });
+				markChanged();
+				renderEditor();
+				showToast('已清空旅遊備註，可按恢復還原');
+				return;
+			}
+			const restoreNotesButton = event.target.closest('[data-restore-travel-notes]');
+			if (restoreNotesButton) {
+				event.preventDefault();
+				event.stopPropagation();
+				const day = itineraryData[selectedDay];
+				const snapshot = clearedNotesSnapshots.get(day);
+				if (!snapshot) return;
+				travelNoteFields.forEach((field) => { day[field] = snapshot[field]; });
+				clearedNotesSnapshots.delete(day);
+				markChanged();
+				renderEditor();
+				showToast('已恢復清空前的旅遊備註');
 				return;
 			}
 			const addButton = event.target.closest('[data-add-item]');
@@ -1004,7 +984,6 @@
 			if (file) loadSourceFile(file);
 			event.target.value = '';
 		});
-		document.getElementById('save-source').addEventListener('click', saveSourceFile);
 		document.getElementById('export-top').addEventListener('click', makeExport);
 		document.getElementById('copy-code').addEventListener('click', async () => {
 			if (!codeOutput.value) makeExport();

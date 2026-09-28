@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>土耳其傳奇 11 日</title>
+    <title></title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Google Fonts: Noto Sans TC -->
@@ -73,10 +73,12 @@
         .header-inner h1 { max-width: 720px; font-size: 38px; line-height: 1.25; }
         .header-meta { color: rgba(255,255,255,.88); }
         .page-tabs-wrap { width: min(1050px, 100%); margin: 0 auto; padding: 0 24px; }
-        .page-tabs { display: flex; gap: 24px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
-        .page-tab { position: relative; min-height: 46px; flex: 0 0 auto; padding: 0 2px; border: 0; background: transparent; color: var(--muted); font: 600 12px 'Noto Sans TC',sans-serif; }
-        .page-tab[aria-selected="true"] { color: var(--green); }
-        .page-tab[aria-selected="true"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--coral); content: ''; }
+        .page-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 8px 8px 0; border-bottom: 1px solid rgba(49,90,76,.12); scrollbar-width: none; -ms-overflow-style: none; }
+        .page-tabs::-webkit-scrollbar { display: none; }
+        .page-tab { position: relative; min-height: 42px; flex: 0 0 auto; padding: 0 18px; border: 1px solid rgba(49,90,76,.12); border-bottom: 0; border-radius: 12px 12px 0 0; background: rgba(49,90,76,.03); color: var(--muted); font: 700 14px 'Noto Sans TC',sans-serif; transition: all .18s ease; }
+        .page-tab:hover { background: rgba(49,90,76,.06); color: var(--text-main); }
+        .page-tab[aria-selected="true"] { border-color: rgba(49,90,76,.18); background: rgba(255,255,255,.94); color: var(--green); box-shadow: 0 -3px 12px rgba(37,57,47,.08); }
+        .page-tab[aria-selected="true"]::after { position: absolute; right: 8px; bottom: -1px; left: 8px; height: 3px; border-radius: 999px 999px 0 0; background: var(--coral); content: ''; }
         .page-tab:focus-visible { outline: 2px solid var(--green); outline-offset: -3px; }
         .page-view[hidden] { display: none; }
         .overview-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
@@ -123,13 +125,11 @@
     <!-- 主標題區 -->
     <header class="header-bg py-8 shadow-md">
         <div class="header-inner max-w-4xl mx-auto px-4 flex flex-col">
-            <h1 id="site-hero-title" class="text-3xl md:text-4xl font-bold mb-2 tracking-wider">星月傳奇．土耳其11日</h1>
+            <h1 id="site-hero-title" class="text-3xl md:text-4xl font-bold mb-2 tracking-wider"></h1>
             <p class="header-meta text-lg opacity-90 flex items-center gap-2">
-                <i class="ph ph-calendar-blank"></i> <span id="site-date-text">2026/10/8(四) ~ 2026/10/18(日)</span>
+                <i class="ph ph-calendar-blank"></i> <span id="site-date-text"></span>
             </p>
-            <p id="site-subtitle" class="header-meta text-lg opacity-90 flex items-center gap-2">跟團行程 · 11 天 · 2026 秋季
-            </p>
-
+            <p id="site-subtitle" class="header-meta text-lg opacity-90 flex items-center gap-2"></p>
         </div>
     </header>
 
