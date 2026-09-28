@@ -1,5 +1,5 @@
 const siteSettings = {
-    "pageTitle": "測試行程頁面",
+    "pageTitle": "土耳其傳奇 11 日",
     "heroTitle": "星月傳奇．土耳其11日",
     "dateText": "2026/10/8(四) ~ 2026/10/18(日)",
     "subtitle": "跟團行程 · 11 天",
@@ -10,7 +10,7 @@ const itineraryData = [
     {
         "day": "Day 1-2",
         "fullDate": "2026/10/8 (四) - 10/9 (五)",
-        "title": "Test Page 1",
+        "title": "啟程星月國度 ｜ 漫步番紅花城",
         "weather": {
             "icon": "ph-cloud-sun",
             "temp": "10-18°C"

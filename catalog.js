@@ -1,0 +1,9 @@
+window.travelPageCatalog = [
+    {
+        title: "星月傳奇．土耳其11日",
+        date: "2026/10/8 - 10/18",
+        description: "土耳其 11 日經典環線 · 9 組行程",
+        html: "2610.html",
+        image: "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=900&auto=format&fit=crop"
+    }
+];

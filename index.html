@@ -3,478 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>土耳其傳奇 11 日 </title>
-    <!-- 引入 Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts: Noto Sans TC -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- 引入 Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
+    <meta name="theme-color" content="#203d34">
+    <title>Doris的旅遊行程攻略集</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f7f5f0; /* 暖米白 */
-            --text-main: #4a4036; /* 暖棕色 */
-            --accent-color: #c88d75; /* 低飽和度陶土紅 */
-            --card-bg: rgba(255, 255, 255, 0.85);
+            color-scheme: light;
+            --ink: #26332e;
+            --muted: #718078;
+            --paper: #f2f4ef;
+            --green: #315a4c;
+            --coral: #c96f50;
+            --line: #dfe5dd;
         }
-        
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); /* 做舊紙張紋理 */
+        * { box-sizing: border-box; }
+        body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', sans-serif; }
+        .hero { position: relative; display: flex; min-height: 300px; align-items: center; overflow: hidden; background: #203d34; color: white; }
+        .hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(23,45,38,.91), rgba(23,45,38,.52) 60%, rgba(23,45,38,.14)), url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop') center 48% / cover; content: ''; }
+        .hero-inner { position: relative; width: min(1120px, 100%); margin: 0 auto; padding: 46px 30px 52px; }
+        .kicker { margin: 0 0 12px; color: #e4e9c1; font: 700 11px 'DM Sans', sans-serif; letter-spacing: .14em; }
+        h1 { max-width: 700px; margin: 0; font-size: clamp(30px, 5vw, 48px); line-height: 1.2; }
+        .hero-copy { max-width: 540px; margin: 14px 0 0; color: rgba(255,255,255,.84); font-size: 14px; line-height: 1.8; }
+        main { width: min(1050px, 100%); margin: 0 auto; padding: 32px 24px 70px; }
+        .list-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding-bottom: 17px; border-bottom: 1px solid var(--line); }
+        .list-head h2 { margin: 0; font-size: 17px; }
+        .list-head p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+        .list-count { color: var(--muted); font: 600 11px 'DM Sans', sans-serif; white-space: nowrap; }
+        .trip-list { display: grid; }
+        .trip-item { border-bottom: 1px solid var(--line); }
+        .trip-link { display: grid; grid-template-columns: 176px minmax(0,1fr) 36px; align-items: center; gap: 22px; padding: 18px 6px; color: inherit; text-decoration: none; transition: background .18s, padding .18s; }
+        .trip-link:hover { padding-right: 12px; padding-left: 12px; background: rgba(255,255,255,.68); }
+        .trip-image { display: block; width: 176px; aspect-ratio: 16 / 10; border-radius: 6px; background: #dce4d9; object-fit: cover; }
+        .trip-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--coral); font: 700 10px 'DM Sans', sans-serif; letter-spacing: .04em; }
+        .trip-meta span + span::before { padding-right: 10px; color: #a8b2aa; content: '/'; }
+        .trip-title { margin: 0; font-size: 19px; line-height: 1.45; }
+        .trip-description { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+        .trip-arrow { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--green); transition: color .18s, background .18s, border-color .18s; }
+        .trip-link:hover .trip-arrow { border-color: var(--green); background: var(--green); color: white; }
+        .trip-arrow svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+        .empty { padding: 38px 10px; color: var(--muted); font-size: 13px; }
+        footer { padding: 18px 24px 30px; color: #839087; font-size: 10px; text-align: center; }
+        @media (max-width: 640px) {
+            .hero { min-height: 250px; }
+            .hero-inner { padding: 38px 22px 44px; }
+            .hero-copy { font-size: 12px; }
+            main { padding: 25px 16px 50px; }
+            .trip-link { grid-template-columns: 102px minmax(0,1fr) 28px; gap: 12px; padding: 14px 0; }
+            .trip-link:hover { padding-right: 5px; padding-left: 5px; }
+            .trip-image { width: 102px; }
+            .trip-title { font-size: 15px; }
+            .trip-description { font-size: 10px; }
+            .trip-meta { flex-wrap: wrap; gap: 5px 8px; font-size: 9px; }
+            .trip-meta span + span::before { padding-right: 8px; }
+            .trip-arrow { width: 28px; height: 28px; }
         }
-
-        /* 自定義捲軸 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(200, 141, 117, 0.5);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(200, 141, 117, 0.8);
-        }
-
-        /* 卡片展開動畫 */
-        .card-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
-            opacity: 0;
-        }
-        .card-content.open {
-            max-height: 2000px; /* 給一個夠大的值以確保能完全展開 */
-            opacity: 1;
-        }
-
-        /* 漸層背景裝飾 */
-        .bg-gradient-custom {
-            background: linear-gradient(135deg, #e3dfd3 0%, #f7f5f0 100%);
-        }
-        
-        .header-bg {
-            background-color: #5c6c64; /* 深灰綠色，配合需求 */
-            color: white;
+        @media (max-width: 380px) {
+            .trip-link { grid-template-columns: 82px minmax(0,1fr) 26px; gap: 9px; }
+            .trip-image { width: 82px; }
+            .trip-title { font-size: 14px; }
         }
     </style>
 </head>
-<body class="antialiased min-h-screen relative overflow-x-hidden">
-
-    <!-- 背景裝飾元素 -->
-    <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-30">
-        <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-200 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 right-10 w-48 h-48 bg-orange-200 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 left-1/4 w-40 h-40 bg-teal-100 rounded-full blur-3xl"></div>
-    </div>
-
-    <!-- 主標題區 -->
-    <header class="header-bg py-8 shadow-md">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-wider">星月傳奇．土耳其11日</h1>
-            <p class="text-lg opacity-90 flex items-center gap-2">
-                <i class="ph ph-calendar-blank"></i> 2026/10/8(四) ~ 2026/10/18(日)
-            </p>
-            <p class="text-lg opacity-90 flex items-center gap-2"> [跟團行健]
-            </p>
-
+<body>
+    <header class="hero">
+        <div class="hero-inner">
+            <p class="kicker">DORIS' TRAVEL LIBRARY</p>
+            <h1>Doris的旅遊行程攻略集</h1>
+            <p class="hero-copy">收藏每一段旅程的路線、景點與實用筆記。選擇一份攻略，開始規劃你的下一趟旅行。</p>
         </div>
     </header>
-
-    <main class="max-w-5xl mx-auto px-2 md:px-4 py-4 md:py-8">
-        
-        
-        <!-- 行程卡片列表 -->
-        <div id="itinerary-list" class="space-y-6 md:space-y-8">
-            <!-- 稍後由 JavaScript 動態生成卡片 -->
+    <main>
+        <div class="list-head">
+            <div><h2>行程攻略</h2><p>依旅程整理的行程與旅行筆記</p></div>
+            <span id="list-count" class="list-count">載入中</span>
         </div>
-
+        <div id="trip-list" class="trip-list" aria-live="polite"></div>
     </main>
-
-    <!-- 頁尾 -->
-    <footer class="text-center py-8 text-base opacity-60 mt-12 border-t border-gray-300">
-        <p>© 2026 行程規劃. All rights reserved.</p>
-    </footer>
-
+    <footer>每段旅程，都是下一次出發的起點。</footer>
+    <script src="catalog.js"></script>
     <script>
-        const itineraryData = [
-            {
-                day: "Day 1-2",
-                fullDate: "2026/10/8 (四) - 10/9 (五)",
-                title: "直飛星月國度 ｜ 走入鄂圖曼番紅花城",
-                weather: { icon: "ph-cloud-sun", temp: "10-18°C" },
-                image: "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?q=80&w=1200&auto=format&fit=crop",
-                flights: [
-                    "【去程國際線】土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 (+1日) *(時差：慢台灣5小時)*",
-                    "【土國國內線①】土耳其航空 TK2108 ｜ 伊斯坦堡 08:00 － 安卡拉 09:15"
-                ],
-                spots: [
-                    "市長官邸 ｜ 造訪典型鄂圖曼風格的三層木造大宅與典雅中庭，見證古城歲月流轉。",
-                    "鵝卵石古鎮 ｜ 悠閒漫步沙夫蘭波爾起伏巷弄，尋訪古法手工銅製品與傳統糕點鋪。",
-                    "希德爾立克山丘 ｜ 登臨番紅花城絕佳觀景台，俯瞰被列入世界遺產的古色古香山城全景。"
-                ],
-                specialNotes: [
-                    "若遇市長官邸關閉，將於日後卡巴德基亞行程改為參觀「洞穴人家房舍」替代。"
-                ],
-                outfit: "早晚偏涼且山城鵝卵石路面多，務必穿著厚底防滑球鞋，隨身備防風外套。",
-                buy: "番紅花城手工紅銅器、傳統立體鄂圖曼軟糖、特色手工蕾絲織品。",
-                eat: "傳統鄂圖曼式建築 Güveç 陶甕風味餐、土耳其紅茶。",
-                stay: "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐 / 宿：HILTON GARDEN INN SAFRANBOLU",
-                tips: "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。"
-            },
-            {
-                day: "Day 3",
-                fullDate: "2026/10/10 (六)",
-                title: "安卡拉紀行 ｜ 奇幻卡巴德基亞",
-                weather: { icon: "ph-cloud-moon", temp: "8-19°C" },
-                image: "https://images.unsplash.com/photo-1641121087819-dfc89d7018d4?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "阿塔圖爾克紀念館 ｜ 參觀融匯古今現代建築傑作，向土耳其國父凱末爾致敬的莊嚴陵寢。",
-                    "凱末爾博物館 ｜ 珍藏國父生前親筆信函、肖像與隨身歷史物件，感受人民深厚的愛戴。",
-                    "土耳其之夜 ｜ 晚間於天然岩穴旅館欣賞傳統民俗舞蹈與肚皮舞秀，無限暢飲獅子奶酒。"
-                ],
-                specialNotes: [
-                    "今日午後長途驅車前往卡巴德基亞（約4小時），車上提供免費 Wi-Fi 連線。"
-                ],
-                outfit: "高原日夜溫差極大，夜間外出看秀請務必穿著保暖針織衫或輕羽絨外套。",
-                buy: "安卡拉當地特色天然果乾、卡巴德基亞熱氣球造型紀念小品。",
-                eat: "土耳其傳統香料烤雞翅、道地 Raki（獅子奶酒）。",
-                stay: "午：香料烤翅風味餐 / 晚：旅館自助式或套餐 / 宿：KALSEDON CAVE HOTEL",
-                tips: "獅子奶酒酒精濃度高且後勁強，建議酌量飲用；岩穴旅館每間格局略有大小差異。"
-            },
-            {
-                day: "Day 4",
-                fullDate: "2026/10/11 (日)",
-                title: "探秘奇岩仙境 ｜ 基督徒地下城",
-                weather: { icon: "ph-sun", temp: "6-18°C" },
-                image: "https://images.unsplash.com/photo-1507727181676-4767e3a89e98?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "哥樂美露天博物館 ｜ 探訪開鑿於奇特地貌的洞窟修道院，讚嘆托卡裏教堂絕美拜占庭壁畫。",
-                    "精靈煙囪奇景 ｜ 乘車巡禮蘑菇谷、駱駝岩、烏其莎城堡與鴿子谷，見證大自然的調皮傑作。",
-                    "基督徒地下城 ｜ 鑽入深埋地底的避難迷宮，驚嘆垂直循環通氣孔與兩噸重禦敵石門。",
-                    "傳統工藝巡禮 ｜ 參觀百年皇家級手工地毯編織教學、綠松石珠寶工藝，品嚐道地土式咖啡。"
-                ],
-                specialNotes: [
-                    "前20名報名者贈送熱氣球體驗（第21名起台灣加購價NT$4,500）；若遇天候取消全額退費。",
-                    "地下城通道極度狹窄且需彎腰前行，幽閉恐懼或膝蓋行動不便者請自行評估入內。"
-                ],
-                outfit: "清晨若搭乘熱氣球氣溫逼近零度，需備毛帽與防風手套；白天洋蔥式穿搭。",
-                buy: "土耳其石（綠松石）純銀飾品、游牧民族手工幾何圖騰地毯、惡魔之眼掛飾。",
-                eat: "道地土耳其冰淇淋、土式鄉村下午茶、肥美多汁傳統烤羊肉。",
-                stay: "午：土式佐傳統烤羊肉風味餐 / 晚：旅館自助式或套餐 / 宿：KALSEDON CAVE HOTEL",
-                tips: "參觀地毯坊與珠寶店時微笑道別即可，殺價為當地樂趣；下午茶與冰淇淋為特別招待。"
-            },
-            {
-                day: "Day 5",
-                fullDate: "2026/10/12 (一)",
-                title: "絲路驛站 ｜ 旋轉舞聖地孔亞",
-                weather: { icon: "ph-sun", temp: "12-24°C" },
-                image: "https://images.unsplash.com/photo-1582202534571-081e7d23d8c1?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "蘇丹哈尼古驛站 ｜ 途經13世紀塞爾柱時期供絲路商旅與駱駝過夜歇息的壯麗古老驛站。",
-                    "梅烏拉那博物館 ｜ 仰望孔亞最著名的鮮豔綠瓷磚尖頂，感受蘇菲教團旋轉舞發源地的莊嚴。",
-                    "地中海濱安塔麗亞 ｜ 傍晚翻越托羅斯山脈，抵達風光明媚、擁抱蔚藍海水的南岸度假首府。"
-                ],
-                specialNotes: [
-                    "今日長途驅車行車距離較長（總計約485公里），建議隨身準備充氣頸枕與保溫瓶熱水。"
-                ],
-                outfit: "由高原一路下行至地中海沿岸，午後明顯轉暖，可換穿透氣輕薄的長袖衫。",
-                buy: "孔亞旋轉舞者白衣陶瓷娃娃、安那托利亞天然草本茶、梅烏拉那紀念書籤。",
-                eat: "土耳其特色長條披薩（Pide）、地中海風味橄欖冷盤。",
-                stay: "午：土式餐食佐 Pide 風味餐 / 晚：旅館自助式或套餐 / 宿：DOUBLE TREE BY HILTON ANTALYA",
-                tips: "孔亞為宗教氣氛較濃厚的傳統聖城，參觀博物館相關園區請保持衣著端莊與輕聲細語。"
-            },
-            {
-                day: "Day 6",
-                fullDate: "2026/10/13 (二)",
-                title: "蔚藍地中海 ｜ 巴穆卡麗溫泉鄉",
-                weather: { icon: "ph-sun", temp: "16-26°C" },
-                image: "https://images.unsplash.com/photo-1524230626359-eb01235471d4?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "哈德良門舊城 ｜ 穿過古羅馬凱旋門漫步進入古鎮，探訪凱鍚克喚拜樓與卡拉裏歐魯公園。",
-                    "地中海搭船出海 ｜ 於舊城港口乘船乘風破浪，近距離欣賞懸崖瀑布直衝入海的杜登奇觀。",
-                    "巴穆卡麗溫泉鄉 ｜ 午後驅車前往棉堡所在地，於溫泉飯店享用具礦物質療效的天然溫泉。"
-                ],
-                specialNotes: [
-                    "今日入住溫泉飯店，請務必於「隨身登機箱或日用包」內備妥泳衣、泳帽與止滑拖鞋。"
-                ],
-                outfit: "地中海陽光熱情，海風稍大，備妥墨鏡、寬沿遮陽帽與高係數防曬乳。",
-                buy: "地中海產天然純橄欖油護手霜、土耳其藍手工彩瓷盤、天然頂級無花果乾。",
-                eat: "地中海特色餐廳鮮魚風味餐、土耳其街頭現榨石榴汁。",
-                stay: "午：土耳其鮮魚風味餐 / 晚：旅館自助式或套餐 / 宿：COLOSSAE TERMAL HOTEL",
-                tips: "出海行程容易暈船者，請出發前30分鐘服用暈船藥；飯店溫泉區地板濕滑請小心行走。"
-            },
-            {
-                day: "Day 7",
-                fullDate: "2026/10/14 (三)",
-                title: "霜雪棉堡奇蹟 ｜ 愛琴海濱夕照",
-                weather: { icon: "ph-sun", temp: "14-25°C" },
-                image: "https://images.unsplash.com/photo-1602714271890-4a8f15d2aef7?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "巴穆卡麗棉堡 ｜ 漫步於富含碳酸鈣湧泉結晶而成的潔白石灰華梯堤，宛如踏入銀色幻境。",
-                    "石灰棚赤足體驗 ｜ 依規定脫去鞋襪親踩溫熱泉水，體驗略帶微痛感的天然鈣質腳底按摩。",
-                    "希拉波利斯古城 ｜ 環抱西元前2世紀遺留的廣闊神殿、古羅馬大劇場與傾圮的水底宮殿。",
-                    "庫薩達西濱海 ｜ 傍晚抵達愛琴海畔著名的港口度假城市，享受浪漫愜意的海濱夜色。"
-                ],
-                specialNotes: [
-                    "規定棉堡石灰岩結晶區「嚴禁穿著任何鞋襪（含水鞋）」，務必隨身備擦腳小毛巾與裝鞋袋。"
-                ],
-                outfit: "棉堡整片潔白極度易反射光線，穿著飽和鮮豔色系（如紅、寶藍）拍照最亮眼。",
-                buy: "棉堡限定天然溫泉泥面膜、愛琴海頂級精油香皂、天然無花果夾心巧克力。",
-                eat: "愛琴海沿岸特色炭烤肉串（Kebab）、土耳其國民酸奶（Ayran）。",
-                stay: "午：土耳其式餐食 / 晚：旅館自助式或套餐 / 宿：CHARISMA DE LUXE HOTEL",
-                tips: "赤腳踩在結晶岩面上略帶刺痛感，行走務必踏穩；古溫泉游泳戲水需現地自費買門票。"
-            },
-            {
-                day: "Day 8",
-                fullDate: "2026/10/15 (四)",
-                title: "以弗所古城 ｜ 席林杰美酒山城",
-                weather: { icon: "ph-cloud-sun", temp: "15-23°C" },
-                image: "https://images.unsplash.com/photo-1549405073-77d07945037d?q=80&w=1200&auto=format&fit=crop",
-                flights: [
-                    "【土國國內線②】土耳其航空 TK2327 ｜ 伊茲米爾 17:15 － 伊斯坦堡 18:35"
-                ],
-                spots: [
-                    "時尚皮衣秀 ｜ 欣賞名模演繹高級進口皮件，啜飲道地蘋果茶，學習分辨頂級皮革工藝。",
-                    "艾菲索斯古城 ｜ 走入小亞細亞最繁榮的遺址，仰望塞爾薩斯圖書館與兩萬人大劇場。",
-                    "席林杰小鎮 ｜ 漫步於以19世紀鄂圖曼農村民居與滿山果園著稱的「露天建築博物館」。"
-                ],
-                specialNotes: [
-                    "今晚配合國內線航班抵達伊斯坦堡時間，發放每人美金20元餐費於現地自理晚餐。"
-                ],
-                outfit: "以弗所古城缺乏樹蔭遮蔽極曬；晚間飛抵伊斯坦堡氣溫轉涼，隨身包需備外套。",
-                buy: "席林杰限定特色水果酒（黑莓/石榴）、頂級輕柔小羊皮衣、聖經以弗所主題書冊。",
-                eat: "席林杰山城著名水果酒佐餐、道地土耳其旋轉烤肉沙威瑪（Döner）。",
-                stay: "午：席林杰水果酒風味餐 / 晚：發放餐費美金20元自理 / 宿：LIONEL HOTEL ISTANBUL",
-                tips: "以弗所大理石地面經千年踩踏極為光滑，易滑倒請小心；皮衣坊無購買意願微笑道別即可。"
-            },
-            {
-                day: "Day 9",
-                fullDate: "2026/10/16 (五)",
-                title: "千年榮光 ｜ 拜占庭與鄂圖曼",
-                weather: { icon: "ph-cloud", temp: "12-19°C" },
-                image: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=1200&auto=format&fit=crop",
-                spots: [
-                    "托普卡帕宮 ｜ 探訪鄂圖曼帝國核心，見證中國古代瓷器館、謁見室與穆罕默德聖遺物室。",
-                    "聖索菲亞清真寺 ｜ 凝視基督教與伊斯蘭完美융合的巨大穹頂，見證東羅馬最高建築傑作。",
-                    "藍色清真寺 ｜ 走入全球唯一六根尖塔清真寺，被兩萬多片伊茲尼克藍白彩釉瓷磚包圍。",
-                    "君士坦丁地下水庫 ｜ 深入336根大理石柱支撐的貯水宮殿，聆聽水光倒影中的神秘悠揚樂聲。",
-                    "埃及香料市集 ｜ 闖入色彩繽紛的百年舊市集，尋訪土耳其乳香、肉桂與各式神秘中東香料。"
-                ],
-                specialNotes: [
-                    "若遇藍色清真寺整修或宗教儀式關閉，將改參觀蘇萊曼、新清真寺或奴魯奧斯瑪尼耶清真寺。"
-                ],
-                outfit: "清真寺規定「女性需戴頭巾、男女皆嚴禁短褲/無袖/透視裝」，入內需脫鞋。",
-                buy: "經典現磨 Mehmet Efendi 土耳其咖啡粉、天然中東綜合香料組、道地頂級番紅花乾。",
-                eat: "宮廷風格米其林推薦餐廳料理、傳統開心果層酥甜點（Baklava）。",
-                stay: "午：宮廷風米其林推薦料理 / 晚：中式合菜7菜1湯含水果 / 宿：LIONEL HOTEL ISTANBUL",
-                tips: "地下水庫內部燈光較暗且濕滑；香料市集人潮擁擠，包包建議往前背以防扒手。"
-            },
-            {
-                day: "Day 10-11",
-                fullDate: "2026/10/17 (六) - 10/18 (日)",
-                title: "奢華皇宮 ｜ 博斯普魯斯賦歸",
-                weather: { icon: "ph-wind", temp: "11-18°C" },
-                image: "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200&auto=format&fit=crop",
-                flights: [
-                    "【回程國際線】土耳其航空 TK024 ｜ 伊斯坦堡 01:45 (10/18起飛) － 台北 18:00 *(飛行11小時15分)*"
-                ],
-                spots: [
-                    "多瑪巴切宮 ｜ 拜訪耗資14噸黃金建造的皇宮，仰望重達4.5噸、擁有750個燈泡的水晶吊燈。",
-                    "博斯普魯斯遊船 ｜ 搭乘專屬遊船蜿蜒航行，一眼看盡左岸歐洲、右岸亞洲的宮殿別墅群。",
-                    "喀帕爾大市集 ｜ 迷失在擁有四千多家鋪面的全世界最大有頂迷宮，享受現地殺價尋寶樂趣。",
-                    "告別土耳其 ｜ 晚餐後驅車前往伊斯坦堡國際機場，帶著滿滿的星月傳奇記憶登機返台。"
-                ],
-                specialNotes: [
-                    "大市集內巷弄交錯極為複雜宛如迷宮，務必記下領隊指定的「出入口門牌編號與集合時間」。"
-                ],
-                outfit: "海峽遊船甲板風勢強勁需穿防風連帽衣；晚間準備登機，建議換穿寬鬆舒適褲裝。",
-                buy: "手工細膩彩釉陶瓷隔熱墊、海泡石手工雕刻煙斗、鄂圖曼復古彩色琉璃吊燈。",
-                eat: "網紅人氣美式料理、馬爾馬拉海鮮鮮魚風味餐、機上精緻早午餐。",
-                stay: "午：網紅美式餐廳 / 晚：馬爾馬拉鮮魚餐 / 宿：夜宿機上 ｜ 10/18溫暖的家",
-                tips: "大市集開價通常偏高，對半砍價再往上添是基本心法；今日市區行程結束後直奔機場。"
-            }
-        ];
-
-        function createCard(data, index) {
-            const isOpen = false; // 預設全部折疊
-            const chevronClass = isOpen ? "rotate-180" : "";
-            const contentClass = isOpen ? "open" : "";
-
-            let flightsHtml = '';
-            if (data.flights && data.flights.length > 0) {
-                flightsHtml = `
-                    <div class="mb-6 bg-orange-50 border-l-4 border-orange-400 p-4 md:p-5 rounded-r-xl shadow-sm">
-                        <div class="flex items-center gap-2 text-orange-800 font-bold mb-3">
-                            <i class="ph ph-airplane-tilt text-2xl md:text-3xl"></i>
-                            <span class="text-lg md:text-xl tracking-wide">班機資訊</span>
-                        </div>
-                        <ul class="text-base md:text-lg text-orange-900 space-y-2 ml-8 list-disc font-medium">
-                            ${data.flights.map(f => `<li>${f}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-
-            // 行程節點統一改為靠左垂直時間軸
-            let spotsHtml = `
-                <ul class="space-y-5 mb-6 relative before:absolute before:inset-0 before:left-6 md:before:left-8 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#c88d75] before:to-transparent">
-                    ${data.spots.map(spot => {
-                        const parts = spot.split(' ｜ ');
-                        const name = parts[0];
-                        const desc = parts[1] || '';
-                        // 建立 Google Maps 搜尋連結，自動加上「土耳其」提高定位精準度
-                        const mapQuery = encodeURIComponent(name + ' 土耳其');
-                        return `
-                        <li class="relative flex items-start pl-12 md:pl-16 group">
-                            <div class="absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white bg-[#c88d75] shadow z-10 transition-transform group-hover:scale-125"></div>
-                            <div class="bg-white/90 backdrop-blur-sm p-5 md:p-6 rounded-xl shadow-sm border border-gray-100 w-full text-left transition-all duration-300 hover:shadow-md hover:bg-white">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <h4 class="font-bold text-gray-800 text-lg md:text-xl">${name}</h4>
-                                    <!-- Google Map 連結按鈕 -->
-                                    <a href="https://www.google.com/maps/search/?api=1&query=${mapQuery}" target="_blank" rel="noopener noreferrer" class="text-[#c88d75] hover:text-white bg-[#c88d75]/10 hover:bg-[#c88d75] transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 Google Maps 查看位置">
-                                        <i class="ph ph-map-pin text-lg"></i>
-                                    </a>
-                                </div>
-                                <p class="text-base md:text-lg text-gray-700 leading-relaxed">${desc}</p>
-                            </div>
-                        </li>
-                        `;
-                    }).join('')}
-                </ul>
-            `;
-
-            let specialNotesHtml = '';
-            if (data.specialNotes && data.specialNotes.length > 0) {
-                specialNotesHtml = `
-                    <div class="mb-6 bg-red-50 text-red-800 p-4 md:p-5 rounded-xl text-base md:text-lg flex items-start gap-3 border border-red-100 shadow-sm">
-                        <i class="ph ph-warning-circle text-2xl md:text-3xl mt-0.5 shrink-0 text-red-600"></i>
-                        <ul class="list-disc ml-5 space-y-2 font-medium">
-                            ${data.specialNotes.map(n => `<li>${n}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-
-            let infoBottomHtml = `
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-200 pt-6 mt-4">
-                    <div class="flex items-start gap-3">
-                        <div class="bg-teal-50 text-teal-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-teal-100"><i class="ph ph-t-shirt text-2xl"></i></div>
-                        <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-teal-800 block mb-1">穿搭建議</span>
-                            <span class="text-base md:text-lg text-gray-800 leading-relaxed">${data.outfit}</span>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="bg-pink-50 text-pink-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-pink-100"><i class="ph ph-shopping-bag text-2xl"></i></div>
-                        <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">必吃 / 必買</span>
-                            <span class="text-base md:text-lg text-gray-800 block leading-relaxed"><b class="font-bold text-gray-900">買：</b>${data.buy}</span>
-                            <span class="text-base md:text-lg text-gray-800 block mt-1 leading-relaxed"><b class="font-bold text-gray-900">吃：</b>${data.eat}</span>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <div class="bg-blue-50 text-blue-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-blue-100"><i class="ph ph-bed text-2xl"></i></div>
-                        <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-blue-800 block mb-1">膳宿</span>
-                            <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${data.stay.replace(/ \/ /g, '<br>')}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            return `
-                <div class="bg-[var(--card-bg)] backdrop-blur-md rounded-2xl shadow-lg border border-white/50 overflow-hidden transition-all duration-300 hover:shadow-2xl">
-                    <!-- 卡片標題區 (可點擊) -->
-                    <div class="header-bg flex justify-between items-stretch cursor-pointer relative transition-colors hover:brightness-110" onclick="toggleCard(this)">
-                        
-                        <!-- 左側標題區塊 (大幅壓縮上下空間) -->
-                        <div class="py-3 pl-4 md:pl-5 flex flex-col justify-center flex-1 min-w-0 pr-3">
-                            <!-- 日期與天數 (天數移到標籤右側) -->
-                            <div class="flex items-center gap-2 mb-1.5">
-                                <span class="bg-[#c88d75] text-white px-2 py-0.5 rounded text-xs md:text-sm font-bold tracking-wider shadow-sm shrink-0">
-                                    ${data.fullDate}
-                                </span>
-                                <span class="text-white/90 text-sm md:text-base font-bold tracking-wide shrink-0">
-                                    ${data.day}
-                                </span>
-                            </div>
-                            <!-- 標題 (不換行) -->
-                            <h3 class="text-lg md:text-2xl font-bold text-white tracking-wide truncate" title="${data.title}">
-                                ${data.title}
-                            </h3>
-                        </div>
-
-                        <!-- 右側天氣與箭頭，與標題列同高 (items-stretch) -->
-                        <div class="flex items-stretch shrink-0">
-                            <!-- 天氣標籤 (滿版高度，無底色) -->
-                            <div class="flex flex-col justify-center items-center px-3 md:px-5 hidden sm:flex bg-transparent">
-                                <i class="ph ${data.weather.icon} text-2xl md:text-3xl text-yellow-300 drop-shadow-md"></i>
-                                <span class="text-sm md:text-base mt-0.5 font-bold tracking-wide whitespace-nowrap text-white">${data.weather.temp}</span>
-                            </div>
-                            <!-- 箭頭 -->
-                            <div class="flex items-center justify-center w-12 md:w-14 bg-white/5 border-l border-white/10">
-                                <i class="ph ph-caret-down text-white text-xl md:text-2xl transition-transform duration-500 chevron-icon ${chevronClass}"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 卡片內容區 (展開/收合) -->
-                    <div class="card-content bg-gradient-custom ${contentClass}">
-                        <!-- 圖片區塊 (置中、靜態縮放、移除動態 hover 效果) -->
-                        <div class="w-full h-48 md:h-64 overflow-hidden relative border-b border-gray-200/50 bg-[#e3dfd3]">
-                            <img src="${data.image}" alt="${data.title}" class="w-full h-full object-cover object-center block" loading="lazy" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-                        </div>
-
-                        <div class="p-4 md:p-8">
-                            ${flightsHtml}
-                            ${specialNotesHtml}
-                            
-                            <div class="mb-8 mt-2">
-                                ${spotsHtml}
-                            </div>
-                            
-                            ${infoBottomHtml}
-                            
-                            <div class="mt-6 md:mt-8 bg-[#5c6c64] text-white/95 p-4 md:p-5 rounded-xl text-base md:text-lg flex gap-3 items-start shadow-inner tracking-wide leading-relaxed">
-                                <i class="ph ph-lightbulb text-yellow-300 text-2xl md:text-3xl shrink-0 mt-0.5 drop-shadow"></i>
-                                <p><b class="font-bold text-white mr-1 tracking-widest block md:inline mb-1 md:mb-0">TIPS｜</b>${data.tips}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
         }
 
-        const listContainer = document.getElementById('itinerary-list');
-        
-        // 渲染所有卡片
-        itineraryData.forEach((data, index) => {
-            listContainer.innerHTML += createCard(data, index);
-        });
-
-        // 展開/收合卡片的邏輯
-        function toggleCard(headerElement) {
-            const card = headerElement.parentElement;
-            const content = card.querySelector('.card-content');
-            const chevron = card.querySelector('.chevron-icon');
-            
-            // 如果當前是關閉的，就打開它
-            if (!content.classList.contains('open')) {
-                content.classList.add('open');
-                chevron.classList.add('rotate-180');
-            } else {
-                // 如果當前是打開的，就關閉它
-                content.classList.remove('open');
-                chevron.classList.remove('rotate-180');
-            }
-        }
+        const trips = Array.isArray(window.travelPageCatalog) ? window.travelPageCatalog : [];
+        const list = document.getElementById('trip-list');
+        document.getElementById('list-count').textContent = `${String(trips.length).padStart(2, '0')} TRIPS`;
+        list.innerHTML = trips.length ? trips.map((trip) => {
+            const image = /^https?:\/\//i.test(trip.image || '') ? escapeHtml(trip.image) : '';
+            const target = `WebPage/${encodeURIComponent(trip.html || '')}`;
+            return `<article class="trip-item"><a class="trip-link" href="${target}">
+                ${image ? `<img class="trip-image" src="${image}" alt="${escapeHtml(trip.title)}" loading="lazy">` : '<div class="trip-image" aria-hidden="true"></div>'}
+                <div><div class="trip-meta"><span>${escapeHtml(trip.date || '')}</span><span>TRAVEL GUIDE</span></div><h3 class="trip-title">${escapeHtml(trip.title)}</h3><p class="trip-description">${escapeHtml(trip.description || '')}</p></div>
+                <span class="trip-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
+            </a></article>`;
+        }).join('') : '<p class="empty">目前尚未加入行程攻略。</p>';
     </script>
 </body>
 </html>

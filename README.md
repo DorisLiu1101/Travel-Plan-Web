@@ -10,11 +10,13 @@
 
 ## 📂 專案檔案結構
 
-本專案極度輕量，僅由三個核心檔案組成：
+本專案包含前台總覽、行程管理器與獨立的攻略頁資料：
 
-* **`index.html` (前台展示頁面)**：採用 Vue 3 + Tailwind CSS 打造的雜誌風互動介面，自動讀取 `data.js` 渲染畫面。
-* **`admin.html` (可視化管理後台)**：不需上傳至伺服器，純本地端執行的網頁，提供直覺的表單編輯介面。
-* **`data.js` (資料庫檔案)**：存放所有行程的結構化資料（JSON格式），獨立抽離以方便抽換與管理。
+* **`index.html` (攻略總覽)**：讀取根目錄的 `catalog.js`，列出所有已登錄的旅遊攻略。
+* **`admin.html` (可視化管理後台)**：可選擇 `WebPage` 中的 JavaScript 資料檔，修改後匯出並沿用來源檔名。
+* **`WebPage/` (攻略頁資料夾)**：每個攻略 HTML 自動讀取同資料夾、同檔名的 JS，例如 `2610.html` 讀取 `2610.js`。
+* **`catalog.js` (總覽清單)**：位於與 `index.html` 相同目錄，登錄要顯示在首頁的 HTML 檔名、標題、日期與封面圖。
+* **`PageSample.html` (新增攻略範本)**：複製到 `WebPage/` 後，HTML 會自動配對同名 JS。
 
 ## ✨ 核心特色
 
@@ -26,18 +28,25 @@
 ## 🚀 部署與更新指南
 
 ### 1. 初始部署 (發布至 GitHub Pages)
-1. 將 `index.html` 與 `data.js` 上傳至您的 GitHub 儲存庫（如：`dorisliu1101/travel-plan-web`）。
+1. 將 `index.html`、`admin.html`、`WebPage/` 及其內容上傳至您的 GitHub 儲存庫（如：`dorisliu1101/travel-plan-web`）。
 2. 進入該儲存庫的 **Settings** 頁籤，於左側選單點選 **Pages**。
 3. 在 Build and deployment 區塊下，將 Branch 設為 `main` (或 `master`) 並點擊 **Save**。
 4. 靜待數分鐘，即可透過 `https://dorisliu1101.github.io/travel-plan-web/` 瀏覽您的專屬行程網頁。
 
 ### 2. 日常更新行程 (使用管理後台)
-1. 在**您的電腦本機端**，對著 `admin.html` 點擊兩下，直接以瀏覽器開啟。
-2. 在視覺化表單中，自由新增、刪除或修改行程資訊，或替換全新的 Unsplash 風景大圖網址。
-3. 編輯完成後，點擊畫面右上角的 **「產生更新檔案 (data.js)」** 按鈕。
-4. 系統會自動滑動至最下方，請複製黑底綠字的**完整代碼**。
-5. 回到 GitHub 儲存庫，開啟並編輯 `data.js` 檔案，將剛剛複製的代碼**完全覆蓋**貼上。
-6. 點擊 **Commit changes** 儲存。GitHub Pages 會在 1~3 分鐘內自動更新您的前台網頁。
+1. 在**您的電腦本機端**，以瀏覽器開啟 `admin.html`。
+2. 點選「選擇 JS 檔」，選取 `WebPage/` 中要編輯的資料檔，例如 `2610.js`。
+3. 修改行程或前台標題，產生更新檔後下載；檔案會保留來源檔名。
+4. 將下載檔取代 `WebPage/` 中原本的同名 JS，再提交到 GitHub。
+5. 新增攻略時，將 `PageSample.html` 複製到 `WebPage/` 並與資料 JS 使用相同檔名，再在根目錄的 `catalog.js` 加入該攻略的清單資料。
+6. 提交後 GitHub Pages 會自動更新總覽與攻略頁。
+
+### 管理首頁攻略清單
+1. 在 `admin.html` 的「攻略總覽清單」區載入根目錄的 `catalog.js`。
+2. 編輯攻略標題、日期、說明、HTML 檔名與封面圖片，也可新增或刪除清單項目。
+3. 產生預覽後複製或下載 `catalog.js`，取代根目錄的 `catalog.js`。
+
+管理器支援由管理器匯出的資料型 JS，內容包含 `const itineraryData = [...]`，並可選擇性包含 `const siteSettings = {...}`。瀏覽器無法直接覆寫所選原檔，請以下載檔取代原檔。
 
 ## 🛠️ 技術棧 (Tech Stack)
 

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>土耳其傳奇 11 日</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入 Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --bg-color: #eef2ec;
+            --text-main: #26332e;
+            --accent-color: #c96f50;
+            --card-bg: rgba(255, 255, 255, 0.94);
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            background-image: linear-gradient(rgba(49, 90, 76, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(49, 90, 76, .035) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* 自定義捲軸 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(49, 90, 76, 0.38);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(49, 90, 76, 0.68);
+        }
+
+        /* 卡片展開動畫 */
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+            opacity: 0;
+        }
+        .card-content.open {
+            max-height: 5000px;
+            opacity: 1;
+        }
+
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #f7f9f5 0%, #edf2ed 100%);
+        }
+        
+        .header-bg {
+            min-height: 238px;
+            display: flex;
+            align-items: center;
+            background-color: #203d34;
+            background-image: linear-gradient(90deg, rgba(25, 49, 41, .94) 0%, rgba(25, 49, 41, .72) 54%, rgba(25, 49, 41, .18) 100%), url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop');
+            background-position: center 48%;
+            background-size: cover;
+            color: white;
+        }
+
+        .header-inner { min-height: 176px; align-items: flex-start; justify-content: center; text-align: left; }
+        .header-inner h1 { max-width: 720px; font-size: 38px; line-height: 1.25; }
+        .header-meta { color: rgba(255,255,255,.88); }
+        .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
+        .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
+        .day-header { background: #315a4c; color: white; }
+        .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px solid rgba(49,90,76,.12); text-align: left; transition: background .18s; }
+        .spot-card:hover { background: rgba(255,255,255,.5); }
+        .spot-copy { min-width: 0; flex: 1; }
+        .spot-image { width: 132px; height: 92px; flex: 0 0 132px; border-radius: 7px; object-fit: cover; }
+        .tips-note { background: #315a4c; }
+        .page-footer { color: #69776f; border-color: rgba(49,90,76,.2); }
+
+        @media (max-width: 640px) {
+            .header-bg { min-height: 205px; background-position: 58% center; }
+            .header-inner { min-height: 155px; }
+            .header-inner h1 { max-width: 330px; font-size: 30px; }
+            .header-meta { font-size: 14px; }
+            .spot-card { gap: 10px; padding-right: 4px; }
+            .spot-image { width: 88px; height: 76px; flex-basis: 88px; }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative overflow-x-hidden">
+
+    <!-- 背景裝飾元素 -->
+    <!-- 主標題區 -->
+    <header class="header-bg py-8 shadow-md">
+        <div class="header-inner max-w-4xl mx-auto px-4 flex flex-col">
+            <h1 id="site-hero-title" class="text-3xl md:text-4xl font-bold mb-2 tracking-wider">星月傳奇．土耳其11日</h1>
+            <p class="header-meta text-lg opacity-90 flex items-center gap-2">
+                <i class="ph ph-calendar-blank"></i> <span id="site-date-text">2026/10/8(四) ~ 2026/10/18(日)</span>
+            </p>
+            <p id="site-subtitle" class="header-meta text-lg opacity-90 flex items-center gap-2">跟團行程 · 11 天 · 2026 秋季
+            </p>
+
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-2 md:px-4 py-4 md:py-8">
+        
+        
+        <!-- 行程卡片列表 -->
+        <div id="itinerary-list" class="space-y-6 md:space-y-8">
+            <!-- 稍後由 JavaScript 動態生成卡片 -->
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="page-footer text-center py-8 text-base opacity-80 mt-12 border-t">
+        <p>© 2026 行程規劃. All rights reserved.</p>
+    </footer>
+
+    <!-- 步驟2：在這裡引入剛剛建立的 data.js 檔案 -->
+    <script>
+        const pageFileName = decodeURIComponent(location.pathname.split('/').pop() || '');
+        const dataFileName = pageFileName.replace(/\.html$/i, '.js');
+        document.write(`<script src="${encodeURIComponent(dataFileName)}"><\/script>`);
+    </script>
+
+    <script>
+        // 注意！請將原本從 const itineraryData = [ 一直到 ]; 的這幾百行資料「全部刪除」！
+        // 刪除後，您的 <script> 標籤內應該直接從 function createCard(data, index) 開始，如下方所示：
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+        }
+
+        function safeImageUrl(value) {
+            const url = String(value ?? '').trim();
+            return /^https?:\/\//i.test(url) ? escapeHtml(url) : '';
+        }
+
+        function getMapSearchUrl(searchText, engine) {
+            const query = encodeURIComponent(searchText);
+            if (engine === 'amap') return `https://uri.amap.com/search?keyword=${query}`;
+            if (engine === 'baidu') return `https://map.baidu.com/search/${query}`;
+            return `https://www.google.com/maps/search/?api=1&query=${query}`;
+        }
+
+        function getMapEngineLabel(engine) {
+            return ({ amap: '高德地圖', baidu: '百度地圖' })[engine] || 'Google Map';
+        }
+
+        if (typeof siteSettings !== 'undefined' && siteSettings) {
+            document.title = siteSettings.pageTitle ?? document.title;
+            document.getElementById('site-hero-title').textContent = siteSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
+            document.getElementById('site-date-text').textContent = siteSettings.dateText ?? document.getElementById('site-date-text').textContent;
+            document.getElementById('site-subtitle').textContent = siteSettings.subtitle ?? document.getElementById('site-subtitle').textContent;
+        }
+
+        function createCard(data, index) {
+            const isOpen = false; // 預設全部折疊
+            const chevronClass = isOpen ? "rotate-180" : "";
+            const contentClass = isOpen ? "open" : "";
+            const title = escapeHtml(data.title);
+            const image = safeImageUrl(data.image);
+            const weatherIcon = String(data.weather?.icon || 'ph-sun').replace(/[^a-z0-9-]/gi, '');
+
+            let flightsHtml = '';
+            if (data.flights && data.flights.length > 0) {
+                flightsHtml = `
+                    <div class="mb-6 bg-orange-50 border-l-4 border-orange-400 p-4 md:p-5 rounded-r-xl shadow-sm">
+                        <div class="flex items-center gap-2 text-orange-800 font-bold mb-3">
+                            <i class="ph ph-airplane-tilt text-2xl md:text-3xl"></i>
+                            <span class="text-lg md:text-xl tracking-wide">班機資訊</span>
+                        </div>
+                        <ul class="text-base md:text-lg text-orange-900 space-y-2 ml-8 list-disc font-medium">
+                            ${data.flights.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // 行程節點統一改為靠左垂直時間軸
+            let spotsHtml = `
+                <ul class="space-y-5 mb-6 relative before:absolute before:inset-0 before:left-6 md:before:left-8 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#c88d75] before:to-transparent">
+                    ${data.spots.map((spot, spotIndex) => {
+                        const parts = spot.split(' ｜ ');
+                        const name = parts[0];
+                        const desc = parts[1] || '';
+                        const searchText = data.spotMapQueries?.[spotIndex]?.trim() || `${name} 土耳其`;
+                        const mapEngine = typeof siteSettings !== 'undefined' ? siteSettings.mapEngine : 'google';
+                        const mapSearchUrl = getMapSearchUrl(searchText, mapEngine);
+                        const mapEngineLabel = getMapEngineLabel(mapEngine);
+                        const spotImage = safeImageUrl(data.spotImages?.[spotIndex]);
+                        return `
+                        <li class="relative flex items-start pl-12 md:pl-16 group">
+                            <div class="absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white bg-[#c88d75] shadow z-10 transition-transform group-hover:scale-125"></div>
+                            <div class="spot-card">
+                                <div class="spot-copy">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-bold text-gray-800 text-lg md:text-xl">${escapeHtml(name)}</h4>
+                                    <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c88d75] hover:text-white bg-[#c88d75]/10 hover:bg-[#c88d75] transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 ${mapEngineLabel} 搜尋位置">
+                                        <i class="ph ph-map-pin text-lg"></i>
+                                    </a>
+                                </div>
+                                <p class="text-base md:text-lg text-gray-700 leading-relaxed">${escapeHtml(desc)}</p>
+                                </div>
+                                ${spotImage ? `<img class="spot-image" src="${spotImage}" alt="${escapeHtml(name)}" loading="lazy">` : ''}
+                            </div>
+                        </li>
+                        `;
+                    }).join('')}
+                </ul>
+            `;
+
+            let specialNotesHtml = '';
+            if (data.specialNotes && data.specialNotes.length > 0) {
+                specialNotesHtml = `
+                    <div class="mb-6 bg-red-50 text-red-800 p-4 md:p-5 rounded-xl text-base md:text-lg flex items-start gap-3 border border-red-100 shadow-sm">
+                        <i class="ph ph-warning-circle text-2xl md:text-3xl mt-0.5 shrink-0 text-red-600"></i>
+                        <ul class="list-disc ml-5 space-y-2 font-medium">
+                            ${data.specialNotes.map(n => `<li>${escapeHtml(n)}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            let infoBottomHtml = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-200 pt-6 mt-4">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-teal-50 text-teal-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-teal-100"><i class="ph ph-t-shirt text-2xl"></i></div>
+                        <div>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-teal-800 block mb-1">穿搭建議</span>
+                            <span class="text-base md:text-lg text-gray-800 leading-relaxed">${escapeHtml(data.outfit)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="bg-pink-50 text-pink-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-pink-100"><i class="ph ph-shopping-bag text-2xl"></i></div>
+                        <div>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">必吃 / 必買</span>
+                            <span class="text-base md:text-lg text-gray-800 block leading-relaxed"><b class="font-bold text-gray-900">買：</b>${escapeHtml(data.buy)}</span>
+                            <span class="text-base md:text-lg text-gray-800 block mt-1 leading-relaxed"><b class="font-bold text-gray-900">吃：</b>${escapeHtml(data.eat)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="bg-blue-50 text-blue-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-blue-100"><i class="ph ph-bed text-2xl"></i></div>
+                        <div>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-blue-800 block mb-1">膳宿</span>
+                            <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${escapeHtml(data.stay).replace(/ \/ /g, '<br>')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return `
+                <div class="itinerary-card">
+                    <!-- 卡片標題區 (可點擊) -->
+                    <div class="day-header flex justify-between items-stretch cursor-pointer relative transition-colors hover:brightness-110" onclick="toggleCard(this)">
+                        
+                        <!-- 左側標題區塊 (大幅壓縮上下空間) -->
+                        <div class="py-3 pl-4 md:pl-5 flex flex-col justify-center flex-1 min-w-0 pr-3">
+                            <!-- 日期與天數 (天數移到標籤右側) -->
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="bg-[#c88d75] text-white px-2 py-0.5 rounded text-xs md:text-sm font-bold tracking-wider shadow-sm shrink-0">
+                                    ${escapeHtml(data.fullDate)}
+                                </span>
+                                <span class="text-white/90 text-sm md:text-base font-bold tracking-wide shrink-0">
+                                    ${escapeHtml(data.day)}
+                                </span>
+                            </div>
+                            <!-- 標題 (不換行) -->
+                            <h3 class="text-lg md:text-2xl font-bold text-white tracking-wide truncate" title="${title}">
+                                ${title}
+                            </h3>
+                        </div>
+
+                        <!-- 右側天氣與箭頭，與標題列同高 (items-stretch) -->
+                        <div class="flex items-stretch shrink-0">
+                            <!-- 天氣標籤 (滿版高度，無底色) -->
+                            <div class="flex flex-col justify-center items-center px-3 md:px-5 hidden sm:flex bg-transparent">
+                                <i class="ph ${weatherIcon} text-2xl md:text-3xl text-yellow-300 drop-shadow-md"></i>
+                                <span class="text-sm md:text-base mt-0.5 font-bold tracking-wide whitespace-nowrap text-white">${escapeHtml(data.weather.temp)}</span>
+                            </div>
+                            <!-- 箭頭 -->
+                            <div class="flex items-center justify-center w-12 md:w-14 bg-white/5 border-l border-white/10">
+                                <i class="ph ph-caret-down text-white text-xl md:text-2xl transition-transform duration-500 chevron-icon ${chevronClass}"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 卡片內容區 (展開/收合) -->
+                    <div class="card-content bg-gradient-custom ${contentClass}">
+                        <!-- 圖片區塊 (置中、靜態縮放、移除動態 hover 效果) -->
+                        <div class="w-full h-48 md:h-64 overflow-hidden relative border-b border-gray-200/50 bg-[#e3dfd3]">
+                            <img src="${image}" alt="${title}" class="w-full h-full object-cover object-center block" loading="lazy" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                        </div>
+
+                        <div class="p-4 md:p-8">
+                            ${flightsHtml}
+                            ${specialNotesHtml}
+                            
+                            <div class="mb-8 mt-2">
+                                ${spotsHtml}
+                            </div>
+                            
+                            ${infoBottomHtml}
+                            
+                            <div class="tips-note mt-6 md:mt-8 text-white/95 p-4 md:p-5 rounded-lg text-base md:text-lg flex gap-3 items-start tracking-wide leading-relaxed">
+                                <i class="ph ph-lightbulb text-yellow-300 text-2xl md:text-3xl shrink-0 mt-0.5 drop-shadow"></i>
+                                <p><b class="font-bold text-white mr-1 tracking-widest block md:inline mb-1 md:mb-0">TIPS｜</b>${escapeHtml(data.tips)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const listContainer = document.getElementById('itinerary-list');
+        
+        // 渲染所有卡片
+        itineraryData.forEach((data, index) => {
+            listContainer.innerHTML += createCard(data, index);
+        });
+
+        // 展開/收合卡片的邏輯
+        function toggleCard(headerElement) {
+            const card = headerElement.parentElement;
+            const content = card.querySelector('.card-content');
+            const chevron = card.querySelector('.chevron-icon');
+            
+            // 如果當前是關閉的，就打開它
+            if (!content.classList.contains('open')) {
+                content.classList.add('open');
+                chevron.classList.add('rotate-180');
+            } else {
+                // 如果當前是打開的，就關閉它
+                content.classList.remove('open');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+    </script>
+</body>
+</html>
