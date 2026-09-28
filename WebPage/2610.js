@@ -171,7 +171,7 @@ const itineraryData = [
             "icon": "ph-cloud-sun",
             "temp": "15-23°C"
         },
-        "image": "https://images.unsplash.com/photo-1549405073-77d07945037d?q=80&w=1200&auto=format&fit=crop",
+        "image": "https://i.pinimg.com/1200x/80/c6/7e/80c67e57d555174c3bf9929e0ad99b4c.jpg",
         "flights": [
             "【土國國內線②】土耳其航空 TK2327 ｜ 伊茲米爾 17:15 － 伊斯坦堡 18:35"
         ],
@@ -187,7 +187,12 @@ const itineraryData = [
         "buy": "席林杰限定特色水果酒（黑莓/石榴）、頂級輕柔小羊皮衣、聖經以弗所主題書冊。",
         "eat": "席林杰山城著名水果酒佐餐、道地土耳其旋轉烤肉沙威瑪（Döner）。",
         "stay": "午：席林杰水果酒風味餐 / 晚：發放餐費美金20元自理 / 宿：LIONEL HOTEL ISTANBUL",
-        "tips": "以弗所大理石地面經千年踩踏極為光滑，易滑倒請小心；皮衣坊無購買意願微笑道別即可。"
+        "tips": "以弗所大理石地面經千年踩踏極為光滑，易滑倒請小心；皮衣坊無購買意願微笑道別即可。",
+        "spotImages": [
+            "",
+            "",
+            ""
+        ]
     },
     {
         "day": "Day 9",
