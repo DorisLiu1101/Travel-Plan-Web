@@ -86,6 +86,16 @@
 		.button.icon-only:disabled { cursor: not-allowed; opacity: .4; transform: none; }
 		.button.icon-only.danger { color: #a85f52; }
 		.button.icon-only.danger:hover { border-color: #e7c9c2; background: #fff5f2; }
+		.confirm-dialog { width: min(420px, calc(100% - 28px)); max-width: none; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); box-shadow: 0 24px 70px rgba(21,37,29,.28); }
+		.confirm-dialog::backdrop { background: rgba(16,29,23,.58); backdrop-filter: blur(3px); }
+		.confirm-dialog-body { padding: 22px; }
+		.confirm-dialog-heading { display: flex; align-items: flex-start; gap: 13px; }
+		.confirm-dialog-icon { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 50%; background: #fff0eb; color: #a85f52; font-size: 20px; }
+		.confirm-dialog-heading h2 { margin: 1px 0 5px; font-size: 15px; }
+		.confirm-dialog-heading p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+		.confirm-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
+		.confirm-dialog-actions .button.danger { border-color: #a85f52; background: #a85f52; color: white; }
+		.confirm-dialog-actions .button.danger:hover { border-color: #894b41; background: #894b41; }
 		.content { width: min(100%, 1120px); margin: 0 auto; padding: 30px clamp(16px, 4vw, 54px) 64px; }
 		.tab-panel[hidden] { display: none; }
 		.panel-intro { margin: 0 0 18px; }
@@ -103,6 +113,12 @@
 		.site-settings-head h3 { margin: 0 0 4px; font-size: 13px; }
 		.site-settings-head p { margin: 0; color: var(--muted); font-size: 10px; }
 		.site-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 15px; }
+		.visible-tabs-setting { grid-column: 1 / -1; padding: 0; margin: 2px 0 0; border: 0; }
+		.visible-tabs-setting legend { margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700; }
+		.visible-tabs-options { display: flex; flex-wrap: wrap; gap: 8px; }
+		.visible-tab-option { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; background: #fbfcfa; color: var(--ink); font-size: 10px; cursor: pointer; }
+		.visible-tab-option:has(input:checked) { border-color: var(--green); background: #eef4ed; box-shadow: inset 0 0 0 1px var(--green); }
+		.visible-tab-option input { width: auto; height: auto; padding: 0; accent-color: var(--green); }
 		.site-setting { display: grid; gap: 5px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
 		.site-setting input { width: 100%; min-width: 0; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px; }
 		.site-setting textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
@@ -145,6 +161,15 @@
 		.section:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
 		.section-title { display: flex; align-items: center; gap: 9px; margin: 0 0 16px; font-size: 13px; }
 		.section-title i { color: var(--coral); font-size: 18px; }
+		.section-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; margin-bottom: 14px; list-style: none; cursor: pointer; }
+		.section-summary::-webkit-details-marker { display: none; }
+		.section-summary .section-title { margin: 0; }
+		.section-summary .section-caret { color: var(--muted); font-size: 16px; transition: transform .18s; }
+		.section[open] > .section-summary .section-caret { transform: rotate(180deg); }
+		.section-body { padding-top: 2px; }
+		.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+		.section-heading .section-title { margin: 0; }
+		.clear-notes-button { width: 32px; min-height: 32px; height: 32px; padding: 0; }
 		.field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 17px; }
 		.field { display: grid; gap: 6px; min-width: 0; }
 		.field.full { grid-column: 1 / -1; }
@@ -158,20 +183,22 @@
 		.image-preview { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(135deg, #e8eddf, #f5e7d7); }
 		.image-preview img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 		.list-block + .list-block { margin-top: 19px; }
-		.list-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+		.list-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; list-style: none; cursor: pointer; }
+		.list-top::-webkit-details-marker { display: none; }
 		.list-items { display: grid; gap: 8px; }
 		.list-item { display: grid; grid-template-columns: 25px minmax(0,1fr) 34px; align-items: start; gap: 8px; }
 		.spot-items { display: grid; gap: 12px; }
 		.spot-item { display: grid; grid-template-columns: 25px minmax(0,1fr) 34px; align-items: start; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: #fcfdfa; }
-		.spot-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+		.spot-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; min-width: 0; }
 		.spot-field.spot-description { grid-column: 1 / -1; }
 		.spot-field { display: grid; align-content: start; gap: 6px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
+		.spot-image-field { display: grid; grid-template-columns: minmax(0,1fr) 72px; align-items: start; gap: 7px; min-width: 0; }
 		.spot-field input, .spot-field textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fff; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
 		.spot-field input { height: 37px; padding: 0 9px; }
 		.spot-field textarea { min-height: 70px; padding: 8px 9px; resize: vertical; }
 		.spot-field input:focus, .spot-field textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); }
 		.spot-field .field-hint { color: var(--muted); font-size: 9px; font-weight: 400; line-height: 1.5; }
-		.spot-image-preview { display: block; width: 72px; height: 40px; margin-top: 5px; border: 1px solid var(--line); border-radius: 4px; background: #edf1e8; object-fit: cover; }
+		.spot-image-preview { display: block; width: 72px; height: 40px; border: 1px solid var(--line); border-radius: 4px; background: #edf1e8; object-fit: cover; }
 		.spot-image-preview[hidden] { display: none; }
 		.list-index { display: grid; width: 25px; height: 25px; margin-top: 4px; place-items: center; border-radius: 50%; background: #edf1e8; color: var(--green); font: 600 10px 'DM Sans', sans-serif; }
 		.remove-item { width: 32px; height: 32px; margin-top: 2px; border: 0; border-radius: 5px; background: transparent; color: #9a6258; font-size: 17px; }
@@ -207,7 +234,6 @@
 			.day-number { width: 22px; height: 22px; flex-basis: 22px; }
 			.day-label { max-width: 94px; font-size: 10px; }
 			.spot-fields { grid-template-columns: repeat(2, minmax(0,1fr)); }
-			.spot-field.spot-image { grid-column: 1 / -1; }
 			.add-day { display: flex; min-height: 34px; margin-top: 7px; border-style: solid; font-size: 10px; }
 			.topbar { min-height: 63px; padding: 9px 14px; }
 			.top-title h1 { max-width: 37vw; font-size: 14px; }
@@ -236,7 +262,7 @@
 			.map-engine-options { grid-template-columns: 1fr; }
 			.weather-picker { grid-template-columns: repeat(3, minmax(0,1fr)); }
 			.spot-fields { grid-template-columns: 1fr; }
-			.spot-field.spot-image, .spot-field.spot-description { grid-column: auto; }
+			.spot-field.spot-image, .spot-field.spot-description, .spot-field.spot-note { grid-column: auto; }
 			.top-actions { gap: 5px; }
 			.button.primary { gap: 5px; }
 			.intro h2 { font-size: 20px; }
@@ -260,7 +286,7 @@
 				<nav id="day-list" class="day-list" aria-label="每日行程"></nav>
 				<button id="add-day" class="add-day" type="button" disabled><i class="ph ph-plus"></i> 新增一天</button>
 			</div>
-			<div class="side-bottom">本機編輯模式<br>修改後請匯出並取代來源 JS</div>
+			<div class="side-bottom">選取行程 JS 後編輯<br>無法回寫時可下載更新檔</div>
 		</aside>
 
 		<main class="main">
@@ -268,7 +294,7 @@
 				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
 				<div class="top-actions">
 					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">尚未載入資料</span></div>
-					<button id="save-source" class="button" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><i class="ph ph-floppy-disk"></i>儲存</button>
+					<button id="save-source" class="button icon-only" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><i class="ph ph-floppy-disk"></i></button>
 					<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 14.5v5h14v-5"/></svg></button>
 				</div>
 			</header>
@@ -279,9 +305,19 @@
 							<header class="panel-intro"><div class="eyebrow">JOURNEY SETTINGS</div><h2>行程設置</h2><p>選擇資料來源，並設定此行程在前台顯示的網站標題。</p></header>
 							<section class="source-picker" aria-label="選擇行程資料檔">
 								<div class="source-info"><strong>資料來源</strong><span id="source-name">尚未選取</span><small id="source-write-status">選取本機 JS 後才會載入行程資料。</small></div>
-								<div class="source-actions"><button id="choose-source-file" class="button" type="button"><i class="ph ph-folder-open"></i>選取本機 JS</button><input id="source-file" type="file" accept=".js,application/javascript,text/javascript"></div>
+								<div class="source-actions"><button id="new-source-file" class="button icon-only" type="button" title="建立新行程 JS" aria-label="建立新行程 JS"><i class="ph ph-plus"></i></button><button id="choose-source-file" class="button" type="button"><i class="ph ph-folder-open"></i>選取本機 JS</button><input id="source-file" type="file" accept=".js,application/javascript,text/javascript"></div>
 							</section>
 							<section id="site-settings" class="site-settings" aria-label="網站標題設定"></section>
+							<section id="export-section" class="export">
+								<div class="export-head">
+									<div><h3>更新檔案預覽</h3><p>可直接儲存或下載取代：<span id="export-target-label">data.js</span></p></div>
+									<div class="export-actions">
+										<button id="copy-code" class="button" type="button" disabled><i class="ph ph-copy"></i>複製</button>
+										<button id="download-code" class="button primary" type="button" disabled><i class="ph ph-download-simple"></i>下載 <span id="download-file-label">data.js</span></button>
+									</div>
+								</div>
+								<textarea id="code-output" class="code-output" readonly spellcheck="false" aria-label="產生的行程資料 JS" placeholder="選取資料檔後產生預覽"></textarea>
+							</section>
 						</section>
 					</section>
 				<section id="journey-panel-daily" class="journey-panel" aria-label="每日行程" hidden>
@@ -290,21 +326,17 @@
 						<div class="counter"><strong id="day-total">0</strong><span>個行程日</span></div>
 					</section>
 					<section id="editor" class="editor-card" aria-live="polite"></section>
-					<section id="export-section" class="export">
-						<div class="export-head">
-							<div><h3>更新檔案預覽</h3><p>下載後以此檔案取代來源：<span id="export-target-label">data.js</span></p></div>
-							<div class="export-actions">
-								<button id="copy-code" class="button" type="button" disabled><i class="ph ph-copy"></i>複製</button>
-								<button id="download-code" class="button primary" type="button" disabled><i class="ph ph-download-simple"></i>下載 <span id="download-file-label">data.js</span></button>
-							</div>
-						</div>
-						<textarea id="code-output" class="code-output" readonly spellcheck="false" aria-label="產生的行程資料 JS" placeholder="點擊右上角「產生更新檔」以預覽匯出內容"></textarea>
-					</section>
 					</section>
 			</div>
 		</main>
 	</div>
 	<div id="toast" class="toast" role="status"></div>
+	<dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-dialog-title" aria-describedby="confirm-dialog-message">
+		<div class="confirm-dialog-body">
+			<div class="confirm-dialog-heading"><span class="confirm-dialog-icon"><i class="ph ph-warning-circle" aria-hidden="true"></i></span><div><h2 id="confirm-dialog-title">確認操作</h2><p id="confirm-dialog-message"></p></div></div>
+			<div class="confirm-dialog-actions"><button id="confirm-cancel" class="button" type="button">取消</button><button id="confirm-accept" class="button danger" type="button">確認</button></div>
+		</div>
+	</dialog>
 
 	<script>
 		const editor = document.getElementById('editor');
@@ -320,9 +352,16 @@
 			dateText: '2026/10/8(四) ~ 2026/10/18(日)',
 			subtitle: '跟團行程 · 11 天 · 2026 秋季',
 			heroImage: 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop',
-			mapEngine: 'google'
+			mapEngine: 'google',
+			visibleTabs: ['overview', 'itinerary']
 		};
 		let siteSettingsDraft = { ...siteSettingsDefaults, ...(typeof siteSettings === 'undefined' ? {} : siteSettings) };
+		const visibleTabIds = ['overview', 'itinerary', 'expenses', 'todo'];
+		function normalizeVisibleTabs() {
+			const validTabs = Array.isArray(siteSettingsDraft.visibleTabs) ? siteSettingsDraft.visibleTabs.filter((tab) => visibleTabIds.includes(tab)) : [];
+			siteSettingsDraft.visibleTabs = validTabs.length ? [...new Set(validTabs)] : [...siteSettingsDefaults.visibleTabs];
+		}
+		normalizeVisibleTabs();
 		let exportFileName = 'data.js';
 		let sourceFileHandle = null;
 		let sourceSnapshot = '';
@@ -330,6 +369,12 @@
 		let selectedDay = 0;
 		let hasChanges = false;
 		let toastTimer;
+		let pendingConfirmAction = null;
+		const editorSectionState = new Map();
+
+		function isEditorSectionOpen(sectionId) {
+			return editorSectionState.get(`${selectedDay}:${sectionId}`) ?? sectionId === 'day';
+		}
 
 		function escapeHtml(value) {
 			return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -343,6 +388,32 @@
 			toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 		}
 
+		function openConfirmDialog(title, message, actionLabel, action) {
+			const dialog = document.getElementById('confirm-dialog');
+			document.getElementById('confirm-dialog-title').textContent = title;
+			document.getElementById('confirm-dialog-message').textContent = message;
+			document.getElementById('confirm-accept').textContent = actionLabel;
+			pendingConfirmAction = action;
+			dialog.showModal();
+			document.getElementById('confirm-cancel').focus();
+		}
+
+		const confirmDialog = document.getElementById('confirm-dialog');
+		document.getElementById('confirm-cancel').addEventListener('click', () => {
+			pendingConfirmAction = null;
+			confirmDialog.close();
+		});
+		document.getElementById('confirm-accept').addEventListener('click', () => {
+			const action = pendingConfirmAction;
+			pendingConfirmAction = null;
+			confirmDialog.close();
+			action?.();
+		});
+		confirmDialog.addEventListener('click', (event) => {
+			if (event.target === confirmDialog) confirmDialog.close();
+		});
+		confirmDialog.addEventListener('close', () => { pendingConfirmAction = null; });
+
 		function renderSiteSettings() {
 			const fields = [
 				['pageTitle', '瀏覽器分頁 title', '顯示於瀏覽器分頁與書籤'],
@@ -355,12 +426,18 @@
 				['amap', '高德地圖', 'ph-map-pin-line'],
 				['baidu', '百度地圖', 'ph-map-trifold']
 			];
+			const visibleTabs = [
+				['overview', '總覽'], ['itinerary', '行程'], ['expenses', '經費'], ['todo', 'ToDo']
+			];
 			document.getElementById('site-settings').innerHTML = `
 				<div class="site-settings-head"><h3>網站標題</h3><p>這些設定會和每日行程一起輸出到 ${escapeHtml(exportFileName)}。</p></div>
 				<div class="site-settings-grid">${fields.map(([key, label, hint]) => `
 					<label class="site-setting">${label}<input type="text" data-site-setting="${key}" value="${escapeHtml(siteSettingsDraft[key])}" aria-label="${label}" title="${hint}"></label>`).join('')}
 					<label class="site-setting site-setting-image" for="hero-image-setting">標題背景圖網址<div class="image-row"><textarea id="hero-image-setting" data-site-setting="heroImage" aria-label="標題背景圖網址" placeholder="https://...">${escapeHtml(siteSettingsDraft.heroImage)}</textarea><div class="image-preview">${siteSettingsDraft.heroImage ? `<img src="${escapeHtml(siteSettingsDraft.heroImage)}" alt="標題背景圖預覽" onerror="this.style.display='none'">` : ''}</div></div></label>
 				</div>
+				<fieldset class="visible-tabs-setting"><legend>前台頁籤顯示</legend><div class="visible-tabs-options">${visibleTabs.map(([value, label]) => `
+					<label class="visible-tab-option"><input type="checkbox" data-visible-tab="${value}" ${siteSettingsDraft.visibleTabs.includes(value) ? 'checked' : ''}><span>${label}</span></label>`).join('')}
+				</div></fieldset>
 				<fieldset class="map-engine-setting"><legend>地圖搜尋引擎</legend><div class="map-engine-options">${mapEngines.map(([value, label, icon]) => `
 					<label class="map-engine-option"><input type="radio" name="mapEngine" data-site-setting="mapEngine" value="${value}" ${siteSettingsDraft.mapEngine === value ? 'checked' : ''}><i class="ph ${icon}" aria-hidden="true"></i><span>${label}</span></label>`).join('')}
 				</div></fieldset>`;
@@ -415,14 +492,14 @@
 
 		function renderList(title, key, items, placeholder, icon) {
 			const list = Array.isArray(items) ? items : [];
-			return `<div class="list-block">
-				<div class="list-top"><span class="list-heading"><i class="ph ${icon}"></i> ${title} (${list.length})</span><button class="small-button" type="button" data-add-item="${key}"><i class="ph ph-plus"></i>新增</button></div>
+			return `<details class="list-block" data-editor-section="${key}" ${isEditorSectionOpen(key) ? 'open' : ''}>
+				<summary class="list-top"><span class="list-heading"><i class="ph ${icon}"></i> ${title} (${list.length})</span><button class="small-button" type="button" data-add-item="${key}"><i class="ph ph-plus"></i>新增</button></summary>
 				<div class="list-items">${list.map((item, index) => `<div class="list-item">
 					<span class="list-index">${String(index + 1).padStart(2, '0')}</span>
 					<textarea data-list="${key}" data-index="${index}" aria-label="${title} ${index + 1}" placeholder="${placeholder}">${escapeHtml(item)}</textarea>
 					<button class="remove-item" type="button" data-remove-item="${key}" data-index="${index}" aria-label="刪除第 ${index + 1} 項" title="刪除此項"><i class="ph ph-trash"></i></button>
 				</div>`).join('')}</div>
-			</div>`;
+			</details>`;
 		}
 
 		function parseSourceFile(source) {
@@ -435,14 +512,50 @@
 			return { itinerary, settings };
 		}
 
+		function migrateLegacyStayFields(itinerary) {
+			for (const day of itinerary) {
+				const mealParts = [];
+				const lodgingParts = [];
+				for (const part of String(day.stay || '').split(/\s*\/\s*/)) {
+					const value = part.trim();
+					if (!value) continue;
+					if (/^宿\s*[：:]/.test(value)) lodgingParts.push(value.replace(/^宿\s*[：:]\s*/, ''));
+					else mealParts.push(value);
+				}
+				if (!String(day.meals || '').trim()) day.meals = mealParts.join(' / ');
+				if (!String(day.lodging || '').trim()) day.lodging = lodgingParts.join(' / ');
+				delete day.stay;
+
+				const mapQueries = Array.isArray(day.spotMapQueries) ? day.spotMapQueries : [];
+				const images = Array.isArray(day.spotImages) ? day.spotImages : [];
+				const notes = Array.isArray(day.spotNotes) ? day.spotNotes : [];
+				day.spots = (Array.isArray(day.spots) ? day.spots : []).map((spot, index) => {
+					const parsedSpot = spot && typeof spot === 'object' ? spot : parseSpot(spot);
+					const name = String(parsedSpot.name ?? '');
+					return {
+						name,
+						description: String(parsedSpot.description ?? ''),
+						mapQuery: String(parsedSpot.mapQuery ?? mapQueries[index] ?? (name ? `${name} 土耳其` : '')),
+						image: String(parsedSpot.image ?? images[index] ?? ''),
+						note: String(parsedSpot.note ?? notes[index] ?? '')
+					};
+				});
+				delete day.spotMapQueries;
+				delete day.spotImages;
+				delete day.spotNotes;
+			}
+		}
+
 		async function loadSourceFile(file, fileHandle = null) {
 			if (hasChanges && !window.confirm('目前有尚未匯出的修改。切換資料來源會捨棄這些修改，確定繼續嗎？')) return;
 			try {
 				const source = await file.text();
 				const { itinerary, settings } = parseSourceFile(source);
+				migrateLegacyStayFields(itinerary);
 				itineraryData.splice(0, itineraryData.length, ...itinerary);
 				hasLoadedSource = true;
 				siteSettingsDraft = { ...siteSettingsDefaults, ...settings };
+				normalizeVisibleTabs();
 				exportFileName = file.name;
 				sourceFileHandle = fileHandle;
 				sourceSnapshot = source;
@@ -498,6 +611,51 @@
 			}
 		}
 
+		async function createNewSourceFile() {
+			if (hasChanges && !window.confirm('目前有尚未儲存的修改。建立新檔會捨棄這些修改，確定繼續嗎？')) return;
+			const fileName = 'new-itinerary.js';
+			const newItinerary = [createEmptyDay(1)];
+			const newSettings = { ...siteSettingsDefaults, visibleTabs: [...siteSettingsDefaults.visibleTabs] };
+			const source = serializeSource(newSettings, newItinerary);
+			let fileHandle = null;
+			let writable;
+			if (window.showSaveFilePicker && !useFallbackSourcePicker) {
+				try {
+					fileHandle = await window.showSaveFilePicker({
+						suggestedName: fileName,
+						types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }]
+					});
+					writable = await fileHandle.createWritable();
+					await writable.write(source);
+					await writable.close();
+				} catch (error) {
+					if (writable) {
+						try { await writable.abort(); } catch {}
+					}
+					if (error.name === 'AbortError') return;
+					fileHandle = null;
+					useFallbackSourcePicker = true;
+					showToast('無法建立可回寫檔案，將下載新 JS 草稿。');
+				}
+			} else {
+				useFallbackSourcePicker = true;
+			}
+			if (!fileHandle) {
+				const blob = new Blob([source], { type: 'text/javascript;charset=utf-8' });
+				const url = URL.createObjectURL(blob);
+				const downloadLink = document.createElement('a');
+				downloadLink.href = url;
+				downloadLink.download = fileName;
+				downloadLink.click();
+				URL.revokeObjectURL(url);
+			}
+			hasChanges = false;
+			stateDot.classList.remove('dirty');
+			await loadSourceFile(new File([source], fileHandle?.name || fileName, { type: 'text/javascript' }), fileHandle);
+			if (!fileHandle) document.getElementById('source-write-status').textContent = '新 JS 草稿已下載；此模式修改後請再次下載更新檔。';
+			showToast(fileHandle ? '已建立新行程 JS' : '已下載新行程 JS 草稿');
+		}
+
 		async function saveSourceFile() {
 			if (!sourceFileHandle || !hasChanges) return;
 			let writable;
@@ -534,25 +692,24 @@
 
 		function renderSpots(day) {
 			const spots = Array.isArray(day.spots) ? day.spots : [];
-			const mapQueries = Array.isArray(day.spotMapQueries) ? day.spotMapQueries : [];
-			return `<div class="list-block">
-				<div class="list-top"><span class="list-heading"><i class="ph ph-map-pin"></i> 景點 (${spots.length})</span><button class="small-button" type="button" data-add-item="spots"><i class="ph ph-plus"></i>新增</button></div>
+			return `<details class="list-block" data-editor-section="spots" ${isEditorSectionOpen('spots') ? 'open' : ''}>
+				<summary class="list-top"><span class="list-heading"><i class="ph ph-map-pin"></i> 景點 (${spots.length})</span><button class="small-button" type="button" data-add-item="spots"><i class="ph ph-plus"></i>新增</button></summary>
 				<div class="spot-items">${spots.map((spot, index) => {
-					const parts = parseSpot(spot);
-					const query = mapQueries[index] ?? (parts.name ? `${parts.name} 土耳其` : '');
-					const imageUrl = day.spotImages?.[index] || '';
+					const name = spot.name || '';
+					const imageUrl = spot.image || '';
 					return `<div class="spot-item">
 						<span class="list-index">${String(index + 1).padStart(2, '0')}</span>
 						<div class="spot-fields">
-							<label class="spot-field">景點名稱<input type="text" data-spot-index="${index}" data-spot-field="name" value="${escapeHtml(parts.name)}" placeholder="例如：聖索菲亞清真寺"></label>
-							<label class="spot-field map-query">Map 搜尋內容<input type="text" data-spot-index="${index}" data-spot-field="mapQuery" value="${escapeHtml(query)}" placeholder="景點名稱 + 土耳其"></label>
-							<label class="spot-field spot-image">圖片連結<input type="url" data-spot-index="${index}" data-spot-field="image" value="${escapeHtml(imageUrl)}" placeholder="https://..."><img class="spot-image-preview" src="${escapeHtml(imageUrl)}" alt="景點圖片預覽" ${imageUrl ? '' : 'hidden'} onerror="this.hidden=true"></label>
-							<label class="spot-field spot-description">景點介紹<textarea data-spot-index="${index}" data-spot-field="description" placeholder="輸入景點內容">${escapeHtml(parts.description)}</textarea></label>
+							<label class="spot-field">景點名稱<input type="text" data-spot-index="${index}" data-spot-field="name" value="${escapeHtml(name)}" placeholder="例如：聖索菲亞清真寺"></label>
+							<label class="spot-field map-query">Map 搜尋內容<input type="text" data-spot-index="${index}" data-spot-field="mapQuery" value="${escapeHtml(spot.mapQuery || '')}" placeholder="景點名稱 + 土耳其"></label>
+							<label class="spot-field spot-description">景點介紹<textarea data-spot-index="${index}" data-spot-field="description" placeholder="輸入景點內容">${escapeHtml(spot.description || '')}</textarea></label>
+							<label class="spot-field spot-image">圖片連結<div class="spot-image-field"><input type="url" data-spot-index="${index}" data-spot-field="image" value="${escapeHtml(imageUrl)}" placeholder="https://..."><img class="spot-image-preview" src="${escapeHtml(imageUrl)}" alt="景點圖片預覽" ${imageUrl ? '' : 'hidden'} onerror="this.hidden=true"></div></label>
+							<label class="spot-field spot-note">備註<textarea data-spot-index="${index}" data-spot-field="note" placeholder="輸入此景點備註">${escapeHtml(spot.note || '')}</textarea></label>
 						</div>
 						<button class="remove-item" type="button" data-remove-spot="${index}" aria-label="刪除景點 ${index + 1}" title="刪除此景點"><i class="ph ph-trash"></i></button>
 					</div>`;
 				}).join('')}</div>
-			</div>`;
+			</details>`;
 		}
 
 		function renderEditor() {
@@ -576,38 +733,41 @@
 					</div>
 				</div>
 				<div class="editor-body">
-					<section class="section">
-						<h4 class="section-title"><i class="ph ph-calendar-dots"></i>日期與主題</h4>
-						<div class="field-grid">
+					<details class="section" data-editor-section="day" ${isEditorSectionOpen('day') ? 'open' : ''}>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-calendar-dots"></i>日期與主題</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<div class="section-body field-grid">
 							${inputField('行程天數標籤', 'day', day.day, { placeholder: 'Day 1' })}
 							${inputField('日期', 'fullDate', day.fullDate, { placeholder: '2026/10/8 (四)' })}
 							${inputField('行程標題', 'title', day.title, { full: true })}
 						</div>
-					</section>
-					<section class="section">
-						<h4 class="section-title"><i class="ph ph-cloud-sun"></i>天氣與主視覺</h4>
-						<div class="field-grid">
+					</details>
+					<details class="section" data-editor-section="weather" ${isEditorSectionOpen('weather') ? 'open' : ''}>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-cloud-sun"></i>天氣與主視覺</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<div class="section-body field-grid">
 							${renderWeatherPicker(day.weather?.icon)}
 							${inputField('氣溫', 'weather.temp', day.weather?.temp, { placeholder: '10-18°C' })}
 							<div class="field full"><label for="field-image">圖片網址</label><div class="image-row"><textarea id="field-image" data-path="image" placeholder="https://...">${image}</textarea><div class="image-preview">${image ? `<img src="${image}" alt="行程圖片預覽" onerror="this.style.display='none'">` : ''}</div></div></div>
 						</div>
-					</section>
-					<section class="section">
-						<h4 class="section-title"><i class="ph ph-map-trifold"></i>行程內容</h4>
+					</details>
+					<details class="section" data-editor-section="route" ${isEditorSectionOpen('route') ? 'open' : ''}>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-map-trifold"></i>行程內容</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<div class="section-body">
 						${renderList('航班資訊', 'flights', day.flights, '輸入航班資訊', 'ph-airplane-tilt')}
 						${renderSpots(day)}
 						${renderList('特別提醒', 'specialNotes', day.specialNotes, '輸入當日提醒', 'ph-warning-circle')}
-					</section>
-					<section class="section">
-						<h4 class="section-title"><i class="ph ph-notebook"></i>旅遊備註</h4>
-						<div class="field-grid">
+						</div>
+					</details>
+					<details class="section" data-editor-section="notes" ${isEditorSectionOpen('notes') ? 'open' : ''}>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-notebook"></i>旅遊備註</h4><button class="button icon-only danger clear-notes-button" type="button" data-clear-travel-notes title="一鍵清空旅遊備註" aria-label="一鍵清空旅遊備註"><i class="ph ph-eraser"></i></button><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<div class="section-body field-grid">
 							${inputField('穿搭建議', 'outfit', day.outfit, { textarea: true, full: true })}
 							${inputField('必買', 'buy', day.buy, { textarea: true })}
-							${inputField('必吃', 'eat', day.eat, { textarea: true })}
-							${inputField('膳宿安排', 'stay', day.stay, { textarea: true, full: true })}
+							${inputField('必吃推薦', 'eat', day.eat, { textarea: true })}
+							${inputField('美食', 'meals', day.meals, { textarea: true })}
+							${inputField('住宿', 'lodging', day.lodging, { textarea: true })}
 							${inputField('旅遊提醒 / Tips', 'tips', day.tips, { textarea: true, full: true })}
 						</div>
-					</section>
+					</details>
 				</div>`;
 			renderSidebar();
 		}
@@ -622,14 +782,18 @@
 			target[parts[parts.length - 1]] = value;
 		}
 
+		function createEmptyDay(dayNumber) {
+			return {
+				day: `Day ${dayNumber}`, fullDate: '', title: '', weather: { icon: 'ph-sun', temp: '' }, image: '',
+				flights: [], spots: [], specialNotes: [], outfit: '', buy: '', eat: '', meals: '', lodging: '', tips: ''
+			};
+		}
+
 		function addDay() {
 			const lastDayLabel = itineraryData[itineraryData.length - 1]?.day || '';
 			const lastRange = lastDayLabel.match(/(\d+)(?:\s*-\s*(\d+))?/);
 			const nextNumber = lastRange ? Number(lastRange[2] || lastRange[1]) + 1 : itineraryData.length + 1;
-			itineraryData.push({
-				day: `Day ${nextNumber}`, fullDate: '', title: '', weather: { icon: 'ph-sun', temp: '' }, image: '',
-				flights: [], spots: [], specialNotes: [], outfit: '', buy: '', eat: '', stay: '', tips: ''
-			});
+			itineraryData.push(createEmptyDay(nextNumber));
 			selectedDay = itineraryData.length - 1;
 			markChanged();
 			activateJourneyPanel('journey-panel-daily');
@@ -645,6 +809,10 @@
 			renderEditor();
 			updateWorkspaceTitle();
 		});
+		editor.addEventListener('toggle', (event) => {
+			if (!event.target.matches('details[data-editor-section]')) return;
+			editorSectionState.set(`${selectedDay}:${event.target.dataset.editorSection}`, event.target.open);
+		}, true);
 
 		editor.addEventListener('input', (event) => {
 			const target = event.target;
@@ -653,10 +821,9 @@
 			if (target.dataset.spotField) {
 				const day = itineraryData[selectedDay];
 				const index = Number(target.dataset.spotIndex);
-				const parts = parseSpot(day.spots[index]);
+				const spot = day.spots[index];
+				spot[target.dataset.spotField] = target.value;
 				if (target.dataset.spotField === 'image') {
-					if (!Array.isArray(day.spotImages)) day.spotImages = day.spots.map((_, spotIndex) => day.spotImages?.[spotIndex] || '');
-					day.spotImages[index] = target.value;
 					const preview = target.parentElement.querySelector('.spot-image-preview');
 					if (target.value) {
 						preview.src = target.value;
@@ -665,17 +832,9 @@
 						preview.removeAttribute('src');
 						preview.hidden = true;
 					}
-				} else if (target.dataset.spotField === 'name' || target.dataset.spotField === 'description') {
-					parts[target.dataset.spotField] = target.value;
-					day.spots[index] = `${parts.name} ｜ ${parts.description}`;
-					if (target.dataset.spotField === 'name' && !day.spotMapQueries?.[index]) {
-						target.closest('.spot-item').querySelector('[data-spot-field="mapQuery"]').value = parts.name ? `${parts.name} 土耳其` : '';
-					}
-				} else {
-					if (!Array.isArray(day.spotMapQueries)) {
-						day.spotMapQueries = day.spots.map((spot, spotIndex) => day.spotMapQueries?.[spotIndex] ?? `${parseSpot(spot).name} 土耳其`);
-					}
-					day.spotMapQueries[index] = target.value;
+				} else if (target.dataset.spotField === 'name' && !spot.mapQuery) {
+					spot.mapQuery = target.value ? `${target.value} 土耳其` : '';
+					target.closest('.spot-item').querySelector('[data-spot-field="mapQuery"]').value = spot.mapQuery;
 				}
 			}
 			if (target.dataset.list) itineraryData[selectedDay][target.dataset.list][Number(target.dataset.index)] = target.value;
@@ -694,16 +853,31 @@
 		});
 
 		editor.addEventListener('click', (event) => {
+			const clearNotesButton = event.target.closest('[data-clear-travel-notes]');
+			if (clearNotesButton) {
+				event.preventDefault();
+				event.stopPropagation();
+				const noteFields = ['outfit', 'buy', 'eat', 'meals', 'lodging', 'tips'];
+				const day = itineraryData[selectedDay];
+				if (!noteFields.some((field) => String(day[field] || '').trim())) return showToast('旅遊備註已經是空白');
+				openConfirmDialog('清空旅遊備註', `確定清空「${getDayLabel(selectedDay)}」的所有旅遊備註嗎？`, '清空', () => {
+					noteFields.forEach((field) => { day[field] = ''; });
+					markChanged();
+					renderEditor();
+					showToast('已清空旅遊備註');
+				});
+				return;
+			}
 			const addButton = event.target.closest('[data-add-item]');
 			const removeButton = event.target.closest('[data-remove-item]');
 			const removeSpotButton = event.target.closest('[data-remove-spot]');
 			const moveButton = event.target.closest('[data-move]');
 			if (addButton) {
+				event.preventDefault();
+				event.stopPropagation();
 				const key = addButton.dataset.addItem;
 				if (!Array.isArray(itineraryData[selectedDay][key])) itineraryData[selectedDay][key] = [];
-				itineraryData[selectedDay][key].push(key === 'spots' ? ' ｜ ' : '');
-				if (key === 'spots' && Array.isArray(itineraryData[selectedDay].spotMapQueries)) itineraryData[selectedDay].spotMapQueries.push('');
-				if (key === 'spots' && Array.isArray(itineraryData[selectedDay].spotImages)) itineraryData[selectedDay].spotImages.push('');
+				itineraryData[selectedDay][key].push(key === 'spots' ? { name: '', description: '', mapQuery: '', image: '', note: '' } : '');
 				markChanged();
 				renderEditor();
 				const fields = key === 'spots' ? editor.querySelectorAll('[data-spot-field="name"]') : editor.querySelectorAll(`[data-list="${key}"]`);
@@ -713,8 +887,6 @@
 			if (removeSpotButton) {
 				const index = Number(removeSpotButton.dataset.removeSpot);
 				itineraryData[selectedDay].spots.splice(index, 1);
-				itineraryData[selectedDay].spotMapQueries?.splice(index, 1);
-				itineraryData[selectedDay].spotImages?.splice(index, 1);
 				markChanged();
 				renderEditor();
 				return;
@@ -735,20 +907,27 @@
 			}
 			if (event.target.closest('[data-delete-day]')) {
 				if (itineraryData.length === 1) return showToast('至少保留一天行程');
-				if (!window.confirm(`確定刪除「${getDayLabel(selectedDay)}」嗎？`)) return;
-				itineraryData.splice(selectedDay, 1);
-				selectedDay = Math.min(selectedDay, itineraryData.length - 1);
-				markChanged();
-				renderEditor();
-				showToast('已刪除行程日');
+				const dayLabel = getDayLabel(selectedDay);
+				openConfirmDialog('刪除行程日', `確定刪除「${dayLabel}」嗎？刪除後需重新匯入原始檔才能還原。`, '刪除', () => {
+					itineraryData.splice(selectedDay, 1);
+					selectedDay = Math.min(selectedDay, itineraryData.length - 1);
+					markChanged();
+					renderEditor();
+					showToast('已刪除行程日');
+				});
 			}
 		});
 
+		function serializeSource(settings, itinerary) {
+			return `const siteSettings = ${JSON.stringify(settings, null, 4)};\n\nconst itineraryData = ${JSON.stringify(itinerary, null, 4)};\n`;
+		}
+
 		function buildExportSource() {
-			return `const siteSettings = ${JSON.stringify(siteSettingsDraft, null, 4)};\n\nconst itineraryData = ${JSON.stringify(itineraryData, null, 4)};\n`;
+			return serializeSource(siteSettingsDraft, itineraryData);
 		}
 
 		function makeExport() {
+			if (activeJourneyPanel !== 'journey-panel-settings') activateJourneyPanel('journey-panel-settings');
 			codeOutput.value = buildExportSource();
 			document.getElementById('export-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
 			stateText.textContent = hasChanges ? '已產生，請複製或下載' : '更新檔已產生';
@@ -794,6 +973,19 @@
 		}
 		sidebarToggle.addEventListener('click', () => setSidebarCollapsed(!shell.classList.contains('sidebar-collapsed')));
 		document.getElementById('site-settings').addEventListener('input', (event) => {
+			const visibleTab = event.target.dataset.visibleTab;
+			if (visibleTab) {
+				const selectedTabs = new Set(siteSettingsDraft.visibleTabs);
+				if (event.target.checked) selectedTabs.add(visibleTab);
+				else selectedTabs.delete(visibleTab);
+				if (selectedTabs.size === 0) {
+					event.target.checked = true;
+					return showToast('至少保留一個前台頁籤');
+				}
+				siteSettingsDraft.visibleTabs = [...selectedTabs];
+				markChanged();
+				return;
+			}
 			const key = event.target.dataset.siteSetting;
 			if (!key) return;
 			siteSettingsDraft[key] = event.target.value;
@@ -805,6 +997,7 @@
 			markChanged();
 		});
 		document.getElementById('add-day').addEventListener('click', addDay);
+		document.getElementById('new-source-file').addEventListener('click', createNewSourceFile);
 		document.getElementById('choose-source-file').addEventListener('click', chooseSourceFile);
 		document.getElementById('source-file').addEventListener('change', (event) => {
 			const file = event.target.files?.[0];

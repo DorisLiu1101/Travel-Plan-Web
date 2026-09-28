@@ -55,6 +55,7 @@
         .catalog-source-name { margin-right: auto; color: var(--muted); font-size: 10px; }
         .catalog-dialog button, .catalog-dialog label.button { cursor: pointer; }
         .catalog-tool-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); font-size: 10px; font-weight: 600; }
+        .catalog-tool-button.icon-only { width: 34px; padding: 0; }
         .catalog-tool-button.primary { border-color: var(--green); background: var(--green); color: white; }
         .catalog-tool-button:disabled { cursor: not-allowed; opacity: .45; }
         .catalog-tool-button svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
@@ -164,7 +165,7 @@
                     <div class="catalog-export-head"><p>下載後取代根目錄的 catalog.js。</p><div class="catalog-export-tools">
                         <button id="catalog-preview" class="catalog-tool-button" type="button">產生預覽</button>
                         <button id="catalog-copy" class="catalog-tool-button" type="button">複製</button>
-                        <button id="save-catalog" class="catalog-tool-button" type="button" disabled>儲存回原檔</button>
+                        <button id="save-catalog" class="catalog-tool-button icon-only" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h12l3.5 3.5v13.5H3.5V3.5H5Z"/><path d="M7 3.5v6h9v-6M7 20v-7h10v7"/></svg></button>
                         <button id="catalog-download" class="catalog-tool-button primary" type="button">下載 catalog.js</button>
                     </div></div>
                     <textarea id="catalog-output" readonly spellcheck="false" aria-label="產生的 catalog.js 內容" placeholder="編輯完成後產生 catalog.js 預覽"></textarea>

@@ -72,6 +72,18 @@
         .header-inner { min-height: 176px; align-items: flex-start; justify-content: center; text-align: left; }
         .header-inner h1 { max-width: 720px; font-size: 38px; line-height: 1.25; }
         .header-meta { color: rgba(255,255,255,.88); }
+        .page-tabs-wrap { width: min(1050px, 100%); margin: 0 auto; padding: 0 24px; }
+        .page-tabs { display: flex; gap: 24px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: thin; }
+        .page-tab { position: relative; min-height: 46px; flex: 0 0 auto; padding: 0 2px; border: 0; background: transparent; color: var(--muted); font: 600 12px 'Noto Sans TC',sans-serif; }
+        .page-tab[aria-selected="true"] { color: var(--green); }
+        .page-tab[aria-selected="true"]::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--coral); content: ''; }
+        .page-tab:focus-visible { outline: 2px solid var(--green); outline-offset: -3px; }
+        .page-view[hidden] { display: none; }
+        .overview-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+        .overview-fact { display: grid; gap: 4px; min-width: 0; }
+        .overview-fact span { color: var(--muted); font-size: 10px; }
+        .overview-fact strong { overflow-wrap: anywhere; font-size: 14px; }
+        .empty-page { padding: 28px 4px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
         .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
         .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
         .day-header { background: #315a4c; color: white; }
@@ -79,6 +91,16 @@
         .spot-card:hover { background: rgba(255,255,255,.5); }
         .spot-copy { min-width: 0; flex: 1; }
         .spot-image { width: 132px; height: 92px; flex: 0 0 132px; border-radius: 7px; object-fit: cover; }
+        .spot-note-button { display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center; border: 1px solid rgba(49,90,76,.18); border-radius: 50%; background: rgba(49,90,76,.07); color: var(--green); }
+        .spot-note-button:hover { background: var(--green); color: white; }
+        .spot-note-button i { font-size: 17px; }
+        .spot-note-dialog { width: min(480px,calc(100% - 28px)); max-width: none; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); box-shadow: 0 24px 70px rgba(21,37,29,.28); }
+        .spot-note-dialog::backdrop { background: rgba(16,29,23,.58); backdrop-filter: blur(3px); }
+        .spot-note-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--line); }
+        .spot-note-head h2 { overflow: hidden; margin: 0; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+        .spot-note-close { display: grid; width: 32px; height: 32px; flex: 0 0 32px; place-items: center; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); }
+        .spot-note-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
+        .spot-note-content { min-height: 70px; padding: 18px; margin: 0; color: var(--ink); font-size: 13px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
         .tips-note { background: #315a4c; }
         .page-footer { color: #69776f; border-color: rgba(49,90,76,.2); }
 
@@ -87,6 +109,9 @@
             .header-inner { min-height: 155px; }
             .header-inner h1 { max-width: 330px; font-size: 30px; }
             .header-meta { font-size: 14px; }
+            .page-tabs-wrap { padding: 0 16px; }
+            .page-tabs { gap: 20px; }
+            .overview-facts { grid-template-columns: 1fr; gap: 11px; }
             .spot-card { gap: 10px; padding-right: 4px; }
             .spot-image { width: 88px; height: 76px; flex-basis: 88px; }
         }
@@ -108,20 +133,22 @@
         </div>
     </header>
 
+    <div class="page-tabs-wrap"><nav id="journey-tabs" class="page-tabs" role="tablist" aria-label="行程頁面"></nav></div>
     <main class="max-w-5xl mx-auto px-2 md:px-4 py-4 md:py-8">
-        
-        
-        <!-- 行程卡片列表 -->
-        <div id="itinerary-list" class="space-y-6 md:space-y-8">
-            <!-- 稍後由 JavaScript 動態生成卡片 -->
-        </div>
-
+        <section id="page-overview" class="page-view" role="tabpanel" aria-label="總覽">
+            <div class="overview-facts"><div class="overview-fact"><span>行程名稱</span><strong id="overview-title"></strong></div><div class="overview-fact"><span>日期</span><strong id="overview-date"></strong></div><div class="overview-fact"><span>行程天數</span><strong id="overview-days"></strong></div></div>
+            <p id="overview-subtitle" class="text-sm text-gray-600 leading-relaxed"></p>
+        </section>
+        <section id="page-itinerary" class="page-view" role="tabpanel" aria-label="行程" hidden><div id="itinerary-list" class="space-y-6 md:space-y-8"></div></section>
+        <section id="page-expenses" class="page-view" role="tabpanel" aria-label="經費" hidden><p class="empty-page">尚無經費資料</p></section>
+        <section id="page-todo" class="page-view" role="tabpanel" aria-label="ToDo" hidden><p class="empty-page">尚無待辦事項</p></section>
     </main>
 
     <!-- 頁尾 -->
     <footer class="page-footer text-center py-8 text-base opacity-80 mt-12 border-t">
         <p>© 2026 行程規劃. All rights reserved.</p>
     </footer>
+    <dialog id="spot-note-dialog" class="spot-note-dialog" aria-labelledby="spot-note-title" aria-describedby="spot-note-content"><div class="spot-note-head"><h2 id="spot-note-title">景點備註</h2><button id="spot-note-close" class="spot-note-close" type="button" aria-label="關閉備註"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><p id="spot-note-content" class="spot-note-content"></p></dialog>
 
     <!-- 步驟2：在這裡引入剛剛建立的 data.js 檔案 -->
     <script>
@@ -169,6 +196,51 @@
             }
         }
 
+        const pageSettings = typeof siteSettings !== 'undefined' && siteSettings ? siteSettings : {};
+        const pageTabOptions = [
+            {id: 'overview', label: '總覽'},
+            {id: 'itinerary', label: '行程'},
+            {id: 'expenses', label: '經費'},
+            {id: 'todo', label: 'ToDo'}
+        ];
+        let visiblePageTabs = Array.isArray(pageSettings.visibleTabs) ? pageSettings.visibleTabs.filter((tab) => pageTabOptions.some((option) => option.id === tab)) : ['overview', 'itinerary'];
+        if (!visiblePageTabs.length) visiblePageTabs = ['itinerary'];
+        const pageTabList = document.getElementById('journey-tabs');
+        pageTabList.innerHTML = pageTabOptions.filter((option) => visiblePageTabs.includes(option.id)).map((option, index) => `<button id="tab-${option.id}" class="page-tab" type="button" role="tab" aria-controls="page-${option.id}" aria-selected="false" tabindex="${index === 0 ? '0' : '-1'}">${option.label}</button>`).join('');
+        document.getElementById('overview-title').textContent = pageSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
+        document.getElementById('overview-date').textContent = pageSettings.dateText ?? document.getElementById('site-date-text').textContent;
+        document.getElementById('overview-days').textContent = `${Array.isArray(itineraryData) ? itineraryData.length : 0} 天`;
+        document.getElementById('overview-subtitle').textContent = pageSettings.subtitle ?? '';
+
+        function activatePageTab(tabId, focus = false) {
+            pageTabList.querySelectorAll('[role="tab"]').forEach((tab) => {
+                const active = tab.id === `tab-${tabId}`;
+                tab.setAttribute('aria-selected', String(active));
+                tab.tabIndex = active ? 0 : -1;
+            });
+            document.querySelectorAll('.page-view').forEach((panel) => { panel.hidden = panel.id !== `page-${tabId}`; });
+            if (focus) pageTabList.querySelector(`#tab-${tabId}`)?.focus();
+        }
+
+        pageTabList.addEventListener('click', (event) => {
+            const tab = event.target.closest('[role="tab"]');
+            if (tab) activatePageTab(tab.id.slice(4));
+        });
+        pageTabList.addEventListener('keydown', (event) => {
+            const tabs = [...pageTabList.querySelectorAll('[role="tab"]')];
+            const currentIndex = tabs.indexOf(event.target.closest('[role="tab"]'));
+            if (currentIndex < 0) return;
+            let nextIndex = currentIndex;
+            if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            activatePageTab(tabs[nextIndex].id.slice(4), true);
+        });
+        activatePageTab(visiblePageTabs.includes('overview') ? 'overview' : visiblePageTabs[0]);
+
         function createCard(data, index) {
             const isOpen = false; // 預設全部折疊
             const chevronClass = isOpen ? "rotate-180" : "";
@@ -196,14 +268,16 @@
             let spotsHtml = `
                 <ul class="space-y-5 mb-6 relative before:absolute before:inset-0 before:left-6 md:before:left-8 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#c88d75] before:to-transparent">
                     ${data.spots.map((spot, spotIndex) => {
-                        const parts = spot.split(' ｜ ');
-                        const name = parts[0];
-                        const desc = parts[1] || '';
-                        const searchText = data.spotMapQueries?.[spotIndex]?.trim() || `${name} 土耳其`;
+                        const parts = typeof spot === 'string' ? spot.split(' ｜ ') : [];
+                        const spotData = typeof spot === 'string' ? {name: parts[0], description: parts[1] || ''} : spot;
+                        const name = String(spotData.name || '');
+                        const desc = String(spotData.description || '');
+                        const searchText = String(spotData.mapQuery ?? data.spotMapQueries?.[spotIndex] ?? '').trim() || `${name} 土耳其`;
                         const mapEngine = typeof siteSettings !== 'undefined' ? siteSettings.mapEngine : 'google';
                         const mapSearchUrl = getMapSearchUrl(searchText, mapEngine);
                         const mapEngineLabel = getMapEngineLabel(mapEngine);
-                        const spotImage = safeImageUrl(data.spotImages?.[spotIndex]);
+                        const spotImage = safeImageUrl(spotData.image || data.spotImages?.[spotIndex]);
+                        const spotNote = String(spotData.note ?? data.spotNotes?.[spotIndex] ?? '').trim();
                         return `
                         <li class="relative flex items-start pl-12 md:pl-16 group">
                             <div class="absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white bg-[#c88d75] shadow z-10 transition-transform group-hover:scale-125"></div>
@@ -214,6 +288,7 @@
                                     <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c88d75] hover:text-white bg-[#c88d75]/10 hover:bg-[#c88d75] transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 ${mapEngineLabel} 搜尋位置">
                                         <i class="ph ph-map-pin text-lg"></i>
                                     </a>
+                                    ${spotNote ? `<button class="spot-note-button" type="button" data-spot-note data-day-index="${index}" data-spot-index="${spotIndex}" aria-label="查看 ${escapeHtml(name)} 備註" title="查看景點備註"><i class="ph ph-notebook" aria-hidden="true"></i></button>` : ''}
                                 </div>
                                 <p class="text-base md:text-lg text-gray-700 leading-relaxed">${escapeHtml(desc)}</p>
                                 </div>
@@ -237,8 +312,14 @@
                 `;
             }
 
+            const legacyStayParts = String(data.stay || '').split(/\s*\/\s*/).filter(Boolean);
+            const legacyMeals = legacyStayParts.filter((part) => !/^宿\s*[：:]/.test(part.trim())).join(' / ');
+            const legacyLodging = legacyStayParts.filter((part) => /^宿\s*[：:]/.test(part.trim())).map((part) => part.trim().replace(/^宿\s*[：:]\s*/, '')).join(' / ');
+            const meals = escapeHtml(data.meals || legacyMeals).replace(/ \/ /g, '<br>');
+            const lodging = escapeHtml(data.lodging || legacyLodging).replace(/ \/ /g, '<br>');
+
             let infoBottomHtml = `
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-200 pt-6 mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 pt-6 mt-4">
                     <div class="flex items-start gap-3">
                         <div class="bg-teal-50 text-teal-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-teal-100"><i class="ph ph-t-shirt text-2xl"></i></div>
                         <div>
@@ -249,16 +330,23 @@
                     <div class="flex items-start gap-3">
                         <div class="bg-pink-50 text-pink-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-pink-100"><i class="ph ph-shopping-bag text-2xl"></i></div>
                         <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">必吃 / 必買</span>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">必買 / 必吃推薦</span>
                             <span class="text-base md:text-lg text-gray-800 block leading-relaxed"><b class="font-bold text-gray-900">買：</b>${escapeHtml(data.buy)}</span>
                             <span class="text-base md:text-lg text-gray-800 block mt-1 leading-relaxed"><b class="font-bold text-gray-900">吃：</b>${escapeHtml(data.eat)}</span>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
+                        <div class="bg-orange-50 text-orange-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-orange-100"><i class="ph ph-fork-knife text-2xl"></i></div>
+                        <div>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-orange-800 block mb-1">美食</span>
+                            <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${meals}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
                         <div class="bg-blue-50 text-blue-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-blue-100"><i class="ph ph-bed text-2xl"></i></div>
                         <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-blue-800 block mb-1">膳宿</span>
-                            <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${escapeHtml(data.stay).replace(/ \/ /g, '<br>')}</span>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-blue-800 block mb-1">住宿</span>
+                            <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${lodging}</span>
                         </div>
                     </div>
                 </div>
@@ -333,6 +421,24 @@
         // 渲染所有卡片
         itineraryData.forEach((data, index) => {
             listContainer.innerHTML += createCard(data, index);
+        });
+
+        const spotNoteDialog = document.getElementById('spot-note-dialog');
+        listContainer.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-spot-note]');
+            if (!button) return;
+            const day = itineraryData[Number(button.dataset.dayIndex)];
+            const spot = day?.spots?.[Number(button.dataset.spotIndex)];
+            const parts = typeof spot === 'string' ? spot.split(' ｜ ') : [];
+            const name = typeof spot === 'string' ? parts[0] : spot?.name;
+            const note = typeof spot === 'string' ? day?.spotNotes?.[Number(button.dataset.spotIndex)] : spot?.note;
+            document.getElementById('spot-note-title').textContent = name ? `${name} 備註` : '景點備註';
+            document.getElementById('spot-note-content').textContent = note || '';
+            spotNoteDialog.showModal();
+        });
+        document.getElementById('spot-note-close').addEventListener('click', () => spotNoteDialog.close());
+        spotNoteDialog.addEventListener('click', (event) => {
+            if (event.target === spotNoteDialog) spotNoteDialog.close();
         });
 
         // 展開/收合卡片的邏輯
