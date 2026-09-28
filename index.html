@@ -187,6 +187,7 @@
         let catalogFileName = 'catalog.js';
         let catalogSourceHandle = null;
         let catalogSourceSnapshot = '';
+        let useFallbackCatalogPicker = false;
         let catalogHasChanges = false;
         const catalogSettingsDialog = document.getElementById('catalog-settings-dialog');
         const list = document.getElementById('trip-list');
@@ -294,8 +295,11 @@
         }
 
         async function chooseCatalogSource() {
-            if (!window.showOpenFilePicker) {
-                document.getElementById('catalog-source-file').click();
+            const fileInput = document.getElementById('catalog-source-file');
+            if (useFallbackCatalogPicker || !window.showOpenFilePicker) {
+                useFallbackCatalogPicker = true;
+                updateCatalogStatus('此瀏覽器只能讀取選取的檔案；編輯後請下載更新檔取代原檔。');
+                fileInput.click();
                 return;
             }
             try {
@@ -303,9 +307,15 @@
                     types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }],
                     multiple: false
                 });
-                await loadCatalogFile(await fileHandle.getFile(), fileHandle);
+                const file = await fileHandle.getFile();
+                await loadCatalogFile(file, fileHandle);
             } catch (error) {
-                if (error.name !== 'AbortError') updateCatalogStatus(`選取失敗：${error.message}`);
+                if (error.name === 'AbortError') return;
+                useFallbackCatalogPicker = true;
+                catalogSourceHandle = null;
+                updateCatalogSaveButton();
+                updateCatalogStatus('瀏覽器限制直接讀取檔案；請在接續的檔案視窗重新選取，並以下載方式更新原檔。');
+                fileInput.click();
             }
         }
 

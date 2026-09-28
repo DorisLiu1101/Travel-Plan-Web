@@ -3,6 +3,7 @@ const siteSettings = {
     "heroTitle": "星月傳奇．土耳其11日",
     "dateText": "2026/10/8(四) ~ 2026/10/18(日)",
     "subtitle": "跟團行程 · 11 天",
+    "heroImage": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
     "mapEngine": "google"
 };
 
@@ -32,7 +33,17 @@ const itineraryData = [
         "buy": "番紅花城手工紅銅器、傳統立體鄂圖曼軟糖、特色手工蕾絲織品。",
         "eat": "傳統鄂圖曼式建築 Güveç 陶甕風味餐、土耳其紅茶。",
         "stay": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐 / 宿：HILTON GARDEN INN SAFRANBOLU",
-        "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。"
+        "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。",
+        "spotImages": [
+            "https://pimg.1px.tw/kenfoto/1738334391-3616794821-g.jpg",
+            "",
+            ""
+        ],
+        "spotMapQueries": [
+            "凱馬卡姆拉旅遊之家 土耳其",
+            "鵝卵石古鎮 土耳其",
+            "希德爾立克山丘 土耳其"
+        ]
     },
     {
         "day": "Day 3",

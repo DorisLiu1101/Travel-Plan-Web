@@ -324,6 +324,7 @@
 		let exportFileName = 'data.js';
 		let sourceFileHandle = null;
 		let sourceSnapshot = '';
+		let useFallbackSourcePicker = false;
 		let selectedDay = 0;
 		let hasChanges = false;
 		let toastTimer;
@@ -465,8 +466,11 @@
 		}
 
 		async function chooseSourceFile() {
-			if (!window.showOpenFilePicker) {
-				document.getElementById('source-file').click();
+			const fileInput = document.getElementById('source-file');
+			if (useFallbackSourcePicker || !window.showOpenFilePicker) {
+				useFallbackSourcePicker = true;
+				document.getElementById('source-write-status').textContent = '此瀏覽器只能讀取選取的檔案；編輯後請下載更新檔取代原檔。';
+				fileInput.click();
 				return;
 			}
 			try {
@@ -474,9 +478,16 @@
 					types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }],
 					multiple: false
 				});
-				await loadSourceFile(await fileHandle.getFile(), fileHandle);
+				const file = await fileHandle.getFile();
+				await loadSourceFile(file, fileHandle);
 			} catch (error) {
-				if (error.name !== 'AbortError') showToast(`無法選取資料檔：${error.message}`);
+				if (error.name === 'AbortError') return;
+				useFallbackSourcePicker = true;
+				sourceFileHandle = null;
+				updateSourceSaveButton();
+				document.getElementById('source-write-status').textContent = '瀏覽器限制直接讀取檔案；請在接續的檔案視窗重新選取，並以下載方式更新原檔。';
+				showToast('無法直接讀取檔案，改用一般選檔；回寫不可用，請使用下載。');
+				fileInput.click();
 			}
 		}
 
