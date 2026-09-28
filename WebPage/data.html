@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>土耳其傳奇 11 日</title>
+    <title>行程資料載入中...</title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 引入 Google Fonts: Noto Sans TC -->
@@ -159,6 +159,14 @@
             document.getElementById('site-hero-title').textContent = siteSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
             document.getElementById('site-date-text').textContent = siteSettings.dateText ?? document.getElementById('site-date-text').textContent;
             document.getElementById('site-subtitle').textContent = siteSettings.subtitle ?? document.getElementById('site-subtitle').textContent;
+            if (Object.prototype.hasOwnProperty.call(siteSettings, 'heroImage')) {
+                const layers = ['linear-gradient(90deg, rgba(25, 49, 41, .94) 0%, rgba(25, 49, 41, .72) 54%, rgba(25, 49, 41, .18) 100%)'];
+                try {
+                    const imageUrl = new URL(siteSettings.heroImage);
+                    if (imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:') layers.push(`url(${JSON.stringify(imageUrl.href)})`);
+                } catch {}
+                document.querySelector('.header-bg').style.backgroundImage = layers.join(', ');
+            }
         }
 
         function createCard(data, index) {

@@ -21,11 +21,56 @@
         * { box-sizing: border-box; }
         body { margin: 0; min-width: 320px; background: var(--paper); color: var(--ink); font-family: 'Noto Sans TC', sans-serif; }
         .hero { position: relative; display: flex; min-height: 300px; align-items: center; overflow: hidden; background: #203d34; color: white; }
-        .hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(23,45,38,.91), rgba(23,45,38,.52) 60%, rgba(23,45,38,.14)), url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop') center 48% / cover; content: ''; }
+        .hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(23,45,38,.91), rgba(23,45,38,.52) 60%, rgba(23,45,38,.14)), var(--hero-image, url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop')) center 48% / cover; content: ''; }
         .hero-inner { position: relative; width: min(1120px, 100%); margin: 0 auto; padding: 46px 30px 52px; }
         .kicker { margin: 0 0 12px; color: #e4e9c1; font: 700 11px 'DM Sans', sans-serif; letter-spacing: .14em; }
         h1 { max-width: 700px; margin: 0; font-size: clamp(30px, 5vw, 48px); line-height: 1.2; }
         .hero-copy { max-width: 540px; margin: 14px 0 0; color: rgba(255,255,255,.84); font-size: 14px; line-height: 1.8; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+        .hero-action { display: inline-flex; align-items: center; gap: 7px; min-height: 35px; padding: 0 11px; border: 1px solid rgba(255,255,255,.4); border-radius: 5px; background: rgba(12,31,25,.18); color: white; font-size: 11px; font-weight: 600; text-decoration: none; transition: background .18s, border-color .18s; }
+        .hero-action:hover, .hero-action:focus-visible { border-color: white; background: rgba(255,255,255,.16); }
+        .hero-action svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+        .catalog-dialog { width: min(880px, calc(100% - 28px)); max-width: none; max-height: min(90vh, 900px); padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); box-shadow: 0 24px 80px rgba(0,0,0,.28); }
+        .catalog-dialog::backdrop { background: rgba(15,28,22,.62); backdrop-filter: blur(3px); }
+        .catalog-dialog-inner { display: grid; max-height: min(90vh, 900px); grid-template-rows: auto minmax(0,1fr); }
+        .catalog-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); background: #fff; }
+        .catalog-dialog-head h2 { margin: 0; font-size: 17px; }
+        .catalog-dialog-head p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+        .catalog-dialog-close { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); }
+        .catalog-dialog-close svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
+        .catalog-dialog-body { min-height: 0; overflow: auto; padding: 18px 20px 22px; }
+        .catalog-settings-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 15px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+        .catalog-settings-fields h3, .catalog-dialog-section-head h3 { margin: 0; font-size: 13px; }
+        .catalog-setting { display: grid; gap: 5px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
+        .catalog-setting input, .catalog-setting textarea, .catalog-entry input, .catalog-entry textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fff; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC',sans-serif; }
+        .catalog-setting input, .catalog-entry input { height: 37px; padding: 0 10px; }
+        .catalog-setting textarea { min-height: 0; padding: 10px 11px; overflow-wrap: anywhere; word-break: break-all; resize: none; }
+        .catalog-setting input:focus, .catalog-setting textarea:focus, .catalog-entry input:focus, .catalog-entry textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); }
+        .catalog-setting-background { grid-column: 1 / -1; }
+        .catalog-image-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: stretch; gap: 13px; }
+        .catalog-preview-image { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(135deg,#e8eddf,#f5e7d7); }
+        .catalog-preview-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        .catalog-dialog-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .catalog-source-tools, .catalog-export-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+        .catalog-source-name { margin-right: auto; color: var(--muted); font-size: 10px; }
+        .catalog-dialog button, .catalog-dialog label.button { cursor: pointer; }
+        .catalog-tool-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); font-size: 10px; font-weight: 600; }
+        .catalog-tool-button.primary { border-color: var(--green); background: var(--green); color: white; }
+        .catalog-tool-button:disabled { cursor: not-allowed; opacity: .45; }
+        .catalog-tool-button svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+        .catalog-hidden-input { display: none; }
+        .catalog-entry-list { display: grid; gap: 9px; }
+        .catalog-entry { padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+        .catalog-entry-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; color: var(--green); font-size: 10px; font-weight: 700; }
+        .catalog-entry-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px 12px; }
+        .catalog-entry-field { display: grid; gap: 4px; min-width: 0; color: #59655e; font-size: 9px; font-weight: 700; }
+        .catalog-entry-field.full { grid-column: 1 / -1; }
+        .catalog-entry textarea { min-height: 54px; padding: 7px 9px; resize: vertical; }
+        .catalog-remove-entry { display: grid; width: 29px; height: 29px; place-items: center; border: 0; border-radius: 4px; background: transparent; color: #a85f52; }
+        .catalog-remove-entry:hover { background: #fff0eb; }
+        .catalog-remove-entry svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+        .catalog-export-section { padding-top: 17px; margin-top: 17px; border-top: 1px solid var(--line); }
+        .catalog-export-section textarea { width: 100%; min-height: 170px; padding: 11px; border: 1px solid #dce2da; border-radius: 5px; background: #18251f; color: #e3eee5; font: 11px/1.65 'DM Sans',monospace; resize: vertical; }
         main { width: min(1050px, 100%); margin: 0 auto; padding: 32px 24px 70px; }
         .list-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; padding-bottom: 17px; border-bottom: 1px solid var(--line); }
         .list-head h2 { margin: 0; font-size: 17px; }
@@ -50,6 +95,12 @@
             .hero-inner { padding: 38px 22px 44px; }
             .hero-copy { font-size: 12px; }
             main { padding: 25px 16px 50px; }
+            .catalog-dialog-body { padding: 15px 14px 18px; }
+            .catalog-dialog-head { padding: 13px 14px; }
+            .catalog-settings-fields, .catalog-entry-grid { grid-template-columns: 1fr; }
+            .catalog-setting-background, .catalog-entry-field.full { grid-column: auto; }
+            .catalog-dialog-section-head { align-items: flex-start; flex-direction: column; }
+            .catalog-source-name { width: 100%; }
             .trip-link { grid-template-columns: 102px minmax(0,1fr) 28px; gap: 12px; padding: 14px 0; }
             .trip-link:hover { padding-right: 5px; padding-left: 5px; }
             .trip-image { width: 102px; }
@@ -70,8 +121,12 @@
     <header class="hero">
         <div class="hero-inner">
             <p class="kicker">DORIS' TRAVEL LIBRARY</p>
-            <h1>Doris的旅遊行程攻略集</h1>
+            <h1 id="catalog-title">Doris的旅遊行程攻略集</h1>
             <p class="hero-copy">收藏每一段旅程的路線、景點與實用筆記。選擇一份攻略，開始規劃你的下一趟旅行。</p>
+            <div class="hero-actions">
+                <button id="open-catalog-settings" class="hero-action" type="button" aria-haspopup="dialog" aria-controls="catalog-settings-dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18v3h3l5.3-5.3a5 5 0 0 0 6.4-6.4l-3 3-3-3 3-3Z"/></svg><span>設置</span></button>
+                <a class="hero-action" href="admin.html" aria-label="開啟後台管理" title="開啟後台管理"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m19.4 15 .1.1a1.8 1.8 0 1 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.2a1.8 1.8 0 1 1-3.6 0v-.2a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.2a1.8 1.8 0 1 1 0-3.6h.2a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9v-.2a1.8 1.8 0 1 1 3.6 0v.2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.2a1.8 1.8 0 1 1 0 3.6h-.2a1.8 1.8 0 0 0-.9 3Z"/></svg><span>管理</span></a>
+            </div>
         </div>
     </header>
     <main>
@@ -82,24 +137,289 @@
         <div id="trip-list" class="trip-list" aria-live="polite"></div>
     </main>
     <footer>每段旅程，都是下一次出發的起點。</footer>
+    <dialog id="catalog-settings-dialog" class="catalog-dialog" aria-labelledby="catalog-dialog-title">
+        <div class="catalog-dialog-inner">
+            <header class="catalog-dialog-head">
+                <div><h2 id="catalog-dialog-title">首頁設置</h2><p>選取本機 catalog.js 後可授權回寫，也可下載更新檔。</p></div>
+                <button id="close-catalog-settings" class="catalog-dialog-close" type="button" aria-label="關閉設置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+            </header>
+            <div class="catalog-dialog-body">
+                <section class="catalog-settings-fields" aria-label="首頁標題設定">
+                    <h3>首頁標題</h3>
+                    <label class="catalog-setting">標題文字<input id="catalog-title-setting" type="text" aria-label="首頁標題文字"></label>
+                    <label class="catalog-setting catalog-setting-background">標題背景圖網址<div class="catalog-image-row"><textarea id="catalog-background-setting" aria-label="標題背景圖網址" placeholder="https://..."></textarea><div id="catalog-background-preview" class="catalog-preview-image"></div></div></label>
+                </section>
+                <section aria-label="攻略清單管理">
+                    <div class="catalog-dialog-section-head">
+                        <div><h3>攻略清單</h3><span id="catalog-source-name" class="catalog-source-name">目前來源：catalog.js（選取原檔以授權回寫）</span></div>
+                        <div class="catalog-source-tools">
+                            <button id="choose-catalog-source" class="catalog-tool-button" type="button">選取本機 catalog.js</button>
+                            <input id="catalog-source-file" class="catalog-hidden-input" type="file" accept=".js,application/javascript,text/javascript">
+                            <button id="catalog-add" class="catalog-tool-button primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增攻略</button>
+                        </div>
+                    </div>
+                    <div id="catalog-list" class="catalog-entry-list"></div>
+                </section>
+                <section class="catalog-export-section" aria-label="匯出 catalog.js">
+                    <div class="catalog-export-head"><p>下載後取代根目錄的 catalog.js。</p><div class="catalog-export-tools">
+                        <button id="catalog-preview" class="catalog-tool-button" type="button">產生預覽</button>
+                        <button id="catalog-copy" class="catalog-tool-button" type="button">複製</button>
+                        <button id="save-catalog" class="catalog-tool-button" type="button" disabled>儲存回原檔</button>
+                        <button id="catalog-download" class="catalog-tool-button primary" type="button">下載 catalog.js</button>
+                    </div></div>
+                    <textarea id="catalog-output" readonly spellcheck="false" aria-label="產生的 catalog.js 內容" placeholder="編輯完成後產生 catalog.js 預覽"></textarea>
+                </section>
+            </div>
+        </div>
+    </dialog>
     <script src="catalog.js"></script>
     <script>
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
         }
 
-        const trips = Array.isArray(window.travelPageCatalog) ? window.travelPageCatalog : [];
+        const defaultCatalogSettings = {
+            title: 'Doris的旅遊行程攻略集',
+            backgroundImage: 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop'
+        };
+        let catalogDraft = Array.isArray(window.travelPageCatalog) ? window.travelPageCatalog.map((entry) => ({ ...entry })) : [];
+        let catalogSettingsDraft = { ...defaultCatalogSettings, ...(window.travelPageSettings || {}) };
+        let catalogFileName = 'catalog.js';
+        let catalogSourceHandle = null;
+        let catalogSourceSnapshot = '';
+        let catalogHasChanges = false;
+        const catalogSettingsDialog = document.getElementById('catalog-settings-dialog');
         const list = document.getElementById('trip-list');
-        document.getElementById('list-count').textContent = `${String(trips.length).padStart(2, '0')} TRIPS`;
-        list.innerHTML = trips.length ? trips.map((trip) => {
-            const image = /^https?:\/\//i.test(trip.image || '') ? escapeHtml(trip.image) : '';
-            const target = `WebPage/${encodeURIComponent(trip.html || '')}`;
-            return `<article class="trip-item"><a class="trip-link" href="${target}">
-                ${image ? `<img class="trip-image" src="${image}" alt="${escapeHtml(trip.title)}" loading="lazy">` : '<div class="trip-image" aria-hidden="true"></div>'}
-                <div><div class="trip-meta"><span>${escapeHtml(trip.date || '')}</span><span>TRAVEL GUIDE</span></div><h3 class="trip-title">${escapeHtml(trip.title)}</h3><p class="trip-description">${escapeHtml(trip.description || '')}</p></div>
-                <span class="trip-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
-            </a></article>`;
-        }).join('') : '<p class="empty">目前尚未加入行程攻略。</p>';
+
+        function applyCatalogSettings() {
+            const title = String(catalogSettingsDraft.title || '').trim() || defaultCatalogSettings.title;
+            document.title = title;
+            document.getElementById('catalog-title').textContent = title;
+            let heroImageLayer = 'none';
+            try {
+                const backgroundImage = new URL(catalogSettingsDraft.backgroundImage);
+                if (backgroundImage.protocol === 'http:' || backgroundImage.protocol === 'https:') {
+                    heroImageLayer = `url(${JSON.stringify(backgroundImage.href)})`;
+                }
+            } catch {}
+            document.querySelector('.hero').style.setProperty('--hero-image', heroImageLayer);
+        }
+
+        function renderHomeTrips() {
+            document.getElementById('list-count').textContent = `${String(catalogDraft.length).padStart(2, '0')} TRIPS`;
+            list.innerHTML = catalogDraft.length ? catalogDraft.map((trip) => {
+                const image = /^https?:\/\//i.test(trip.image || '') ? escapeHtml(trip.image) : '';
+                const target = `WebPage/${encodeURIComponent(trip.html || '')}`;
+                return `<article class="trip-item"><a class="trip-link" href="${target}">
+                    ${image ? `<img class="trip-image" src="${image}" alt="${escapeHtml(trip.title)}" loading="lazy">` : '<div class="trip-image" aria-hidden="true"></div>'}
+                    <div><div class="trip-meta"><span>${escapeHtml(trip.date || '')}</span><span>TRAVEL GUIDE</span></div><h3 class="trip-title">${escapeHtml(trip.title)}</h3><p class="trip-description">${escapeHtml(trip.description || '')}</p></div>
+                    <span class="trip-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
+                </a></article>`;
+            }).join('') : '<p class="empty">目前尚未加入行程攻略。</p>';
+        }
+
+        function renderCatalogSettings() {
+            document.getElementById('catalog-title-setting').value = catalogSettingsDraft.title;
+            document.getElementById('catalog-background-setting').value = catalogSettingsDraft.backgroundImage;
+            renderCatalogBackgroundPreview();
+        }
+
+        function renderCatalogBackgroundPreview() {
+            const imageUrl = String(catalogSettingsDraft.backgroundImage || '').trim();
+            const safeImageUrl = /^https?:\/\//i.test(imageUrl) ? escapeHtml(imageUrl) : '';
+            document.getElementById('catalog-background-preview').innerHTML = safeImageUrl ? `<img src="${safeImageUrl}" alt="首頁標題背景圖預覽" onerror="this.style.display='none'">` : '';
+        }
+
+        function renderCatalogEntries() {
+            const catalogList = document.getElementById('catalog-list');
+            catalogList.innerHTML = catalogDraft.length ? catalogDraft.map((entry, index) => `
+                <article class="catalog-entry">
+                    <div class="catalog-entry-head"><span>攻略 ${String(index + 1).padStart(2, '0')}</span><button class="catalog-remove-entry" type="button" data-catalog-remove="${index}" aria-label="刪除攻略 ${index + 1}" title="刪除此攻略"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M9 7V4.8h6V7m3 0-.8 12H6.8L6 7m3.5 3.5v5m5-5v5"/></svg></button></div>
+                    <div class="catalog-entry-grid">
+                        <label class="catalog-entry-field">攻略標題<input type="text" data-catalog-index="${index}" data-catalog-field="title" value="${escapeHtml(entry.title)}" placeholder="例如：星月傳奇．土耳其11日"></label>
+                        <label class="catalog-entry-field">日期<input type="text" data-catalog-index="${index}" data-catalog-field="date" value="${escapeHtml(entry.date)}" placeholder="2026/10/8 - 10/18"></label>
+                        <label class="catalog-entry-field">HTML 檔名<input type="text" data-catalog-index="${index}" data-catalog-field="html" value="${escapeHtml(entry.html)}" placeholder="2610.html"></label>
+                        <label class="catalog-entry-field">封面圖片網址<input type="url" data-catalog-index="${index}" data-catalog-field="image" value="${escapeHtml(entry.image)}" placeholder="https://..."></label>
+                        <label class="catalog-entry-field full">攻略說明<textarea data-catalog-index="${index}" data-catalog-field="description" placeholder="首頁列表顯示的簡介">${escapeHtml(entry.description)}</textarea></label>
+                    </div>
+                </article>`).join('') : '<p class="empty">目前沒有攻略項目，請新增一筆。</p>';
+        }
+
+        function updateCatalogStatus(message) {
+            document.getElementById('catalog-source-name').textContent = message;
+        }
+
+        function markCatalogChanged() {
+            catalogHasChanges = true;
+            document.getElementById('catalog-output').value = '';
+            updateCatalogSaveButton();
+            updateCatalogStatus(`目前來源：${catalogFileName} · 有未匯出的修改`);
+        }
+
+        function parseCatalogFile(source) {
+            const catalogMatch = source.match(/\bwindow\.travelPageCatalog\s*=\s*([\s\S]*);\s*$/);
+            if (!catalogMatch) throw new Error('找不到 window.travelPageCatalog 清單。');
+            const entries = JSON.parse(catalogMatch[1]);
+            if (!Array.isArray(entries)) throw new Error('travelPageCatalog 必須是陣列。');
+            const settingsMatch = source.match(/\bwindow\.travelPageSettings\s*=\s*([\s\S]*?);\s*(?=window\.travelPageCatalog\b)/);
+            const settings = settingsMatch ? JSON.parse(settingsMatch[1]) : {};
+            return { entries, settings };
+        }
+
+        async function loadCatalogFile(file, fileHandle = null) {
+            if (catalogHasChanges && !window.confirm('攻略清單有尚未匯出的修改，確定切換資料來源嗎？')) return;
+            try {
+            const source = await file.text();
+            const parsedCatalog = parseCatalogFile(source);
+                catalogDraft = parsedCatalog.entries.map((entry) => ({ ...entry }));
+                catalogSettingsDraft = { ...defaultCatalogSettings, ...parsedCatalog.settings };
+                catalogFileName = file.name;
+            catalogSourceHandle = fileHandle;
+            catalogSourceSnapshot = source;
+                catalogHasChanges = false;
+                document.getElementById('catalog-output').value = '';
+            updateCatalogStatus(fileHandle ? `目前來源：${file.name} · 可授權回寫` : `目前來源：${file.name} · 僅可下載`);
+            updateCatalogSaveButton();
+                renderCatalogSettings();
+                renderCatalogEntries();
+                renderHomeTrips();
+                applyCatalogSettings();
+            } catch (error) {
+                updateCatalogStatus(`載入失敗：${error.message}`);
+            }
+        }
+
+        function updateCatalogSaveButton() {
+            document.getElementById('save-catalog').disabled = !catalogSourceHandle || !catalogHasChanges;
+        }
+
+        async function chooseCatalogSource() {
+            if (!window.showOpenFilePicker) {
+                document.getElementById('catalog-source-file').click();
+                return;
+            }
+            try {
+                const [fileHandle] = await window.showOpenFilePicker({
+                    types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }],
+                    multiple: false
+                });
+                await loadCatalogFile(await fileHandle.getFile(), fileHandle);
+            } catch (error) {
+                if (error.name !== 'AbortError') updateCatalogStatus(`選取失敗：${error.message}`);
+            }
+        }
+
+        async function saveCatalogFile() {
+            if (!catalogSourceHandle || !catalogHasChanges) return;
+            let writable;
+            try {
+                let permission = await catalogSourceHandle.queryPermission({ mode: 'readwrite' });
+                if (permission !== 'granted') permission = await catalogSourceHandle.requestPermission({ mode: 'readwrite' });
+                if (permission !== 'granted') throw new Error('未取得寫入權限。');
+                const currentSource = await (await catalogSourceHandle.getFile()).text();
+                if (currentSource !== catalogSourceSnapshot) throw new Error('原檔在載入後已有變更，請重新選取檔案以避免覆蓋。');
+                makeCatalogExport();
+                const source = document.getElementById('catalog-output').value;
+                parseCatalogFile(source);
+                writable = await catalogSourceHandle.createWritable();
+                await writable.write(source);
+                await writable.close();
+                catalogSourceSnapshot = source;
+                catalogHasChanges = false;
+                updateCatalogSaveButton();
+                updateCatalogStatus(`已回寫：${catalogFileName}`);
+            } catch (error) {
+                if (writable) {
+                    try { await writable.abort(); } catch {}
+                }
+                updateCatalogStatus(`回寫失敗：${error.message}`);
+            }
+        }
+
+        function makeCatalogExport() {
+            document.getElementById('catalog-output').value = `window.travelPageSettings = ${JSON.stringify(catalogSettingsDraft, null, 4)};\n\nwindow.travelPageCatalog = ${JSON.stringify(catalogDraft, null, 4)};\n`;
+        }
+
+        renderCatalogSettings();
+        renderCatalogEntries();
+        renderHomeTrips();
+        applyCatalogSettings();
+
+        document.getElementById('open-catalog-settings').addEventListener('click', () => catalogSettingsDialog.showModal());
+        document.getElementById('close-catalog-settings').addEventListener('click', () => catalogSettingsDialog.close());
+        catalogSettingsDialog.addEventListener('click', (event) => {
+            if (event.target === catalogSettingsDialog) catalogSettingsDialog.close();
+        });
+        document.getElementById('catalog-title-setting').addEventListener('input', (event) => {
+            catalogSettingsDraft.title = event.target.value;
+            applyCatalogSettings();
+            markCatalogChanged();
+        });
+        document.getElementById('catalog-background-setting').addEventListener('input', (event) => {
+            catalogSettingsDraft.backgroundImage = event.target.value;
+            renderCatalogBackgroundPreview();
+            applyCatalogSettings();
+            markCatalogChanged();
+        });
+        document.getElementById('choose-catalog-source').addEventListener('click', chooseCatalogSource);
+        document.getElementById('catalog-source-file').addEventListener('change', (event) => {
+            const file = event.target.files?.[0];
+            if (file) loadCatalogFile(file);
+            event.target.value = '';
+        });
+        document.getElementById('save-catalog').addEventListener('click', saveCatalogFile);
+        document.getElementById('catalog-add').addEventListener('click', () => {
+            catalogDraft.push({ title: '', date: '', description: '', html: '', image: '' });
+            renderCatalogEntries();
+            renderHomeTrips();
+            markCatalogChanged();
+            document.querySelector(`[data-catalog-index="${catalogDraft.length - 1}"][data-catalog-field="title"]`)?.focus();
+        });
+        document.getElementById('catalog-list').addEventListener('input', (event) => {
+            const field = event.target.dataset.catalogField;
+            if (!field) return;
+            catalogDraft[Number(event.target.dataset.catalogIndex)][field] = event.target.value;
+            renderHomeTrips();
+            markCatalogChanged();
+        });
+        document.getElementById('catalog-list').addEventListener('click', (event) => {
+            const removeButton = event.target.closest('[data-catalog-remove]');
+            if (!removeButton) return;
+            catalogDraft.splice(Number(removeButton.dataset.catalogRemove), 1);
+            renderCatalogEntries();
+            renderHomeTrips();
+            markCatalogChanged();
+        });
+        document.getElementById('catalog-preview').addEventListener('click', () => {
+            makeCatalogExport();
+            document.getElementById('catalog-output').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+            updateCatalogStatus(`預覽已產生：${catalogFileName}`);
+        });
+        document.getElementById('catalog-copy').addEventListener('click', async () => {
+            const output = document.getElementById('catalog-output');
+            if (!output.value) makeCatalogExport();
+            try {
+                await navigator.clipboard.writeText(output.value);
+            } catch {
+                output.focus();
+                output.select();
+                document.execCommand('copy');
+                output.setSelectionRange(0, 0);
+            }
+            updateCatalogStatus(catalogHasChanges ? `已複製；原檔尚未回寫：${catalogFileName}` : `已複製：${catalogFileName}`);
+        });
+        document.getElementById('catalog-download').addEventListener('click', () => {
+            const output = document.getElementById('catalog-output');
+            if (!output.value) makeCatalogExport();
+            const file = new Blob([output.value], {type: 'text/javascript;charset=utf-8'});
+            const url = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = catalogFileName;
+            link.click();
+            URL.revokeObjectURL(url);
+            updateCatalogStatus(catalogHasChanges ? `已下載；原檔尚未回寫：${catalogFileName}` : `已下載：${catalogFileName}`);
+        });
     </script>
 </body>
 </html>

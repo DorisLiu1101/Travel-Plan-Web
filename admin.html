@@ -31,6 +31,9 @@
 		.shell.sidebar-collapsed .sidebar { display: none; }
 		.sidebar { position: sticky; top: 0; display: flex; flex-direction: column; height: 100vh; padding: 26px 18px 18px; background: var(--green-deep); color: #f5f7f1; }
 		.brand { display: flex; align-items: center; gap: 12px; padding: 2px 8px 26px; border-bottom: 1px solid rgba(255,255,255,.13); }
+		.brand-home { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 6px; color: #f5f7f1; text-decoration: none; }
+		.brand-home:hover, .brand-home:focus-visible { border-color: #e9efbd; background: rgba(255,255,255,.1); color: #e9efbd; }
+		.brand-home svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 		.brand strong { display: block; font-size: 15px; letter-spacing: .02em; }
 		.brand small { display: block; margin-top: 2px; color: #b5c4ba; font-family: 'DM Sans', sans-serif; font-size: 11px; }
 		.side-tabs { display: grid; flex: 0 0 auto; gap: 4px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.13); }
@@ -40,7 +43,6 @@
 		.side-tab[aria-selected="true"] { border-color: rgba(233,239,189,.22); background: rgba(233,239,189,.12); color: var(--lime); }
 		.side-tab[aria-selected="true"] i { color: var(--lime); }
 		.itinerary-nav-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; }
-		.itinerary-nav-panel[hidden] { display: none; }
 		.journey-settings-link { margin: 4px 0; }
 		.journey-settings-link[aria-current="page"] { border-color: rgba(233,239,189,.22); background: rgba(233,239,189,.12); color: var(--lime); }
 		.journey-settings-link[aria-current="page"] i { color: var(--lime); }
@@ -102,7 +104,15 @@
 		.site-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 15px; }
 		.site-setting { display: grid; gap: 5px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
 		.site-setting input { width: 100%; min-width: 0; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px; }
-		.site-setting input:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); background: #fff; }
+		.site-setting textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
+		.site-setting input:focus, .site-setting textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); background: #fff; }
+		.site-setting-image { grid-column: 1 / -1; }
+		.catalog-site-settings { display: grid; gap: 12px 15px; grid-template-columns: repeat(2, minmax(0,1fr)); padding: 0 0 18px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+		.catalog-site-settings h3 { grid-column: 1 / -1; margin: 0; font-size: 13px; }
+		.catalog-site-settings .site-setting-image textarea { min-height: 0; overflow-wrap: anywhere; word-break: break-all; resize: none; }
+		.catalog-site-settings .site-setting-image .image-row { align-items: stretch; }
+		.catalog-site-settings .site-setting-image textarea { width: 100%; padding: 10px 11px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
+		.catalog-site-settings .site-setting-image textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); background: #fff; }
 		.map-engine-setting { padding: 0; margin: 15px 0 0; border: 0; }
 		.map-engine-setting legend { margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700; }
 		.map-engine-options { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
@@ -119,28 +129,11 @@
 		.source-info { display: grid; gap: 3px; min-width: 0; }
 		.source-info strong { font-size: 11px; }
 		.source-info span { overflow: hidden; color: var(--muted); font: 11px 'DM Sans', sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+		.source-info small { color: var(--muted); font-size: 9px; line-height: 1.5; }
+		.source-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 7px; }
 		.source-picker .button { flex: 0 0 auto; }
 		.source-picker input[type="file"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
-		.catalog-manager { margin-bottom: 18px; padding: 19px 21px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: var(--shadow); }
-		.catalog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 15px; }
-		.catalog-head h3 { margin: 0 0 4px; font-size: 13px; }
-		.catalog-head p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
-		.catalog-actions { display: flex; flex-wrap: wrap; gap: 7px; }
-		.catalog-actions input[type="file"] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
-		.catalog-list { display: grid; gap: 10px; }
-		.catalog-entry { padding: 13px; border: 1px solid var(--line); border-radius: 6px; background: #fcfdfa; }
-		.catalog-entry-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; color: var(--green); font-size: 10px; font-weight: 700; }
-		.catalog-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px 13px; }
-		.catalog-field { display: grid; gap: 5px; min-width: 0; color: #59655e; font-size: 10px; font-weight: 700; }
-		.catalog-field.full { grid-column: 1 / -1; }
-		.catalog-field input, .catalog-field textarea { width: 100%; min-width: 0; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fff; color: var(--ink); font: 400 11px/1.6 'Noto Sans TC', sans-serif; }
-		.catalog-field input { height: 36px; padding: 0 9px; }
-		.catalog-field textarea { min-height: 56px; padding: 8px 9px; resize: vertical; }
-		.catalog-field input:focus, .catalog-field textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); }
-		.catalog-export { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line); }
-		.catalog-export-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
-		.catalog-export-head p { margin: 0; color: var(--muted); font-size: 10px; }
-		.catalog-output { width: 100%; min-height: 125px; padding: 10px; border: 1px solid #cbd8ca; border-radius: 5px; background: #1f302b; color: #d6e8c8; font: 10px/1.6 'DM Sans', monospace; resize: vertical; }
+		.button:disabled { cursor: not-allowed; opacity: .48; transform: none; }
 		.editor-card { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--white); box-shadow: var(--shadow); animation: rise .5s .05s ease both; }
 		.editor-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 20px 23px; border-bottom: 1px solid var(--line); }
 		.editor-head h3 { margin: 0 0 4px; font-size: 14px; }
@@ -159,9 +152,10 @@
 		.field input { height: 39px; padding: 0 11px; }
 		.field textarea, .list-item textarea { min-height: 70px; padding: 10px 11px; line-height: 1.65; resize: vertical; }
 		.field input:focus, .field textarea:focus, .list-item textarea:focus { border-color: #719783; box-shadow: 0 0 0 3px rgba(91,139,111,.12); background: #fff; }
-		.image-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: start; gap: 13px; }
-		.image-preview { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(135deg, #e8eddf, #f5e7d7); }
-		.image-preview img { display: block; width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+		.image-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-items: stretch; gap: 13px; }
+		.image-row textarea { min-height: 0; overflow-wrap: anywhere; word-break: break-all; resize: none; }
+		.image-preview { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: linear-gradient(135deg, #e8eddf, #f5e7d7); }
+		.image-preview img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 		.list-block + .list-block { margin-top: 19px; }
 		.list-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
 		.list-items { display: grid; gap: 8px; }
@@ -236,11 +230,10 @@
 			.field-grid { grid-template-columns: 1fr; }
 			.field.full { grid-column: auto; }
 			.site-settings-grid { grid-template-columns: 1fr; }
+			.catalog-site-settings { grid-template-columns: 1fr; }
+			.catalog-site-settings h3, .catalog-site-settings .site-setting-image { grid-column: auto; }
 			.map-engine-options { grid-template-columns: 1fr; }
 			.weather-picker { grid-template-columns: repeat(3, minmax(0,1fr)); }
-			.catalog-grid { grid-template-columns: 1fr; }
-			.catalog-field.full { grid-column: auto; }
-			.catalog-head, .catalog-export-head { flex-direction: column; }
 			.spot-fields { grid-template-columns: 1fr; }
 			.spot-field.spot-image, .spot-field.spot-description { grid-column: auto; }
 			.top-actions { gap: 5px; }
@@ -253,19 +246,15 @@
 	</style>
 </head>
 <body>
-	<script src="catalog.js"></script>
-	<script src="data.js"></script>
+	<script src="WebPage/data.js"></script>
 	<div class="shell">
 		<aside class="sidebar">
 			<div class="brand">
+				<a class="brand-home" href="index.html" aria-label="返回首頁" title="返回首頁"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10.5h-6v-6h-5v6h-6V10Z"/></svg></a>
 				<div><strong>行程管理器</strong><small>TRAVEL PLAN STUDIO</small></div>
 			</div>
-			<nav id="admin-tabs" class="side-tabs" role="tablist" aria-label="管理器分頁">
-				<button id="tab-catalog" class="side-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-catalog" data-tab-target="panel-catalog" tabindex="-1"><i class="ph ph-books"></i><span>攻略總覽清單</span></button>
-				<button id="tab-itinerary" class="side-tab" type="button" role="tab" aria-selected="true" aria-controls="panel-itinerary" data-tab-target="panel-itinerary"><i class="ph ph-map-trifold"></i><span>旅遊行程</span></button>
-			</nav>
 			<div id="itinerary-nav-panel" class="itinerary-nav-panel">
-				<button id="journey-settings-link" class="side-tab journey-settings-link" type="button" aria-current="false" aria-controls="journey-panel-settings"><i class="ph ph-sliders-horizontal"></i><span>行程設置</span></button>
+				<button id="journey-settings-link" class="side-tab journey-settings-link" type="button" aria-current="page" aria-controls="journey-panel-settings"><i class="ph ph-sliders-horizontal"></i><span>行程設置</span></button>
 				<div class="sidebar-divider" aria-hidden="true"></div>
 				<div class="side-label"><span>每日行程</span><span id="side-count" class="side-count">10 DAYS</span></div>
 				<nav id="day-list" class="day-list" aria-label="每日行程"></nav>
@@ -276,27 +265,26 @@
 
 		<main class="main">
 			<header class="topbar">
-				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="admin-tabs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">TRAVEL PLAN</div><h1 id="page-title">行程總覽</h1></div></div>
+				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
 				<div class="top-actions">
 					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">已載入資料</span></div>
+					<button id="save-source" class="button" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><i class="ph ph-floppy-disk"></i>儲存</button>
 					<button id="export-top" class="button primary icon-only" type="button" title="產生更新檔" aria-label="產生更新檔"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 14.5v5h14v-5"/></svg></button>
 				</div>
 			</header>
 
 			<div class="content">
-				<section id="panel-itinerary" class="tab-panel" role="tabpanel" aria-labelledby="tab-itinerary">
-					<section id="journey-panel-settings" class="journey-panel" role="tabpanel" aria-labelledby="journey-settings-link" hidden>
+				<section id="journey-panel-settings" class="journey-panel" aria-labelledby="journey-settings-link">
 						<section class="journey-settings" aria-label="行程設置">
 							<header class="panel-intro"><div class="eyebrow">JOURNEY SETTINGS</div><h2>行程設置</h2><p>選擇資料來源，並設定此行程在前台顯示的網站標題。</p></header>
 							<section class="source-picker" aria-label="選擇行程資料檔">
-								<div class="source-info"><strong>資料來源</strong><span id="source-name">data.js</span></div>
-								<label class="button" for="source-file"><i class="ph ph-folder-open"></i>選擇 JS 檔</label>
-								<input id="source-file" type="file" accept=".js,application/javascript,text/javascript">
+								<div class="source-info"><strong>資料來源</strong><span id="source-name">WebPage/data.js</span><small id="source-write-status">選取本機 JS 後，編輯變更可授權回寫原檔。</small></div>
+								<div class="source-actions"><button id="choose-source-file" class="button" type="button"><i class="ph ph-folder-open"></i>選取本機 JS</button><input id="source-file" type="file" accept=".js,application/javascript,text/javascript"></div>
 							</section>
 							<section id="site-settings" class="site-settings" aria-label="網站標題設定"></section>
 						</section>
 					</section>
-					<section id="journey-panel-daily" class="journey-panel" role="tabpanel" aria-label="每日行程">
+				<section id="journey-panel-daily" class="journey-panel" aria-label="每日行程" hidden>
 					<section class="intro">
 						<div><div class="eyebrow">ITINERARY</div><h2>編輯每日行程</h2><p>選擇日期編輯路線資訊，完成後匯出所選 JS 資料檔。</p></div>
 						<div class="counter"><strong id="day-total">0</strong><span>個行程日</span></div>
@@ -313,26 +301,6 @@
 						<textarea id="code-output" class="code-output" readonly spellcheck="false" aria-label="產生的行程資料 JS" placeholder="點擊右上角「產生更新檔」以預覽匯出內容"></textarea>
 					</section>
 					</section>
-				</section>
-
-				<section id="panel-catalog" class="tab-panel" role="tabpanel" aria-labelledby="tab-catalog" hidden>
-					<header class="panel-intro"><div class="eyebrow">TRAVEL LIBRARY</div><h2>攻略總覽清單</h2><p>編輯首頁顯示的攻略項目與對應 HTML 檔案。</p></header>
-					<section class="catalog-manager" aria-label="攻略總覽清單管理">
-						<div class="catalog-head">
-							<div><h3>攻略清單項目</h3><p>HTML 檔請放在 WebPage 資料夾。</p><p>目前來源：<span id="catalog-source-name">catalog.js</span></p></div>
-							<div class="catalog-actions">
-								<label class="button" for="catalog-source-file"><i class="ph ph-folder-open"></i>載入 catalog.js</label>
-								<input id="catalog-source-file" type="file" accept=".js,application/javascript,text/javascript">
-								<button id="catalog-add" class="button primary" type="button"><i class="ph ph-plus"></i>新增攻略</button>
-							</div>
-						</div>
-						<div id="catalog-list" class="catalog-list"></div>
-						<div class="catalog-export">
-							<div class="catalog-export-head"><p>下載後取代根目錄的 catalog.js。</p><div class="export-actions"><button id="catalog-preview" class="button" type="button">產生預覽</button><button id="catalog-copy" class="button" type="button"><i class="ph ph-copy"></i>複製</button><button id="catalog-download" class="button primary" type="button"><i class="ph ph-download-simple"></i>下載 catalog.js</button></div></div>
-							<textarea id="catalog-output" class="catalog-output" readonly spellcheck="false" aria-label="產生的 catalog.js 內容" placeholder="編輯完成後產生 catalog.js 預覽"></textarea>
-						</div>
-					</section>
-				</section>
 			</div>
 		</main>
 	</div>
@@ -342,21 +310,20 @@
 		const editor = document.getElementById('editor');
 		const dayList = document.getElementById('day-list');
 		const codeOutput = document.getElementById('code-output');
-		const catalogOutput = document.getElementById('catalog-output');
 		const stateText = document.getElementById('state-text');
 		const stateDot = document.getElementById('state-dot');
-		let catalogDraft = Array.isArray(window.travelPageCatalog) ? window.travelPageCatalog.map((entry) => ({ ...entry })) : [];
-		let catalogFileName = 'catalog.js';
-		let catalogHasChanges = false;
 		const siteSettingsDefaults = {
 			pageTitle: '土耳其傳奇 11 日',
 			heroTitle: '星月傳奇．土耳其11日',
 			dateText: '2026/10/8(四) ~ 2026/10/18(日)',
 			subtitle: '跟團行程 · 11 天 · 2026 秋季',
+			heroImage: 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop',
 			mapEngine: 'google'
 		};
 		let siteSettingsDraft = { ...siteSettingsDefaults, ...(typeof siteSettings === 'undefined' ? {} : siteSettings) };
 		let exportFileName = 'data.js';
+		let sourceFileHandle = null;
+		let sourceSnapshot = '';
 		let selectedDay = 0;
 		let hasChanges = false;
 		let toastTimer;
@@ -386,69 +353,24 @@
 				['baidu', '百度地圖', 'ph-map-trifold']
 			];
 			document.getElementById('site-settings').innerHTML = `
-				<div class="site-settings-head"><h3>網站標題</h3><p>這些文字會和每日行程一起輸出到 ${escapeHtml(exportFileName)}。</p></div>
+				<div class="site-settings-head"><h3>網站標題</h3><p>這些設定會和每日行程一起輸出到 ${escapeHtml(exportFileName)}。</p></div>
 				<div class="site-settings-grid">${fields.map(([key, label, hint]) => `
 					<label class="site-setting">${label}<input type="text" data-site-setting="${key}" value="${escapeHtml(siteSettingsDraft[key])}" aria-label="${label}" title="${hint}"></label>`).join('')}
+					<label class="site-setting site-setting-image" for="hero-image-setting">標題背景圖網址<div class="image-row"><textarea id="hero-image-setting" data-site-setting="heroImage" aria-label="標題背景圖網址" placeholder="https://...">${escapeHtml(siteSettingsDraft.heroImage)}</textarea><div class="image-preview">${siteSettingsDraft.heroImage ? `<img src="${escapeHtml(siteSettingsDraft.heroImage)}" alt="標題背景圖預覽" onerror="this.style.display='none'">` : ''}</div></div></label>
 				</div>
 				<fieldset class="map-engine-setting"><legend>地圖搜尋引擎</legend><div class="map-engine-options">${mapEngines.map(([value, label, icon]) => `
 					<label class="map-engine-option"><input type="radio" name="mapEngine" data-site-setting="mapEngine" value="${value}" ${siteSettingsDraft.mapEngine === value ? 'checked' : ''}><i class="ph ${icon}" aria-hidden="true"></i><span>${label}</span></label>`).join('')}
 				</div></fieldset>`;
 		}
 
-		function renderCatalog() {
-			const catalogList = document.getElementById('catalog-list');
-			catalogList.innerHTML = catalogDraft.length ? catalogDraft.map((entry, index) => `
-				<article class="catalog-entry">
-					<div class="catalog-entry-head"><span>攻略 ${String(index + 1).padStart(2, '0')}</span><button class="remove-item" type="button" data-catalog-remove="${index}" aria-label="刪除攻略 ${index + 1}" title="刪除此攻略"><i class="ph ph-trash"></i></button></div>
-					<div class="catalog-grid">
-						<label class="catalog-field">攻略標題<input type="text" data-catalog-index="${index}" data-catalog-field="title" value="${escapeHtml(entry.title)}" placeholder="例如：星月傳奇．土耳其11日"></label>
-						<label class="catalog-field">日期<input type="text" data-catalog-index="${index}" data-catalog-field="date" value="${escapeHtml(entry.date)}" placeholder="2026/10/8 - 10/18"></label>
-						<label class="catalog-field">HTML 檔名<input type="text" data-catalog-index="${index}" data-catalog-field="html" value="${escapeHtml(entry.html)}" placeholder="2610.html"></label>
-						<label class="catalog-field">封面圖片網址<input type="url" data-catalog-index="${index}" data-catalog-field="image" value="${escapeHtml(entry.image)}" placeholder="https://..."></label>
-						<label class="catalog-field full">攻略說明<textarea data-catalog-index="${index}" data-catalog-field="description" placeholder="首頁列表顯示的簡介">${escapeHtml(entry.description)}</textarea></label>
-					</div>
-				</article>`).join('') : '<p class="empty">目前沒有攻略項目，請新增一筆。</p>';
-		}
-
-		function parseCatalogFile(source) {
-			const match = source.match(/\bwindow\.travelPageCatalog\s*=\s*([\s\S]*);\s*$/);
-			if (!match) throw new Error('找不到 window.travelPageCatalog 清單。');
-			const entries = JSON.parse(match[1]);
-			if (!Array.isArray(entries)) throw new Error('travelPageCatalog 必須是陣列。');
-			return entries;
-		}
-
-		async function loadCatalogFile(file) {
-			if (catalogHasChanges && !window.confirm('攻略清單有尚未匯出的修改，確定切換檔案嗎？')) return;
-			try {
-				catalogDraft = parseCatalogFile(await file.text()).map((entry) => ({ ...entry }));
-				catalogFileName = file.name;
-				catalogHasChanges = false;
-				document.getElementById('catalog-source-name').textContent = file.name;
-				catalogOutput.value = '';
-				if (!hasChanges) {
-					stateText.textContent = `已載入 ${file.name}`;
-					stateDot.classList.remove('dirty');
-				}
-				renderCatalog();
-				showToast(`已載入 ${file.name}`);
-			} catch (error) {
-				showToast(`無法讀取 catalog：${error.message}`);
-			}
-		}
-
-		function markCatalogChanged() {
-			catalogHasChanges = true;
-			stateText.textContent = '攻略清單有未匯出的修改';
-			stateDot.classList.add('dirty');
-		}
-
 		function markChanged() {
 			hasChanges = true;
+			codeOutput.value = '';
 			stateText.textContent = '有未匯出的修改';
 			stateDot.classList.add('dirty');
 			document.getElementById('day-total').textContent = itineraryData.length;
 			document.getElementById('side-count').textContent = `${itineraryData.length} DAYS`;
+			updateSourceSaveButton();
 		}
 
 		function getDayLabel(index) {
@@ -457,11 +379,14 @@
 		}
 
 		function renderSidebar() {
-			dayList.innerHTML = itineraryData.map((day, index) => `
-				<button class="day-link ${index === selectedDay ? 'active' : ''}" type="button" data-select="${index}" aria-current="${index === selectedDay ? 'page' : 'false'}">
+			dayList.innerHTML = itineraryData.map((day, index) => {
+				const isActive = activeJourneyPanel === 'journey-panel-daily' && index === selectedDay;
+				return `
+				<button class="day-link ${isActive ? 'active' : ''}" type="button" data-select="${index}" aria-current="${isActive ? 'page' : 'false'}">
 					<span class="day-number">${String(index + 1).padStart(2, '0')}</span>
 					<span class="day-label">${escapeHtml(day.day || `Day ${index + 1}`)} · ${escapeHtml(day.title || '未命名行程')}</span>
-				</button>`).join('');
+				</button>`;
+			}).join('');
 			document.getElementById('day-total').textContent = itineraryData.length;
 			document.getElementById('side-count').textContent = `${itineraryData.length} DAYS`;
 		}
@@ -507,26 +432,78 @@
 			return { itinerary, settings };
 		}
 
-		async function loadSourceFile(file) {
+		async function loadSourceFile(file, fileHandle = null) {
 			if (hasChanges && !window.confirm('目前有尚未匯出的修改。切換資料來源會捨棄這些修改，確定繼續嗎？')) return;
 			try {
-				const { itinerary, settings } = parseSourceFile(await file.text());
+				const source = await file.text();
+				const { itinerary, settings } = parseSourceFile(source);
 				itineraryData.splice(0, itineraryData.length, ...itinerary);
 				siteSettingsDraft = { ...siteSettingsDefaults, ...settings };
 				exportFileName = file.name;
+				sourceFileHandle = fileHandle;
+				sourceSnapshot = source;
 				document.getElementById('source-name').textContent = file.name;
+				document.getElementById('source-write-status').textContent = fileHandle ? '已選取原檔；儲存時仍會要求明確寫入權限。' : '此瀏覽器選檔模式僅能讀取；請下載更新檔取代原檔。';
 				document.getElementById('export-target-label').textContent = file.name;
 				document.getElementById('download-file-label').textContent = file.name;
 				codeOutput.value = '';
 				hasChanges = false;
-				stateText.textContent = catalogHasChanges ? '攻略清單有未匯出的修改' : `已載入 ${file.name}`;
-				stateDot.classList.toggle('dirty', catalogHasChanges);
+				stateText.textContent = `已載入 ${file.name}`;
+				stateDot.classList.remove('dirty');
+				updateSourceSaveButton();
 				renderSiteSettings();
 				renderEditor();
 				updateWorkspaceTitle();
 				showToast(`已載入 ${file.name}`);
 			} catch (error) {
 				showToast(`無法讀取此檔案：${error.message}`);
+			}
+		}
+
+		function updateSourceSaveButton() {
+			document.getElementById('save-source').disabled = !sourceFileHandle || !hasChanges;
+		}
+
+		async function chooseSourceFile() {
+			if (!window.showOpenFilePicker) {
+				document.getElementById('source-file').click();
+				return;
+			}
+			try {
+				const [fileHandle] = await window.showOpenFilePicker({
+					types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }],
+					multiple: false
+				});
+				await loadSourceFile(await fileHandle.getFile(), fileHandle);
+			} catch (error) {
+				if (error.name !== 'AbortError') showToast(`無法選取資料檔：${error.message}`);
+			}
+		}
+
+		async function saveSourceFile() {
+			if (!sourceFileHandle || !hasChanges) return;
+			let writable;
+			try {
+				let permission = await sourceFileHandle.queryPermission({ mode: 'readwrite' });
+				if (permission !== 'granted') permission = await sourceFileHandle.requestPermission({ mode: 'readwrite' });
+				if (permission !== 'granted') throw new Error('未取得寫入權限。');
+				const currentSource = await (await sourceFileHandle.getFile()).text();
+				if (currentSource !== sourceSnapshot) throw new Error('原檔在載入後已有變更，請重新選取檔案以避免覆蓋。');
+				const source = buildExportSource();
+				parseSourceFile(source);
+				writable = await sourceFileHandle.createWritable();
+				await writable.write(source);
+				await writable.close();
+				sourceSnapshot = source;
+				codeOutput.value = source;
+				hasChanges = false;
+				stateText.textContent = `已回寫 ${exportFileName}`;
+				stateDot.classList.remove('dirty');
+				updateSourceSaveButton();
+				showToast(`已儲存回 ${exportFileName}`);
+			} catch (error) {
+				if (writable) await writable.abort().catch(() => {});
+				showToast(`無法回寫檔案：${error.message}`);
 			}
 		}
 
@@ -594,7 +571,7 @@
 						<div class="field-grid">
 							${renderWeatherPicker(day.weather?.icon)}
 							${inputField('氣溫', 'weather.temp', day.weather?.temp, { placeholder: '10-18°C' })}
-							<div class="field full"><label for="field-image">圖片網址</label><div class="image-row"><input id="field-image" type="url" data-path="image" value="${image}" placeholder="https://..."><div class="image-preview">${image ? `<img src="${image}" alt="行程圖片預覽" onerror="this.style.display='none'">` : ''}</div></div></div>
+							<div class="field full"><label for="field-image">圖片網址</label><div class="image-row"><textarea id="field-image" data-path="image" placeholder="https://...">${image}</textarea><div class="image-preview">${image ? `<img src="${image}" alt="行程圖片預覽" onerror="this.style.display='none'">` : ''}</div></div></div>
 						</div>
 					</section>
 					<section class="section">
@@ -637,6 +614,7 @@
 			});
 			selectedDay = itineraryData.length - 1;
 			markChanged();
+			activateJourneyPanel('journey-panel-daily');
 			renderEditor();
 			showToast('已新增行程日');
 		}
@@ -748,45 +726,29 @@
 			}
 		});
 
+		function buildExportSource() {
+			return `const siteSettings = ${JSON.stringify(siteSettingsDraft, null, 4)};\n\nconst itineraryData = ${JSON.stringify(itineraryData, null, 4)};\n`;
+		}
+
 		function makeExport() {
-			codeOutput.value = `const siteSettings = ${JSON.stringify(siteSettingsDraft, null, 4)};\n\nconst itineraryData = ${JSON.stringify(itineraryData, null, 4)};\n`;
+			codeOutput.value = buildExportSource();
 			document.getElementById('export-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
 			stateText.textContent = hasChanges ? '已產生，請複製或下載' : '更新檔已產生';
 			showToast(hasChanges ? '更新檔已產生，記得複製或下載' : '更新檔已產生');
 		}
 
-		function makeCatalogExport() {
-			catalogOutput.value = `window.travelPageCatalog = ${JSON.stringify(catalogDraft, null, 4)};\n`;
-			document.querySelector('.catalog-export').scrollIntoView({ behavior: 'smooth', block: 'center' });
-			showToast('catalog.js 預覽已產生');
-		}
-
 		function markExported() {
 			hasChanges = false;
-			stateText.textContent = catalogHasChanges ? '攻略清單有未匯出的修改' : '已複製或下載更新檔';
-			stateDot.classList.toggle('dirty', catalogHasChanges);
-		}
-
-		function markCatalogExported() {
-			catalogHasChanges = false;
-			stateText.textContent = hasChanges ? '行程資料有未匯出的修改' : `catalog 已匯出：${catalogFileName}`;
-			stateDot.classList.toggle('dirty', hasChanges);
+			stateText.textContent = '已複製或下載更新檔';
+			stateDot.classList.remove('dirty');
 		}
 
 		const shell = document.querySelector('.shell');
 		const sidebarToggle = document.getElementById('sidebar-toggle');
-		const sectionTabs = [...document.querySelectorAll('.side-tab')];
-		const tabPanels = [...document.querySelectorAll('.tab-panel')];
 		const journeyPanels = [...document.querySelectorAll('.journey-panel')];
 		const journeySettingsLink = document.getElementById('journey-settings-link');
-		let activeJourneyPanel = 'journey-panel-daily';
+		let activeJourneyPanel = 'journey-panel-settings';
 		function updateWorkspaceTitle() {
-			const activeSection = sectionTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
-			if (activeSection?.dataset.tabTarget === 'panel-catalog') {
-				document.getElementById('workspace-eyebrow').textContent = 'TRAVEL LIBRARY';
-				document.getElementById('page-title').textContent = '攻略總覽清單';
-				return;
-			}
 			if (activeJourneyPanel === 'journey-panel-settings') {
 				document.getElementById('workspace-eyebrow').textContent = 'JOURNEY SETTINGS';
 				document.getElementById('page-title').textContent = '行程設置';
@@ -797,56 +759,15 @@
 			document.getElementById('page-title').textContent = `${day?.day || '旅遊行程'}｜${day?.title || '行程總覽'}`;
 		}
 
-		function syncItineraryNavigation() {
-			const activeSection = sectionTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
-			document.getElementById('itinerary-nav-panel').hidden = activeSection?.dataset.tabTarget !== 'panel-itinerary';
-		}
-
 		function activateJourneyPanel(panelId) {
 			activeJourneyPanel = panelId;
 			journeySettingsLink.setAttribute('aria-current', String(panelId === 'journey-panel-settings' ? 'page' : 'false'));
 			journeyPanels.forEach((panel) => { panel.hidden = panel.id !== activeJourneyPanel; });
-			syncItineraryNavigation();
+			renderSidebar();
 			updateWorkspaceTitle();
 		}
 
-		function activateSectionTab(tab, moveFocus = false) {
-			const targetId = tab.dataset.tabTarget;
-			sectionTabs.forEach((item) => {
-				const isSelected = item === tab;
-				item.setAttribute('aria-selected', String(isSelected));
-				item.tabIndex = isSelected ? 0 : -1;
-			});
-			tabPanels.forEach((panel) => { panel.hidden = panel.id !== targetId; });
-			if (targetId === 'panel-itinerary') {
-				activateJourneyPanel('journey-panel-daily');
-			} else {
-				syncItineraryNavigation();
-				updateWorkspaceTitle();
-			}
-			if (moveFocus) tab.focus();
-		}
-		document.getElementById('admin-tabs').addEventListener('click', (event) => {
-			const tab = event.target.closest('.side-tab');
-			if (tab) activateSectionTab(tab);
-		});
-		document.getElementById('admin-tabs').addEventListener('keydown', (event) => {
-			const currentIndex = sectionTabs.indexOf(event.target.closest('.side-tab'));
-			if (currentIndex < 0) return;
-			let nextIndex = currentIndex;
-			if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % sectionTabs.length;
-			else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + sectionTabs.length) % sectionTabs.length;
-			else if (event.key === 'Home') nextIndex = 0;
-			else if (event.key === 'End') nextIndex = sectionTabs.length - 1;
-			else return;
-			event.preventDefault();
-			activateSectionTab(sectionTabs[nextIndex], true);
-		});
-		journeySettingsLink.addEventListener('click', () => {
-			const travelTab = sectionTabs.find((tab) => tab.dataset.tabTarget === 'panel-itinerary');
-			if (!travelTab.matches('[aria-selected="true"]')) activateSectionTab(travelTab);
-			activateJourneyPanel('journey-panel-settings');
-		});
+		journeySettingsLink.addEventListener('click', () => activateJourneyPanel('journey-panel-settings'));
 		function setSidebarCollapsed(collapsed) {
 			shell.classList.toggle('sidebar-collapsed', collapsed);
 			sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
@@ -858,66 +779,21 @@
 			const key = event.target.dataset.siteSetting;
 			if (!key) return;
 			siteSettingsDraft[key] = event.target.value;
+			if (key === 'heroImage') {
+				const imageUrl = /^https?:\/\//i.test(event.target.value.trim()) ? escapeHtml(event.target.value.trim()) : '';
+				const preview = event.target.parentElement.querySelector('.image-preview');
+				preview.innerHTML = imageUrl ? `<img src="${imageUrl}" alt="標題背景圖預覽" onerror="this.style.display='none'">` : '';
+			}
 			markChanged();
 		});
-		const catalogList = document.getElementById('catalog-list');
-		catalogList.addEventListener('input', (event) => {
-			const field = event.target.dataset.catalogField;
-			if (!field) return;
-			catalogDraft[Number(event.target.dataset.catalogIndex)][field] = event.target.value;
-			markCatalogChanged();
-		});
-		catalogList.addEventListener('click', (event) => {
-			const removeButton = event.target.closest('[data-catalog-remove]');
-			if (!removeButton) return;
-			catalogDraft.splice(Number(removeButton.dataset.catalogRemove), 1);
-			markCatalogChanged();
-			renderCatalog();
-		});
-		document.getElementById('catalog-add').addEventListener('click', () => {
-			catalogDraft.push({ title: '', date: '', description: '', html: '', image: '' });
-			markCatalogChanged();
-			renderCatalog();
-			const newIndex = catalogDraft.length - 1;
-			catalogList.querySelector(`[data-catalog-index="${newIndex}"][data-catalog-field="title"]`)?.focus();
-		});
-		document.getElementById('catalog-source-file').addEventListener('change', (event) => {
-			const file = event.target.files?.[0];
-			if (file) loadCatalogFile(file);
-			event.target.value = '';
-		});
-		document.getElementById('catalog-preview').addEventListener('click', makeCatalogExport);
-		document.getElementById('catalog-copy').addEventListener('click', async () => {
-			if (!catalogOutput.value) makeCatalogExport();
-			try {
-				await navigator.clipboard.writeText(catalogOutput.value);
-			} catch {
-				catalogOutput.focus();
-				catalogOutput.select();
-				document.execCommand('copy');
-				catalogOutput.setSelectionRange(0, 0);
-			}
-			markCatalogExported();
-			showToast('catalog.js 已複製');
-		});
-		document.getElementById('catalog-download').addEventListener('click', () => {
-			if (!catalogOutput.value) makeCatalogExport();
-			const file = new Blob([catalogOutput.value], { type: 'text/javascript;charset=utf-8' });
-			const url = URL.createObjectURL(file);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = catalogFileName;
-			link.click();
-			URL.revokeObjectURL(url);
-			markCatalogExported();
-			showToast(`已下載 ${catalogFileName}`);
-		});
 		document.getElementById('add-day').addEventListener('click', addDay);
+		document.getElementById('choose-source-file').addEventListener('click', chooseSourceFile);
 		document.getElementById('source-file').addEventListener('change', (event) => {
 			const file = event.target.files?.[0];
 			if (file) loadSourceFile(file);
 			event.target.value = '';
 		});
+		document.getElementById('save-source').addEventListener('click', saveSourceFile);
 		document.getElementById('export-top').addEventListener('click', makeExport);
 		document.getElementById('copy-code').addEventListener('click', async () => {
 			if (!codeOutput.value) makeExport();
@@ -946,18 +822,18 @@
 		});
 
 		window.addEventListener('beforeunload', (event) => {
-			if (!hasChanges && !catalogHasChanges) return;
+			if (!hasChanges) return;
 			event.preventDefault();
 			event.returnValue = '';
 		});
 
-		renderCatalog();
 		if (typeof itineraryData === 'undefined' || !Array.isArray(itineraryData)) {
 			editor.innerHTML = '<div class="empty">找不到有效的行程資料。請確認 admin.html 與 data.js 位於同一個資料夾。</div>';
 		} else {
 			renderSiteSettings();
 			renderEditor();
 		}
+		activateJourneyPanel(activeJourneyPanel);
 	</script>
 </body>
 </html>
