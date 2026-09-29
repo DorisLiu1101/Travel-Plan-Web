@@ -7,7 +7,14 @@ const siteSettings = {
     "mapEngine": "google",
     "visibleTabs": [
         "itinerary"
-    ]
+    ],
+    "theme": "forest",
+    "themeColors": {
+        "primary": "#315a4c",
+        "deep": "#203d34",
+        "accent": "#cf795f",
+        "bg": "#eef2ec"
+    }
 };
 
 const itineraryData = [

@@ -13,17 +13,20 @@
     
     <style>
         :root {
-            --bg-color: #eef2ec;
+            /* 基本排版中性色（內文字、純白卡片底、分隔線） */
             --text-main: #26332e;
-            --accent-color: #c96f50;
             --card-bg: rgba(255, 255, 255, 0.94);
+            --line: #dfe5dd;
+            --muted: #718078;
+            --ink: #26332e;
+            /* 說明：--theme-primary, --theme-deep, --theme-accent, --bg-color 等主題色彩 100% 由外部 JS 檔案動態注入 */
         }
         
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            background-image: linear-gradient(rgba(49, 90, 76, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(49, 90, 76, .035) 1px, transparent 1px);
+            background-image: linear-gradient(var(--theme-grid) 1px, transparent 1px), linear-gradient(90deg, var(--theme-grid) 1px, transparent 1px);
             background-size: 32px 32px;
         }
 
@@ -35,11 +38,12 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(49, 90, 76, 0.38);
+            background: var(--theme-primary);
+            opacity: 0.38;
             border-radius: 99px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(49, 90, 76, 0.68);
+            background: var(--theme-deep);
         }
 
         /* 卡片展開動畫 */
@@ -59,15 +63,14 @@
         }
 
         .bg-gradient-custom {
-            background: linear-gradient(135deg, #f7f9f5 0%, #edf2ed 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, var(--bg-color) 100%);
         }
         
         .header-bg {
             min-height: 238px;
             display: flex;
             align-items: center;
-            background-color: #203d34;
-            background-image: linear-gradient(90deg, rgba(25, 49, 41, .94) 0%, rgba(25, 49, 41, .72) 54%, rgba(25, 49, 41, .18) 100%), url('https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop');
+            background-color: var(--theme-deep);
             background-position: center 48%;
             background-size: cover;
             color: white;
@@ -77,13 +80,13 @@
         .header-inner h1 { max-width: 720px; font-size: 38px; line-height: 1.25; }
         .header-meta { color: rgba(255,255,255,.88); }
         .page-tabs-wrap { width: min(1050px, 100%); margin: 0 auto; padding: 0 24px; }
-        .page-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 8px 8px 0; border-bottom: 1px solid rgba(49,90,76,.12); scrollbar-width: none; -ms-overflow-style: none; }
+        .page-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 8px 8px 0; border-bottom: 1px solid var(--theme-border); scrollbar-width: none; -ms-overflow-style: none; }
         .page-tabs::-webkit-scrollbar { display: none; }
-        .page-tab { position: relative; min-height: 42px; flex: 0 0 auto; padding: 0 18px; border: 1px solid rgba(49,90,76,.12); border-bottom: 0; border-radius: 12px 12px 0 0; background: rgba(49,90,76,.03); color: var(--muted); font: 700 14px 'Noto Sans TC',sans-serif; transition: all .18s ease; }
-        .page-tab:hover { background: rgba(49,90,76,.06); color: var(--text-main); }
-        .page-tab[aria-selected="true"] { border-color: rgba(49,90,76,.18); background: rgba(255,255,255,.94); color: var(--green); box-shadow: 0 -3px 12px rgba(37,57,47,.08); }
-        .page-tab[aria-selected="true"]::after { position: absolute; right: 8px; bottom: -1px; left: 8px; height: 3px; border-radius: 999px 999px 0 0; background: var(--coral); content: ''; }
-        .page-tab:focus-visible { outline: 2px solid var(--green); outline-offset: -3px; }
+        .page-tab { position: relative; min-height: 42px; flex: 0 0 auto; padding: 0 18px; border: 1px solid var(--theme-border); border-bottom: 0; border-radius: 12px 12px 0 0; background: var(--theme-tab-bg); color: var(--muted); font: 700 14px 'Noto Sans TC',sans-serif; transition: all .18s ease; }
+        .page-tab:hover { background: var(--theme-tab-hover); color: var(--text-main); }
+        .page-tab[aria-selected="true"] { border-color: var(--theme-border-active); background: rgba(255,255,255,.94); color: var(--theme-primary); box-shadow: 0 -3px 12px rgba(37,57,47,.08); }
+        .page-tab[aria-selected="true"]::after { position: absolute; right: 8px; bottom: -1px; left: 8px; height: 3px; border-radius: 999px 999px 0 0; background: var(--theme-accent); content: ''; }
+        .page-tab:focus-visible { outline: 2px solid var(--theme-primary); outline-offset: -3px; }
         .page-view[hidden] { display: none; }
         .overview-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
         .overview-fact { display: grid; gap: 4px; min-width: 0; }
@@ -92,14 +95,14 @@
         .empty-page { padding: 28px 4px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
         .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
         .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
-        .day-header { background: #315a4c; color: white; }
+        .day-header { background: var(--theme-primary); color: white; }
         .itinerary-card { scroll-margin-top: 12px; }
-        .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px solid rgba(49,90,76,.12); text-align: left; transition: background .18s; }
+        .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px solid var(--theme-border); text-align: left; transition: background .18s; }
         .spot-card:hover { background: rgba(255,255,255,.5); }
         .spot-copy { min-width: 0; flex: 1; }
         .spot-image { width: 132px; height: 92px; flex: 0 0 132px; border-radius: 7px; object-fit: cover; }
-        .spot-note-button { display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center; border: 1px solid rgba(49,90,76,.18); border-radius: 50%; background: rgba(49,90,76,.07); color: var(--green); }
-        .spot-note-button:hover { background: var(--green); color: white; }
+        .spot-note-button { display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center; border: 1px solid var(--theme-border-active); border-radius: 50%; background: var(--theme-tab-hover); color: var(--theme-primary); }
+        .spot-note-button:hover { background: var(--theme-primary); color: white; }
         .spot-note-button i { font-size: 17px; }
         .spot-note-dialog { width: min(480px,calc(100% - 28px)); max-width: none; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); box-shadow: 0 24px 70px rgba(21,37,29,.28); }
         .spot-note-dialog::backdrop { background: rgba(16,29,23,.58); backdrop-filter: blur(3px); }
@@ -108,8 +111,28 @@
         .spot-note-close { display: grid; width: 32px; height: 32px; flex: 0 0 32px; place-items: center; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); }
         .spot-note-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
         .spot-note-content { min-height: 70px; padding: 18px; margin: 0; color: var(--ink); font-size: 13px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
-        .tips-note { background: #315a4c; }
-        .page-footer { color: #69776f; border-color: rgba(49,90,76,.2); }
+        .tips-note { background: var(--theme-primary); }
+        .page-footer { color: #69776f; border-color: var(--theme-border); }
+
+        /* 時間軸與點綴樣式 */
+        .timeline-accent-line::before {
+            background: linear-gradient(to bottom, transparent, var(--theme-accent), transparent) !important;
+        }
+        .theme-badge {
+            background-color: var(--theme-accent) !important;
+            color: #ffffff !important;
+        }
+        .theme-node {
+            background-color: var(--theme-accent) !important;
+        }
+        .theme-map-link {
+            color: var(--theme-accent) !important;
+            background-color: var(--theme-accent-soft) !important;
+        }
+        .theme-map-link:hover {
+            color: #ffffff !important;
+            background-color: var(--theme-accent) !important;
+        }
 
         @media (max-width: 640px) {
             .header-bg { min-height: 205px; background-position: 58% center; }
@@ -186,18 +209,70 @@
             return ({ amap: '高德地圖', baidu: '百度地圖' })[engine] || 'Google Map';
         }
 
+        // 色碼轉 RGB 數值輔助函式
+        function hexToRgb(hex) {
+            let clean = String(hex || '').replace('#', '');
+            if (clean.length === 3) clean = clean.split('').map(c => c + c).join('');
+            const num = parseInt(clean, 16);
+            if (isNaN(num)) return { r: 49, g: 90, b: 76 };
+            return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+        }
+
+        // 純套用由 JS 檔案傳入的主題配色
+        function applyTheme(settings) {
+            const colors = settings?.themeColors || settings?.customTheme || {};
+            const primary = colors.primary || '#315a4c';
+            const deep = colors.deep || '#203d34';
+            const accent = colors.accent || '#cf795f';
+            const bg = colors.bg || '#eef2ec';
+
+            const root = document.documentElement;
+            root.style.setProperty('--theme-primary', primary);
+            root.style.setProperty('--theme-deep', deep);
+            root.style.setProperty('--theme-accent', accent);
+            root.style.setProperty('--bg-color', bg);
+
+            const primaryRgb = hexToRgb(primary);
+            const accentRgb = hexToRgb(accent);
+            root.style.setProperty('--theme-grid', `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.04)`);
+            root.style.setProperty('--theme-border', `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.12)`);
+            root.style.setProperty('--theme-border-active', `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.22)`);
+            root.style.setProperty('--theme-tab-bg', `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.04)`);
+            root.style.setProperty('--theme-tab-hover', `rgba(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}, 0.08)`);
+            root.style.setProperty('--theme-accent-soft', `rgba(${accentRgb.r}, ${accentRgb.g}, ${accentRgb.b}, 0.12)`);
+
+            // 更新瀏覽器頂部與狀態列顏色
+            let metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (!metaTheme) {
+                metaTheme = document.createElement('meta');
+                metaTheme.name = 'theme-color';
+                document.head.appendChild(metaTheme);
+            }
+            metaTheme.content = deep;
+        }
+
+        // 套用首頁主視覺大圖與動態主題遮罩
+        function applyHeroImage(imageUrlStr, settings) {
+            const colors = settings?.themeColors || settings?.customTheme || {};
+            const deep = colors.deep || '#203d34';
+            const { r, g, b } = hexToRgb(deep);
+            const layers = [`linear-gradient(90deg, rgba(${r}, ${g}, ${b}, .94) 0%, rgba(${r}, ${g}, ${b}, .72) 54%, rgba(${r}, ${g}, ${b}, .18) 100%)`];
+            try {
+                const imageUrl = new URL(imageUrlStr);
+                if (imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:') layers.push(`url(${JSON.stringify(imageUrl.href)})`);
+            } catch {}
+            document.querySelector('.header-bg').style.backgroundImage = layers.join(', ');
+        }
+
         if (typeof siteSettings !== 'undefined' && siteSettings) {
             document.title = siteSettings.pageTitle ?? document.title;
             document.getElementById('site-hero-title').textContent = siteSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
             document.getElementById('site-date-text').textContent = siteSettings.dateText ?? document.getElementById('site-date-text').textContent;
             document.getElementById('site-subtitle').textContent = siteSettings.subtitle ?? document.getElementById('site-subtitle').textContent;
+            
+            applyTheme(siteSettings);
             if (Object.prototype.hasOwnProperty.call(siteSettings, 'heroImage')) {
-                const layers = ['linear-gradient(90deg, rgba(25, 49, 41, .94) 0%, rgba(25, 49, 41, .72) 54%, rgba(25, 49, 41, .18) 100%)'];
-                try {
-                    const imageUrl = new URL(siteSettings.heroImage);
-                    if (imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:') layers.push(`url(${JSON.stringify(imageUrl.href)})`);
-                } catch {}
-                document.querySelector('.header-bg').style.backgroundImage = layers.join(', ');
+                applyHeroImage(siteSettings.heroImage, siteSettings);
             }
         }
 
@@ -271,7 +346,7 @@
 
             // 行程節點統一改為靠左垂直時間軸
             let spotsHtml = `
-                <ul class="space-y-5 mb-6 relative before:absolute before:inset-0 before:left-6 md:before:left-8 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#c88d75] before:to-transparent">
+                <ul class="space-y-5 mb-6 relative timeline-accent-line before:absolute before:inset-0 before:left-6 md:before:left-8 before:h-full before:w-0.5">
                     ${data.spots.map((spot, spotIndex) => {
                         const parts = typeof spot === 'string' ? spot.split(' ｜ ') : [];
                         const spotData = typeof spot === 'string' ? {name: parts[0], description: parts[1] || ''} : spot;
@@ -285,12 +360,12 @@
                         const spotNote = String(spotData.note ?? data.spotNotes?.[spotIndex] ?? '').trim();
                         return `
                         <li class="relative flex items-start pl-12 md:pl-16 group">
-                            <div class="absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white bg-[#c88d75] shadow z-10 transition-transform group-hover:scale-125"></div>
+                            <div class="theme-node absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white shadow z-10 transition-transform group-hover:scale-125"></div>
                             <div class="spot-card">
                                 <div class="spot-copy">
                                 <div class="flex items-center gap-2 mb-2">
                                     <h4 class="font-bold text-gray-800 text-lg md:text-xl">${escapeHtml(name)}</h4>
-                                    <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="text-[#c88d75] hover:text-white bg-[#c88d75]/10 hover:bg-[#c88d75] transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 ${mapEngineLabel} 搜尋位置">
+                                    <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="theme-map-link transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 ${mapEngineLabel} 搜尋位置">
                                         <i class="ph ph-map-pin text-lg"></i>
                                     </a>
                                     ${spotNote ? `<button class="spot-note-button" type="button" data-spot-note data-day-index="${index}" data-spot-index="${spotIndex}" aria-label="查看 ${escapeHtml(name)} 備註" title="查看景點備註"><i class="ph ph-notebook" aria-hidden="true"></i></button>` : ''}
@@ -366,7 +441,7 @@
                         <div class="py-3 pl-4 md:pl-5 flex flex-col justify-center flex-1 min-w-0 pr-3">
                             <!-- 日期與天數 (天數移到標籤右側) -->
                             <div class="flex items-center gap-2 mb-1.5">
-                                <span class="bg-[#c88d75] text-white px-2 py-0.5 rounded text-xs md:text-sm font-bold tracking-wider shadow-sm shrink-0">
+                                <span class="theme-badge text-white px-2 py-0.5 rounded text-xs md:text-sm font-bold tracking-wider shadow-sm shrink-0">
                                     ${escapeHtml(data.fullDate)}
                                 </span>
                                 <span class="text-white/90 text-sm md:text-base font-bold tracking-wide shrink-0">
