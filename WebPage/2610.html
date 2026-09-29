@@ -53,6 +53,10 @@
             max-height: 5000px;
             opacity: 1;
         }
+        .card-content.no-transition { transition: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .card-content { transition-duration: 0.01ms; }
+        }
 
         .bg-gradient-custom {
             background: linear-gradient(135deg, #f7f9f5 0%, #edf2ed 100%);
@@ -89,6 +93,7 @@
         .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
         .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
         .day-header { background: #315a4c; color: white; }
+        .itinerary-card { scroll-margin-top: 12px; }
         .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px solid rgba(49,90,76,.12); text-align: left; transition: background .18s; }
         .spot-card:hover { background: rgba(255,255,255,.5); }
         .spot-copy { min-width: 0; flex: 1; }
@@ -377,7 +382,7 @@
                         <!-- 右側天氣與箭頭，與標題列同高 (items-stretch) -->
                         <div class="flex items-stretch shrink-0">
                             <!-- 天氣標籤 (滿版高度，無底色) -->
-                            <div class="flex flex-col justify-center items-center px-3 md:px-5 hidden sm:flex bg-transparent">
+                            <div class="flex flex-col justify-center items-center px-2 sm:px-3 md:px-5 bg-transparent">
                                 <i class="ph ${weatherIcon} text-2xl md:text-3xl text-yellow-300 drop-shadow-md"></i>
                                 <span class="text-sm md:text-base mt-0.5 font-bold tracking-wide whitespace-nowrap text-white">${escapeHtml(data.weather.temp)}</span>
                             </div>
@@ -417,6 +422,7 @@
         }
 
         const listContainer = document.getElementById('itinerary-list');
+        let pendingCardOpen = null;
         
         // 渲染所有卡片
         itineraryData.forEach((data, index) => {
@@ -449,9 +455,45 @@
             
             // 如果當前是關閉的，就打開它
             if (!content.classList.contains('open')) {
+                listContainer.querySelectorAll('.itinerary-card').forEach((otherCard) => {
+                    if (otherCard === card) return;
+                    const otherContent = otherCard.querySelector('.card-content');
+                    otherContent.classList.add('no-transition');
+                    otherContent.classList.remove('open');
+                    otherCard.querySelector('.chevron-icon').classList.remove('rotate-180');
+                    requestAnimationFrame(() => otherContent.classList.remove('no-transition'));
+                });
+                if (pendingCardOpen) pendingCardOpen.cancel();
+
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const needsScroll = Math.abs(card.getBoundingClientRect().top - 12) > 4;
+                if (!needsScroll) {
+                    content.classList.add('open');
+                    chevron.classList.add('rotate-180');
+                    return;
+                }
+
+                const finishPosition = (event) => {
+                    if (event && (event.target !== content || event.propertyName !== 'max-height')) return;
+                    if (pendingCardOpen !== pending) return;
+                    pending.cancel();
+                    pendingCardOpen = null;
+                    card.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
+                };
+                const pending = {
+                    timeout: null,
+                    cancel: () => {
+                        clearTimeout(pending.timeout);
+                        content.removeEventListener('transitionend', finishPosition);
+                    }
+                };
+                pendingCardOpen = pending;
+                content.addEventListener('transitionend', finishPosition);
+                pending.timeout = window.setTimeout(() => finishPosition(), reducedMotion ? 50 : 500);
                 content.classList.add('open');
                 chevron.classList.add('rotate-180');
             } else {
+                if (pendingCardOpen) pendingCardOpen.cancel();
                 // 如果當前是打開的，就關閉它
                 content.classList.remove('open');
                 chevron.classList.remove('rotate-180');
