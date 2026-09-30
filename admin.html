@@ -29,6 +29,15 @@
 		.shell { display: grid; grid-template-columns: 216px minmax(0, 1fr); min-height: 100vh; }
 		.shell.sidebar-collapsed { grid-template-columns: minmax(0, 1fr); }
 		.shell.sidebar-collapsed .sidebar { display: none; }
+		.sidebar-handle {
+			position: fixed; top: 90px; left: 216px; transform: none;
+			width: 14px; height: 54px; background: var(--green-deep); color: rgba(255,255,255,.6);
+			border: none; border-radius: 0 4px 4px 0; display: flex; align-items: center; justify-content: center;
+			cursor: pointer; z-index: 50; transition: background .2s, color .2s, left .2s;
+		}
+		.sidebar-handle:hover { background: var(--lime); color: var(--green-deep); }
+		.shell.sidebar-collapsed .sidebar-handle { left: 0; background: var(--green); color: white; }
+		.shell.sidebar-collapsed .sidebar-handle i { transform: scaleX(-1); }
 		.sidebar { position: sticky; top: 0; display: flex; flex-direction: column; height: 100vh; padding: 26px 18px 18px; background: var(--green-deep); color: #f5f7f1; }
 		.brand { display: flex; align-items: center; gap: 12px; padding: 2px 8px 26px; border-bottom: 1px solid rgba(255,255,255,.13); }
 		.brand-home { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 6px; color: #f5f7f1; text-decoration: none; }
@@ -37,16 +46,16 @@
 		.brand strong { display: block; font-size: 15px; letter-spacing: .02em; }
 		.brand small { display: block; margin-top: 2px; color: #b5c4ba; font-family: 'DM Sans', sans-serif; font-size: 11px; }
 		.side-tabs { display: grid; flex: 0 0 auto; gap: 4px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.13); }
-		.side-tab { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 38px; padding: 0 10px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #dce5dc; text-align: left; font-size: 11px; font-weight: 600; transition: background .18s, color .18s; }
-		.side-tab i { width: 18px; flex: 0 0 18px; color: #a9bbb0; font-size: 16px; text-align: center; }
+		.side-tab { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; min-height: 48px; padding: 0 10px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #dce5dc; text-align: center; font-size: 13px; font-weight: 700; transition: background .18s, color .18s; }
+		.side-tab i { color: #a9bbb0; font-size: 18px; }
 		.side-tab:hover { background: rgba(255,255,255,.08); }
 		.side-tab[aria-selected="true"] { border-color: rgba(233,239,189,.22); background: rgba(233,239,189,.12); color: var(--lime); }
 		.side-tab[aria-selected="true"] i { color: var(--lime); }
 		.itinerary-nav-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; }
-		.journey-settings-link { margin: 4px 0; }
+		.journey-settings-link { margin: 12px 0; }
 		.journey-settings-link[aria-current="page"] { border-color: rgba(233,239,189,.22); background: rgba(233,239,189,.12); color: var(--lime); }
 		.journey-settings-link[aria-current="page"] i { color: var(--lime); }
-		.sidebar-divider { height: 1px; flex: 0 0 1px; margin: 9px 3px 3px; background: rgba(255,255,255,.16); }
+		.sidebar-divider { height: 1px; flex: 0 0 1px; margin: 0 3px 3px; background: rgba(255,255,255,.16); }
 		.side-label { display: flex; align-items: center; gap: 9px; padding: 22px 9px 10px; color: #a9bbb0; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
 		.side-count { margin-left: auto; }
 		.day-list { display: grid; grid-auto-rows: 43px; align-content: start; flex: 1; min-height: 0; gap: 4px; overflow-y: auto; padding-right: 3px; scrollbar-width: none; -ms-overflow-style: none; }
@@ -62,11 +71,10 @@
 		.side-bottom { margin-top: auto; padding: 15px 9px 2px; color: #a9bbb0; font-size: 11px; line-height: 1.7; }
 		.main { min-width: 0; }
 		.topbar { position: sticky; z-index: 5; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; padding: 12px clamp(18px, 4vw, 54px); border-bottom: 1px solid var(--line); background: rgba(244,245,240,.94); backdrop-filter: blur(14px); }
-		.top-heading-group { display: flex; align-items: center; gap: 11px; min-width: 0; }
-		.bookmark-toggle { position: relative; width: 36px; height: 40px; min-height: 40px; padding: 0; border-color: #d8dfd5; border-radius: 5px 5px 9px 9px; background: #fff; color: var(--green); }
-		.bookmark-toggle:hover { border-color: #9aaf9d; background: #f7faf5; }
-		.bookmark-toggle svg { width: 19px; height: 22px; }
-		.bookmark-toggle[aria-expanded="false"] { color: var(--coral); }
+		.top-heading-group { display: flex; align-items: center; gap: 12px; min-width: 0; }
+		.sidebar-toggle-btn { border-color: transparent; background: transparent; color: #59655e; box-shadow: none; transition: background .2s, color .2s; }
+		.sidebar-toggle-btn:hover { background: #e3e8df; color: var(--green-deep); }
+		.sidebar-toggle-btn[aria-expanded="false"] { color: var(--coral); background: #fdf3f1; }
 		.top-title { min-width: 0; }
 		.eyebrow { color: var(--coral); font: 700 10px 'DM Sans', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
 		.top-title h1 { overflow: hidden; margin: 3px 0 0; font-size: 17px; text-overflow: ellipsis; white-space: nowrap; }
@@ -142,32 +150,28 @@
 		.map-engine-option span { font-size: 10px; font-weight: 600; }
 		.theme-setting { padding: 0; margin: 15px 0 0; border: 0; }
 		.theme-setting legend { margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700; }
-		.theme-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-		.theme-option { position: relative; display: flex; align-items: center; gap: 9px; min-height: 48px; padding: 7px 10px; border: 1px solid #dce2da; border-radius: 6px; background: #fbfcfa; color: var(--ink); cursor: pointer; transition: all .18s; }
+		.theme-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+		.theme-option { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; min-height: 56px; padding: 10px; border: 1px solid #dce2da; border-radius: 6px; background: #fbfcfa; color: var(--ink); cursor: pointer; transition: all .18s; }
 		.theme-option:hover { background: #f2f6f1; border-color: #bccbc1; }
-		.theme-option:has(input:checked), .theme-option.active { border-color: var(--green); background: #eef4ed; box-shadow: inset 0 0 0 1px var(--green); }
+		.theme-option:has(input:checked) { border-color: var(--green); background: #eef4ed; box-shadow: inset 0 0 0 1px var(--green); }
 		.theme-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-		.theme-palette-preview { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
-		.theme-dot { width: 13px; height: 13px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.18); }
-		.theme-info { min-width: 0; display: flex; flex-direction: column; }
+		.theme-palette-preview { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+		.theme-dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,.18); }
+		.theme-info { min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
 		.theme-info strong { font-size: 10px; font-weight: 700; color: var(--ink); }
-		.theme-info small { font-size: 9px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-		.theme-custom-panel { margin-top: 10px; border: 1px solid #dce2da; border-radius: 6px; background: #fafbf9; overflow: hidden; }
-		.theme-custom-summary { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; cursor: pointer; font-size: 10px; font-weight: 700; color: #59655e; }
-		.theme-custom-summary::-webkit-details-marker { display: none; }
-		.theme-custom-heading { display: flex; align-items: center; gap: 6px; }
-		.theme-custom-heading i { color: var(--green); font-size: 15px; }
-		.theme-custom-status { font-size: 9px; color: var(--muted); font-weight: 400; }
-		.theme-custom-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) 1.25fr; gap: 10px; padding: 10px 12px 12px; border-top: 1px solid #e3e7e0; align-items: end; background: #fff; }
+		.theme-current-colors { margin-top: 10px; border: 1px solid #dce2da; border-radius: 6px; background: #fafbf9; overflow: hidden; }
+		.theme-custom-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 12px; align-items: end; background: #fff; }
 		.theme-color-field { display: flex; flex-direction: column; gap: 4px; }
 		.theme-color-field label { font-size: 9px; font-weight: 700; color: #59655e; display: flex; flex-direction: column; gap: 1px; }
 		.theme-color-hint { font-size: 8px; font-weight: 400; color: var(--muted); }
 		.theme-color-input-wrap { display: flex; align-items: center; gap: 6px; }
-		.theme-color-input-wrap input[type="color"] { width: 34px; height: 34px; border: 1px solid #dce2da; border-radius: 5px; padding: 1px; cursor: pointer; background: white; -webkit-appearance: none; }
+		.theme-color-input-wrap input[type="color"] { width: 34px; height: 34px; border: 1px solid #dce2da; border-radius: 5px; padding: 1px; cursor: pointer; background: white; -webkit-appearance: none; appearance: none; }
 		.theme-color-input-wrap input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
 		.theme-color-input-wrap input[type="color"]::-webkit-color-swatch { border-radius: 4px; border: none; }
-		.theme-color-input-wrap input[type="text"] { width: 72px; height: 34px; border: 1px solid #dce2da; border-radius: 5px; padding: 0 6px; font-family: 'DM Sans', monospace; font-size: 11px; text-transform: uppercase; background: #fbfcfa; outline: none; }
-		.theme-color-input-wrap input[type="text"]:focus { border-color: #719783; box-shadow: 0 0 0 2px rgba(91,139,111,.12); background: #fff; }
+		.theme-color-input-wrap .hex-input-group { display: flex; align-items: center; width: 72px; height: 34px; border: 1px solid #dce2da; border-radius: 5px; padding: 0 6px; background: #fbfcfa; transition: border .15s, box-shadow .15s; }
+		.theme-color-input-wrap .hex-input-group:focus-within { border-color: #719783; box-shadow: 0 0 0 2px rgba(91,139,111,.12); background: #fff; }
+		.theme-color-input-wrap .hex-input-group span { color: var(--muted); font-family: 'DM Sans', monospace; font-size: 11px; user-select: none; }
+		.theme-color-input-wrap .hex-input-group input[type="text"] { width: 100%; height: 100%; border: none; background: transparent; outline: none; padding: 0; font-family: 'DM Sans', monospace; font-size: 11px; text-transform: uppercase; color: var(--ink); margin-left: 2px; }
 		.theme-preview-card { border: 1px solid #dce2da; border-radius: 6px; overflow: hidden; font-size: 10px; box-shadow: 0 2px 5px rgba(0,0,0,.03); }
 		.theme-preview-header { padding: 5px 8px; display: flex; align-items: center; gap: 6px; color: white; font-weight: 700; }
 		.theme-preview-badge { padding: 1px 5px; border-radius: 3px; font-size: 8px; color: white; font-weight: 700; }
@@ -257,6 +261,7 @@
 		@media (max-width: 760px) {
 			.shell { grid-template-columns: 1fr; }
 			.sidebar { position: static; min-width: 0; height: auto; padding: 12px 14px; }
+			.sidebar-handle { display: none; }
 			.brand { padding: 0 3px 11px; border-bottom: 0; }
 			.brand strong { font-size: 13px; }
 			.brand small, .side-bottom { display: none; }
@@ -330,12 +335,15 @@
 			</div>
 			<div class="side-bottom">選取行程 JS 後編輯<br>無法回寫時可下載更新檔</div>
 		</aside>
+		
+		<button id="sidebar-toggle" class="sidebar-handle" type="button" title="隱藏/顯示側邊欄" aria-label="隱藏/顯示側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><i class="ph ph-caret-left"></i></button>
 
 		<main class="main">
 			<header class="topbar">
-				<div class="top-heading-group"><button id="sidebar-toggle" class="button icon-only bookmark-toggle" type="button" title="隱藏側邊欄" aria-label="隱藏側邊欄" aria-expanded="true" aria-controls="itinerary-nav-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-3.7-5.5 3.7v-17Z"/><path d="M9.5 8h5M9.5 11h5"/></svg></button><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
+				<div class="top-heading-group"><div class="top-title"><div class="eyebrow" id="workspace-eyebrow">JOURNEY SETTINGS</div><h1 id="page-title">行程設置</h1></div></div>
 				<div class="top-actions">
-					<div class="save-state"><span id="state-dot" class="state-dot"></span><span id="state-text">尚未載入資料</span></div>
+					<div class="save-state" style="margin-right: 8px;"><span id="state-dot" class="state-dot"></span><span id="state-text">尚未載入資料</span></div>
+					<button id="top-save-btn" class="button icon-only primary" type="button" title="儲存更新檔" style="min-height: 34px; width: 34px;"><i class="ph ph-floppy-disk"></i></button>
 				</div>
 			</header>
 
@@ -343,9 +351,15 @@
 				<section id="journey-panel-settings" class="journey-panel" aria-labelledby="journey-settings-link">
 						<section class="journey-settings" aria-label="行程設置">
 							<header class="panel-intro"><div class="eyebrow">JOURNEY SETTINGS</div><h2>行程設置</h2><p>選擇資料來源，並設定此行程在前台顯示的網站標題。</p></header>
-							<section class="source-picker" aria-label="選擇行程資料檔">
-								<div class="source-info"><strong>資料來源</strong><span id="source-name">尚未選取</span><small id="source-write-status">選取本機 JS 後才會載入行程資料。</small></div>
-								<div class="source-actions"><button id="new-source-file" class="button icon-only" type="button" title="建立新行程 JS" aria-label="建立新行程 JS"><i class="ph ph-plus"></i></button><button id="choose-source-file" class="button" type="button"><i class="ph ph-folder-open"></i>選取本機 JS</button><input id="source-file" type="file" accept=".js,application/javascript,text/javascript"></div>
+							<section class="source-picker" aria-label="選擇行程資料檔" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 7px; background: #fff;">
+								<div class="source-info"><strong>資料來源</strong><span id="source-name">尚未選取</span><small id="source-write-status">選取或載入 JS 後即可開始編輯。</small></div>
+								<div class="source-actions" style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
+									<input type="text" id="online-source-name" placeholder="線上檔名 (如: 2610)" style="width: 130px; height: 35px; border: 1px solid #dce2da; border-radius: 5px; background: #fbfcfa; outline: none; font-size: 11px; padding: 0 10px; margin-right: 2px;">
+									<button id="load-online-source" class="button icon-only" type="button" title="從線上載入"><i class="ph ph-cloud-arrow-down"></i></button>
+									<button id="new-source-file" class="button icon-only" type="button" title="建立新行程 JS" aria-label="建立新行程 JS"><i class="ph ph-plus"></i></button>
+									<button id="choose-source-file" class="button icon-only" type="button" title="選取本機 JS" aria-label="選取本機 JS"><i class="ph ph-folder-open"></i></button>
+									<input id="source-file" type="file" accept=".js,application/javascript,text/javascript">
+								</div>
 							</section>
 							<section id="site-settings" class="site-settings" aria-label="網站標題設定"></section>
 							<section id="export-section" class="export">
@@ -391,14 +405,22 @@
 		const exportTopBtn = document.getElementById('export-top');
 		let itineraryData = [];
 		let hasLoadedSource = false;
-		let savedFavorite = null;
-		try { savedFavorite = JSON.parse(localStorage.getItem('travelFavoriteTheme')); } catch (e) {}
+		let savedFavorite1 = null;
+		let savedFavorite2 = null;
+		let savedFavorite3 = null;
+		try {
+			savedFavorite1 = JSON.parse(localStorage.getItem('travelFavoriteTheme1')) || JSON.parse(localStorage.getItem('travelFavoriteTheme'));
+			savedFavorite2 = JSON.parse(localStorage.getItem('travelFavoriteTheme2'));
+			savedFavorite3 = JSON.parse(localStorage.getItem('travelFavoriteTheme3'));
+		} catch (e) {}
 		const PRESET_THEMES = {
-			forest: { id: 'forest', name: '森林松綠', desc: '自然山林 · 土耳其', primary: '#315a4c', deep: '#203d34', accent: '#cf795f', bg: '#eef2ec' },
-			ocean:  { id: 'ocean',  name: '蔚藍海島', desc: '海島度假 · 沖繩希臘', primary: '#1f648d', deep: '#133d57', accent: '#e6823b', bg: '#edf4f8' },
-			sand:   { id: 'sand',   name: '大地暖沙', desc: '古道絲路 · 沙漠金秋', primary: '#7d5a3c', deep: '#4d3723', accent: '#d97706', bg: '#f7f4ee' },
-			kyoto:  { id: 'kyoto',  name: '京都緋紅', desc: '日韓古都 · 楓紅神社', primary: '#8c2d2d', deep: '#571a1a', accent: '#52744d', bg: '#f9f3f3' },
-			favorite: savedFavorite || { id: 'favorite', name: '🌟 專屬配色', desc: '可記憶的本機自訂色', primary: '#3b4b5e', deep: '#1f2937', accent: '#6366f1', bg: '#f1f5f9' }
+			forest: { id: 'forest', name: '森林松綠', primary: '#315a4c', deep: '#203d34', accent: '#cf795f', bg: '#eef2ec' },
+			ocean:  { id: 'ocean',  name: '蔚藍海島', primary: '#1f648d', deep: '#133d57', accent: '#e6823b', bg: '#edf4f8' },
+			sand:   { id: 'sand',   name: '大地暖沙', primary: '#7d5a3c', deep: '#4d3723', accent: '#d97706', bg: '#f7f4ee' },
+			kyoto:  { id: 'kyoto',  name: '京都緋紅', primary: '#8c2d2d', deep: '#571a1a', accent: '#52744d', bg: '#f9f3f3' },
+			favorite1: savedFavorite1 || { id: 'favorite1', name: '🌟 專屬配色 1', primary: '#3b4b5e', deep: '#1f2937', accent: '#6366f1', bg: '#f1f5f9' },
+			favorite2: savedFavorite2 || { id: 'favorite2', name: '🌟 專屬配色 2', primary: '#7c3aed', deep: '#4c1d95', accent: '#ec4899', bg: '#f5f3ff' },
+			favorite3: savedFavorite3 || { id: 'favorite3', name: '🌟 專屬配色 3', primary: '#059669', deep: '#064e3b', accent: '#10b981', bg: '#ecfdf5' }
 		};
 
 		function hexToRgb(hex) {
@@ -422,7 +444,7 @@
 			if (themeKey !== 'custom' && PRESET_THEMES[themeKey]) {
 				return { ...PRESET_THEMES[themeKey] };
 			}
-			const custom = settings?.themeColors || settings?.customTheme || {};
+			const custom = settings?.customTheme || settings?.themeColors || {};
 			const primary = custom.primary || PRESET_THEMES.forest.primary;
 			const accent = custom.accent || PRESET_THEMES.forest.accent;
 			const bg = custom.bg || PRESET_THEMES.forest.bg;
@@ -536,19 +558,64 @@
 			const currentTheme = getEffectiveTheme(siteSettingsDraft);
 			const themeEntries = Object.entries(PRESET_THEMES);
 			const isCustomTheme = siteSettingsDraft.theme === 'custom';
+			const typo = siteSettingsDraft.typography || {
+				hero: { desktop: 38, mobile: 30 },
+				heading: { desktop: 22, mobile: 18 },
+				body: { desktop: 16, mobile: 15 },
+				small: { desktop: 14, mobile: 12 }
+			};
 			document.getElementById('site-settings').innerHTML = `
 				<div class="site-settings-head"><h3>網站標題</h3><p>這些設定會和每日行程一起輸出到 ${escapeHtml(exportFileName)}。</p></div>
-				<div class="site-settings-grid">${fields.map(([key, label, hint]) => `
-					<label class="site-setting">${label}<input type="text" data-site-setting="${key}" value="${escapeHtml(siteSettingsDraft[key])}" aria-label="${label}" title="${hint}"></label>`).join('')}
-					<label class="site-setting site-setting-image" for="hero-image-setting">標題背景圖網址<div class="image-row"><textarea id="hero-image-setting" data-site-setting="heroImage" aria-label="標題背景圖網址" placeholder="https://...">${escapeHtml(siteSettingsDraft.heroImage)}</textarea><div class="image-preview">${siteSettingsDraft.heroImage ? `<img src="${escapeHtml(siteSettingsDraft.heroImage)}" alt="標題背景圖預覽" onerror="this.style.display='none'">` : ''}</div></div></label>
+				<div class="site-settings-grid">
+					<label class="site-setting" style="grid-column: 1 / -1;">
+						首頁主標題
+						<input type="text" data-site-setting="heroTitle" value="${escapeHtml(siteSettingsDraft.heroTitle)}" aria-label="首頁主標題" title="顯示於前台首頁照片上">
+					</label>
+					<label class="site-setting">
+						副標 / 行程說明
+						<input type="text" data-site-setting="subtitle" value="${escapeHtml(siteSettingsDraft.subtitle)}" aria-label="副標 / 行程說明" title="顯示於首頁日期下方">
+					</label>
+					<label class="site-setting">
+						瀏覽器分頁 title
+						<input type="text" data-site-setting="pageTitle" value="${escapeHtml(siteSettingsDraft.pageTitle)}" aria-label="瀏覽器分頁 title" title="顯示於瀏覽器分頁與書籤">
+					</label>
+					<div style="display: flex; flex-direction: column; gap: 20px;">
+						<div class="site-setting" style="display: flex; flex-direction: column; gap: 8px;">
+							<span style="font-size: 10px; font-weight: 700; color: #59655e;">首頁顯示日期</span>
+							<div style="display: flex; gap: 6px; align-items: center;">
+								<input type="date" id="date-picker-start" style="flex:1; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px;">
+								<span style="color: var(--muted); font-size: 12px;">~</span>
+								<input type="date" id="date-picker-end" style="flex:1; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px;">
+							</div>
+							<input type="text" data-site-setting="dateText" id="date-text-input" value="${escapeHtml(siteSettingsDraft.dateText)}" placeholder="最終顯示的日期文字" title="顯示於首頁主標題下方" style="margin-top: 2px;">
+						</div>
+						<div class="visible-tabs-setting" style="margin: 0; border: 0; padding: 0;">
+							<legend style="margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700;">前台頁籤顯示</legend>
+							<div class="visible-tabs-options">${visibleTabs.map(([value, label]) => `
+								<label class="visible-tab-option"><input type="checkbox" data-visible-tab="${value}" ${siteSettingsDraft.visibleTabs.includes(value) ? 'checked' : ''}><span>${label}</span></label>`).join('')}
+							</div>
+						</div>
+						<div class="map-engine-setting" style="margin: 0; border: 0; padding: 0;">
+							<legend style="margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700;">地圖搜尋引擎</legend>
+							<div class="map-engine-options">${mapEngines.map(([value, label, icon]) => `
+								<label class="map-engine-option"><input type="radio" name="mapEngine" data-site-setting="mapEngine" value="${value}" ${siteSettingsDraft.mapEngine === value ? 'checked' : ''}><i class="ph ${icon}" aria-hidden="true"></i><span>${label}</span></label>`).join('')}
+							</div>
+						</div>
+					</div>
+					<label class="site-setting" style="grid-column: auto;">
+						標題背景圖網址
+						<div style="display: flex; flex-direction: column; gap: 8px; height: 100%;">
+							<textarea id="hero-image-setting" data-site-setting="heroImage" aria-label="標題背景圖網址" placeholder="https://..." style="height: 52px; min-height: 52px; flex: none; resize: none; overflow-wrap: anywhere; word-break: break-all;">${escapeHtml(siteSettingsDraft.heroImage)}</textarea>
+							<div class="image-preview" style="flex: 1; min-height: 80px; width: 100%; aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: #edf2ec; display: flex; align-items: center; justify-content: center;">
+								${siteSettingsDraft.heroImage ? `<img src="${escapeHtml(siteSettingsDraft.heroImage)}" alt="標題背景圖預覽" onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover;">` : ''}
+							</div>
+						</div>
+					</label>
 				</div>
-				<fieldset class="visible-tabs-setting"><legend>前台頁籤顯示</legend><div class="visible-tabs-options">${visibleTabs.map(([value, label]) => `
-					<label class="visible-tab-option"><input type="checkbox" data-visible-tab="${value}" ${siteSettingsDraft.visibleTabs.includes(value) ? 'checked' : ''}><span>${label}</span></label>`).join('')}
-				</div></fieldset>
 				<fieldset class="theme-setting"><legend>行程配色主題</legend>
 					<div class="theme-options">
 						${themeEntries.map(([key, item]) => `
-						<label class="theme-option ${siteSettingsDraft.theme === key ? 'active' : ''}">
+						<label class="theme-option">
 							<input type="radio" name="themePreset" data-theme-preset="${key}" value="${key}" ${siteSettingsDraft.theme === key ? 'checked' : ''}>
 							<div class="theme-palette-preview">
 								<span class="theme-dot" style="background:${item.primary};" title="主色"></span>
@@ -557,10 +624,9 @@
 							</div>
 							<div class="theme-info">
 								<strong>${item.name}</strong>
-								<small>${item.desc}</small>
 							</div>
 						</label>`).join('')}
-						<label class="theme-option ${isCustomTheme ? 'active' : ''}">
+						<label class="theme-option">
 							<input type="radio" name="themePreset" data-theme-preset="custom" value="custom" ${isCustomTheme ? 'checked' : ''}>
 							<div class="theme-palette-preview">
 								<span class="theme-dot theme-custom-dot-primary" style="background:${currentTheme.primary};" title="自訂主色"></span>
@@ -569,56 +635,104 @@
 							</div>
 							<div class="theme-info">
 								<strong>🎨 自訂配色</strong>
-								<small>微調主色與點綴色</small>
 							</div>
 						</label>
 					</div>
-					<details class="theme-custom-panel" id="theme-custom-panel" ${isCustomTheme ? 'open' : ''}>
-						<summary class="theme-custom-summary">
-							<span class="theme-custom-heading"><i class="ph ph-sliders"></i> 進階自訂配色 (微調色彩)</span>
-							<span class="theme-custom-status" id="theme-custom-status">${isCustomTheme ? '自訂模式中' : '可直接調整或依主題微調'}</span>
-						</summary>
+					<div class="theme-preview-card" id="theme-preview-card" style="margin-top: 10px; background:${currentTheme.bg};border-color:${currentTheme.primary}40;">
+						<div class="theme-preview-header" id="theme-preview-header" style="background:${currentTheme.primary};">
+							<span class="theme-preview-badge" id="theme-preview-badge" style="background:${currentTheme.accent};">Day 1</span>
+							<span class="theme-preview-title">卡片配色預覽</span>
+						</div>
+						<div class="theme-preview-body" id="theme-preview-body" style="color:#26332e;">
+							<span class="theme-preview-dot" id="theme-preview-dot" style="background:${currentTheme.accent};"></span>
+							<span>即時預覽前台風格</span>
+						</div>
+					</div>
+					<div class="theme-current-colors" id="theme-current-colors">
 						<div class="theme-custom-grid">
 							<div class="theme-color-field">
 								<label>主色調 (Primary)<span class="theme-color-hint">標題列、卡片與重點按鈕</span></label>
 								<div class="theme-color-input-wrap">
 									<input type="color" data-theme-color="primary" value="${currentTheme.primary}" aria-label="主色調選擇器">
-									<input type="text" data-theme-hex="primary" value="${currentTheme.primary}" maxlength="7" spellcheck="false" aria-label="主色調色碼">
+									<div class="hex-input-group">
+										<span>#</span>
+										<input type="text" data-theme-hex="primary" value="${currentTheme.primary.replace(/#/g, '')}" maxlength="6" spellcheck="false" aria-label="主色調色碼">
+									</div>
 								</div>
 							</div>
 							<div class="theme-color-field">
 								<label>點綴色 (Accent)<span class="theme-color-hint">天數徽章、景點節點、地圖按鈕</span></label>
 								<div class="theme-color-input-wrap">
 									<input type="color" data-theme-color="accent" value="${currentTheme.accent}" aria-label="點綴色選擇器">
-									<input type="text" data-theme-hex="accent" value="${currentTheme.accent}" maxlength="7" spellcheck="false" aria-label="點綴特色碼">
+									<div class="hex-input-group">
+										<span>#</span>
+										<input type="text" data-theme-hex="accent" value="${currentTheme.accent.replace(/#/g, '')}" maxlength="6" spellcheck="false" aria-label="點綴特色碼">
+									</div>
 								</div>
 							</div>
 							<div class="theme-color-field">
 								<label>背景底色 (Background)<span class="theme-color-hint">網頁背景與淺色襯底</span></label>
 								<div class="theme-color-input-wrap">
 									<input type="color" data-theme-color="bg" value="${currentTheme.bg}" aria-label="背景底色選擇器">
-									<input type="text" data-theme-hex="bg" value="${currentTheme.bg}" maxlength="7" spellcheck="false" aria-label="背景底特色碼">
+									<div class="hex-input-group">
+										<span>#</span>
+										<input type="text" data-theme-hex="bg" value="${currentTheme.bg.replace(/#/g, '')}" maxlength="6" spellcheck="false" aria-label="背景底特色碼">
+									</div>
 								</div>
 							</div>
-							<div class="theme-preview-card" id="theme-preview-card" style="background:${currentTheme.bg};border-color:${currentTheme.primary}40;">
-								<div class="theme-preview-header" id="theme-preview-header" style="background:${currentTheme.primary};">
-									<span class="theme-preview-badge" id="theme-preview-badge" style="background:${currentTheme.accent};">Day 1</span>
-									<span class="theme-preview-title">卡片配色預覽</span>
-								</div>
-								<div class="theme-preview-body" id="theme-preview-body" style="color:#26332e;">
-									<span class="theme-preview-dot" id="theme-preview-dot" style="background:${currentTheme.accent};"></span>
-									<span>即時預覽前台風格</span>
-								</div>
-							</div>
-							<div class="theme-favorite-actions" style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 5px;">
-								<button type="button" class="button" id="save-favorite-btn" title="將目前的自訂顏色記憶到這台電腦，未來可直接點選套用"><i class="ph ph-star"></i>儲存為我的專屬色</button>
+							<div class="theme-favorite-actions" style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 5px; gap: 8px;">
+								<button type="button" class="button" id="save-favorite1-btn" title="將目前的自訂顏色記憶為專屬色 1"><i class="ph ph-star"></i>存入專屬色 1</button>
+								<button type="button" class="button" id="save-favorite2-btn" title="將目前的自訂顏色記憶為專屬色 2"><i class="ph ph-star"></i>存入專屬色 2</button>
+								<button type="button" class="button" id="save-favorite3-btn" title="將目前的自訂顏色記憶為專屬色 3"><i class="ph ph-star"></i>存入專屬色 3</button>
 							</div>
 						</div>
-					</details>
+					</div>
 				</fieldset>
-				<fieldset class="map-engine-setting"><legend>地圖搜尋引擎</legend><div class="map-engine-options">${mapEngines.map(([value, label, icon]) => `
-					<label class="map-engine-option"><input type="radio" name="mapEngine" data-site-setting="mapEngine" value="${value}" ${siteSettingsDraft.mapEngine === value ? 'checked' : ''}><i class="ph ${icon}" aria-hidden="true"></i><span>${label}</span></label>`).join('')}
-				</div></fieldset>`;
+				<fieldset class="typography-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;"><legend>字體大小 (Typography)</legend>
+					<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px;">
+						<div class="typo-field" style="display: flex; flex-direction: column;">
+							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 1 大標題</strong>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="hero.desktop" value="${typo.hero?.desktop || 38}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="hero.mobile" value="${typo.hero?.mobile || 30}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+						</div>
+						<div class="typo-field" style="display: flex; flex-direction: column;">
+							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 2 區塊標題</strong>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="heading.desktop" value="${typo.heading?.desktop || 22}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="heading.mobile" value="${typo.heading?.mobile || 18}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+						</div>
+						<div class="typo-field" style="display: flex; flex-direction: column;">
+							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 3 內文</strong>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="body.desktop" value="${typo.body?.desktop || 16}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="body.mobile" value="${typo.body?.mobile || 15}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+						</div>
+						<div class="typo-field" style="display: flex; flex-direction: column;">
+							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 4 輔助資訊</strong>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="small.desktop" value="${typo.small?.desktop || 14}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="small.mobile" value="${typo.small?.mobile || 12}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
+						</div>
+					</div>
+				</fieldset>`;
+			
+			const startPicker = document.getElementById('date-picker-start');
+			const endPicker = document.getElementById('date-picker-end');
+			if (startPicker && endPicker && siteSettingsDraft.dateText) {
+				const matches = siteSettingsDraft.dateText.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/g);
+				if (matches && matches.length >= 1) {
+					try {
+						let d1 = matches[0].replace(/\//g, '-');
+						if (d1.split('-')[1].length === 1) d1 = d1.replace(/-(\d)-/, '-0$1-');
+						if (d1.split('-')[2].length === 1) d1 = d1.replace(/-(\d)$/, '-0$1');
+						startPicker.value = d1;
+						
+						if (matches.length >= 2) {
+							let d2 = matches[1].replace(/\//g, '-');
+							if (d2.split('-')[1].length === 1) d2 = d2.replace(/-(\d)-/, '-0$1-');
+							if (d2.split('-')[2].length === 1) d2 = d2.replace(/-(\d)$/, '-0$1');
+							endPicker.value = d2;
+						}
+					} catch(e){}
+				}
+			}
 		}
 
 		function updateThemePreviewUi() {
@@ -843,10 +957,15 @@
 
 		async function createNewSourceFile() {
 			if (hasChanges && !window.confirm('目前有尚未儲存的修改。建立新檔會捨棄這些修改，確定繼續嗎？')) return;
-			const fileName = 'new-itinerary.js';
-			const newItinerary = [createEmptyDay(1)];
+			const fileName = 'new.js';
+			const newItinerary = [];
 			const newSettings = {
 				...siteSettingsDefaults,
+				pageTitle: '',
+				heroTitle: '',
+				dateText: '',
+				subtitle: '',
+				heroImage: '',
 				visibleTabs: [...siteSettingsDefaults.visibleTabs],
 				customTheme: { ...siteSettingsDefaults.customTheme }
 			};
@@ -941,19 +1060,27 @@
 				</div>
 				<div class="editor-body">
 					<details class="section" data-editor-section="day" ${isEditorSectionOpen('day') ? 'open' : ''}>
-						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-calendar-dots"></i>日期與主題</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
-						<div class="section-body field-grid">
-							${inputField('行程天數標籤', 'day', day.day, { placeholder: 'Day 1' })}
-							${inputField('日期', 'fullDate', day.fullDate, { placeholder: '2026/10/8 (四)' })}
-							${inputField('行程標題', 'title', day.title, { full: true })}
-						</div>
-					</details>
-					<details class="section" data-editor-section="weather" ${isEditorSectionOpen('weather') ? 'open' : ''}>
-						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-cloud-sun"></i>天氣與主視覺</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
-						<div class="section-body field-grid">
-							${renderWeatherPicker(day.weather?.icon)}
-							${inputField('氣溫', 'weather.temp', day.weather?.temp, { placeholder: '10-18°C' })}
-							<div class="field full"><label for="field-image">圖片網址</label><div class="image-row"><textarea id="field-image" data-path="image" placeholder="https://...">${image}</textarea><div class="image-preview">${image ? `<img src="${image}" alt="行程圖片預覽" onerror="this.style.display='none'">` : ''}</div></div></div>
+						<summary class="section-summary"><h4 class="section-title"><i class="ph ph-image"></i>每日主題設定</h4><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
+						<div class="section-body">
+							<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 13px; margin-bottom: 13px;">
+								${inputField('天數標籤', 'day', day.day, { placeholder: 'Day 1' })}
+								${inputField('行程標題', 'title', day.title, { placeholder: '例如：伊斯坦堡市區巡禮' })}
+							</div>
+							<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; margin-bottom: 13px;">
+								<div class="field">
+									<label for="field-fullDate">日期</label>
+									<div style="position: relative; display: flex; align-items: center;">
+										<input type="text" id="field-fullDate" data-path="fullDate" value="${escapeHtml(day.fullDate || '')}" placeholder="例如：2026/10/8 (四)" style="width: 100%; height: 37px; padding: 0 36px 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; font-size: 11px; color: var(--ink); background: #fff;">
+										<div style="position: absolute; right: 0; top: 0; width: 36px; height: 37px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+											<i class="ph ph-calendar-blank" style="color: #78817a; font-size: 16px; pointer-events: none;"></i>
+											<input type="date" id="day-date-picker" style="position: absolute; right: 0; top: 0; width: 36px; height: 37px; opacity: 0; cursor: pointer;">
+										</div>
+									</div>
+								</div>
+								${renderWeatherPicker(day.weather?.icon)}
+								${inputField('氣溫', 'weather.temp', day.weather?.temp, { placeholder: '10-18°C' })}
+							</div>
+							<div class="field full"><label for="field-image">圖片網址</label><div class="image-row" style="display: flex; gap: 10px; align-items: stretch;"><textarea id="field-image" data-path="image" placeholder="https://..." style="height: 72px; flex: 1; resize: none; overflow-wrap: anywhere; word-break: break-all; min-height: 72px;">${image}</textarea><div class="image-preview" style="height: 72px; flex: 0 0 100px; min-height: 0; margin: 0; border-radius: 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #edf2ec;">${image ? `<img src="${image}" alt="行程圖片預覽" onerror="this.style.display='none'" style="width: 100%; height: 100%; object-fit: cover;">` : ''}</div></div></div>
 						</div>
 					</details>
 					<details class="section" data-editor-section="route" ${isEditorSectionOpen('route') ? 'open' : ''}>
@@ -969,13 +1096,29 @@
 							<button class="button icon-only danger clear-notes-button" type="button" data-clear-travel-notes title="清空旅遊備註" aria-label="清空旅遊備註"><i class="ph ph-eraser" aria-hidden="true"></i></button>
 							<button class="button icon-only restore-notes-button" type="button" data-restore-travel-notes title="恢復清空前的旅遊備註" aria-label="恢復清空前的旅遊備註" ${clearedNotesSnapshots.has(day) ? '' : 'disabled'}><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i></button>
 						</div><i class="ph ph-caret-down section-caret" aria-hidden="true"></i></summary>
-						<div class="section-body field-grid">
-							${inputField('穿搭建議', 'outfit', day.outfit, { textarea: true, full: true })}
-							${inputField('必買', 'buy', day.buy, { textarea: true })}
-							${inputField('必吃推薦', 'eat', day.eat, { textarea: true })}
-							${inputField('美食', 'meals', day.meals, { textarea: true })}
-							${inputField('住宿', 'lodging', day.lodging, { textarea: true })}
-							${inputField('旅遊提醒 / Tips', 'tips', day.tips, { textarea: true, full: true })}
+						<div class="section-body">
+							<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+								${[
+									{ key: 'meals', label: '餐廳' }, { key: 'lodging', label: '住宿' },
+									{ key: 'buy', label: '必買' }, { key: 'eat', label: '必吃' },
+									{ key: 'outfit', label: '穿搭建議', full: true }, { key: 'tips', label: 'Tips', full: true }
+								].map(cfg => {
+									const hasVal = Boolean((day[cfg.key] || '').trim());
+									return `<button type="button" class="small-button" data-toggle-note="${cfg.key}" style="display: ${hasVal ? 'none' : 'inline-flex'}; border-radius: 20px; padding: 0 10px; min-height: 28px; border-color: #dce2da; background: #fff; color: #59655e; transition: all .2s;"><i class="ph ph-plus" style="color: var(--green);"></i>${cfg.label}</button>`;
+								}).join('')}
+							</div>
+							<div class="field-grid">
+								${[
+									{ key: 'meals', label: '餐廳' }, { key: 'lodging', label: '住宿' },
+									{ key: 'buy', label: '必買' }, { key: 'eat', label: '必吃' },
+									{ key: 'outfit', label: '穿搭建議', full: true }, { key: 'tips', label: 'Tips', full: true }
+								].map(cfg => {
+									const hasVal = Boolean((day[cfg.key] || '').trim());
+									return `<div class="note-input-container" data-note-key="${cfg.key}" style="display: ${hasVal ? 'block' : 'none'}; ${cfg.full ? 'grid-column: 1 / -1;' : ''}">
+										${inputField(cfg.label, cfg.key, day[cfg.key], { textarea: true, full: cfg.full })}
+									</div>`;
+								}).join('')}
+							</div>
 						</div>
 					</details>
 				</div>`;
@@ -1066,7 +1209,37 @@
 			}
 		});
 
+		editor.addEventListener('change', (event) => {
+			if (event.target.id === 'day-date-picker') {
+				const dateVal = event.target.value;
+				if (dateVal) {
+					const d = new Date(dateVal);
+					if (!isNaN(d)) {
+						const days = ['日', '一', '二', '三', '四', '五', '六'];
+						const formatted = `${dateVal.replace(/-/g, '/')}(${days[d.getDay()]})`;
+						const input = document.getElementById('field-fullDate');
+						if (input) {
+							input.value = formatted;
+							input.dispatchEvent(new Event('input', { bubbles: true }));
+						}
+					}
+				}
+			}
+		});
+
 		editor.addEventListener('click', (event) => {
+			const toggleNoteBtn = event.target.closest('[data-toggle-note]');
+			if (toggleNoteBtn) {
+				const key = toggleNoteBtn.dataset.toggleNote;
+				toggleNoteBtn.style.display = 'none';
+				const container = editor.querySelector(`.note-input-container[data-note-key="${key}"]`);
+				if (container) {
+					container.style.display = 'block';
+					const textarea = container.querySelector('textarea');
+					if (textarea) textarea.focus();
+				}
+				return;
+			}
 			const clearNotesButton = event.target.closest('[data-clear-travel-notes]');
 			if (clearNotesButton) {
 				event.preventDefault();
@@ -1147,9 +1320,12 @@
 		// 序列化行程與設定資料為 JS 原始碼，將配色解析為前台直接套用的 themeColors 物件
 		function serializeSource(settings, itinerary) {
 			const effectiveTheme = getEffectiveTheme(settings);
+			let exportThemeKey = settings.theme || 'forest';
+			if (exportThemeKey.startsWith('favorite')) exportThemeKey = 'custom';
+			
 			const exportSettings = {
 				...settings,
-				theme: settings.theme || 'forest',
+				theme: exportThemeKey,
 				themeColors: {
 					primary: effectiveTheme.primary,
 					deep: effectiveTheme.deep,
@@ -1212,12 +1388,42 @@
 			sidebarToggle.setAttribute('aria-label', sidebarToggle.title);
 		}
 		sidebarToggle.addEventListener('click', () => setSidebarCollapsed(!shell.classList.contains('sidebar-collapsed')));
+		function updateThemePreviewUi() {
+			const currentTheme = getEffectiveTheme(siteSettingsDraft);
+			const previewCard = document.getElementById('theme-preview-card');
+			if (previewCard) {
+				previewCard.style.background = currentTheme.bg;
+				previewCard.style.borderColor = currentTheme.primary + '40';
+				const header = previewCard.querySelector('#theme-preview-header');
+				if (header) header.style.background = currentTheme.primary;
+				const badge = previewCard.querySelector('#theme-preview-badge');
+				if (badge) badge.style.background = currentTheme.accent;
+				const dot = previewCard.querySelector('#theme-preview-dot');
+				if (dot) dot.style.background = currentTheme.accent;
+			}
+			const customPrimaryDot = document.querySelector('.theme-custom-dot-primary');
+			if (customPrimaryDot) customPrimaryDot.style.background = currentTheme.primary;
+			const customAccentDot = document.querySelector('.theme-custom-dot-accent');
+			if (customAccentDot) customAccentDot.style.background = currentTheme.accent;
+			const customBgDot = document.querySelector('.theme-custom-dot-bg');
+			if (customBgDot) customBgDot.style.background = currentTheme.bg;
+		}
+
+		function syncCustomThemeInputs(primary, accent, bg) {
+			const fields = { primary, accent, bg };
+			for (const [key, val] of Object.entries(fields)) {
+				const colorInput = document.querySelector(`[data-theme-color="${key}"]`);
+				if (colorInput) colorInput.value = val;
+				const hexInput = document.querySelector(`[data-theme-hex="${key}"]`);
+				if (hexInput) hexInput.value = val.replace(/#/g, '').toUpperCase();
+			}
+		}
+
 		function handleThemeSettingEvent(event) {
 			const themePreset = event.target.dataset.themePreset;
 			if (themePreset) {
 				if (themePreset === 'custom') {
 					siteSettingsDraft.theme = 'custom';
-					document.getElementById('theme-custom-panel')?.setAttribute('open', '');
 				} else {
 					siteSettingsDraft.theme = themePreset;
 					const preset = PRESET_THEMES[themePreset];
@@ -1239,7 +1445,7 @@
 			if (themeColor) {
 				const val = event.target.value;
 				const hexInput = document.querySelector(`[data-theme-hex="${themeColor}"]`);
-				if (hexInput) hexInput.value = val.toUpperCase();
+				if (hexInput) hexInput.value = val.toUpperCase().replace(/#/g, '');
 				if (!siteSettingsDraft.customTheme) siteSettingsDraft.customTheme = {};
 				siteSettingsDraft.customTheme[themeColor] = val;
 				siteSettingsDraft.theme = 'custom';
@@ -1252,13 +1458,13 @@
 
 			const themeHex = event.target.dataset.themeHex;
 			if (themeHex) {
-				let val = event.target.value.trim();
-				if (/^#?[0-9a-fA-F]{6}$/.test(val)) {
-					if (!val.startsWith('#')) val = '#' + val;
+				let val = event.target.value.trim().replace(/#/g, '');
+				if (/^[0-9a-fA-F]{6}$/.test(val)) {
+					const hexVal = '#' + val;
 					const colorInput = document.querySelector(`[data-theme-color="${themeHex}"]`);
-					if (colorInput) colorInput.value = val;
+					if (colorInput) colorInput.value = hexVal;
 					if (!siteSettingsDraft.customTheme) siteSettingsDraft.customTheme = {};
-					siteSettingsDraft.customTheme[themeHex] = val;
+					siteSettingsDraft.customTheme[themeHex] = hexVal;
 					siteSettingsDraft.theme = 'custom';
 					const customRadio = document.querySelector('[data-theme-preset="custom"]');
 					if (customRadio) customRadio.checked = true;
@@ -1286,6 +1492,21 @@
 				markChanged();
 				return;
 			}
+			const typoKey = event.target.dataset.typo;
+			if (typoKey) {
+				const [level, device] = typoKey.split('.');
+				if (!siteSettingsDraft.typography) {
+					siteSettingsDraft.typography = {
+						hero: { desktop: 38, mobile: 30 },
+						heading: { desktop: 22, mobile: 18 },
+						body: { desktop: 16, mobile: 15 },
+						small: { desktop: 14, mobile: 12 }
+					};
+				}
+				siteSettingsDraft.typography[level][device] = Number(event.target.value) || 16;
+				markChanged();
+				return;
+			}
 			const key = event.target.dataset.siteSetting;
 			if (!key) return;
 			siteSettingsDraft[key] = event.target.value;
@@ -1298,24 +1519,29 @@
 		});
 
 		siteSettingsContainer.addEventListener('click', (event) => {
-			const saveBtn = event.target.closest('#save-favorite-btn');
-			if (saveBtn) {
+			const saveBtn1 = event.target.closest('#save-favorite1-btn');
+			const saveBtn2 = event.target.closest('#save-favorite2-btn');
+			const saveBtn3 = event.target.closest('#save-favorite3-btn');
+			if (saveBtn1 || saveBtn2 || saveBtn3) {
+				let favIndex = 1;
+				if (saveBtn2) favIndex = 2;
+				if (saveBtn3) favIndex = 3;
 				const current = getEffectiveTheme(siteSettingsDraft);
+				const favId = 'favorite' + favIndex;
 				const favTheme = {
-					id: 'favorite',
-					name: '🌟 專屬配色',
-					desc: '可記憶的本機自訂色',
+					id: favId,
+					name: '🌟 專屬配色 ' + favIndex,
 					primary: current.primary,
 					deep: current.deep,
 					accent: current.accent,
 					bg: current.bg
 				};
-				localStorage.setItem('travelFavoriteTheme', JSON.stringify(favTheme));
-				PRESET_THEMES.favorite = favTheme;
-				siteSettingsDraft.theme = 'favorite';
+				localStorage.setItem('travelFavoriteTheme' + favIndex, JSON.stringify(favTheme));
+				PRESET_THEMES[favId] = favTheme;
+				siteSettingsDraft.theme = favId;
 				markChanged();
 				renderSiteSettings();
-				showToast('已記憶為您的專屬配色！');
+				showToast(`已記憶為您的${favTheme.name}！`);
 			}
 		});
 
@@ -1323,10 +1549,30 @@
 			handleThemeSettingEvent(event);
 			const themeHex = event.target.dataset.themeHex;
 			if (themeHex) {
-				let val = event.target.value.trim();
-				if (!/^#?[0-9a-fA-F]{6}$/.test(val)) {
+				let val = event.target.value.trim().replace(/#/g, '');
+				if (!/^[0-9a-fA-F]{6}$/.test(val)) {
 					const cur = siteSettingsDraft.customTheme?.[themeHex] || '#315a4c';
-					event.target.value = cur.toUpperCase();
+					event.target.value = cur.replace(/#/g, '').toUpperCase();
+				}
+			}
+			if (event.target.id === 'date-picker-start' || event.target.id === 'date-picker-end') {
+				const start = document.getElementById('date-picker-start').value;
+				const end = document.getElementById('date-picker-end').value;
+				const days = ['日', '一', '二', '三', '四', '五', '六'];
+				let text = '';
+				if (start) {
+					const sd = new Date(start);
+					if (!isNaN(sd)) text += `${start.replace(/-/g, '/')}(${days[sd.getDay()]})`;
+				}
+				if (end) {
+					const ed = new Date(end);
+					if (!isNaN(ed)) text += (text ? ' ~ ' : '') + `${end.replace(/-/g, '/')}(${days[ed.getDay()]})`;
+				}
+				const dateInput = document.getElementById('date-text-input');
+				if (dateInput) {
+					dateInput.value = text;
+					siteSettingsDraft.dateText = text;
+					markChanged();
 				}
 			}
 		});
@@ -1337,6 +1583,26 @@
 			const file = event.target.files?.[0];
 			if (file) loadSourceFile(file);
 			event.target.value = '';
+		});
+		document.getElementById('load-online-source').addEventListener('click', async () => {
+			if (hasChanges && !window.confirm('目前有尚未儲存的修改。載入新檔會捨棄這些修改，確定繼續嗎？')) return;
+			let name = document.getElementById('online-source-name').value.trim();
+			if (!name) return showToast('請先輸入檔名');
+			if (!name.endsWith('.js')) name += '.js';
+			try {
+				showToast(`正在嘗試載入 ${name}...`);
+				const response = await fetch(`./WebPage/${name}`);
+				if (!response.ok) throw new Error(`找不到檔案或無權限讀取 (HTTP ${response.status})`);
+				const text = await response.text();
+				const file = new File([text], name, { type: 'text/javascript' });
+				await loadSourceFile(file);
+			} catch (error) {
+				if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+					showToast('瀏覽器安全限制：直接點擊開啟 HTML 時無法使用雲端載入。請改用旁邊的「資料夾」圖示選取檔案，或使用 Live Server 開啟網頁。');
+				} else {
+					showToast(`載入失敗：${error.message}`);
+				}
+			}
 		});
 		document.getElementById('export-top').addEventListener('click', makeExport);
 		document.getElementById('copy-code').addEventListener('click', async () => {
@@ -1365,6 +1631,10 @@
 			URL.revokeObjectURL(url);
 			markExported();
 			showToast(`已下載 ${exportFileName}`);
+		});
+		document.getElementById('top-save-btn')?.addEventListener('click', () => {
+			if (!itineraryData || !itineraryData.length) return showToast('尚未載入任何行程資料');
+			document.getElementById('download-code').click();
 		});
 
 		window.addEventListener('beforeunload', (event) => {

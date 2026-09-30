@@ -8,12 +8,18 @@ const siteSettings = {
     "visibleTabs": [
         "itinerary"
     ],
-    "theme": "forest",
+    "theme": "custom",
+    "customTheme": {
+        "primary": "#89A8a0",
+        "accent": "#d7c5a1",
+        "bg": "#f7f4ee",
+        "deep": "#4d3723"
+    },
     "themeColors": {
-        "primary": "#315a4c",
-        "deep": "#203d34",
-        "accent": "#cf795f",
-        "bg": "#eef2ec"
+        "primary": "#89A8a0",
+        "deep": "#4d3723",
+        "accent": "#d7c5a1",
+        "bg": "#f7f4ee"
     }
 };
 
@@ -72,7 +78,7 @@ const itineraryData = [
             "icon": "ph-cloud-moon",
             "temp": "8-19°C"
         },
-        "image": "https://images.unsplash.com/photo-1641121087819-dfc89d7018d4?q=80&w=1200&auto=format&fit=crop",
+        "image": "https://images.pexels.com/photos/13320762/pexels-photo-13320762.jpeg",
         "spots": [
             {
                 "name": "阿塔圖爾克紀念館",
@@ -92,7 +98,7 @@ const itineraryData = [
                 "name": "土耳其之夜",
                 "description": "晚間於天然岩穴旅館欣賞傳統民俗舞蹈與肚皮舞秀，無限暢飲獅子奶酒。",
                 "mapQuery": "土耳其之夜 土耳其",
-                "image": "",
+                "image": "https://www.jeffiafang.com/wp-content/uploads/2025/12/014-5.jpg",
                 "note": ""
             }
         ],
@@ -127,7 +133,7 @@ const itineraryData = [
                 "name": "精靈煙囪奇景",
                 "description": "乘車巡禮蘑菇谷、駱駝岩、烏其莎城堡與鴿子谷，見證大自然的調皮傑作。",
                 "mapQuery": "精靈煙囪奇景 土耳其",
-                "image": "",
+                "image": "https://plus.unsplash.com/premium_photo-1661957726761-ccf728cc01b2?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 "note": ""
             },
             {

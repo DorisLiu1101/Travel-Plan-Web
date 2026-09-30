@@ -19,8 +19,27 @@
             --line: #dfe5dd;
             --muted: #718078;
             --ink: #26332e;
-            /* 說明：--theme-primary, --theme-deep, --theme-accent, --bg-color 等主題色彩 100% 由外部 JS 檔案動態注入 */
+            
+            /* Typography Variables (預設) */
+            --font-hero: 38px;
+            --font-heading: 22px;
+            --font-body: 16px;
+            --font-small: 14px;
         }
+
+        @media (max-width: 640px) {
+            :root {
+                --font-hero: 30px;
+                --font-heading: 18px;
+                --font-body: 15px;
+                --font-small: 12px;
+            }
+        }
+
+        .text-hero { font-size: var(--font-hero) !important; line-height: 1.25; }
+        .text-heading { font-size: var(--font-heading) !important; line-height: 1.4; }
+        .text-body { font-size: var(--font-body) !important; line-height: 1.6; }
+        .text-small { font-size: var(--font-small) !important; line-height: 1.5; }
         
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -77,7 +96,7 @@
         }
 
         .header-inner { min-height: 176px; align-items: flex-start; justify-content: center; text-align: left; }
-        .header-inner h1 { max-width: 720px; font-size: 38px; line-height: 1.25; }
+        .header-inner h1 { max-width: 720px; }
         .header-meta { color: rgba(255,255,255,.88); }
         .page-tabs-wrap { width: min(1050px, 100%); margin: 0 auto; padding: 0 24px; }
         .page-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 8px 8px 0; border-bottom: 1px solid var(--theme-border); scrollbar-width: none; -ms-overflow-style: none; }
@@ -90,9 +109,9 @@
         .page-view[hidden] { display: none; }
         .overview-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
         .overview-fact { display: grid; gap: 4px; min-width: 0; }
-        .overview-fact span { color: var(--muted); font-size: 10px; }
-        .overview-fact strong { overflow-wrap: anywhere; font-size: 14px; }
-        .empty-page { padding: 28px 4px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+        .overview-fact span { color: var(--muted); font-size: var(--font-small); }
+        .overview-fact strong { overflow-wrap: anywhere; font-size: var(--font-small); font-weight: 700; }
+        .empty-page { padding: 28px 4px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: var(--font-small); }
         .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
         .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
         .day-header { background: var(--theme-primary); color: white; }
@@ -107,10 +126,10 @@
         .spot-note-dialog { width: min(480px,calc(100% - 28px)); max-width: none; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: white; color: var(--ink); box-shadow: 0 24px 70px rgba(21,37,29,.28); }
         .spot-note-dialog::backdrop { background: rgba(16,29,23,.58); backdrop-filter: blur(3px); }
         .spot-note-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--line); }
-        .spot-note-head h2 { overflow: hidden; margin: 0; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+        .spot-note-head h2 { overflow: hidden; margin: 0; font-size: var(--font-small); text-overflow: ellipsis; white-space: nowrap; }
         .spot-note-close { display: grid; width: 32px; height: 32px; flex: 0 0 32px; place-items: center; border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); }
         .spot-note-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
-        .spot-note-content { min-height: 70px; padding: 18px; margin: 0; color: var(--ink); font-size: 13px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .spot-note-content { min-height: 70px; padding: 18px; margin: 0; color: var(--ink); font-size: var(--font-small); line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
         .tips-note { background: var(--theme-primary); }
         .page-footer { color: #69776f; border-color: var(--theme-border); }
 
@@ -133,11 +152,17 @@
             color: #ffffff !important;
             background-color: var(--theme-accent) !important;
         }
+        
+        /* 統一 Tailwind 的 typography classes */
+        .text-3xl, .text-4xl, .md\\:text-4xl, .text-2xl, .md\\:text-3xl { font-size: var(--font-hero) !important; line-height: 1.25 !important; }
+        .text-xl, .md\\:text-2xl, .md\\:text-xl { font-size: var(--font-heading) !important; line-height: 1.4 !important; }
+        .text-base, .md\\:text-lg, .text-lg { font-size: var(--font-body) !important; line-height: 1.6 !important; }
+        .text-xs, .text-sm, .md\\:text-sm, .md\\:text-base { font-size: var(--font-small) !important; line-height: 1.5 !important; }
 
         @media (max-width: 640px) {
             .header-bg { min-height: 205px; background-position: 58% center; }
             .header-inner { min-height: 155px; }
-            .header-inner h1 { max-width: 330px; font-size: 30px; }
+            .header-inner h1 { max-width: 330px; }
             .header-meta { font-size: 14px; }
             .page-tabs-wrap { padding: 0 16px; }
             .page-tabs { gap: 20px; }
@@ -153,11 +178,11 @@
     <!-- 主標題區 -->
     <header class="header-bg py-8 shadow-md">
         <div class="header-inner max-w-4xl mx-auto px-4 flex flex-col">
-            <h1 id="site-hero-title" class="text-3xl md:text-4xl font-bold mb-2 tracking-wider"></h1>
-            <p class="header-meta text-lg opacity-90 flex items-center gap-2">
+            <h1 id="site-hero-title" class="text-hero font-bold mb-2 tracking-wider"></h1>
+            <p class="header-meta text-heading opacity-90 flex items-center gap-2">
                 <i class="ph ph-calendar-blank"></i> <span id="site-date-text"></span>
             </p>
-            <p id="site-subtitle" class="header-meta text-lg opacity-90 flex items-center gap-2"></p>
+            <p id="site-subtitle" class="header-meta text-heading opacity-90 flex items-center gap-2"></p>
         </div>
     </header>
 
@@ -264,6 +289,34 @@
             document.querySelector('.header-bg').style.backgroundImage = layers.join(', ');
         }
 
+        // 動態套用字體大小設定
+        function applyTypography(settings) {
+            const typo = settings?.typography;
+            if (!typo) return;
+            let styleEl = document.getElementById('dynamic-typography');
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = 'dynamic-typography';
+                document.head.appendChild(styleEl);
+            }
+            styleEl.textContent = `
+                :root {
+                    --font-hero: ${typo.hero?.desktop || 38}px;
+                    --font-heading: ${typo.heading?.desktop || 22}px;
+                    --font-body: ${typo.body?.desktop || 16}px;
+                    --font-small: ${typo.small?.desktop || 14}px;
+                }
+                @media (max-width: 640px) {
+                    :root {
+                        --font-hero: ${typo.hero?.mobile || 30}px;
+                        --font-heading: ${typo.heading?.mobile || 18}px;
+                        --font-body: ${typo.body?.mobile || 15}px;
+                        --font-small: ${typo.small?.mobile || 12}px;
+                    }
+                }
+            `;
+        }
+
         if (typeof siteSettings !== 'undefined' && siteSettings) {
             document.title = siteSettings.pageTitle ?? document.title;
             document.getElementById('site-hero-title').textContent = siteSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
@@ -271,6 +324,7 @@
             document.getElementById('site-subtitle').textContent = siteSettings.subtitle ?? document.getElementById('site-subtitle').textContent;
             
             applyTheme(siteSettings);
+            applyTypography(siteSettings);
             if (Object.prototype.hasOwnProperty.call(siteSettings, 'heroImage')) {
                 applyHeroImage(siteSettings.heroImage, siteSettings);
             }
