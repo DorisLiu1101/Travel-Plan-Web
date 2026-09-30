@@ -106,7 +106,7 @@
         .page-tab[aria-selected="true"]::after { position: absolute; right: 8px; bottom: -1px; left: 8px; height: 3px; border-radius: 999px 999px 0 0; background: var(--theme-accent); content: ''; }
         .page-tab:focus-visible { outline: 2px solid var(--theme-primary); outline-offset: -3px; }
         .page-view[hidden] { display: none; }
-        .overview-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+        .overview-facts { display: grid; grid-template-columns: 1fr auto auto auto; gap: 24px; padding: 5px 0 18px; margin-bottom: 20px; border-bottom: 1px solid var(--line); align-items: center; }
         .overview-fact { display: grid; gap: 4px; min-width: 0; }
         .overview-fact span { color: var(--muted); font-size: var(--font-small); }
         .overview-fact strong { overflow-wrap: anywhere; font-size: var(--font-small); font-weight: 700; }
@@ -212,9 +212,17 @@
     <div class="page-tabs-wrap"><nav id="journey-tabs" class="page-tabs" role="tablist" aria-label="行程頁面"></nav></div>
     <main class="max-w-5xl mx-auto px-2 md:px-4 py-4 md:py-8">
         <section id="page-overview" class="page-view" role="tabpanel" aria-label="總覽">
-            <div class="overview-facts"><div class="overview-fact"><span>行程名稱</span><strong id="overview-title"></strong></div><div class="overview-fact"><span>日期</span><strong id="overview-date"></strong></div><div class="overview-fact"><span>行程天數</span><strong id="overview-days"></strong></div></div>
-            <p id="overview-subtitle" class="text-sm text-gray-600 leading-relaxed"></p>
-            <div id="overview-map-container" class="mt-8 space-y-6 empty:hidden"></div>
+            <div class="overview-facts">
+                <div class="overview-fact"><span>行程名稱</span><strong id="overview-title"></strong></div>
+                <div class="overview-fact"><span>日期</span><strong id="overview-date" class="whitespace-nowrap"></strong></div>
+                <div class="overview-fact"><span>行程天數</span><strong id="overview-days"></strong></div>
+                <div class="overview-fact print-hide flex sm:justify-end items-center">
+                    <button onclick="window.print()" class="hover:opacity-70 transition p-1" style="color: var(--theme-primary);" title="列印 / 儲存 PDF" aria-label="列印或儲存為 PDF">
+                        <i class="ph ph-printer text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="overview-map-container" class="space-y-6 empty:hidden"></div>
         </section>
         <section id="page-itinerary" class="page-view" role="tabpanel" aria-label="行程" hidden><div id="itinerary-list" class="space-y-6 md:space-y-8"></div></section>
         <section id="page-expenses" class="page-view" role="tabpanel" aria-label="經費" hidden><p class="empty-page">尚無經費資料</p></section>
@@ -406,7 +414,6 @@
         document.getElementById('overview-title').textContent = pageSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
         document.getElementById('overview-date').textContent = pageSettings.dateText ?? document.getElementById('site-date-text').textContent;
         document.getElementById('overview-days').textContent = `${typeof itineraryData !== 'undefined' && Array.isArray(itineraryData) ? itineraryData.length : 0} 天`;
-        document.getElementById('overview-subtitle').textContent = pageSettings.subtitle ?? '';
 
         // 渲染總覽路線地圖
         const overviewMapContainer = document.getElementById('overview-map-container');
@@ -715,11 +722,6 @@
             }
         }
     </script>
-    
-    <!-- 列印 / 儲存 PDF 按鈕 -->
-    <button onclick="window.print()" class="print-hide fixed bottom-6 right-6 z-50 bg-white/95 backdrop-blur text-[var(--theme-primary)] px-4 py-2.5 rounded-full shadow-lg border border-gray-200 flex items-center gap-2 hover:bg-gray-50 transition" style="color: var(--theme-primary);">
-        <i class="ph ph-printer text-xl"></i> <span class="font-bold text-sm hidden sm:inline">列印 / PDF</span>
-    </button>
 
     <!-- PWA Service Worker 與動態 Manifest 註冊 -->
     <script>
