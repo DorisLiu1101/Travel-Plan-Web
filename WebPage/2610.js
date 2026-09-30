@@ -2,24 +2,45 @@ const siteSettings = {
     "pageTitle": "土耳其傳奇 11 日",
     "heroTitle": "星月傳奇．土耳其11日",
     "dateText": "2026/10/8(四) ~ 2026/10/18(日)",
-    "subtitle": "跟團行程 · 11 天",
+    "subtitle": "跟團-行健",
     "heroImage": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
     "mapEngine": "google",
     "visibleTabs": [
-        "itinerary"
+        "itinerary",
+        "overview",
+        "expenses",
+        "todo"
     ],
-    "theme": "custom",
+    "theme": "sand",
     "customTheme": {
-        "primary": "#89A8a0",
-        "accent": "#d7c5a1",
-        "bg": "#f7f4ee",
-        "deep": "#4d3723"
+        "primary": "#7d5a3c",
+        "accent": "#d97706",
+        "bg": "#f7f4ee"
     },
     "themeColors": {
-        "primary": "#89A8a0",
+        "primary": "#7d5a3c",
         "deep": "#4d3723",
-        "accent": "#d7c5a1",
+        "accent": "#d97706",
         "bg": "#f7f4ee"
+    },
+    "typography": {
+        "style": "modern",
+        "hero": {
+            "desktop": 38,
+            "mobile": 30
+        },
+        "heading": {
+            "desktop": 22,
+            "mobile": 18
+        },
+        "body": {
+            "desktop": 18,
+            "mobile": 18
+        },
+        "small": {
+            "desktop": 15,
+            "mobile": 15
+        }
     }
 };
 

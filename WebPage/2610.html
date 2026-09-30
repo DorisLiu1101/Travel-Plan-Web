@@ -6,8 +6,7 @@
     <title></title>
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Google Fonts: Noto Sans TC -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts 將由 JS 動態載入以支援多種字體風格 -->
     <!-- 引入 Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
@@ -42,11 +41,11 @@
         .text-small { font-size: var(--font-small) !important; line-height: 1.5; }
         
         body {
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: var(--theme-font, '"Noto Sans TC", sans-serif');
             background-color: var(--bg-color);
             color: var(--text-main);
-            background-image: linear-gradient(var(--theme-grid) 1px, transparent 1px), linear-gradient(90deg, var(--theme-grid) 1px, transparent 1px);
-            background-size: 32px 32px;
+            background-image: radial-gradient(rgba(0,0,0,0.06) 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
         }
 
         /* 自定義捲軸 */
@@ -101,7 +100,7 @@
         .page-tabs-wrap { width: min(1050px, 100%); margin: 0 auto; padding: 0 24px; }
         .page-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 8px 8px 0; border-bottom: 1px solid var(--theme-border); scrollbar-width: none; -ms-overflow-style: none; }
         .page-tabs::-webkit-scrollbar { display: none; }
-        .page-tab { position: relative; min-height: 42px; flex: 0 0 auto; padding: 0 18px; border: 1px solid var(--theme-border); border-bottom: 0; border-radius: 12px 12px 0 0; background: var(--theme-tab-bg); color: var(--muted); font: 700 14px 'Noto Sans TC',sans-serif; transition: all .18s ease; }
+        .page-tab { position: relative; min-height: 42px; flex: 0 0 auto; padding: 0 18px; border: 1px solid var(--theme-border); border-bottom: 0; border-radius: 6px 6px 0 0; background: var(--theme-tab-bg); color: var(--muted); font: 700 15px var(--theme-font, '"Noto Sans TC", sans-serif'); transition: all .18s ease; }
         .page-tab:hover { background: var(--theme-tab-hover); color: var(--text-main); }
         .page-tab[aria-selected="true"] { border-color: var(--theme-border-active); background: rgba(255,255,255,.94); color: var(--theme-primary); box-shadow: 0 -3px 12px rgba(37,57,47,.08); }
         .page-tab[aria-selected="true"]::after { position: absolute; right: 8px; bottom: -1px; left: 8px; height: 3px; border-radius: 999px 999px 0 0; background: var(--theme-accent); content: ''; }
@@ -112,14 +111,15 @@
         .overview-fact span { color: var(--muted); font-size: var(--font-small); }
         .overview-fact strong { overflow-wrap: anywhere; font-size: var(--font-small); font-weight: 700; }
         .empty-page { padding: 28px 4px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: var(--font-small); }
-        .itinerary-card { overflow: hidden; border: 1px solid rgba(38,51,46,.09); border-radius: 11px; background: var(--card-bg); box-shadow: 0 8px 24px rgba(37,57,47,.07); transition: box-shadow .25s, transform .25s; }
-        .itinerary-card:hover { box-shadow: 0 14px 34px rgba(37,57,47,.12); transform: translateY(-2px); }
-        .day-header { background: var(--theme-primary); color: white; }
+        .itinerary-card { overflow: hidden; border: 1px solid rgba(0,0,0,0.05); border-radius: 4px; background: var(--card-bg); box-shadow: 2px 5px 15px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02); transition: box-shadow .25s, transform .25s; }
+        .itinerary-card:hover { box-shadow: 2px 10px 25px rgba(0,0,0,0.08); transform: translateY(-2px); }
+        .day-header { background: var(--theme-primary); color: white; border-radius: 4px 4px 0 0; }
         .itinerary-card { scroll-margin-top: 12px; }
-        .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px solid var(--theme-border); text-align: left; transition: background .18s; }
+        .spot-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; width: 100%; padding: 16px 12px 17px 0; border-bottom: 1px dashed var(--theme-border); text-align: left; transition: background .18s; }
         .spot-card:hover { background: rgba(255,255,255,.5); }
         .spot-copy { min-width: 0; flex: 1; }
-        .spot-image { width: 132px; height: 92px; flex: 0 0 132px; border-radius: 7px; object-fit: cover; }
+        .spot-image { width: 140px; height: 140px; flex: 0 0 140px; padding: 6px 6px 18px 6px; background: #fff; border: 1px solid rgba(0,0,0,0.06); box-shadow: 2px 3px 8px rgba(0,0,0,0.06); border-radius: 2px; transform: rotate(1.5deg); object-fit: cover; }
+        .spot-card:nth-child(even) .spot-image { transform: rotate(-1.5deg); }
         .spot-note-button { display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center; border: 1px solid var(--theme-border-active); border-radius: 50%; background: var(--theme-tab-hover); color: var(--theme-primary); }
         .spot-note-button:hover { background: var(--theme-primary); color: white; }
         .spot-note-button i { font-size: 17px; }
@@ -135,14 +135,17 @@
 
         /* 時間軸與點綴樣式 */
         .timeline-accent-line::before {
-            background: linear-gradient(to bottom, transparent, var(--theme-accent), transparent) !important;
+            background: none !important;
+            border-left: 2px dashed var(--theme-accent) !important;
         }
         .theme-badge {
             background-color: var(--theme-accent) !important;
             color: #ffffff !important;
+            border-radius: 2px !important; /* more like a paper tag */
         }
         .theme-node {
-            background-color: var(--theme-accent) !important;
+            background-color: #fff !important;
+            border: 3px solid var(--theme-accent) !important;
         }
         .theme-map-link {
             color: var(--theme-accent) !important;
@@ -168,7 +171,7 @@
             .page-tabs { gap: 20px; }
             .overview-facts { grid-template-columns: 1fr; gap: 11px; }
             .spot-card { gap: 10px; padding-right: 4px; }
-            .spot-image { width: 88px; height: 76px; flex-basis: 88px; }
+            .spot-image { width: 100px; height: 100px; flex-basis: 100px; padding: 4px 4px 14px 4px; }
         }
     </style>
 </head>
@@ -281,7 +284,7 @@
             const colors = settings?.themeColors || settings?.customTheme || {};
             const deep = colors.deep || '#203d34';
             const { r, g, b } = hexToRgb(deep);
-            const layers = [`linear-gradient(90deg, rgba(${r}, ${g}, ${b}, .94) 0%, rgba(${r}, ${g}, ${b}, .72) 54%, rgba(${r}, ${g}, ${b}, .18) 100%)`];
+            const layers = [`linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.6) 54%, rgba(0, 0, 0, 0.15) 100%)`];
             try {
                 const imageUrl = new URL(imageUrlStr);
                 if (imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:') layers.push(`url(${JSON.stringify(imageUrl.href)})`);
@@ -289,10 +292,47 @@
             document.querySelector('.header-bg').style.backgroundImage = layers.join(', ');
         }
 
-        // 動態套用字體大小設定
+        // 動態套用字體與大小設定
         function applyTypography(settings) {
-            const typo = settings?.typography;
-            if (!typo) return;
+            const typo = settings?.typography || {};
+            
+            // 處理字體風格 (Font Stacks)
+            const styleConfigs = {
+                modern: {
+                    url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap',
+                    family: '"Roboto", "Noto Sans TC", "Noto Sans SC", -apple-system, "Microsoft JhengHei", sans-serif'
+                },
+                elegant: {
+                    url: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap',
+                    family: '"Playfair Display", "Noto Serif TC", "Noto Serif SC", "Songti TC", "SimSun", serif'
+                },
+                journal: {
+                    url: 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Klee+One:wght@400;600&display=swap',
+                    family: '"Caveat", "Klee One", "Kaiti TC", "BiauKai", cursive'
+                },
+                reading: {
+                    url: 'https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&family=LXGW+WenKai+TC&display=swap',
+                    family: '"Lora", "LXGW WenKai TC", "LXGW WenKai Mono", "KaiTi", serif'
+                },
+                playful: {
+                    url: 'https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Varela+Round&display=swap',
+                    family: '"Nunito", "Varela Round", ui-rounded, "SF Pro Rounded", "Microsoft YaHei", sans-serif'
+                }
+            };
+
+            const selectedStyle = styleConfigs[typo.style] || styleConfigs.modern;
+
+            // 注入 Google Fonts 連結
+            let fontLink = document.getElementById('dynamic-google-font');
+            if (!fontLink) {
+                fontLink = document.createElement('link');
+                fontLink.id = 'dynamic-google-font';
+                fontLink.rel = 'stylesheet';
+                document.head.appendChild(fontLink);
+            }
+            fontLink.href = selectedStyle.url;
+
+            // 注入 CSS 變數
             let styleEl = document.getElementById('dynamic-typography');
             if (!styleEl) {
                 styleEl = document.createElement('style');
@@ -301,6 +341,7 @@
             }
             styleEl.textContent = `
                 :root {
+                    --theme-font: ${selectedStyle.family};
                     --font-hero: ${typo.hero?.desktop || 38}px;
                     --font-heading: ${typo.heading?.desktop || 22}px;
                     --font-body: ${typo.body?.desktop || 16}px;
@@ -343,7 +384,7 @@
         pageTabList.innerHTML = pageTabOptions.filter((option) => visiblePageTabs.includes(option.id)).map((option, index) => `<button id="tab-${option.id}" class="page-tab" type="button" role="tab" aria-controls="page-${option.id}" aria-selected="false" tabindex="${index === 0 ? '0' : '-1'}">${option.label}</button>`).join('');
         document.getElementById('overview-title').textContent = pageSettings.heroTitle ?? document.getElementById('site-hero-title').textContent;
         document.getElementById('overview-date').textContent = pageSettings.dateText ?? document.getElementById('site-date-text').textContent;
-        document.getElementById('overview-days').textContent = `${Array.isArray(itineraryData) ? itineraryData.length : 0} 天`;
+        document.getElementById('overview-days').textContent = `${typeof itineraryData !== 'undefined' && Array.isArray(itineraryData) ? itineraryData.length : 0} 天`;
         document.getElementById('overview-subtitle').textContent = pageSettings.subtitle ?? '';
 
         function activatePageTab(tabId, focus = false) {
@@ -414,10 +455,10 @@
                         const spotNote = String(spotData.note ?? data.spotNotes?.[spotIndex] ?? '').trim();
                         return `
                         <li class="relative flex items-start pl-12 md:pl-16 group">
-                            <div class="theme-node absolute left-6 md:left-8 -translate-x-1/2 mt-3 w-4 h-4 rounded-full border-4 border-white shadow z-10 transition-transform group-hover:scale-125"></div>
                             <div class="spot-card">
                                 <div class="spot-copy">
-                                <div class="flex items-center gap-2 mb-2">
+                                <div class="flex items-center gap-2 mb-2 relative">
+                                    <div class="theme-node absolute top-1/2 -translate-y-1/2 -left-6 md:-left-8 -translate-x-1/2 w-4 h-4 rounded-full border-4 border-white shadow z-10 transition-transform group-hover:scale-125"></div>
                                     <h4 class="font-bold text-gray-800 text-lg md:text-xl">${escapeHtml(name)}</h4>
                                     <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="theme-map-link transition-colors p-1.5 rounded-full inline-flex items-center justify-center" title="在 ${mapEngineLabel} 搜尋位置">
                                         <i class="ph ph-map-pin text-lg"></i>
@@ -437,8 +478,8 @@
             let specialNotesHtml = '';
             if (data.specialNotes && data.specialNotes.length > 0) {
                 specialNotesHtml = `
-                    <div class="mb-6 bg-red-50 text-red-800 p-4 md:p-5 rounded-xl text-base md:text-lg flex items-start gap-3 border border-red-100 shadow-sm">
-                        <i class="ph ph-warning-circle text-2xl md:text-3xl mt-0.5 shrink-0 text-red-600"></i>
+                    <div class="mb-6 bg-red-50 text-red-800 p-4 md:p-5 rounded-xl text-base md:text-lg flex items-center gap-3 border border-red-100 shadow-sm">
+                        <i class="ph ph-warning-circle text-2xl md:text-3xl shrink-0 text-red-600"></i>
                         <ul class="list-disc ml-5 space-y-2 font-medium">
                             ${data.specialNotes.map(n => `<li>${escapeHtml(n)}</li>`).join('')}
                         </ul>
@@ -513,7 +554,7 @@
                             <!-- 天氣標籤 (滿版高度，無底色) -->
                             <div class="flex flex-col justify-center items-center px-2 sm:px-3 md:px-5 bg-transparent">
                                 <i class="ph ${weatherIcon} text-2xl md:text-3xl text-yellow-300 drop-shadow-md"></i>
-                                <span class="text-sm md:text-base mt-0.5 font-bold tracking-wide whitespace-nowrap text-white">${escapeHtml(data.weather.temp)}</span>
+                                <span class="text-sm md:text-base mt-0.5 font-bold tracking-wide whitespace-nowrap text-white">${escapeHtml(data.weather?.temp || '')}</span>
                             </div>
                             <!-- 箭頭 -->
                             <div class="flex items-center justify-center w-12 md:w-14 bg-white/5 border-l border-white/10">
@@ -534,16 +575,14 @@
                             ${flightsHtml}
                             ${specialNotesHtml}
                             
-                            <div class="mb-8 mt-2">
-                                ${spotsHtml}
-                            </div>
+                            ${data.spots && data.spots.length > 0 ? `<div class="mb-8 mt-2">${spotsHtml}</div>` : ''}
                             
                             ${infoBottomHtml}
                             
-                            <div class="tips-note mt-6 md:mt-8 text-white/95 p-4 md:p-5 rounded-lg text-base md:text-lg flex gap-3 items-start tracking-wide leading-relaxed">
+                            ${data.tips ? `<div class="tips-note mt-6 md:mt-8 text-white/95 p-4 md:p-5 rounded-lg text-base md:text-lg flex gap-3 items-start tracking-wide leading-relaxed">
                                 <i class="ph ph-lightbulb text-yellow-300 text-2xl md:text-3xl shrink-0 mt-0.5 drop-shadow"></i>
                                 <p><b class="font-bold text-white mr-1 tracking-widest block md:inline mb-1 md:mb-0">TIPS｜</b>${escapeHtml(data.tips)}</p>
-                            </div>
+                            </div>` : ''}
                         </div>
                     </div>
                 </div>
@@ -554,9 +593,8 @@
         let pendingCardOpen = null;
         
         // 渲染所有卡片
-        itineraryData.forEach((data, index) => {
-            listContainer.innerHTML += createCard(data, index);
-        });
+        const validItineraryData = typeof itineraryData !== 'undefined' && Array.isArray(itineraryData) ? itineraryData : [];
+        listContainer.innerHTML = validItineraryData.map((data, index) => createCard(data, index)).join('');
 
         const spotNoteDialog = document.getElementById('spot-note-dialog');
         listContainer.addEventListener('click', (event) => {

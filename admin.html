@@ -7,7 +7,7 @@
 	<title>行程管理後台</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;600&family=Klee+One:wght@400;600&family=LXGW+WenKai+TC&family=Varela+Round&display=swap" rel="stylesheet">
 	<script src="https://unpkg.com/@phosphor-icons/web"></script>
 	<style>
 		:root {
@@ -688,9 +688,21 @@
 						</div>
 					</div>
 				</fieldset>
-				<fieldset class="typography-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;"><legend>字體大小 (Typography)</legend>
-					<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px;">
-						<div class="typo-field" style="display: flex; flex-direction: column;">
+				<fieldset class="typography-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;"><legend>字體設定 (Typography)</legend>
+					<div style="margin-bottom: 15px;">
+						<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green); display: block;">整體字體風格</strong>
+						<select id="typo-style-select" data-typo="style" style="width: 100%; padding: 6px; border: 1px solid #dce2da; border-radius: 4px; font-size: 14px; background: white; cursor: pointer;">
+							<option value="modern" style="font-family: 'Noto Sans TC', sans-serif;" ${typo.style === 'modern' ? 'selected' : ''}>現代簡約風 (思源黑體)</option>
+							<option value="elegant" style="font-family: 'Noto Serif TC', serif;" ${typo.style === 'elegant' ? 'selected' : ''}>經典優雅風 (思源宋體)</option>
+							<option value="journal" style="font-family: 'Klee One', cursive;" ${(typo.style === 'journal' || !typo.style) ? 'selected' : ''}>手寫溫度風 (克立手寫體)</option>
+							<option value="reading" style="font-family: 'LXGW WenKai TC', serif;" ${typo.style === 'reading' ? 'selected' : ''}>溫潤閱讀風 (霞鶩文楷)</option>
+							<option value="playful" style="font-family: 'Varela Round', ui-rounded, 'SF Pro Rounded', 'Microsoft YaHei', sans-serif;" ${typo.style === 'playful' ? 'selected' : ''}>活潑圓潤風 (系統圓體)</option>
+						</select>
+					</div>
+					<details>
+						<summary style="font-size: 11px; color: var(--green); cursor: pointer; font-weight: bold; padding: 4px 0;">進階：各級字體大小設定</summary>
+						<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px;">
+							<div class="typo-field" style="display: flex; flex-direction: column;">
 							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 1 大標題</strong>
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="hero.desktop" value="${typo.hero?.desktop || 38}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="hero.mobile" value="${typo.hero?.mobile || 30}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
@@ -711,6 +723,7 @@
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="small.mobile" value="${typo.small?.mobile || 12}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
 						</div>
 					</div>
+					</details>
 				</fieldset>`;
 			
 			const startPicker = document.getElementById('date-picker-start');
@@ -1400,6 +1413,16 @@
 				if (badge) badge.style.background = currentTheme.accent;
 				const dot = previewCard.querySelector('#theme-preview-dot');
 				if (dot) dot.style.background = currentTheme.accent;
+
+				const typoStyle = siteSettingsDraft.typography?.style || 'modern';
+				const styleConfigs = {
+					modern: '"Noto Sans TC", sans-serif',
+					elegant: '"Noto Serif TC", serif',
+					journal: '"Klee One", cursive',
+					reading: '"LXGW WenKai TC", serif',
+					playful: '"Varela Round", ui-rounded, "SF Pro Rounded", "Microsoft YaHei", sans-serif'
+				};
+				previewCard.style.fontFamily = styleConfigs[typoStyle] || styleConfigs.modern;
 			}
 			const customPrimaryDot = document.querySelector('.theme-custom-dot-primary');
 			if (customPrimaryDot) customPrimaryDot.style.background = currentTheme.primary;
@@ -1494,16 +1517,22 @@
 			}
 			const typoKey = event.target.dataset.typo;
 			if (typoKey) {
-				const [level, device] = typoKey.split('.');
 				if (!siteSettingsDraft.typography) {
 					siteSettingsDraft.typography = {
+						style: 'journal',
 						hero: { desktop: 38, mobile: 30 },
 						heading: { desktop: 22, mobile: 18 },
 						body: { desktop: 16, mobile: 15 },
 						small: { desktop: 14, mobile: 12 }
 					};
 				}
-				siteSettingsDraft.typography[level][device] = Number(event.target.value) || 16;
+				if (typoKey === 'style') {
+					siteSettingsDraft.typography.style = event.target.value;
+					updateThemePreviewUi();
+				} else {
+					const [level, device] = typoKey.split('.');
+					siteSettingsDraft.typography[level][device] = Number(event.target.value) || 16;
+				}
 				markChanged();
 				return;
 			}
