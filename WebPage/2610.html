@@ -194,6 +194,7 @@
         <section id="page-overview" class="page-view" role="tabpanel" aria-label="總覽">
             <div class="overview-facts"><div class="overview-fact"><span>行程名稱</span><strong id="overview-title"></strong></div><div class="overview-fact"><span>日期</span><strong id="overview-date"></strong></div><div class="overview-fact"><span>行程天數</span><strong id="overview-days"></strong></div></div>
             <p id="overview-subtitle" class="text-sm text-gray-600 leading-relaxed"></p>
+            <div id="overview-map-container" class="mt-8 space-y-6 empty:hidden"></div>
         </section>
         <section id="page-itinerary" class="page-view" role="tabpanel" aria-label="行程" hidden><div id="itinerary-list" class="space-y-6 md:space-y-8"></div></section>
         <section id="page-expenses" class="page-view" role="tabpanel" aria-label="經費" hidden><p class="empty-page">尚無經費資料</p></section>
@@ -387,6 +388,33 @@
         document.getElementById('overview-days').textContent = `${typeof itineraryData !== 'undefined' && Array.isArray(itineraryData) ? itineraryData.length : 0} 天`;
         document.getElementById('overview-subtitle').textContent = pageSettings.subtitle ?? '';
 
+        // 渲染總覽路線地圖
+        const overviewMapContainer = document.getElementById('overview-map-container');
+        if (pageSettings.overviewMap && (pageSettings.overviewMap.image || pageSettings.overviewMap.iframeUrl)) {
+            let mapHtml = '';
+            if (pageSettings.overviewMap.image) {
+                mapHtml += `<img src="${escapeHtml(pageSettings.overviewMap.image)}" alt="路線地圖" class="w-full rounded-2xl shadow-sm border border-gray-200" style="object-fit: cover;">`;
+            }
+            if (pageSettings.overviewMap.iframeUrl) {
+                const url = pageSettings.overviewMap.iframeUrl;
+                // 自動偵測是否為 Google My Maps
+                if (url.includes('google.com/maps/d/')) {
+                    // Google My Maps: 上推 72px 隱藏頂部表頭 (無底部遮擋)
+                    mapHtml += `
+                    <div class="w-full rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative" style="aspect-ratio: 16/9; background: #e5e3df;">
+                        <iframe src="${escapeHtml(url)}" width="100%" style="position: absolute; top: -72px; height: calc(100% + 72px); border: none;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>`;
+                } else {
+                    // 高德地圖或其他引擎: 正常顯示，完全不裁切
+                    mapHtml += `
+                    <div class="w-full rounded-2xl shadow-sm border border-gray-200 overflow-hidden relative" style="aspect-ratio: 16/9; background: #e5e3df;">
+                        <iframe src="${escapeHtml(url)}" width="100%" height="100%" style="border: none;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>`;
+                }
+            }
+            overviewMapContainer.innerHTML = mapHtml;
+        }
+
         function activatePageTab(tabId, focus = false) {
             pageTabList.querySelectorAll('[role="tab"]').forEach((tab) => {
                 const active = tab.id === `tab-${tabId}`;
@@ -505,7 +533,7 @@
                     <div class="flex items-start gap-3">
                         <div class="bg-pink-50 text-pink-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-pink-100"><i class="ph ph-shopping-bag text-2xl"></i></div>
                         <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">必買 / 必吃推薦</span>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-pink-800 block mb-1">當地推薦</span>
                             <span class="text-base md:text-lg text-gray-800 block leading-relaxed"><b class="font-bold text-gray-900">買：</b>${escapeHtml(data.buy)}</span>
                             <span class="text-base md:text-lg text-gray-800 block mt-1 leading-relaxed"><b class="font-bold text-gray-900">吃：</b>${escapeHtml(data.eat)}</span>
                         </div>
@@ -513,7 +541,7 @@
                     <div class="flex items-start gap-3">
                         <div class="bg-orange-50 text-orange-700 p-2 rounded-xl mt-0.5 shrink-0 shadow-sm border border-orange-100"><i class="ph ph-fork-knife text-2xl"></i></div>
                         <div>
-                            <span class="text-base md:text-lg font-bold tracking-widest text-orange-800 block mb-1">美食</span>
+                            <span class="text-base md:text-lg font-bold tracking-widest text-orange-800 block mb-1">餐廳</span>
                             <span class="text-base md:text-lg text-gray-800 leading-relaxed block space-y-1">${meals}</span>
                         </div>
                     </div>

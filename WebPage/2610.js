@@ -7,21 +7,24 @@ const siteSettings = {
     "mapEngine": "google",
     "visibleTabs": [
         "itinerary",
-        "overview",
-        "expenses",
-        "todo"
+        "overview"
     ],
-    "theme": "sand",
+    "theme": "forest",
     "customTheme": {
-        "primary": "#7d5a3c",
-        "accent": "#d97706",
-        "bg": "#f7f4ee"
+        "primary": "#315a4c",
+        "accent": "#cf795f",
+        "bg": "#eef2ec",
+        "deep": "#203d34"
+    },
+    "overviewMap": {
+        "image": "",
+        "iframeUrl": "https://www.google.com/maps/d/embed?mid=1AKPm6i_BLlMD3cy0YLVSWmuNVfNCdLY&ehbc=2E312F"
     },
     "themeColors": {
-        "primary": "#7d5a3c",
-        "deep": "#4d3723",
-        "accent": "#d97706",
-        "bg": "#f7f4ee"
+        "primary": "#315a4c",
+        "deep": "#203d34",
+        "accent": "#cf795f",
+        "bg": "#eef2ec"
     },
     "typography": {
         "style": "modern",

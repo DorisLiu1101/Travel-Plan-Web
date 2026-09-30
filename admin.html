@@ -601,6 +601,13 @@
 								<label class="map-engine-option"><input type="radio" name="mapEngine" data-site-setting="mapEngine" value="${value}" ${siteSettingsDraft.mapEngine === value ? 'checked' : ''}><i class="ph ${icon}" aria-hidden="true"></i><span>${label}</span></label>`).join('')}
 							</div>
 						</div>
+						<div class="overview-map-setting" style="margin: 0; border: 0; padding: 0;">
+							<legend style="margin-bottom: 7px; color: #59655e; font-size: 10px; font-weight: 700;">總覽頁路線地圖</legend>
+							<div style="display: flex; flex-direction: column; gap: 8px;">
+								<input type="text" data-overview-map="image" value="${escapeHtml(siteSettingsDraft.overviewMap?.image || '')}" placeholder="靜態路線圖 (圖片網址) https://.../route.jpg" title="靜態圖片網址" style="width: 100%; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px;">
+								<input type="text" data-overview-map="iframeUrl" value="${escapeHtml(siteSettingsDraft.overviewMap?.iframeUrl || '')}" placeholder="互動地圖 (Google / 高德 Iframe 網址)" title="Iframe 嵌入網址" style="width: 100%; height: 37px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; outline: none; background: #fbfcfa; color: var(--ink); font-size: 11px;">
+							</div>
+						</div>
 					</div>
 					<label class="site-setting" style="grid-column: auto;">
 						標題背景圖網址
@@ -612,8 +619,9 @@
 						</div>
 					</label>
 				</div>
-				<fieldset class="theme-setting"><legend>行程配色主題</legend>
-					<div class="theme-options">
+				<details class="theme-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;">
+					<summary style="font-size: 12px; color: var(--green); cursor: pointer; font-weight: bold; padding: 4px 0; user-select: none; display: flex; align-items: center; gap: 6px;"><i class="ph ph-palette"></i> 行程配色主題設定</summary>
+					<div class="theme-options" style="margin-top: 10px;">
 						${themeEntries.map(([key, item]) => `
 						<label class="theme-option">
 							<input type="radio" name="themePreset" data-theme-preset="${key}" value="${key}" ${siteSettingsDraft.theme === key ? 'checked' : ''}>
@@ -687,9 +695,11 @@
 							</div>
 						</div>
 					</div>
-				</fieldset>
-				<fieldset class="typography-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;"><legend>字體設定 (Typography)</legend>
-					<div style="margin-bottom: 15px;">
+				</details>
+				
+				<details class="typography-setting" style="margin-top: 15px; border-top: 1px solid var(--line); padding-top: 15px;">
+					<summary style="font-size: 12px; color: var(--green); cursor: pointer; font-weight: bold; padding: 4px 0; user-select: none; display: flex; align-items: center; gap: 6px;"><i class="ph ph-text-aa"></i> 字體排版設定 (Typography)</summary>
+					<div style="margin-bottom: 15px; margin-top: 10px;">
 						<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green); display: block;">整體字體風格</strong>
 						<select id="typo-style-select" data-typo="style" style="width: 100%; padding: 6px; border: 1px solid #dce2da; border-radius: 4px; font-size: 14px; background: white; cursor: pointer;">
 							<option value="modern" style="font-family: 'Noto Sans TC', sans-serif;" ${typo.style === 'modern' ? 'selected' : ''}>現代簡約風 (思源黑體)</option>
@@ -699,10 +709,8 @@
 							<option value="playful" style="font-family: 'Varela Round', ui-rounded, 'SF Pro Rounded', 'Microsoft YaHei', sans-serif;" ${typo.style === 'playful' ? 'selected' : ''}>活潑圓潤風 (系統圓體)</option>
 						</select>
 					</div>
-					<details>
-						<summary style="font-size: 11px; color: var(--green); cursor: pointer; font-weight: bold; padding: 4px 0;">進階：各級字體大小設定</summary>
-						<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px;">
-							<div class="typo-field" style="display: flex; flex-direction: column;">
+					<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--line);">
+						<div class="typo-field" style="display: flex; flex-direction: column;">
 							<strong style="font-size: 11px; margin-bottom: 7px; color: var(--green);">Level 1 大標題</strong>
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; margin-bottom: 6px; color: var(--muted);">電腦 <input type="number" data-typo="hero.desktop" value="${typo.hero?.desktop || 38}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="hero.mobile" value="${typo.hero?.mobile || 30}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
@@ -723,8 +731,7 @@
 							<label style="display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted);">手機 <input type="number" data-typo="small.mobile" value="${typo.small?.mobile || 12}" style="width: 48px; padding: 4px; border: 1px solid #dce2da; border-radius: 4px; text-align: center;"> px</label>
 						</div>
 					</div>
-					</details>
-				</fieldset>`;
+				</details>`;
 			
 			const startPicker = document.getElementById('date-picker-start');
 			const endPicker = document.getElementById('date-picker-end');
@@ -1512,6 +1519,24 @@
 					return showToast('至少保留一個前台頁籤');
 				}
 				siteSettingsDraft.visibleTabs = [...selectedTabs];
+				markChanged();
+				return;
+			}
+			const overviewMapKey = event.target.dataset.overviewMap;
+			if (overviewMapKey) {
+				if (!siteSettingsDraft.overviewMap) siteSettingsDraft.overviewMap = {};
+				
+				let val = event.target.value.trim();
+				// 自動萃取 iframe 原始碼中的 src 網址 (防呆設計)
+				if (overviewMapKey === 'iframeUrl' && val.toLowerCase().includes('<iframe')) {
+					const match = val.match(/src\s*=\s*["']([^"']+)["']/i);
+					if (match) {
+						val = match[1];
+						event.target.value = val; // 自動把畫面上的長代碼替換成乾淨的網址
+					}
+				}
+				
+				siteSettingsDraft.overviewMap[overviewMapKey] = val;
 				markChanged();
 				return;
 			}
