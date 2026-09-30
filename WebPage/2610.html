@@ -173,6 +173,26 @@
             .spot-card { gap: 10px; padding-right: 4px; }
             .spot-image { width: 100px; height: 100px; flex-basis: 100px; padding: 4px 4px 14px 4px; }
         }
+
+        /* --- 列印與 PDF 匯出最佳化樣式 --- */
+        @media print {
+            body { background: white !important; color: black !important; }
+            .header-bg { background-image: none !important; background-color: white !important; color: black !important; box-shadow: none !important; padding: 20px 0 !important; border-bottom: 2px solid #ccc; min-height: auto; }
+            .header-inner h1, .header-meta { text-shadow: none !important; color: black !important; }
+            /* 隱藏不必要的 UI */
+            .page-tabs-wrap, .print-hide, .map-link { display: none !important; }
+            /* 強制顯示所有面板 */
+            .page-view { display: block !important; }
+            .page-view[hidden] { display: block !important; }
+            /* 強制展開所有天數行程 */
+            .itinerary-day-content { display: block !important; }
+            .day-toggle { display: none !important; }
+            /* 隱藏 Iframe (列印不支援互動)，若有靜態圖片則會保留 */
+            iframe { display: none !important; }
+            /* 避免卡片或天數被跨頁切斷 */
+            .itinerary-day { page-break-inside: avoid; break-inside: avoid; border: none !important; box-shadow: none !important; margin-bottom: 30px !important; }
+            .spot-card { page-break-inside: avoid; break-inside: avoid; border: 1px solid #ddd !important; box-shadow: none !important; }
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen relative overflow-x-hidden">
@@ -693,6 +713,52 @@
                 content.classList.remove('open');
                 chevron.classList.remove('rotate-180');
             }
+        }
+    </script>
+    
+    <!-- 列印 / 儲存 PDF 按鈕 -->
+    <button onclick="window.print()" class="print-hide fixed bottom-6 right-6 z-50 bg-white/95 backdrop-blur text-[var(--theme-primary)] px-4 py-2.5 rounded-full shadow-lg border border-gray-200 flex items-center gap-2 hover:bg-gray-50 transition" style="color: var(--theme-primary);">
+        <i class="ph ph-printer text-xl"></i> <span class="font-bold text-sm hidden sm:inline">列印 / PDF</span>
+    </button>
+
+    <!-- PWA Service Worker 與動態 Manifest 註冊 -->
+    <script>
+        // 動態產生專屬此行程的 PWA Manifest (讓每個行程獨立成一個 App)
+        const appName = (typeof siteSettings !== 'undefined' && siteSettings.heroTitle) ? siteSettings.heroTitle : '旅遊行程';
+        const themeColor = (typeof siteSettings !== 'undefined' && (siteSettings.themeColors?.primary || siteSettings.customTheme?.primary)) || '#315a4c';
+        
+        const manifestData = {
+            "name": appName,
+            "short_name": appName,
+            "start_url": window.location.href, // 綁定當下的網址 (例如 2612.html)
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": themeColor,
+            "icons": [
+                {
+                    // 根據主色調動態產生 App 圖示 (SVG 格式轉 Base64 支援度最高)
+                    "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='" + encodeURIComponent(themeColor) + "'/><text x='50' y='65' font-family='Arial' font-size='50' fill='white' text-anchor='middle'>✈️</text></svg>",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestUrl;
+        document.head.appendChild(manifestLink);
+
+        // 註冊快取
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('PWA ServiceWorker ready!'))
+                    .catch(err => console.error('PWA ServiceWorker failed:', err));
+            });
         }
     </script>
 </body>
