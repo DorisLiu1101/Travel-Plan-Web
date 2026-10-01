@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行程規劃 - 新版模板</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        /* 色彩系統設定 (古籍苔綠) */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        moss: {
+                            100: '#F4EFD9', /* 最淺色 (背景) */
+                            200: '#D8D2A7', /* 點綴淺色 */
+                            300: '#A9B482', /* 輔助中色 */
+                            400: '#6F7F5A', /* 品牌主色 */
+                            500: '#3C4733', /* 最深色 (文字) */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F4EFD9;
+            color: #3C4733;
+            scroll-behavior: smooth;
+        }
+
+        /* 隱藏水平溢出的滑動軸 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 全域客製化拉 BAR */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #F4EFD9; }
+        ::-webkit-scrollbar-thumb { background: #A9B482; border-radius: 4px; border: 2px solid #F4EFD9; }
+        ::-webkit-scrollbar-thumb:hover { background: #6F7F5A; }
+
+        dialog::backdrop {
+            background-color: rgba(60, 71, 51, 0.4);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel {
+                @apply bg-moss-100/70 backdrop-blur-xl border border-white/50;
+                box-shadow: 0 4px 20px rgba(60,71,51,0.05);
+            }
+            .sidebar-collapsed {
+                @apply w-20;
+            }
+            .sidebar-collapsed .nav-text {
+                @apply hidden opacity-0;
+            }
+            .sidebar-collapsed .nav-item {
+                @apply justify-center px-0;
+            }
+            .nav-item.active {
+                @apply bg-moss-400 text-moss-100 shadow-[0_4px_12px_rgba(111,127,90,0.3)];
+            }
+            .nav-item.active .nav-icon {
+                @apply bg-moss-500 text-moss-100;
+            }
+            .spot-card {
+                @apply bg-white/90 border border-moss-300/30 shadow-sm transition-all duration-300;
+            }
+            .spot-card:hover {
+                @apply -translate-y-0.5 shadow-[0_12px_30px_rgba(60,71,51,0.08)];
+            }
+        }
+    </style>
+</head>
+<body class="antialiased relative selection:bg-moss-300 selection:text-moss-500">
+
+    <!-- 頂部主視覺 (Hero) -->
+    <header id="hero" class="relative w-full h-[40vh] md:h-[50vh] bg-cover bg-center transition-all duration-500 bg-moss-300">
+        <div class="absolute inset-0 bg-gradient-to-t from-moss-500/90 via-moss-500/30 to-transparent"></div>
+        <div class="absolute bottom-12 md:bottom-16 left-0 w-full px-4 md:px-12 max-w-7xl mx-auto">
+            <div class="mb-3 flex items-center gap-3 text-moss-100/90 text-[10px] md:text-xs font-black tracking-widest uppercase">
+                <span id="ui-hero-date">--</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-moss-300"></span>
+                <span id="ui-hero-days">-- DAYS</span>
+            </div>
+            <h1 id="ui-hero-title" class="text-3xl md:text-5xl lg:text-6xl font-serif font-black text-moss-100 mb-4 tracking-wide drop-shadow-lg">載入中...</h1>
+            <p id="ui-subtitle" class="text-moss-100/80 text-sm md:text-base font-bold flex items-center gap-2">
+                <i class="ph ph-spinner animate-spin"></i> 正在讀取資料
+            </p>
+        </div>
+    </header>
+
+    <!-- [PC 端專屬] 橫向主頁籤 (Sticky Navbar) -->
+    <div class="hidden md:flex sticky top-0 z-40 bg-moss-100/90 backdrop-blur-lg border-b border-moss-300/30 w-full shadow-sm">
+        <div class="max-w-7xl mx-auto px-12 flex items-center justify-start gap-6 overflow-x-auto no-scrollbar py-3">
+            <button onclick="switchMainTab('tab-overview')" id="btn-pc-tab-overview" class="main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0 active">
+                <i class="ph ph-compass text-xl"></i> 總覽
+            </button>
+            <button onclick="switchMainTab('tab-itinerary')" id="btn-pc-tab-itinerary" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0">
+                <i class="ph ph-map-trifold text-xl"></i> 行程
+            </button>
+            <button onclick="switchMainTab('tab-expenses')" id="btn-pc-tab-expenses" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0">
+                <i class="ph ph-coin text-xl"></i> 經費
+            </button>
+            <button onclick="switchMainTab('tab-todo')" id="btn-pc-tab-todo" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0">
+                <i class="ph ph-check-square text-xl"></i> 待辦
+            </button>
+        </div>
+    </div>
+
+    <!-- 頁面主要容器 -->
+    <div class="max-w-7xl mx-auto px-4 md:px-12 py-8 pb-24 md:pb-8 w-full min-h-[60vh] relative">
+        
+        <!-- 1. 總覽 (Overview) -->
+        <main id="tab-overview" class="main-content-pane block space-y-8 animate-[rise_0.3s_ease-out]">
+            
+            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-start gap-5 md:gap-10 border border-white">
+                <div>
+                    <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Dates / 日期</p>
+                    <p id="ui-overview-date" class="text-sm md:text-base font-bold text-moss-500">--</p>
+                </div>
+                <div class="hidden md:block w-px h-8 bg-moss-300/40"></div>
+                <div>
+                    <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Duration / 天數</p>
+                    <p id="ui-overview-days" class="text-sm md:text-base font-bold text-moss-500">--</p>
+                </div>
+                <div class="hidden md:block w-px h-8 bg-moss-300/40"></div>
+                <div class="flex-1">
+                    <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Cities / 地點</p>
+                    <p id="ui-overview-cities" class="text-sm md:text-base font-bold text-moss-500">伊斯坦堡 Istanbul, 卡帕多奇亞 Cappadocia...</p>
+                </div>
+            </div>
+
+            <div class="w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-sm border border-moss-200 bg-moss-200/50 flex flex-col items-center justify-center text-moss-400">
+                <i class="ph ph-map text-4xl mb-2"></i>
+                <p class="text-sm font-bold">Google Maps 全域路線圖預留區塊</p>
+            </div>
+
+            <div class="mt-8">
+                <div class="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+                    <div class="w-48 shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border border-moss-200 group cursor-pointer hover:-translate-y-1 transition-all">
+                        <div class="h-32 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-black text-moss-500 text-lg">伊斯坦堡</h4>
+                            <p class="text-[10px] text-moss-400 font-black tracking-widest mt-1 uppercase">Istanbul</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 2. 行程 (Itinerary) -->
+        <main id="tab-itinerary" class="main-content-pane hidden animate-[rise_0.3s_ease-out]">
+            <div class="flex flex-col md:flex-row gap-8 items-start w-full relative">
+                
+                <nav id="itinerary-mobile-nav" class="md:hidden sticky top-4 z-30 glass-panel rounded-full p-1.5 flex overflow-x-auto no-scrollbar gap-1 w-full shadow-sm"></nav>
+
+                <nav id="itinerary-sidebar" class="hidden md:flex flex-col sticky top-24 z-30 w-64 glass-panel rounded-2xl p-4 transition-all duration-300 ease-in-out shrink-0">
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <span class="nav-text text-[10px] font-black text-moss-400 tracking-widest uppercase">目錄 Navigation</span>
+                        <button id="toggle-sidebar" class="w-8 h-8 rounded-full hover:bg-moss-200 flex items-center justify-center text-moss-500 transition-colors">
+                            <i class="ph ph-caret-left text-lg toggle-icon font-bold"></i>
+                        </button>
+                    </div>
+                    <div id="pc-nav-links" class="flex flex-col gap-1"></div>
+                </nav>
+
+                <div id="itinerary-content" class="flex-1 w-full flex flex-col">
+                    <!-- 動態生成每日行程 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 3. 經費 (Expenses) -->
+        <main id="tab-expenses" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
+            <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm">
+                <h3 class="text-xl font-black text-moss-500 mb-6 flex items-center gap-2"><i class="ph ph-chart-pie-slice text-2xl text-moss-400"></i> 經費儀表板</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-moss-100 p-4 rounded-xl border border-moss-200">
+                        <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1.5 uppercase">預估總花費</p>
+                        <p class="text-lg md:text-xl font-black text-moss-500">NT$ --</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 4. 待辦 (TODO) -->
+        <main id="tab-todo" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
+            <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
+                <h3 class="text-xl font-black text-moss-500 mb-4 flex items-center gap-2"><i class="ph ph-ticket text-2xl text-moss-400"></i> 行程關聯票券與預約</h3>
+                <p class="text-sm md:text-base font-medium text-moss-500/80 mb-4">系統自動從每日行程抓取的電子票券與備註資訊，方便集中查閱。</p>
+            </div>
+        </main>
+        
+    </div>
+
+    <!-- [手機端專屬] App 底部導航列 -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-moss-100/95 backdrop-blur-lg border-t border-moss-300/40 pt-1 pb-4 md:pb-6 shadow-[0_-4px_20px_rgba(60,71,51,0.08)]">
+        <div class="flex justify-around items-center px-2">
+            <button onclick="switchMainTab('tab-overview')" id="btn-mob-tab-overview" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-500 transition-all duration-200 active scale-[1.15] drop-shadow-sm">
+                <i class="ph ph-compass text-2xl"></i>
+                <span class="text-[10px] font-black leading-none">總覽</span>
+            </button>
+            <button onclick="switchMainTab('tab-itinerary')" id="btn-mob-tab-itinerary" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+                <i class="ph ph-map-trifold text-2xl"></i>
+                <span class="text-[10px] font-black leading-none">行程</span>
+            </button>
+            <button onclick="switchMainTab('tab-expenses')" id="btn-mob-tab-expenses" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+                <i class="ph ph-coin text-2xl"></i>
+                <span class="text-[10px] font-black leading-none">經費</span>
+            </button>
+            <button onclick="switchMainTab('tab-todo')" id="btn-mob-tab-todo" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+                <i class="ph ph-check-square text-2xl"></i>
+                <span class="text-[10px] font-black leading-none">待辦</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 彈窗 (Modal) -->
+    <dialog id="info-modal" class="bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-auto open:animate-[rise_0.3s_ease-out] border-4 border-white overflow-hidden relative">
+        <div class="absolute top-0 left-0 w-full h-24 bg-moss-300/20"></div>
+        <button onclick="document.getElementById('info-modal').close()" class="absolute top-5 right-5 w-8 h-8 bg-white hover:bg-moss-400 hover:text-white rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
+            <i class="ph ph-x font-bold text-sm"></i>
+        </button>
+        <div class="p-8 relative z-10 pt-10">
+            <div class="flex flex-col items-center text-center gap-4 mb-6 pb-6 border-b border-moss-300/40">
+                <div class="w-14 h-14 bg-white rounded-2xl shadow-sm border border-moss-200 flex items-center justify-center">
+                    <i id="modal-icon" class="text-3xl text-moss-400"></i>
+                </div>
+                <h3 id="modal-title" class="text-lg md:text-xl font-black text-moss-500 tracking-wide"></h3>
+            </div>
+            <p id="modal-content" class="text-moss-500 font-medium leading-relaxed text-sm md:text-base whitespace-pre-line text-center"></p>
+        </div>
+    </dialog>
+
+    <script>
+        /* ================= 切換主頁籤邏輯 ================= */
+        function switchMainTab(tabId) {
+            document.querySelectorAll('.main-content-pane').forEach(el => el.classList.add('hidden'));
+            const targetTab = document.getElementById(tabId);
+            if(targetTab) targetTab.classList.remove('hidden');
+            
+            // PC 樣式切換
+            document.querySelectorAll('.main-tab-btn-pc').forEach(btn => {
+                btn.className = "main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0";
+            });
+            const activePc = document.getElementById('btn-pc-' + tabId);
+            if(activePc) {
+                activePc.className = "main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0 active";
+            }
+
+            // 手機底部樣式切換 (加強未選與點選的對比度，縮小文字間隔)
+            document.querySelectorAll('.main-tab-btn-mob').forEach(btn => {
+                btn.className = "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-400/60 hover:text-moss-400 transition-all duration-200";
+            });
+            const activeMob = document.getElementById('btn-mob-' + tabId);
+            if(activeMob) {
+                activeMob.className = "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 pt-1.5 pb-1 w-16 text-moss-500 transition-all duration-200 active scale-[1.15] drop-shadow-sm";
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ================= 彩蛋選單切換邏輯 ================= */
+        function switchEggTab(dayId, typeId) {
+            document.querySelectorAll(`.egg-content-${dayId}`).forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`egg-${typeId}-${dayId}`);
+            if (target) target.classList.remove('hidden');
+            
+            document.querySelectorAll(`.egg-tab-${dayId}`).forEach(el => {
+                el.className = `egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-sm transition-all text-moss-500 hover:bg-moss-300/30 flex-1 md:flex-none text-center md:text-left`;
+            });
+            const activeBtn = document.getElementById(`btn-egg-${typeId}-${dayId}`);
+            if (activeBtn) {
+                activeBtn.className = `egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-sm transition-all bg-moss-400 text-moss-100 shadow-sm flex-1 md:flex-none text-center md:text-left active`;
+            }
+        }
+
+        /* ================= 彈窗與收合邏輯 ================= */
+        document.addEventListener('click', (e) => {
+            const noteBtn = e.target.closest('.btn-note');
+            if (noteBtn) {
+                const title = noteBtn.getAttribute('data-title') || '備註資訊';
+                const content = decodeURIComponent(noteBtn.getAttribute('data-content'));
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-icon').className = 'text-3xl text-moss-400 ph ph-info';
+                document.getElementById('modal-content').innerHTML = content;
+                document.getElementById('info-modal').showModal();
+            }
+        });
+
+        const toggleBtn = document.getElementById('toggle-sidebar');
+        const toggleIcon = document.querySelector('.toggle-icon');
+        if(toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const sidebar = document.getElementById('itinerary-sidebar');
+                sidebar.classList.toggle('sidebar-collapsed');
+                if (sidebar.classList.contains('sidebar-collapsed')) {
+                    toggleIcon.classList.remove('ph-caret-left');
+                    toggleIcon.classList.add('ph-list');
+                } else {
+                    toggleIcon.classList.remove('ph-list');
+                    toggleIcon.classList.add('ph-caret-left');
+                }
+            });
+        }
+
+        /* ================= 資料讀取與渲染 ================= */
+        async function loadItinerary() {
+            try {
+                const response = await fetch('2610.json');
+                const data = await response.json();
+                
+                if(data.itinerary && data.itinerary[0]) {
+                    if(!data.itinerary[0].flights || data.itinerary[0].flights.length === 0) {
+                        data.itinerary[0].flights = [
+                            "TK 025 台北(TPE) 22:25 ✈️ 伊斯坦堡(IST) 06:05 (+1)",
+                            "TK 2010 伊斯坦堡(IST) 08:35 ✈️ 開塞利(ASR) 10:05"
+                        ];
+                    }
+                }
+
+                renderHero(data.settings, data.itinerary);
+                renderNavigation(data.itinerary);
+                renderItinerary(data.itinerary);
+                setupScrollSpy();
+
+            } catch (error) {
+                console.error("載入資料失敗:", error);
+            }
+        }
+
+        function renderHero(settings, itineraryData) {
+            document.title = settings.pageTitle || '行程表';
+            
+            document.getElementById('ui-hero-date').textContent = settings.dateText || '--';
+            document.getElementById('ui-hero-days').textContent = (itineraryData ? itineraryData.length : '--') + ' DAYS';
+            document.getElementById('ui-hero-title').textContent = settings.heroTitle || '未知旅程';
+            document.getElementById('ui-subtitle').textContent = settings.subtitle || '';
+            
+            document.getElementById('ui-overview-date').textContent = settings.dateText || '--';
+            document.getElementById('ui-overview-days').textContent = (itineraryData ? itineraryData.length : '--') + ' DAYS';
+            
+            if (settings.heroImage) {
+                document.getElementById('hero').style.backgroundImage = `url('${settings.heroImage}')`;
+            }
+        }
+
+        function renderNavigation(itineraryData) {
+            const pcNavContainer = document.getElementById('pc-nav-links');
+            const mobileNavContainer = document.getElementById('itinerary-mobile-nav');
+            let pcHtml = '';
+            let mobileHtml = '';
+
+            itineraryData.forEach((day, index) => {
+                const dayId = `day-${index}`;
+                pcHtml += `
+                    <a href="#${dayId}" class="nav-item nav-day flex items-center gap-3 px-3 py-2.5 rounded-xl text-moss-500 font-bold hover:bg-moss-200/50 transition-all group" data-target="${dayId}">
+                        <div class="nav-icon w-8 h-8 rounded-full bg-moss-200 group-hover:bg-moss-300 flex items-center justify-center text-xs shrink-0">${index + 1}</div>
+                        <div class="nav-text truncate min-w-0"><p class="text-[10px] font-black opacity-70 tracking-wider">${day.day}</p><p class="text-sm font-bold truncate">${day.title}</p></div>
+                    </a>
+                `;
+                mobileHtml += `
+                    <a href="#${dayId}" class="nav-item nav-day shrink-0 px-5 py-2 rounded-full text-sm font-bold text-moss-500 hover:bg-moss-200/50 transition-colors" data-target="${dayId}">${day.day}</a>
+                `;
+            });
+
+            pcNavContainer.innerHTML = pcHtml;
+            mobileNavContainer.innerHTML = mobileHtml;
+        }
+
+        function renderItinerary(itineraryData) {
+            const container = document.getElementById('itinerary-content');
+            let html = '';
+
+            itineraryData.forEach((day, index) => {
+                const dayId = `day-${index}`;
+                
+                let weatherOutfitHtml = '<div class="flex flex-wrap items-center gap-3 mb-5 text-sm font-bold text-moss-500">';
+                if (day.weather) {
+                    weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon} text-lg"></i> ${day.weather.temp}</span>`;
+                }
+                if (day.weather && day.outfit) {
+                    weatherOutfitHtml += `<span class="text-moss-300/60 font-black">|</span>`;
+                }
+                if (day.outfit) {
+                    weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ph-t-shirt text-lg"></i> ${day.outfit}</span>`;
+                }
+                weatherOutfitHtml += '</div>';
+
+                let flightsHtml = '';
+                if (day.flights && day.flights.length > 0) {
+                    flightsHtml = `
+                        <div class="mb-6 bg-moss-500 border border-moss-400 rounded-2xl p-5 shadow-sm relative overflow-hidden">
+                            <div class="flex items-center gap-2 mb-4 border-b border-moss-400/50 pb-2">
+                                <i class="ph ph-airplane-tilt text-moss-100 text-xl"></i>
+                                <span class="text-[10px] md:text-[11px] text-moss-300 font-black tracking-widest uppercase">Flight Information</span>
+                            </div>
+                            <div class="space-y-2 relative z-10">
+                    `;
+                    day.flights.forEach(flight => {
+                        let flightText = typeof flight === 'string' ? flight : `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`;
+                        flightsHtml += `
+                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-sm md:text-base text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2">
+                                <i class="ph ph-ticket text-moss-300 mt-1 shrink-0"></i>
+                                <span>${flightText}</span>
+                            </div>
+                        `;
+                    });
+                    flightsHtml += `</div></div>`;
+                }
+
+                let mapHtml = '';
+                if (index === 0) {
+                    mapHtml = `
+                        <div onclick="window.open('https://maps.google.com', '_blank')" class="mb-5 relative w-full h-32 md:h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-sm border border-moss-300/40">
+                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" alt="Daily Route Map">
+                            <div class="absolute inset-0 bg-[#3C4733]/30 flex items-center justify-center group-hover:bg-[#3C4733]/40 transition-colors">
+                                <span class="bg-[#F4EFD9] text-moss-500 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 shadow-lg">
+                                    <i class="ph ph-path text-lg"></i> 查看今日路線地圖
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let spotsHtml = '';
+                if(day.spots && day.spots.length > 0) {
+                    spotsHtml = `<div class="space-y-4">`;
+                    day.spots.forEach((spot, spotIndex) => {
+                        let spotActionsHtml = '';
+                        let currentNote = spot.note;
+                        
+                        if (index === 0 && spotIndex === 0 && !currentNote) {
+                            currentNote = "這是一段示範備註純文字！\n出示此畫面給導遊即可快速報到。";
+                        }
+
+                        if (currentNote || (index === 0 && spotIndex === 0)) {
+                            spotActionsHtml = `<div class="flex items-center gap-3 mt-4 pt-4 border-t border-moss-300/30">`;
+                            if (index === 0 && spotIndex === 0) {
+                                spotActionsHtml += `
+                                    <button onclick="window.open('#', '_blank')" class="w-9 h-9 rounded-full bg-moss-400 text-moss-100 hover:bg-moss-500 flex items-center justify-center transition-all shadow-sm" title="電子票卷">
+                                        <i class="ph ph-ticket text-lg"></i>
+                                    </button>
+                                `;
+                            }
+                            if (currentNote) {
+                                spotActionsHtml += `
+                                    <button class="btn-note w-9 h-9 rounded-full bg-moss-200 text-moss-500 hover:bg-moss-300 flex items-center justify-center transition-all shadow-sm font-bold" title="備註資訊" data-title="${spot.name}" data-content="${encodeURIComponent(currentNote)}">
+                                        <i class="ph ph-info text-lg"></i>
+                                    </button>
+                                `;
+                            }
+                            spotActionsHtml += `</div>`;
+                        }
+
+                        spotsHtml += `
+                            <div class="spot-card rounded-2xl p-4 md:p-5 flex justify-between gap-4 md:gap-6 relative overflow-hidden group">
+                                <div class="absolute left-0 top-0 bottom-0 w-2 bg-moss-300 group-hover:bg-moss-400 transition-colors"></div>
+                                <div class="flex-1 min-w-0 flex flex-col justify-center pl-2">
+                                    <h4 class="text-lg md:text-xl font-black text-moss-500 mb-2">${spot.name}</h4>
+                                    <p class="text-sm md:text-base text-moss-500/80 font-medium leading-relaxed">${spot.description}</p>
+                                    ${spotActionsHtml}
+                                </div>
+                                ${spot.image ? `
+                                <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-xl overflow-hidden bg-moss-200/50 shadow-inner">
+                                    <img src="${spot.image}" class="w-full h-full object-cover" loading="lazy" alt="${spot.name}">
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                    spotsHtml += `</div>`;
+                }
+
+                let tipsHtml = '';
+                if (day.tips) {
+                    tipsHtml = `
+                        <div class="mt-6 mb-2 flex items-start gap-2.5 text-sm text-moss-500 font-bold px-2 bg-moss-200/40 p-4 rounded-xl border border-moss-300/50 shadow-sm">
+                            <i class="ph ph-lightbulb text-moss-500 text-lg font-bold shrink-0 mt-0.5"></i>
+                            <p>${day.tips}</p>
+                        </div>
+                    `;
+                }
+
+                let summaryHtml = '';
+                if(day.meals || day.lodging) {
+                    summaryHtml = `
+                        <div class="mt-4 bg-white/70 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row gap-5 border border-moss-200 shadow-sm">
+                            ${day.meals ? `
+                            <div class="flex-1 flex flex-col justify-start">
+                                <h5 class="text-[10px] md:text-[11px] font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
+                                <p class="text-sm md:text-base text-moss-500 font-bold leading-relaxed">${day.meals.replace(/ \/ /g, '<br>')}</p>
+                            </div>` : ''}
+                            
+                            ${day.lodging ? `
+                            <div class="flex-1 flex flex-col justify-start border-t md:border-t-0 md:border-l border-moss-200 pt-3 md:pt-0 md:pl-5">
+                                <h5 class="text-[10px] md:text-[11px] font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-bed text-sm"></i> Lodging / 住宿</h5>
+                                <p class="text-sm md:text-base text-moss-500 font-bold">${day.lodging}</p>
+                            </div>` : ''}
+                        </div>
+                    `;
+                }
+
+                let eggHtml = '';
+                const parseItems = (str) => {
+                    if(typeof str !== 'string') return [];
+                    return str.split(/[、,]/).map(s => s.trim()).filter(s => s);
+                };
+                
+                let availableTypes = [];
+                let eatItems = day.eat ? parseItems(day.eat) : [];
+                let buyItems = day.buy ? parseItems(day.buy) : [];
+                let bonusItems = [];
+                
+                if (index === 0) {
+                    if(eatItems.length === 0) eatItems = ['沙威瑪'];
+                    if(buyItems.length === 0) buyItems = ['土耳其軟糖'];
+                    bonusItems = ['熱氣球證書'];
+                }
+
+                if(eatItems.length > 0) availableTypes.push({ id: 'eat', label: '美食', items: eatItems });
+                if(buyItems.length > 0) availableTypes.push({ id: 'buy', label: '土產', items: buyItems });
+                if(bonusItems.length > 0) availableTypes.push({ id: 'bonus', label: '體驗', items: bonusItems });
+
+                if (availableTypes.length > 0) {
+                    let tabsMenuHtml = '';
+                    let contentPanesHtml = '';
+                    let totalItemsCount = 0;
+
+                    availableTypes.forEach((typeObj, tIdx) => {
+                        totalItemsCount += typeObj.items.length;
+                        const isActive = tIdx === 0;
+                        const activeBtnClass = isActive ? 'bg-moss-400 text-moss-100 shadow-sm' : 'text-moss-500 hover:bg-moss-300/30';
+                        const displayClass = isActive ? '' : 'hidden';
+
+                        tabsMenuHtml += `
+                            <button id="btn-egg-${typeObj.id}-${dayId}" onclick="switchEggTab('${dayId}', '${typeObj.id}')" class="egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-sm transition-all flex-1 md:flex-none text-center md:text-left ${activeBtnClass}">
+                                ${typeObj.label}
+                            </button>
+                        `;
+
+                        const cardsHtml = typeObj.items.map(itemName => `
+                            <div class="w-24 shrink-0 flex flex-col items-center gap-2">
+                                <div class="w-20 h-20 rounded-2xl overflow-hidden shadow-sm bg-white border border-moss-200 group-hover:shadow-md transition-shadow">
+                                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-90" alt="${itemName}">
+                                </div>
+                                <span class="text-xs text-moss-500 font-bold leading-tight text-center">${itemName}</span>
+                            </div>
+                        `).join('');
+
+                        contentPanesHtml += `
+                            <div id="egg-${typeObj.id}-${dayId}" class="egg-content-${dayId} flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-1 px-1 ${displayClass}">
+                                ${cardsHtml}
+                            </div>
+                        `;
+                    });
+
+                    eggHtml = `
+                        <div class="mt-4">
+                            <details class="group bg-moss-200/30 border border-moss-300/40 rounded-2xl p-4 md:p-5 transition-all duration-300">
+                                <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-500 text-sm md:text-base">
+                                    <span class="flex items-center gap-2"><i class="ph ph-gift text-xl text-moss-400"></i> 驚喜彩蛋 (${totalItemsCount})</span>
+                                    <div class="w-8 h-8 rounded-full bg-moss-300 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform"><i class="ph ph-caret-down font-bold"></i></div>
+                                </summary>
+                                <div class="mt-5 flex flex-col md:flex-row gap-4 md:gap-6 items-start pt-4 border-t border-moss-300/30">
+                                    <div class="flex flex-row md:flex-col gap-1.5 w-full md:w-24 shrink-0 bg-white/40 p-1.5 rounded-xl border border-moss-200/50">
+                                        ${tabsMenuHtml}
+                                    </div>
+                                    <div class="flex-1 w-full min-w-0 overflow-hidden relative">
+                                        ${contentPanesHtml}
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
+                        <div class="mb-5">
+                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-[10px] md:text-[11px] tracking-widest mb-2 shadow-sm uppercase">${day.fullDate} &middot; ${day.day}</span>
+                            <h2 class="text-2xl md:text-3xl lg:text-4xl font-serif font-black text-moss-500 leading-tight">${day.title}</h2>
+                        </div>
+                        
+                        ${weatherOutfitHtml}
+                        ${flightsHtml}
+                        ${mapHtml}
+                        ${spotsHtml}
+                        ${tipsHtml}
+                        ${summaryHtml}
+                        ${eggHtml}
+                    </section>
+                `;
+
+                if (index < itineraryData.length - 1) {
+                    html += `
+                        <div class="py-12 flex justify-center items-center gap-4 opacity-70">
+                            <div class="w-24 md:w-40 h-[2px] bg-moss-300/50 rounded-full"></div>
+                            <i class="ph ph-airplane-in-flight text-moss-400 text-xl md:text-2xl"></i>
+                            <div class="w-24 md:w-40 h-[2px] bg-moss-300/50 rounded-full"></div>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        function setupScrollSpy() {
+            const observer = new IntersectionObserver((entries) => {
+                if(document.getElementById('tab-itinerary').classList.contains('hidden')) return;
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.nav-day').forEach(item => item.classList.remove('active'));
+                        const activeItems = document.querySelectorAll(`.nav-day[data-target="${entry.target.id}"]`);
+                        activeItems.forEach(item => {
+                            item.classList.add('active');
+                            if(item.closest('#itinerary-mobile-nav')) {
+                                item.closest('#itinerary-mobile-nav').scrollTo({
+                                    left: item.offsetLeft - 20,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-30% 0px -50% 0px', threshold: 0 });
+
+            document.querySelectorAll('#itinerary-content section').forEach(section => observer.observe(section));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadItinerary();
+        });
+    </script>
+</body>
+</html>
