@@ -129,39 +129,36 @@
         <!-- 1. 總覽 (Overview) -->
         <main id="tab-overview" class="main-content-pane block space-y-8 animate-[rise_0.3s_ease-out]">
             
-            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-start gap-5 md:gap-10 border border-white">
-                <div>
+            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-start justify-start gap-5 md:gap-8 border border-white">
+                <div class="md:w-[35%] shrink-0">
                     <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Dates / 日期</p>
                     <p id="ui-overview-date" class="text-sm md:text-base font-bold text-moss-500">--</p>
                 </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40"></div>
-                <div>
+                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
+                <div class="md:w-[20%] shrink-0">
                     <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Duration / 天數</p>
                     <p id="ui-overview-days" class="text-sm md:text-base font-bold text-moss-500">--</p>
                 </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40"></div>
-                <div class="flex-1">
+                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
+                <div class="flex-1 min-w-0">
                     <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Cities / 地點</p>
-                    <p id="ui-overview-cities" class="text-sm md:text-base font-bold text-moss-500">伊斯坦堡 Istanbul, 卡帕多奇亞 Cappadocia...</p>
+                    <p id="ui-overview-cities" class="text-sm md:text-base font-bold text-moss-500 leading-relaxed break-words">--</p>
+                </div>
+                <div id="ui-overview-info-col" class="hidden flex-1 min-w-0">
+                    <p id="ui-overview-info-title" class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1 uppercase">Info / 說明</p>
+                    <p class="text-sm md:text-base font-bold text-moss-500 leading-relaxed truncate"><a id="ui-overview-info-link" href="#" target="_blank" class="hover:text-moss-400 underline underline-offset-4 decoration-moss-300/50">--</a></p>
                 </div>
             </div>
 
-            <div class="w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-sm border border-moss-200 bg-moss-200/50 flex flex-col items-center justify-center text-moss-400">
-                <i class="ph ph-map text-4xl mb-2"></i>
-                <p class="text-sm font-bold">Google Maps 全域路線圖預留區塊</p>
+            <!-- 總覽地圖區塊 -->
+            <div id="overview-map-container" class="w-full h-[450px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 bg-moss-200/50 relative hidden">
+                <!-- iframe 將於 JS 動態寫入並裁切表頭 -->
             </div>
 
             <div class="mt-8">
-                <div class="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
-                    <div class="w-48 shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border border-moss-200 group cursor-pointer hover:-translate-y-1 transition-all">
-                        <div class="h-32 overflow-hidden relative">
-                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        </div>
-                        <div class="p-4">
-                            <h4 class="font-black text-moss-500 text-lg">伊斯坦堡</h4>
-                            <p class="text-[10px] text-moss-400 font-black tracking-widest mt-1 uppercase">Istanbul</p>
-                        </div>
-                    </div>
+                <!-- 橫滑吸附容器 -->
+                <div id="overview-city-cards" class="flex gap-4 overflow-x-auto pb-6 custom-scrollbar snap-x snap-mandatory">
+                    <!-- 動態生成城市卡片 -->
                 </div>
             </div>
         </main>
@@ -194,8 +191,9 @@
                 <h3 class="text-xl font-black text-moss-500 mb-6 flex items-center gap-2"><i class="ph ph-chart-pie-slice text-2xl text-moss-400"></i> 經費儀表板</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-moss-100 p-4 rounded-xl border border-moss-200">
-                        <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1.5 uppercase">預估總花費</p>
-                        <p class="text-lg md:text-xl font-black text-moss-500">NT$ --</p>
+                        <p class="text-[10px] md:text-[11px] text-moss-400 font-black tracking-widest mb-1.5 uppercase">每人預估團費</p>
+                        <p id="ui-expense-fee" class="text-xl md:text-2xl font-black text-moss-500 leading-none">--</p>
+                        <p id="ui-expense-note" class="text-xs font-bold text-moss-400 mt-2 hidden"></p>
                     </div>
                 </div>
             </div>
@@ -204,8 +202,20 @@
         <!-- 4. 待辦 (TODO) -->
         <main id="tab-todo" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
             <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
-                <h3 class="text-xl font-black text-moss-500 mb-4 flex items-center gap-2"><i class="ph ph-ticket text-2xl text-moss-400"></i> 行程關聯票券與預約</h3>
-                <p class="text-sm md:text-base font-medium text-moss-500/80 mb-4">系統自動從每日行程抓取的電子票券與備註資訊，方便集中查閱。</p>
+                <div class="flex items-center gap-2 mb-8">
+                    <h3 class="text-xl font-black text-moss-500 flex items-center gap-2"><i class="ph ph-check-square text-2xl text-moss-400"></i> 行程待辦事項</h3>
+                    <div class="relative group cursor-pointer flex items-center justify-center">
+                        <i class="ph ph-info text-moss-300 text-lg hover:text-moss-500 transition-colors"></i>
+                        <div class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 p-3 bg-moss-500 text-moss-100 text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none z-10 text-center shadow-lg leading-relaxed font-medium">
+                            此清單與每日景點的待辦狀態雙向連動，方便您集中管理任務進度。
+                            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-moss-500 rotate-45"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="todo-list-container" class="space-y-6">
+                    <!-- 待辦清單動態生成 -->
+                </div>
             </div>
         </main>
         
@@ -236,7 +246,7 @@
     <!-- 彈窗 (Modal) -->
     <dialog id="info-modal" class="bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-auto open:animate-[rise_0.3s_ease-out] border-4 border-white overflow-hidden relative">
         <div class="absolute top-0 left-0 w-full h-24 bg-moss-300/20"></div>
-        <button onclick="document.getElementById('info-modal').close()" class="absolute top-5 right-5 w-8 h-8 bg-white hover:bg-moss-400 hover:text-white rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
+        <button onclick="closeModalByBtn()" class="absolute top-5 right-5 w-8 h-8 bg-white hover:bg-moss-400 hover:text-white rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
             <i class="ph ph-x font-bold text-sm"></i>
         </button>
         <div class="p-8 relative z-10 pt-10">
@@ -294,15 +304,45 @@
         }
 
         /* ================= 彈窗與收合邏輯 ================= */
+        const modal = document.getElementById('info-modal');
+
+        function openModal(title, content) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-icon').className = 'text-3xl text-moss-400 ph ph-info';
+            document.getElementById('modal-content').innerHTML = content;
+            modal.showModal();
+            // 推入瀏覽器歷史狀態，阻斷上一頁直接跳出
+            history.pushState({ modalOpen: true }, "");
+        }
+
+        // 綁定 X 按鈕
+        function closeModalByBtn() {
+            if(history.state && history.state.modalOpen) {
+                history.back(); // 會觸發 popstate 事件來關閉
+            } else {
+                modal.close();
+            }
+        }
+
+        // 監聽網頁上一頁事件 (或是透過 history.back() 觸發)
+        window.addEventListener('popstate', (e) => {
+            if (modal.hasAttribute('open')) {
+                modal.close();
+            }
+        });
+
+        // 監聽原生 ESC 取消事件
+        modal.addEventListener('cancel', (e) => {
+            if(history.state && history.state.modalOpen) {
+                history.back();
+            }
+        });
+
+        // 點擊事件代理
         document.addEventListener('click', (e) => {
             const noteBtn = e.target.closest('.btn-note');
             if (noteBtn) {
-                const title = noteBtn.getAttribute('data-title') || '備註資訊';
-                const content = decodeURIComponent(noteBtn.getAttribute('data-content'));
-                document.getElementById('modal-title').textContent = title;
-                document.getElementById('modal-icon').className = 'text-3xl text-moss-400 ph ph-info';
-                document.getElementById('modal-content').innerHTML = content;
-                document.getElementById('info-modal').showModal();
+                openModal(noteBtn.getAttribute('data-title') || '備註資訊', decodeURIComponent(noteBtn.getAttribute('data-content')));
             }
         });
 
@@ -322,24 +362,163 @@
             });
         }
 
-        /* ================= 資料讀取與渲染 ================= */
+        window.travelItineraryData = null; // store for re-renders
+
+        function renderTodos(itineraryData) {
+            window.travelItineraryData = itineraryData;
+            const container = document.getElementById('todo-list-container');
+            if (!container) return;
+            
+            const savedTodos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
+            
+            let pendingHtml = '';
+            let completedHtml = '';
+            let pendingCount = 0;
+            let completedCount = 0;
+
+            const generateTaskHtml = (todoObj, tIdx, prefixTitle, isSpot, dayIndex, spotIndex) => {
+                const task = typeof todoObj === 'string' ? todoObj : todoObj.task;
+                const note = (typeof todoObj === 'object' && todoObj.note) ? ` <span class="text-[10px] md:text-xs font-normal opacity-80 ml-1">(${todoObj.note})</span>` : '';
+                const todoId = isSpot ? `todo-${dayIndex}-${spotIndex}-${tIdx}` : `todo-day-${dayIndex}-${tIdx}`;
+                const globalTodoId = `global-${todoId}`;
+                const isChecked = !!savedTodos[todoId];
+                
+                const itemHtml = `
+                    <label class="flex items-start gap-2 cursor-pointer group p-1.5 md:p-2 rounded-lg hover:bg-moss-200/50 transition-colors border border-transparent hover:border-moss-200/50 w-full ${isChecked ? 'grayscale opacity-60' : ''}">
+                        <input type="checkbox" id="${globalTodoId}" data-target="${todoId}" class="global-todo-cb peer sr-only" ${isChecked ? 'checked' : ''}>
+                        <div class="w-4 h-4 md:w-5 md:h-5 shrink-0 rounded border-2 flex items-center justify-center transition-all mt-0.5 shadow-sm ${isChecked ? 'border-moss-300 bg-moss-300' : 'border-moss-300 peer-checked:bg-moss-400 peer-checked:border-moss-400'}">
+                            <i class="ph ph-check text-moss-100 opacity-0 peer-checked:opacity-100 font-bold text-xs md:text-sm"></i>
+                        </div>
+                        <div class="flex flex-col flex-1 min-w-0">
+                            <span class="text-[9px] md:text-[10px] font-black text-moss-400 mb-0.5 tracking-wider truncate">${prefixTitle}</span>
+                            <span class="text-sm md:text-base font-bold transition-colors break-words ${isChecked ? 'text-moss-400 line-through' : 'text-moss-500 peer-checked:text-moss-400/60 peer-checked:line-through'}">${task}${note}</span>
+                        </div>
+                    </label>
+                `;
+                
+                if (isChecked) {
+                    completedHtml += itemHtml;
+                    completedCount++;
+                } else {
+                    return itemHtml;
+                }
+                return '';
+            };
+
+            itineraryData.forEach((day, index) => {
+                let dayPendingHtml = '';
+                
+                if (day.todos && day.todos.length > 0) {
+                    day.todos.forEach((todoObj, tIdx) => {
+                        const item = generateTaskHtml(todoObj, tIdx, `D${index+1} ｜ 本日待辦`, false, index, null);
+                        if(item) { dayPendingHtml += item; pendingCount++; }
+                    });
+                }
+
+                if (day.spots) {
+                    day.spots.forEach((spot, spotIndex) => {
+                        if (spot.todos && spot.todos.length > 0) {
+                            spot.todos.forEach((todoObj, tIdx) => {
+                                const item = generateTaskHtml(todoObj, tIdx, `D${index+1} ｜ ${spot.name}`, true, index, spotIndex);
+                                if(item) { dayPendingHtml += item; pendingCount++; }
+                            });
+                        }
+                    });
+                }
+                
+                if (dayPendingHtml) {
+                    if (pendingHtml !== '') {
+                        pendingHtml += '<hr class="border-moss-200 border-dashed my-3 opacity-60">';
+                    }
+                    pendingHtml += `<div class="space-y-0.5">${dayPendingHtml}</div>`;
+                }
+            });
+
+            let html = '';
+            if (pendingCount > 0) {
+                html += `<div class="mb-6 bg-white/50 p-3 rounded-xl border border-moss-200/60">${pendingHtml}</div>`;
+            } else if (completedCount === 0) {
+                html += `<p class="text-moss-400 font-medium py-8 text-center bg-moss-100 rounded-xl border border-moss-200 border-dashed mb-6">目前沒有任何待辦事項</p>`;
+            } else {
+                html += `<p class="text-moss-400 font-medium py-6 text-center bg-moss-100 rounded-xl border border-moss-200 border-dashed mb-6">所有待辦事項皆已完成 🎉</p>`;
+            }
+
+            if (completedCount > 0) {
+                html += `
+                    <details class="group bg-moss-100 border border-moss-200 rounded-2xl p-4 transition-all duration-300">
+                        <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-400 text-sm md:text-base opacity-80 hover:opacity-100 transition-opacity">
+                            <span class="flex items-center gap-2"><i class="ph ph-check-circle text-xl"></i> 已完成項目 (${completedCount})</span>
+                            <div class="w-8 h-8 rounded-full bg-moss-200/50 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform"><i class="ph ph-caret-down font-bold"></i></div>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-moss-200/80 space-y-0.5">
+                            ${completedHtml}
+                        </div>
+                    </details>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function initTodos() {
+            const savedTodos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
+            
+            document.querySelectorAll('.spot-todo-cb').forEach(cb => {
+                cb.checked = !!savedTodos[cb.id];
+                
+                const newCb = cb.cloneNode(true);
+                cb.parentNode.replaceChild(newCb, cb);
+                
+                newCb.addEventListener('change', (e) => {
+                    const id = e.target.id;
+                    const isChecked = e.target.checked;
+                    const todos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
+                    todos[id] = isChecked;
+                    localStorage.setItem('travel_todos', JSON.stringify(todos));
+                    
+                    if (window.travelItineraryData) {
+                        renderTodos(window.travelItineraryData);
+                        bindGlobalTodos();
+                    }
+                });
+            });
+        }
+
+        function bindGlobalTodos() {
+            document.querySelectorAll('.global-todo-cb').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    const id = e.target.dataset.target;
+                    const isChecked = e.target.checked;
+                    const todos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
+                    todos[id] = isChecked;
+                    localStorage.setItem('travel_todos', JSON.stringify(todos));
+                    
+                    const spotCb = document.getElementById(id);
+                    if (spotCb) spotCb.checked = isChecked;
+                    
+                    if (window.travelItineraryData) {
+                        renderTodos(window.travelItineraryData);
+                        bindGlobalTodos();
+                    }
+                });
+            });
+        }
+
         async function loadItinerary() {
             try {
                 const response = await fetch('2610.json');
                 const data = await response.json();
                 
-                if(data.itinerary && data.itinerary[0]) {
-                    if(!data.itinerary[0].flights || data.itinerary[0].flights.length === 0) {
-                        data.itinerary[0].flights = [
-                            "TK 025 台北(TPE) 22:25 ✈️ 伊斯坦堡(IST) 06:05 (+1)",
-                            "TK 2010 伊斯坦堡(IST) 08:35 ✈️ 開塞利(ASR) 10:05"
-                        ];
-                    }
+                if(data.settings) {
+                    renderHero(data.settings, data.itinerary);
                 }
-
-                renderHero(data.settings, data.itinerary);
+                
                 renderNavigation(data.itinerary);
-                renderItinerary(data.itinerary);
+                renderOverviewCities(data.itinerary);
+                renderItinerary(data.itinerary, data.settings);
+                renderTodos(data.itinerary);
+                initTodos();
+                bindGlobalTodos();
                 setupScrollSpy();
 
             } catch (error) {
@@ -358,9 +537,82 @@
             document.getElementById('ui-overview-date').textContent = settings.dateText || '--';
             document.getElementById('ui-overview-days').textContent = (itineraryData ? itineraryData.length : '--') + ' DAYS';
             
+            if (itineraryData && itineraryData.length > 0) {
+                const uniqueTitles = [...new Set(itineraryData.map(d => d.title.split(' ｜ ')[0]).filter(Boolean))];
+                document.getElementById('ui-overview-cities').textContent = uniqueTitles.slice(0, 4).join(', ') + (uniqueTitles.length > 4 ? '...' : '');
+            }
+            
             if (settings.heroImage) {
                 document.getElementById('hero').style.backgroundImage = `url('${settings.heroImage}')`;
             }
+
+            if (settings.info) {
+                const infoCol = document.getElementById('ui-overview-info-col');
+                const infoTitle = document.getElementById('ui-overview-info-title');
+                const infoLink = document.getElementById('ui-overview-info-link');
+                
+                infoTitle.textContent = settings.info.title || 'Info / 說明';
+                infoLink.textContent = settings.info.text || '--';
+                if (settings.info.link) {
+                    infoLink.href = settings.info.link;
+                    infoLink.classList.add('underline');
+                } else {
+                    infoLink.removeAttribute('href');
+                    infoLink.classList.remove('underline');
+                }
+                infoCol.classList.remove('hidden');
+            }
+
+            if (settings.overviewMap && settings.overviewMap.iframeUrl) {
+                const mapContainer = document.getElementById('overview-map-container');
+                mapContainer.innerHTML = `<iframe src="${settings.overviewMap.iframeUrl}" style="position:absolute; top:-75px; left:0; width:100%; height:calc(100% + 75px); border:none;" loading="lazy"></iframe>`;
+                mapContainer.classList.remove('hidden');
+            }
+
+            if (settings.expenses) {
+                if(settings.expenses.tourFee) {
+                    document.getElementById('ui-expense-fee').textContent = `${settings.expenses.currency || 'NT$'} ${settings.expenses.tourFee.toLocaleString()}`;
+                }
+                if(settings.expenses.note) {
+                    const noteEl = document.getElementById('ui-expense-note');
+                    noteEl.textContent = settings.expenses.note;
+                    noteEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        function renderOverviewCities(itineraryData) {
+            const container = document.getElementById('overview-city-cards');
+            if (!container) return;
+            
+            let spotsWithImages = [];
+            itineraryData.forEach(day => {
+                if(day.spots) {
+                    day.spots.forEach(spot => {
+                        if(spot.image && spotsWithImages.length < 8) {
+                            spotsWithImages.push(spot);
+                        }
+                    });
+                }
+            });
+
+            if(spotsWithImages.length === 0) return;
+
+            let html = '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
+            spotsWithImages.forEach(spot => {
+                html += `
+                <div class="w-40 md:w-48 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[3/4] snap-center">
+                    <img src="${spot.image}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-moss-500/90 via-moss-500/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-4 md:p-5 flex flex-col justify-end text-moss-100">
+                        <h4 class="font-black text-base md:text-lg truncate shadow-sm drop-shadow-md">${spot.name}</h4>
+                        <p class="text-[9px] md:text-[10px] font-black tracking-widest mt-1 uppercase opacity-90 truncate drop-shadow-md">Highlight</p>
+                    </div>
+                </div>
+                `;
+            });
+            html += '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
+            container.innerHTML = html;
         }
 
         function renderNavigation(itineraryData) {
@@ -386,7 +638,7 @@
             mobileNavContainer.innerHTML = mobileHtml;
         }
 
-        function renderItinerary(itineraryData) {
+        function renderItinerary(itineraryData, settings) {
             const container = document.getElementById('itinerary-content');
             let html = '';
 
@@ -427,17 +679,36 @@
                     flightsHtml += `</div></div>`;
                 }
 
+                let dailyTodoHtml = '';
+                if (day.todos && day.todos.length > 0) {
+                    dailyTodoHtml = '<div class="mb-5 flex flex-wrap gap-2">';
+                    day.todos.forEach((todoObj, tIdx) => {
+                        const task = typeof todoObj === 'string' ? todoObj : todoObj.task;
+                        const todoId = `todo-day-${index}-${tIdx}`;
+                        dailyTodoHtml += `
+                            <label class="cursor-pointer group relative">
+                                <input type="checkbox" id="${todoId}" data-day="${index}" data-type="day" data-todo="${tIdx}" class="spot-todo-cb peer sr-only">
+                                <div class="px-3 py-1.5 rounded-full text-xs md:text-sm font-bold transition-all shadow-sm bg-moss-200 text-moss-500 hover:bg-moss-300 peer-checked:bg-moss-100 peer-checked:text-moss-400/60 peer-checked:line-through peer-checked:shadow-none border border-transparent peer-checked:border-moss-200">
+                                    ${task}
+                                </div>
+                            </label>
+                        `;
+                    });
+                    dailyTodoHtml += '</div>';
+                }
+
                 let mapHtml = '';
-                if (index === 0) {
+                if (day.mapImage) {
                     mapHtml = `
-                        <div onclick="window.open('https://maps.google.com', '_blank')" class="mb-5 relative w-full h-32 md:h-40 rounded-2xl overflow-hidden group cursor-pointer shadow-sm border border-moss-300/40">
-                            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" alt="Daily Route Map">
-                            <div class="absolute inset-0 bg-[#3C4733]/30 flex items-center justify-center group-hover:bg-[#3C4733]/40 transition-colors">
-                                <span class="bg-[#F4EFD9] text-moss-500 px-5 py-2.5 rounded-full font-bold text-sm flex items-center gap-2 shadow-lg">
-                                    <i class="ph ph-path text-lg"></i> 查看今日路線地圖
-                                </span>
+                        <details class="mb-5 group transition-all duration-300">
+                            <summary class="flex items-center gap-2 cursor-pointer list-none font-bold text-moss-500 text-sm md:text-base pb-2 border-b border-moss-300/40 w-max mb-3">
+                                <i class="ph ph-map-trifold text-lg text-moss-400"></i> 查看今日路線地圖 
+                                <i class="ph ph-caret-down text-moss-400 group-open:rotate-180 transition-transform ml-1"></i>
+                            </summary>
+                            <div class="w-full rounded-[2rem] overflow-hidden shadow-sm bg-moss-200/50 border border-moss-200">
+                                <img src="${day.mapImage}" alt="路線地圖" class="w-full h-auto object-contain block">
                             </div>
-                        </div>
+                        </details>
                     `;
                 }
 
@@ -448,8 +719,8 @@
                         let spotActionsHtml = '';
                         let currentNote = spot.note;
                         
-                        if (index === 0 && spotIndex === 0 && !currentNote) {
-                            currentNote = "這是一段示範備註純文字！\n出示此畫面給導遊即可快速報到。";
+                        if (!currentNote && spotIndex === 0 && day.specialNotes && day.specialNotes.length > 0) {
+                            currentNote = "【今日特別提醒】\n" + day.specialNotes.join('\n');
                         }
 
                         if (currentNote || (index === 0 && spotIndex === 0)) {
@@ -463,12 +734,30 @@
                             }
                             if (currentNote) {
                                 spotActionsHtml += `
-                                    <button class="btn-note w-9 h-9 rounded-full bg-moss-200 text-moss-500 hover:bg-moss-300 flex items-center justify-center transition-all shadow-sm font-bold" title="備註資訊" data-title="${spot.name}" data-content="${encodeURIComponent(currentNote)}">
+                                    <button class="btn-note w-9 h-9 rounded-full bg-moss-400 text-moss-100 hover:bg-moss-500 flex items-center justify-center transition-all shadow-sm font-bold" title="備註資訊" data-title="${spot.name}" data-content="${encodeURIComponent(currentNote)}">
                                         <i class="ph ph-info text-lg"></i>
                                     </button>
                                 `;
                             }
                             spotActionsHtml += `</div>`;
+                        }
+
+                        let todoHtml = '';
+                        if (spot.todos && spot.todos.length > 0) {
+                            todoHtml = '<div class="mt-4 flex flex-wrap gap-2">';
+                            spot.todos.forEach((todoObj, tIdx) => {
+                                const task = typeof todoObj === 'string' ? todoObj : todoObj.task;
+                                const todoId = `todo-${index}-${spotIndex}-${tIdx}`;
+                                todoHtml += `
+                                    <label class="cursor-pointer group relative">
+                                        <input type="checkbox" id="${todoId}" data-day="${index}" data-spot="${spotIndex}" data-todo="${tIdx}" class="spot-todo-cb peer sr-only">
+                                        <div class="px-3 py-1.5 rounded-full text-xs md:text-sm font-bold transition-all shadow-sm bg-moss-200 text-moss-500 hover:bg-moss-300 peer-checked:bg-moss-100 peer-checked:text-moss-400/60 peer-checked:line-through peer-checked:shadow-none border border-transparent peer-checked:border-moss-200">
+                                            ${task}
+                                        </div>
+                                    </label>
+                                `;
+                            });
+                            todoHtml += '</div>';
                         }
 
                         spotsHtml += `
@@ -478,6 +767,7 @@
                                     <h4 class="text-lg md:text-xl font-black text-moss-500 mb-2">${spot.name}</h4>
                                     <p class="text-sm md:text-base text-moss-500/80 font-medium leading-relaxed">${spot.description}</p>
                                     ${spotActionsHtml}
+                                    ${todoHtml}
                                 </div>
                                 ${spot.image ? `
                                 <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-xl overflow-hidden bg-moss-200/50 shadow-inner">
@@ -522,19 +812,13 @@
                 let eggHtml = '';
                 const parseItems = (str) => {
                     if(typeof str !== 'string') return [];
-                    return str.split(/[、,]/).map(s => s.trim()).filter(s => s);
+                    return str.replace(/。$/, '').split(/[、,]/).map(s => s.trim()).filter(s => s);
                 };
                 
                 let availableTypes = [];
                 let eatItems = day.eat ? parseItems(day.eat) : [];
                 let buyItems = day.buy ? parseItems(day.buy) : [];
-                let bonusItems = [];
-                
-                if (index === 0) {
-                    if(eatItems.length === 0) eatItems = ['沙威瑪'];
-                    if(buyItems.length === 0) buyItems = ['土耳其軟糖'];
-                    bonusItems = ['熱氣球證書'];
-                }
+                let bonusItems = []; 
 
                 if(eatItems.length > 0) availableTypes.push({ id: 'eat', label: '美食', items: eatItems });
                 if(buyItems.length > 0) availableTypes.push({ id: 'buy', label: '土產', items: buyItems });
@@ -557,17 +841,22 @@
                             </button>
                         `;
 
-                        const cardsHtml = typeObj.items.map(itemName => `
-                            <div class="w-24 shrink-0 flex flex-col items-center gap-2">
-                                <div class="w-20 h-20 rounded-2xl overflow-hidden shadow-sm bg-white border border-moss-200 group-hover:shadow-md transition-shadow">
-                                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover opacity-90" alt="${itemName}">
+                        let defaultIcon = typeObj.id === 'eat' ? 'ph-fork-knife' : (typeObj.id === 'buy' ? 'ph-shopping-bag' : 'ph-sparkle');
+                        
+                        let cardsHtml = '<div class="w-2 md:w-6 shrink-0 pointer-events-none"></div>'; // spacer left
+                        cardsHtml += typeObj.items.map(itemName => `
+                            <div class="w-32 md:w-40 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[2/3] snap-center bg-moss-300/20 flex flex-col justify-end">
+                                <i class="ph ${defaultIcon} text-[80px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>
+                                <div class="absolute inset-0 bg-gradient-to-t from-moss-500/80 via-moss-500/10 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 w-full p-4 flex flex-col justify-end text-moss-100 relative z-10">
+                                    <h4 class="font-black text-sm md:text-base leading-tight drop-shadow-md whitespace-normal">${itemName}</h4>
                                 </div>
-                                <span class="text-xs text-moss-500 font-bold leading-tight text-center">${itemName}</span>
                             </div>
                         `).join('');
+                        cardsHtml += '<div class="w-2 md:w-6 shrink-0 pointer-events-none"></div>'; // spacer right
 
                         contentPanesHtml += `
-                            <div id="egg-${typeObj.id}-${dayId}" class="egg-content-${dayId} flex gap-4 overflow-x-auto no-scrollbar pb-2 pt-1 px-1 ${displayClass}">
+                            <div id="egg-${typeObj.id}-${dayId}" class="egg-content-${dayId} flex gap-4 overflow-x-auto custom-scrollbar snap-x snap-mandatory pb-6 pt-2 ${displayClass}">
                                 ${cardsHtml}
                             </div>
                         `;
@@ -601,6 +890,7 @@
                         </div>
                         
                         ${weatherOutfitHtml}
+                        ${dailyTodoHtml}
                         ${flightsHtml}
                         ${mapHtml}
                         ${spotsHtml}

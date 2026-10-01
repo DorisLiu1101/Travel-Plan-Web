@@ -21,6 +21,16 @@
       "image": "",
       "iframeUrl": "https://www.google.com/maps/d/embed?mid=1AKPm6i_BLlMD3cy0YLVSWmuNVfNCdLY&ehbc=2E312F"
     },
+    "expenses": {
+      "tourFee": 100000,
+      "currency": "TW$",
+      "note": "含折扣 $5,900"
+    },
+    "info": {
+      "title": "說明",
+      "text": "行鍵",
+      "link": "https://www.unotour.com.tw/03_category_info.asp?sn=51198"
+    },
     "themeColors": {
       "primary": "#315a4c",
       "deep": "#203d34",
@@ -57,6 +67,10 @@
         "temp": "10-18°C"
       },
       "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1200&auto=format&fit=crop",
+      "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
+      "todos": [
+        { "task": "待訂飯店", "note": "確認機場接送" }
+      ],
       "flights": [
         "【去程國際線】土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 (+1日) *(時差：慢台灣5小時)*",
         "【土國國內線①】土耳其航空 TK2108 ｜ 伊斯坦堡 08:00 － 安卡拉 09:15"
@@ -67,7 +81,11 @@
           "description": "造訪典型鄂圖曼風格的三層木造大宅與典雅中庭，見證古城歲月流轉。",
           "mapQuery": "凱馬卡姆拉旅遊之家 土耳其",
           "image": "https://pimg.1px.tw/kenfoto/1738334391-3616794821-g.jpg",
-          "note": ""
+          "note": "",
+          "todos": [
+            { "task": "購買市長官邸門票", "note": "通過小紅書預約" },
+            { "task": "領取導覽耳機", "note": "" }
+          ]
         },
         {
           "name": "鵝卵石古鎮",
@@ -103,6 +121,9 @@
         "temp": "8-19°C"
       },
       "image": "https://images.pexels.com/photos/13320762/pexels-photo-13320762.jpeg",
+      "todos": [
+        { "task": "飯店待訂", "note": "" }
+      ],
       "spots": [
         {
           "name": "阿塔圖爾克紀念館",

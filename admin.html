@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3C4733">
+    <title>行程管理後台 ｜ Travel Plan Admin</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        /* 與 Template.html 一致的古籍苔綠色彩系統 */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', '"DM Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+                    },
+                    colors: {
+                        moss: {
+                            50: '#F9F7EE',
+                            100: '#F4EFD9', /* 溫潤淺背景 */
+                            200: '#D8D2A7', /* 輔助襯色 */
+                            300: '#A9B482', /* 邊框與柔和焦點 */
+                            400: '#6F7F5A', /* 經典苔綠主色 */
+                            500: '#3C4733', /* 深苔綠深色/主要文字 */
+                            600: '#2A3324'
+                        },
+                        amber: {
+                            accent: '#CF795F' /* 溫暖點綴橘紅 */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F4EFD9;
+            color: #3C4733;
+            font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* 滾動條美化 */
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
+        ::-webkit-scrollbar-track { background: #F4EFD9; }
+        ::-webkit-scrollbar-thumb { background: #A9B482; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6F7F5A; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 彈窗背景遮罩 */
+        dialog::backdrop {
+            background-color: rgba(60, 71, 51, 0.45);
+            backdrop-filter: blur(4px);
+        }
+
+        /* 隱藏原生 details 箭頭，防止 WebKit 重複渲染 */
+        summary::-webkit-details-marker { display: none; }
+        summary { list-style: none; }
+
+        /* 側邊欄響應式與收合樣式：電腦往左收，手機往上收 */
+        #sidebar {
+            transition: margin-left 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media (min-width: 768px) {
+            #sidebar.desktop-collapsed {
+                margin-left: -18rem;
+            }
+        }
+        @media (max-width: 767px) {
+            #sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                max-height: 85vh !important;
+                border-bottom-left-radius: 1.5rem;
+                border-bottom-right-radius: 1.5rem;
+                transform: translateY(-100%);
+                z-index: 50 !important;
+            }
+            #sidebar.mobile-open {
+                transform: translateY(0);
+            }
+        }
+
+        /* 動態提示動畫 */
+        @keyframes pulse-ring {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(207, 121, 95, 0.4); }
+            50% { box-shadow: 0 0 0 4px rgba(207, 121, 95, 0); }
+        }
+        .needs-save {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden antialiased select-none-text">
+
+    <!-- 移動端側邊欄遮罩 (Backdrop) -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-moss-900/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
+
+    <!-- 側邊欄 (Sidebar) - 毛玻璃半透明質感 -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 md:relative md:inset-auto md:z-30 w-72 bg-moss-500/90 backdrop-blur-xl border-r border-moss-400/30 text-moss-100 flex flex-col shrink-0 shadow-2xl">
+        <!-- 品牌標誌與回首頁 -->
+        <div class="h-16 px-4 flex items-center justify-between border-b border-moss-400/30">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <a href="index.html" class="w-9 h-9 rounded-xl bg-moss-400/40 hover:bg-moss-400 border border-moss-300/30 flex items-center justify-center transition-colors text-moss-100" title="返回前台總覽">
+                    <i class="ph ph-arrow-left text-lg"></i>
+                </a>
+                <div class="min-w-0">
+                    <h1 class="text-sm font-black tracking-wide truncate">行程管理後台</h1>
+                    <p class="text-[10px] text-moss-200/70 font-mono tracking-widest uppercase">Admin · JSON</p>
+                </div>
+            </div>
+            <button id="sidebar-toggle-btn" class="w-8 h-8 rounded-lg hover:bg-moss-400/40 flex items-center justify-center text-moss-200 hover:text-white transition-colors" title="收合選單 (<)">
+                <i class="ph ph-caret-left text-lg"></i>
+            </button>
+        </div>
+
+        <!-- 頂部頁籤切換器 (3 欄) -->
+        <div class="p-3 grid grid-cols-3 gap-1.5 border-b border-moss-400/30">
+            <button id="tab-nav-itinerary" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm">
+                <i class="ph ph-calendar-blank text-base"></i>
+                <span>每日行程</span>
+            </button>
+            <button id="tab-nav-settings" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white">
+                <i class="ph ph-sliders text-base"></i>
+                <span>全站設置</span>
+            </button>
+            <button id="tab-nav-expenses" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white">
+                <i class="ph ph-currency-circle-dollar text-base"></i>
+                <span>經費預算</span>
+            </button>
+        </div>
+
+        <!-- 行程日導航清單 (Daily Navigation) -->
+        <div class="flex-1 flex flex-col min-h-0 overflow-hidden">
+            <div class="px-3.5 py-2.5 flex items-center justify-between text-xs font-bold text-moss-200 border-b border-moss-400/20">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+                        <i class="ph ph-compass text-sm text-moss-300"></i> 行程目錄
+                    </span>
+                    <span id="side-days-count" class="px-2 py-0.5 rounded-full bg-moss-400/40 text-[10px] font-mono text-moss-100">0 DAYS</span>
+                </div>
+                <!-- 集中操作：拖曳排序切換 & 刪除當前所選日 -->
+                <div class="flex items-center gap-1 shrink-0">
+                    <button id="btn-toggle-sort-mode" type="button" class="w-7 h-7 rounded-lg bg-moss-400/30 hover:bg-moss-400 text-moss-200 hover:text-white flex items-center justify-center transition-colors shadow-sm" title="編輯排序（拖曳調整順序）">
+                        <i id="icon-sort-mode" class="ph ph-pencil-simple text-sm"></i>
+                    </button>
+                    <button id="btn-side-delete-current" type="button" class="w-7 h-7 rounded-lg bg-red-950/40 hover:bg-red-600 text-red-200 hover:text-white flex items-center justify-center transition-colors shadow-sm" title="刪除目前選取的天數">
+                        <i class="ph ph-trash text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="day-list" class="flex-1 overflow-y-auto p-2.5 space-y-1.5 no-scrollbar">
+                <!-- 每日行程列表由 JS 動態渲染 -->
+            </div>
+
+            <!-- 新增天數按鈕 -->
+            <div class="p-3 border-t border-moss-400/30 bg-moss-500/90">
+                <button id="btn-add-day" class="w-full py-2.5 px-3 rounded-xl border border-dashed border-moss-300/50 hover:border-moss-200 bg-moss-400/20 hover:bg-moss-400/40 text-moss-100 font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                    <i class="ph ph-plus-circle text-base text-moss-200"></i>
+                    <span>新增行程日</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 側邊欄底部資訊 -->
+        <div class="p-3 border-t border-moss-400/30 bg-moss-600/60 flex items-center justify-between text-[11px] text-moss-200/80">
+            <span class="flex items-center gap-1.5">
+                <i class="ph ph-file-code text-sm text-moss-300"></i>
+                <span id="side-filename" class="font-mono truncate max-w-[140px]">未載入檔案</span>
+            </span>
+            <button id="tab-nav-json" class="hover:text-white font-mono flex items-center gap-1 text-[10px] bg-moss-400/40 hover:bg-moss-400 px-2 py-1 rounded-lg transition-colors" title="查看原始 JSON">
+                <i class="ph ph-code"></i> JSON
+            </button>
+        </div>
+    </aside>
+
+    <!-- 側欄收合時貼邊顯示的微型展開頁籤 (>) -->
+    <button id="btn-sidebar-pull-tab" class="fixed left-0 top-1/2 -translate-y-1/2 z-40 w-5 hover:w-6 h-14 rounded-r-xl bg-moss-500/90 hover:bg-moss-500 backdrop-blur-md text-white border-y border-r border-moss-300/40 shadow-xl flex items-center justify-center transition-all cursor-pointer hidden group" title="展開側邊欄 (>)">
+        <i class="ph ph-caret-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
+    </button>
+
+    <!-- 主工作區 (Main Content) -->
+    <main class="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-moss-100/50 relative">
+
+        <!-- 頂部工作列 (Top Bar) -->
+        <header class="h-16 px-4 md:px-6 bg-white/80 backdrop-blur-md border-b border-moss-200/80 flex items-center justify-between gap-3 shrink-0 z-20">
+            <!-- 左側標題 (乾淨俐落靠左) -->
+            <div class="min-w-0">
+                <div id="top-eyebrow" class="text-[10px] md:text-[11px] font-black text-amber-accent tracking-widest uppercase truncate">ITINERARY · DAY 1</div>
+                <h2 id="top-title" class="text-base md:text-lg font-black text-moss-500 truncate leading-snug">每日行程編輯</h2>
+            </div>
+
+            <!-- 右側功能按鈕群 (只保留：存檔狀態、儲存、下載) -->
+            <div class="flex items-center gap-2 shrink-0">
+                <!-- 存檔狀態指示燈 -->
+                <div id="save-status-badge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-moss-100 border border-moss-200 text-xs text-moss-500 font-medium">
+                    <span id="save-status-dot" class="w-2 h-2 rounded-full bg-moss-400"></span>
+                    <span id="save-status-text">已就緒 / 已儲存</span>
+                </div>
+
+                <!-- 一鍵儲存 / 覆寫本機檔 (Primary Action) -->
+                <button id="btn-save-disk" class="w-9 h-9 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all hover:shadow" title="直接儲存回寫本機或另存檔案">
+                    <i class="ph ph-floppy-disk text-lg"></i>
+                </button>
+
+                <!-- 下載 JSON 檔案 -->
+                <button id="btn-download-json" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center shadow-sm transition-all" title="下載為 .json 檔案">
+                    <i class="ph ph-download-simple text-lg text-moss-400"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 隱藏的檔案輸入，供 openLocalFile() 呼叫 -->
+        <input id="file-input-fallback" type="file" accept=".json,application/json" class="hidden">
+
+        <!-- 滾動內容面板 (Scroll Container) -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 no-scrollbar">
+            <div class="max-w-5xl mx-auto space-y-6">
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🅱️ 每日行程編輯面板 (Panel: Itinerary - 預設顯示)    -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-itinerary" class="space-y-6">
+
+                    <!-- 天數操作滑動列 (Day Carousel & Action Bar) -->
+                    <div class="bg-white/95 rounded-2xl p-3 md:p-3.5 border border-moss-200/90 shadow-sm flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
+                        <!-- 滑動天數選擇軌道 (Horizontal Pill Track) -->
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                            <!-- 前一天按鈕 (←) -->
+                            <button id="btn-prev-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 flex items-center justify-center text-moss-500 transition-colors shrink-0" title="前一天 (←)">
+                                <i class="ph ph-arrow-left text-base"></i>
+                            </button>
+
+                            <!-- 水平滾動膠囊區 (Pill Scroller) -->
+                            <div id="day-pill-scroller" class="flex-1 flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth py-1 px-1">
+                                <!-- 由 JS 動態產生各天膠囊 -->
+                            </div>
+
+                            <!-- 後一天按鈕 (→) -->
+                            <button id="btn-next-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 flex items-center justify-center text-moss-500 transition-colors shrink-0" title="後一天 (→)">
+                                <i class="ph ph-arrow-right text-base"></i>
+                            </button>
+                        </div>
+
+                        <!-- 右側輔助動作：複製此日 (純圖示) -->
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button id="btn-duplicate-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 text-moss-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" title="複製此日行程">
+                                <i class="ph ph-copy text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 當日基本核心資訊 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-calendar-check text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">當日核心資訊</h3>
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、完整日期、當日標題、天氣、路線地圖與封面大圖">
+                                    <i class="ph ph-info text-base"></i>
+                                </span>
+                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+
+        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">天數代號 (day)</label>
+                                <input type="text" data-day-field="day" placeholder="Day 1" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日完整日期 (fullDate)</label>
+                                <div class="flex gap-2">
+                                    <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="2026/10/8 (四)" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                    <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題與核心亮點 (title)</label>
+                                <input type="text" data-day-field="title" placeholder="啟程星月國度 ｜ 漫步番紅花城" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
+                            </div>
+
+                            <!-- 天氣圖示、氣溫與穿搭建議 -->
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">天氣圖示</label>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-9 h-9 rounded-xl bg-moss-100 flex items-center justify-center text-moss-500 text-lg shrink-0 border border-moss-200">
+                                        <i id="preview-weather-icon" class="ph ph-sun"></i>
+                                    </div>
+                                    <select id="select-weather-icon" data-day-field="weather.icon" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                        <option value="ph-sun">晴天</option>
+                                        <option value="ph-cloud-sun">晴時多雲</option>
+                                        <option value="ph-cloud">多雲</option>
+                                        <option value="ph-cloud-rain">降雨</option>
+                                        <option value="ph-cloud-snow">降雪</option>
+                                        <option value="ph-cloud-fog">起霧</option>
+                                        <option value="ph-lightning">雷雨</option>
+                                        <option value="ph-wind">強風</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">氣溫範圍 (weather.temp)</label>
+                                <input type="text" data-day-field="weather.temp" placeholder="10-18°C" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                            </div>
+
+                            <!-- 穿搭建議 (移入核心資訊) -->
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">穿搭建議 (outfit)</label>
+                                <input type="text" data-day-field="outfit" placeholder="女性需戴頭巾、防風連帽外套" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+
+                            <!-- 路線折疊圖網址 (換行獨立一列) -->
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">路線地圖圖片網址 (mapImage)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" data-day-field="mapImage" placeholder="https://..." class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                    <div id="preview-day-map" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                        <span class="text-[10px] text-moss-400">無圖</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 當日封面照片 -->
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日 Hero 大圖網址 (image)</label>
+                                <div class="flex gap-3">
+                                    <input type="text" data-day-field="image" placeholder="https://..." class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                    <div id="preview-day-image" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                        <span class="text-[10px] text-moss-400">無圖</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </details>
+
+                    <!-- 當日專屬待辦 (Day-level Todos) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-check-square-offset text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">當日待辦任務清單 (Day Todos)</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-add-day-todo" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增待辦">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
+                            <div id="day-todos-container" class="space-y-2.5">
+                                <!-- 待辦項目卡片由 JS 動態產生 -->
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 航班資訊 (Flights) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-airplane-tilt text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">航班資訊 (Flights)</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-add-flight" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增航班">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
+                            <div id="flights-container" class="space-y-2.5">
+                                <!-- 航班項目由 JS 動態產生 -->
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 景點列表 (Spots) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-map-pin text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">景點與走訪清單 (Spots)</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-add-spot" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all" title="新增景點卡片">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
+                            <div id="spots-container" class="space-y-5">
+                                <!-- 景點項目由 JS 動態產生 -->
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 當日特別提醒 (Special Notes) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-warning-circle text-xl text-amber-accent"></i>
+                                <h3 class="text-base md:text-lg">當日特別提醒 (Special Notes)</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-add-special-note" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增提醒">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
+                            <div id="special-notes-container" class="space-y-2.5">
+                                <!-- 特別提醒由 JS 動態產生 -->
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 旅遊備註與彩蛋資料 (Travel Notes & Easter Eggs) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-notebook text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">生活筆記與彩蛋 (Notes & Easter Eggs)</h3>
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定美食、土產、體驗彩蛋標籤，以及餐飲與住宿安排">
+                                    <i class="ph ph-info text-base"></i>
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="btn-add-easter-egg" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增一筆彩蛋標籤">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                            <!-- 彩蛋動態清單 (標籤選單：美食/土產/體驗 + 文字說明 + 圖片連結) -->
+                            <div class="space-y-2">
+                                <label class="block text-xs font-bold text-moss-500">彩蛋精選項目 (可選標籤：🍽️ 美食、🛍️ 土產、✨ 體驗)</label>
+                                <div id="easter-eggs-container" class="space-y-2.5">
+                                    <!-- 由 JS 動態渲染 -->
+                                </div>
+                            </div>
+
+                            <!-- 當日餐飲與住宿 -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-moss-100">
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日餐飲安排 (meals)</label>
+                                    <textarea data-day-field="meals" rows="2" placeholder="午：宮廷風米其林推薦 / 晚：鮮魚風味餐" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">住宿飯店資訊 (lodging)</label>
+                                    <textarea data-day-field="lodging" rows="2" placeholder="LIONEL HOTEL ISTANBUL" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 當日貼心叮嚀 (Tips) - 移至最後 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-lightbulb text-xl text-amber-accent"></i>
+                                <h3 class="text-base md:text-lg">貼心小撇步與叮嚀 (Tips)</h3>
+                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">貼心叮嚀內容 (tips)</label>
+                            <textarea data-day-field="tips" rows="3" placeholder="內部燈光較暗且濕滑；隨身包包往前背、注意集合時間..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed"></textarea>
+                        </div>
+                    </details>
+                </section>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🅳 經費預算與記帳面板 (Panel: Expenses & Accounting) -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-expenses" class="hidden space-y-6">
+                    <!-- 預算統計儀表卡 (Dashboard) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- 團費預算 -->
+                        <div class="bg-white/95 rounded-2xl p-5 border border-moss-200/90 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-moss-100 text-moss-500 flex items-center justify-center text-2xl shrink-0 border border-moss-200">
+                                <i class="ph ph-wallet"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-[11px] font-bold text-moss-400 uppercase tracking-wider">預估團費預算</div>
+                                <div class="text-xl md:text-2xl font-black text-moss-500 truncate font-mono">
+                                    <span id="dash-tourfee-currency">TW$</span> <span id="dash-tourfee-amount">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 已記帳開銷 -->
+                        <div class="bg-white/95 rounded-2xl p-5 border border-moss-200/90 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-accent flex items-center justify-center text-2xl shrink-0 border border-amber-200/80">
+                                <i class="ph ph-receipt"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-[11px] font-bold text-moss-400 uppercase tracking-wider">目前已記帳總支出</div>
+                                <div class="text-xl md:text-2xl font-black text-amber-accent truncate font-mono">
+                                    <span id="dash-spent-currency">TW$</span> <span id="dash-spent-amount">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 預算剩餘 / 狀態 -->
+                        <div class="bg-white/95 rounded-2xl p-5 border border-moss-200/90 shadow-sm flex items-center gap-4">
+                            <div id="dash-remain-icon-box" class="w-12 h-12 rounded-2xl bg-moss-100 text-moss-500 flex items-center justify-center text-2xl shrink-0 border border-moss-200">
+                                <i class="ph ph-piggy-bank"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-[11px] font-bold text-moss-400 uppercase tracking-wider">預估剩餘額度</div>
+                                <div id="dash-remain-amount-box" class="text-xl md:text-2xl font-black text-moss-500 truncate font-mono">
+                                    <span id="dash-remain-currency">TW$</span> <span id="dash-remain-amount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 卡片 1: 經費參數與說明設定 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-currency-circle-dollar text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">預估團費與說明連結設定</h3>
+                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">預估團費金額 (tourFee)</label>
+                                    <input type="number" data-setting="expenses.tourFee" placeholder="100000" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">主要幣別代碼 (currency)</label>
+                                    <input type="text" data-setting="expenses.currency" placeholder="TW$" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">團費備註 (note)</label>
+                                    <input type="text" data-setting="expenses.note" placeholder="含早鳥折扣 $5,900" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                </div>
+
+                                <div class="md:col-span-3 pt-2 border-t border-moss-100/70 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">外部說明標題 (info.title)</label>
+                                        <input type="text" data-setting="info.title" placeholder="說明 / 行程總表" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">按鈕顯示文字 (info.text)</label>
+                                        <input type="text" data-setting="info.text" placeholder="行健旅遊官網" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">連結超連結網址 (info.link)</label>
+                                        <input type="text" data-setting="info.link" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 卡片 2: 旅行記帳明細列表 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-receipt text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">旅遊開銷記帳明細清單</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="btn-add-expense-record" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all" title="新增一筆開銷">
+                                    <i class="ph ph-plus text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                            <div id="expense-records-container" class="space-y-3">
+                                <!-- 記帳項目動態渲染 -->
+                            </div>
+                        </div>
+                    </details>
+                </section>
+
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🅲 JSON 原始碼檢視面板 (Panel: JSON Raw)            -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-json" class="hidden space-y-4">
+                    <div class="bg-white/95 rounded-2xl p-5 md:p-7 border border-moss-200/90 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-moss-100">
+                            <div>
+                                <h3 class="text-base md:text-lg font-black text-moss-500">JSON 原始碼預覽與直接編輯</h3>
+                                <p class="text-xs text-moss-400 mt-0.5">即時產生的完整資料結構，可直接編輯、套用或複製下載。</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="btn-apply-raw-json" class="px-3.5 py-2 rounded-xl bg-moss-500 hover:bg-moss-600 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm" title="將文字框內容解析並套用至全站設定與行程">
+                                    <i class="ph ph-check-circle text-base"></i> 解析並套用
+                                </button>
+                                <button id="btn-copy-raw-json" class="px-3.5 py-2 rounded-xl bg-moss-400 hover:bg-moss-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm">
+                                    <i class="ph ph-copy text-base"></i> 複製代碼
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="raw-json-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-mono flex items-center gap-2">
+                            <i class="ph ph-warning-circle text-base shrink-0"></i>
+                            <span id="raw-json-error-msg">語法錯誤</span>
+                        </div>
+
+                        <textarea id="raw-json-output" spellcheck="false" class="w-full h-[520px] p-4 rounded-xl border border-moss-200 bg-moss-50/60 font-mono text-xs text-moss-500 focus:bg-white focus:border-moss-400 outline-none leading-relaxed resize-y"></textarea>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🅰️ 全站設置面板 (Panel: Settings)                  -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-settings" class="hidden space-y-6">
+                <!-- 📁 頂部：檔案操作列 (開啟 / 新建 / 線上載入) -->
+                <div class="bg-white/95 rounded-2xl p-3.5 border border-moss-200/90 shadow-sm">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- 說明文字 -->
+                        <span class="text-[11px] font-bold text-moss-400 uppercase tracking-wider mr-1">檔案操作</span>
+
+                        <!-- 開啟本機檔案 -->
+                        <button id="btn-open-file" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-moss-200 bg-moss-50 hover:bg-moss-100 text-moss-500 text-xs font-bold transition-all" title="選取本機 JSON 檔案">
+                            <i class="ph ph-folder-open text-base text-moss-400"></i>
+                            <span>開啟本機檔</span>
+                        </button>
+
+                        <!-- 建立新檔案 -->
+                        <button id="btn-create-new" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-moss-200 bg-moss-50 hover:bg-moss-100 text-moss-500 text-xs font-bold transition-all" title="建立全新空白行程">
+                            <i class="ph ph-file-plus text-base text-moss-400"></i>
+                            <span>新建行程</span>
+                        </button>
+
+                        <!-- 雲端線上載入 (fetch) -->
+                        <div class="flex items-center gap-1 bg-moss-50 p-1 rounded-xl border border-moss-200">
+                            <i class="ph ph-cloud-arrow-down text-base text-moss-400 ml-1"></i>
+                            <input id="input-online-name" type="text" placeholder="檔名 (如 2610)" class="w-24 px-2 py-1 text-xs bg-white rounded-lg border border-moss-200 text-moss-500 outline-none focus:border-moss-400 font-mono">
+                            <button id="btn-load-online" class="px-2 py-1 text-xs font-bold text-moss-500 hover:text-white hover:bg-moss-400 rounded-lg transition-colors" title="從線上載入 (fetch)">
+                                載入
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片 1: 基本資訊與封面大圖 -->
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                        <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                            <i class="ph ph-sparkle text-xl text-moss-400"></i>
+                            <h3 class="text-base md:text-lg">基本外觀與封面</h3>
+                            <!-- (i) 說明 tooltip -->
+                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定頁面標題、Hero 大標、日期文字、副標題與封面主視覺圖片">
+                                <i class="ph ph-info text-base"></i>
+                            </span>
+                        </div>
+                        <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">網頁瀏覽器分頁標題 (pageTitle)</label>
+                            <input type="text" data-setting="pageTitle" placeholder="土耳其傳奇 11 日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁主視覺大標題 (heroTitle)</label>
+                            <input type="text" data-setting="heroTitle" placeholder="星月傳奇．土耳其11日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                        </div>
+
+                        <!-- 日期文字與連動日期選擇器 (響應式防破版排版) -->
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="block text-xs font-bold text-moss-500">行程日期文字 (dateText)</label>
+                            <input id="input-date-text" type="text" data-setting="dateText" placeholder="2026/10/8(四) ~ 2026/10/18(日)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono min-w-0">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-moss-50 p-2.5 rounded-xl border border-moss-200 text-xs">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="text-moss-400 text-xs font-bold shrink-0">起</span>
+                                    <input id="date-helper-start" type="date" class="w-full h-8 px-2 text-xs bg-white rounded-lg border border-moss-200 text-moss-500 outline-none min-w-0">
+                                </div>
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="text-moss-400 text-xs font-bold shrink-0">迄</span>
+                                    <input id="date-helper-end" type="date" class="w-full h-8 px-2 text-xs bg-white rounded-lg border border-moss-200 text-moss-500 outline-none min-w-0">
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-moss-400/80">可手動輸入字串，或使用日曆選取起迄日期自動換算格式。</p>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題 / 行程摘要 (subtitle)</label>
+                            <input type="text" data-setting="subtitle" placeholder="跟團-行健 · 11 天 · 2026 秋季" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                        </div>
+
+                        <!-- 封面 Hero 圖片網址與即時縮圖 -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁主視覺背景圖片網址 (heroImage)</label>
+                            <div class="flex flex-col sm:flex-row gap-3 items-stretch">
+                                <textarea data-setting="heroImage" rows="2" placeholder="https://images.unsplash.com/..." class="flex-1 p-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none resize-none min-w-0"></textarea>
+                                <div id="preview-hero-image" class="w-full sm:w-36 h-20 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                    <span class="text-xs text-moss-400">無縮圖</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 前台首頁開放瀏覽頁籤 (visibleTabs) -->
+                    <div class="pt-4 border-t border-moss-100">
+                        <label class="block text-xs font-bold text-moss-500 mb-2">前台首頁開放瀏覽頁籤 (visibleTabs)</label>
+                        <div class="flex flex-wrap gap-4 text-xs font-bold text-moss-500">
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" data-tab-id="overview" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
+                                <span>總覽 (overview)</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" data-tab-id="itinerary" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
+                                <span>每日行程 (itinerary)</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" data-tab-id="expenses" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
+                                <span>經費預估 (expenses)</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" data-tab-id="todo" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
+                                <span>待辦清單 (todo)</span>
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+                </details>
+
+                <!-- 卡片 2: 總覽 Google My Maps 嵌入設定 - 預設收合 -->
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
+                    <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                        <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                            <i class="ph ph-map-trifold text-xl text-moss-400"></i>
+                            <h3 class="text-base md:text-lg">總覽地圖設定 (Google My Maps)</h3>
+                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="嵌入連結設定、iframe 乾淨網址萃取">
+                                <i class="ph ph-info text-base"></i>
+                            </span>
+                        </div>
+                        <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">
+                                Google My Maps 嵌入網址 (iframeUrl) 
+                                <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
+                            </label>
+                            <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                        </div>
+                    </div>
+                </details>
+
+                <!-- 卡片 3: 主題色彩設定 (Theme & Colors) -->
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                        <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                            <i class="ph ph-palette text-xl text-moss-400"></i>
+                            <h3 class="text-base md:text-lg">行程主題配色風格</h3>
+                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="套用預設主題，或透過 Hex Code 細部微調主色、深色底、點綴色與背景底色">
+                                <i class="ph ph-info text-base"></i>
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="theme-status-tag" class="text-xs px-2.5 py-1 rounded-full bg-moss-100 text-moss-500 font-bold border border-moss-200">森林松綠</span>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </div>
+                    </summary>
+
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+
+                    <!-- 預設配色方塊 -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="theme-presets-container">
+                        <!-- 預設按鈕由 JS 產生 -->
+                    </div>
+
+                    <!-- 自訂調色盤 -->
+                    <div class="pt-3 border-t border-moss-100 space-y-3">
+                        <div class="text-xs font-bold text-moss-500 flex items-center justify-between">
+                            <span>色彩細部微調 (Hex Code)</span>
+                            <div class="flex gap-1.5">
+                                <button type="button" id="btn-save-fav1" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 1</button>
+                                <button type="button" id="btn-save-fav2" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 2</button>
+                                <button type="button" id="btn-save-fav3" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 3</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                            <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                <label class="block font-bold text-moss-500">主色調 (Primary)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="color-picker-primary" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                    <input type="text" id="color-hex-primary" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                <label class="block font-bold text-moss-500">深色底 (Deep)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="color-picker-deep" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                    <input type="text" id="color-hex-deep" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                <label class="block font-bold text-moss-500">點綴色 (Accent)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="color-picker-accent" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                    <input type="text" id="color-hex-accent" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                <label class="block font-bold text-moss-500">背景底 (Background)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="color-picker-bg" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                    <input type="text" id="color-hex-bg" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </details>
+
+                <!-- 卡片 4: 字體風格設定 (Typography) -->
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                        <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                            <i class="ph ph-text-aa text-xl text-moss-400"></i>
+                            <h3 class="text-base md:text-lg">排版與字體風格 (Typography)</h3>
+                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="選擇整體字體風格，並分別微調大標、區塊標、內文、輔助文字的電腦與手機尺寸">
+                                <i class="ph ph-info text-base"></i>
+                            </span>
+                        </div>
+                        <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-moss-500 mb-1.5">整體字體風格</label>
+                        <select data-setting="typography.style" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            <option value="modern">現代簡約風 (思源黑體)</option>
+                            <option value="elegant">經典優雅風 (思源宋體 / Playfair)</option>
+                            <option value="journal">手寫溫度風 (克立手寫體)</option>
+                            <option value="reading">溫潤閱讀風 (霞鶩文楷)</option>
+                            <option value="playful">活潑圓潤風 (系統圓體)</option>
+                        </select>
+                    </div>
+
+                    <!-- 4 級字體大小微調 (拆三列：標題 - 電腦 - 手機) -->
+                    <div class="pt-3 border-t border-moss-100 space-y-2.5">
+                        <label class="block text-xs font-bold text-moss-500">各級字體尺寸 (對照三列：標題 - 電腦 - 手機 px)</label>
+                        <div class="overflow-x-auto rounded-xl border border-moss-200 bg-moss-50/50 p-3 no-scrollbar">
+                            <div class="min-w-[440px] space-y-2.5 text-xs">
+                                <!-- 第 1 列：標題 -->
+                                <div class="grid grid-cols-5 gap-2 items-center text-moss-500 font-bold text-[11px] pb-2 border-b border-moss-200/80 text-center">
+                                    <div class="text-left text-moss-400 font-bold">層級名稱</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L1 大標 (Hero)</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L2 區塊 (Heading)</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L3 內文 (Body)</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L4 輔助 (Small)</div>
+                                </div>
+                                <!-- 第 2 列：電腦尺寸 -->
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <div class="text-moss-500 font-bold flex items-center gap-1.5 text-xs">
+                                        <i class="ph ph-desktop text-sm text-moss-400"></i>
+                                        <span>電腦 (px)</span>
+                                    </div>
+                                    <input type="number" data-setting="typography.hero.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.heading.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.body.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.small.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                </div>
+                                <!-- 第 3 列：手機尺寸 -->
+                                <div class="grid grid-cols-5 gap-2 items-center">
+                                    <div class="text-moss-500 font-bold flex items-center gap-1.5 text-xs">
+                                        <i class="ph ph-device-mobile text-sm text-moss-400"></i>
+                                        <span>手機 (px)</span>
+                                    </div>
+                                    <input type="number" data-setting="typography.hero.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.heading.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.body.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.small.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </details>
+            </section>
+        </div>
+    </div>
+</main>
+
+    <!-- 浮動 Toast 提示 -->
+    <div id="toast-box" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-moss-500 text-moss-100 text-sm font-bold shadow-2xl border border-moss-400/50">
+            <i id="toast-icon" class="ph ph-check-circle text-lg text-moss-200"></i>
+            <span id="toast-msg">已儲存</span>
+        </div>
+    </div>
+
+    <!-- 原生確認對話框 Dialog -->
+    <dialog id="modal-confirm" class="rounded-3xl p-0 overflow-hidden shadow-2xl border border-moss-200 w-full max-w-sm">
+        <div class="p-6 bg-white space-y-4">
+            <div class="flex items-center gap-3 text-amber-accent">
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-xl">
+                    <i class="ph ph-warning-circle"></i>
+                </div>
+                <div>
+                    <h4 id="confirm-modal-title" class="font-black text-base text-moss-500">確認操作</h4>
+                    <p id="confirm-modal-desc" class="text-xs text-moss-400 mt-0.5">確定要執行這項操作嗎？</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+                <button id="btn-confirm-cancel" class="px-4 py-2 rounded-xl border border-moss-200 text-xs font-bold text-moss-500 hover:bg-moss-50 transition-colors">取消</button>
+                <button id="btn-confirm-ok" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black transition-colors">確定執行</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <!-- ⚙️ JavaScript 核心驅動邏輯 (State & Controllers)           -->
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <script>
+        /**
+         * Travel Plan Web Admin - JSON Generator Controller
+         */
+        const DEFAULT_JSON = {
+            settings: {
+                pageTitle: "我的精彩旅程",
+                heroTitle: "探索世界．旅程規劃",
+                dateText: "",
+                subtitle: "自由行 / 專屬攻略",
+                heroImage: "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
+                mapEngine: "google",
+                visibleTabs: ["itinerary", "overview", "todo"],
+                theme: "forest",
+                customTheme: {
+                    primary: "#315a4c",
+                    deep: "#203d34",
+                    accent: "#cf795f",
+                    bg: "#eef2ec"
+                },
+                themeColors: {
+                    primary: "#315a4c",
+                    deep: "#203d34",
+                    accent: "#cf795f",
+                    bg: "#eef2ec"
+                },
+                overviewMap: {
+                    image: "",
+                    iframeUrl: ""
+                },
+                expenses: {
+                    tourFee: 0,
+                    currency: "TW$",
+                    note: "",
+                    records: []
+                },
+                info: {
+                    title: "行程說明",
+                    text: "",
+                    link: ""
+                },
+                typography: {
+                    style: "modern",
+                    hero: { desktop: 38, mobile: 30 },
+                    heading: { desktop: 22, mobile: 18 },
+                    body: { desktop: 18, mobile: 18 },
+                    small: { desktop: 15, mobile: 15 }
+                }
+            },
+            itinerary: [
+                {
+                    day: "Day 1",
+                    fullDate: "",
+                    title: "啟程首日",
+                    weather: { icon: "ph-sun", temp: "" },
+                    image: "",
+                    mapImage: "",
+                    todos: [],
+                    flights: [],
+                    spots: [],
+                    specialNotes: [],
+                    easterEggs: [],
+                    outfit: "",
+                    buy: "",
+                    eat: "",
+                    bonus: "",
+                    eatImage: "",
+                    buyImage: "",
+                    bonusImage: "",
+                    meals: "",
+                    lodging: "",
+                    tips: ""
+                }
+            ]
+        };
+
+        const PRESET_THEMES = {
+            forest: { id: 'forest', name: '森林松綠', primary: '#315a4c', deep: '#203d34', accent: '#cf795f', bg: '#eef2ec' },
+            ocean:  { id: 'ocean',  name: '蔚藍海島', primary: '#1f648d', deep: '#133d57', accent: '#e6823b', bg: '#edf4f8' },
+            sand:   { id: 'sand',   name: '大地暖沙', primary: '#7d5a3c', deep: '#4d3723', accent: '#d97706', bg: '#f7f4ee' },
+            kyoto:  { id: 'kyoto',  name: '京都緋紅', primary: '#8c2d2d', deep: '#571a1a', accent: '#52744d', bg: '#f9f3f3' }
+        };
+
+        // 狀態管理物件
+        let appData = JSON.parse(JSON.stringify(DEFAULT_JSON));
+        let selectedDayIndex = 0;
+        let currentTab = 'itinerary'; // 'itinerary' | 'expenses' | 'json'
+        let hasUnsavedChanges = false;
+        let currentFileHandle = null;
+        let currentFileName = '2610.json';
+        let pendingConfirmCallback = null;
+
+        // UI 元素捷徑
+        const sidebar = document.getElementById('sidebar');
+        const dayListEl = document.getElementById('day-list');
+        const rawJsonOutput = document.getElementById('raw-json-output');
+        const saveStatusBadge = document.getElementById('save-status-badge');
+        const saveStatusDot = document.getElementById('save-status-dot');
+        const saveStatusText = document.getElementById('save-status-text');
+        const sideFilenameEl = document.getElementById('side-filename');
+
+        /* ------------------------------------------------------------- */
+        /* 🚀 初始化 (Initialization)                                    */
+        /* ------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', async () => {
+            initEventListeners();
+            initThemeButtons();
+            
+            // 嘗試載入預設 2610.json，若在本地 file:// 協議失敗則載入 DEFAULT_JSON
+            try {
+                const res = await fetch('WebPage/2610.json');
+                if (res.ok) {
+                    const json = await res.json();
+                    loadData(json, '2610.json');
+                    showToast('已載入 WebPage/2610.json');
+                    return;
+                }
+            } catch (e) {
+                // 忽略 file:// 安全性攔截，載入乾淨初始模板
+            }
+            loadData(DEFAULT_JSON, 'new_plan.json');
+        });
+
+        /* ------------------------------------------------------------- */
+        /* 📂 資料載入與規範化 (Load & Normalize)                         */
+        /* ------------------------------------------------------------- */
+        function loadData(json, fileName = 'data.json') {
+            appData = {
+                settings: Object.assign({}, DEFAULT_JSON.settings, json.settings || {}),
+                itinerary: Array.isArray(json.itinerary) && json.itinerary.length ? json.itinerary : [DEFAULT_JSON.itinerary[0]]
+            };
+
+            // 確保深層物件齊全
+            if (!appData.settings.expenses) appData.settings.expenses = Object.assign({}, DEFAULT_JSON.settings.expenses);
+            if (!Array.isArray(appData.settings.expenses.records)) appData.settings.expenses.records = [];
+            if (!appData.settings.info) appData.settings.info = Object.assign({}, DEFAULT_JSON.settings.info);
+            if (!appData.settings.overviewMap) appData.settings.overviewMap = Object.assign({}, DEFAULT_JSON.settings.overviewMap);
+            if (!appData.settings.customTheme) appData.settings.customTheme = Object.assign({}, DEFAULT_JSON.settings.customTheme);
+            if (!appData.settings.typography) appData.settings.typography = Object.assign({}, DEFAULT_JSON.settings.typography);
+            const defaultTypo = DEFAULT_JSON.settings.typography;
+            if (!appData.settings.typography.hero) appData.settings.typography.hero = { ...defaultTypo.hero };
+            if (!appData.settings.typography.heading) appData.settings.typography.heading = { ...defaultTypo.heading };
+            if (!appData.settings.typography.body) appData.settings.typography.body = { ...defaultTypo.body };
+            if (!appData.settings.typography.small) appData.settings.typography.small = { ...defaultTypo.small };
+            if (!Array.isArray(appData.settings.visibleTabs)) appData.settings.visibleTabs = ["itinerary", "overview"];
+
+            // 規範化每天欄位
+            appData.itinerary.forEach((day, idx) => {
+                if (!day.weather) day.weather = { icon: 'ph-sun', temp: '' };
+                if (!Array.isArray(day.todos)) day.todos = [];
+                if (!Array.isArray(day.flights)) day.flights = [];
+                if (!Array.isArray(day.spots)) day.spots = [];
+                if (!Array.isArray(day.specialNotes)) day.specialNotes = [];
+                if (typeof day.bonus !== 'string') day.bonus = '';
+                if (typeof day.eat !== 'string') day.eat = '';
+                if (typeof day.buy !== 'string') day.buy = '';
+                if (typeof day.outfit !== 'string') day.outfit = '';
+                if (typeof day.tips !== 'string') day.tips = '';
+                if (typeof day.meals !== 'string') day.meals = '';
+                if (typeof day.lodging !== 'string') day.lodging = '';
+                if (typeof day.eatImage !== 'string') day.eatImage = '';
+                if (typeof day.buyImage !== 'string') day.buyImage = '';
+                if (typeof day.bonusImage !== 'string') day.bonusImage = '';
+
+                // 規範化生活筆記與彩蛋 (相容舊版 eat/buy/bonus 字串)
+                if (!Array.isArray(day.easterEggs)) {
+                    day.easterEggs = [];
+                    if (day.eat) {
+                        day.eat.split('、').map(s => s.trim()).filter(Boolean).forEach((t, i) => {
+                            day.easterEggs.push({ tag: 'eat', text: t, image: i === 0 ? (day.eatImage || '') : '' });
+                        });
+                    }
+                    if (day.buy) {
+                        day.buy.split('、').map(s => s.trim()).filter(Boolean).forEach((t, i) => {
+                            day.easterEggs.push({ tag: 'buy', text: t, image: i === 0 ? (day.buyImage || '') : '' });
+                        });
+                    }
+                    if (day.bonus) {
+                        day.bonus.split('、').map(s => s.trim()).filter(Boolean).forEach((t, i) => {
+                            day.easterEggs.push({ tag: 'bonus', text: t, image: i === 0 ? (day.bonusImage || '') : '' });
+                        });
+                    }
+                }
+                syncEasterEggsToLegacyStrings(day);
+
+                day.spots.forEach(spot => {
+                    if (!Array.isArray(spot.todos)) spot.todos = [];
+                    if (typeof spot.note !== 'string') spot.note = '';
+                    if (typeof spot.mapQuery !== 'string') spot.mapQuery = '';
+                });
+            });
+
+            currentFileName = fileName;
+            sideFilenameEl.textContent = fileName;
+            selectedDayIndex = 0;
+            markClean();
+
+            renderSidebarDays();
+            renderSettingsPanel();
+            renderItineraryDay();
+            renderExpensesPanel();
+            syncRawJsonView();
+            switchTab(currentTab);
+            updateSidebarPullTab();
+        }
+
+        function markDirty() {
+            hasUnsavedChanges = true;
+            saveStatusDot.className = 'w-2 h-2 rounded-full bg-amber-accent';
+            saveStatusText.textContent = '有未儲存更動';
+            document.getElementById('btn-save-disk').classList.add('needs-save');
+        }
+
+        function markClean() {
+            hasUnsavedChanges = false;
+            saveStatusDot.className = 'w-2 h-2 rounded-full bg-moss-400';
+            saveStatusText.textContent = '已就緒 / 已儲存';
+            document.getElementById('btn-save-disk').classList.remove('needs-save');
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 📑 面板導航與分頁切換 (Tab Navigation)                         */
+        /* ------------------------------------------------------------- */
+        function switchTab(tabId) {
+            if (currentTab === 'json' && tabId !== 'json') {
+                const currentJsonStr = JSON.stringify(appData, null, 2);
+                if (rawJsonOutput.value.trim() !== currentJsonStr.trim()) {
+                    const ok = applyRawJson();
+                    if (!ok) return;
+                }
+            }
+
+            currentTab = tabId;
+            const panelSettings  = document.getElementById('panel-settings');
+            const panelItinerary = document.getElementById('panel-itinerary');
+            const panelExpenses  = document.getElementById('panel-expenses');
+            const panelJson      = document.getElementById('panel-json');
+
+            if (panelSettings)  panelSettings.classList.toggle('hidden', tabId !== 'settings');
+            if (panelItinerary) panelItinerary.classList.toggle('hidden', tabId !== 'itinerary');
+            if (panelExpenses)  panelExpenses.classList.toggle('hidden', tabId !== 'expenses');
+            if (panelJson)      panelJson.classList.toggle('hidden', tabId !== 'json');
+
+            // 頁籤樣式高亮
+            const INACTIVE = 'nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white';
+            const ACTIVE   = 'nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm';
+            const btnItinerary = document.getElementById('tab-nav-itinerary');
+            const btnSettings  = document.getElementById('tab-nav-settings');
+            const btnExpenses  = document.getElementById('tab-nav-expenses');
+            if (btnItinerary) btnItinerary.className = tabId === 'itinerary' ? ACTIVE : INACTIVE;
+            if (btnSettings)  btnSettings.className  = tabId === 'settings'  ? ACTIVE : INACTIVE;
+            if (btnExpenses)  btnExpenses.className  = tabId === 'expenses'  ? ACTIVE : INACTIVE;
+
+            if (tabId === 'settings') {
+                document.getElementById('top-eyebrow').textContent = 'GLOBAL SETTINGS';
+                document.getElementById('top-title').textContent = '全站整體外觀與主題設置';
+                renderSettingsPanel();
+            } else if (tabId === 'itinerary') {
+                updateTopItineraryTitle();
+            } else if (tabId === 'expenses') {
+                document.getElementById('top-eyebrow').textContent = 'EXPENSES';
+                document.getElementById('top-title').textContent = '經費預算與記帳';
+                renderExpensesPanel();
+            } else if (tabId === 'json') {
+                document.getElementById('top-eyebrow').textContent = 'RAW DATA';
+                document.getElementById('top-title').textContent = 'JSON 原始碼預覽';
+                syncRawJsonView();
+            }
+
+            if (window.innerWidth < 768) {
+                sidebar.classList.remove('mobile-open');
+                const backdropEl = document.getElementById('sidebar-backdrop');
+                if (backdropEl) backdropEl.classList.add('hidden');
+            }
+        }
+
+        function updateTopItineraryTitle() {
+            const day = appData.itinerary[selectedDayIndex];
+            if (day) {
+                document.getElementById('top-eyebrow').textContent = `ITINERARY · ${day.day || 'DAY'}`;
+                document.getElementById('top-title').textContent = day.title || '未命名行程日';
+            }
+        }
+
+        let isSortModeActive = false;
+        let draggedDayIndex = null;
+
+        /* ------------------------------------------------------------- */
+        /* 側拉頁籤狀態同步 (Sidebar Pull Tab Synchronizer)                */
+        /* ------------------------------------------------------------- */
+        function updateSidebarPullTab() {
+            const isMobile = window.innerWidth < 768;
+            const isCollapsed = isMobile 
+                ? !sidebar.classList.contains('mobile-open')
+                : sidebar.classList.contains('desktop-collapsed');
+            const pullTab = document.getElementById('btn-sidebar-pull-tab');
+            if (pullTab) {
+                pullTab.classList.toggle('hidden', !isCollapsed);
+                pullTab.classList.toggle('flex', isCollapsed);
+            }
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🎨 側邊欄渲染 (Sidebar Rendering) - 簡潔清爽 & 支援拖曳排序     */
+        /* ------------------------------------------------------------- */
+        function renderSidebarDays() {
+            document.getElementById('side-days-count').textContent = `${appData.itinerary.length} DAYS`;
+            dayListEl.innerHTML = '';
+
+            // 更新排序按鈕外觀狀態
+            const sortBtn = document.getElementById('btn-toggle-sort-mode');
+            const sortIcon = document.getElementById('icon-sort-mode');
+            if (sortBtn && sortIcon) {
+                if (isSortModeActive) {
+                    sortBtn.className = 'w-7 h-7 rounded-lg bg-amber-accent text-white flex items-center justify-center transition-colors shadow-sm ring-2 ring-amber-300/40';
+                    sortIcon.className = 'ph ph-check text-sm font-bold';
+                    sortBtn.title = '完成拖曳排序';
+                } else {
+                    sortBtn.className = 'w-7 h-7 rounded-lg bg-moss-400/30 hover:bg-moss-400 text-moss-200 hover:text-white flex items-center justify-center transition-colors shadow-sm';
+                    sortIcon.className = 'ph ph-pencil-simple text-sm';
+                    sortBtn.title = '編輯排序（拖曳調整順序）';
+                }
+            }
+
+            appData.itinerary.forEach((day, index) => {
+                const isActive = currentTab === 'itinerary' && index === selectedDayIndex;
+                const item = document.createElement('div');
+                item.className = `day-sidebar-item w-full p-2.5 rounded-xl transition-all flex items-center gap-2 text-xs cursor-pointer select-none border border-transparent ${
+                    isActive 
+                        ? 'bg-moss-400 text-moss-100 font-bold shadow-sm' 
+                        : 'text-moss-200/90 hover:bg-moss-400/30 hover:text-white'
+                }`;
+                item.dataset.index = index;
+
+                item.innerHTML = `
+                    ${isSortModeActive ? `
+                        <span class="drag-handle cursor-grab active:cursor-grabbing text-moss-200/80 hover:text-white p-0.5 shrink-0" title="按住上下拖曳排序">
+                            <i class="ph ph-dots-six-vertical text-base"></i>
+                        </span>
+                    ` : ''}
+                    <span class="w-6 h-6 rounded-lg ${isActive ? 'bg-moss-500 text-moss-100' : 'bg-moss-400/50 text-moss-200'} font-mono text-[10px] flex items-center justify-center shrink-0 font-bold">
+                        ${String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div class="min-w-0 flex-1">
+                        <div class="truncate text-[11px] font-bold">${escapeHtml(day.day || `Day ${index + 1}`)} · ${escapeHtml(day.title || '未命名')}</div>
+                        <div class="truncate text-[10px] opacity-70 font-mono">${escapeHtml(day.fullDate || '--')}</div>
+                    </div>
+                `;
+
+                // 拖曳排序事件綁定
+                if (isSortModeActive) {
+                    item.draggable = true;
+                    item.addEventListener('dragstart', (e) => {
+                        draggedDayIndex = index;
+                        e.dataTransfer.effectAllowed = 'move';
+                        item.classList.add('opacity-40');
+                    });
+                    item.addEventListener('dragend', () => {
+                        draggedDayIndex = null;
+                        item.classList.remove('opacity-40');
+                        document.querySelectorAll('.day-sidebar-item').forEach(el => el.classList.remove('border-amber-accent', 'border-t-2', 'bg-moss-400/20'));
+                    });
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        item.classList.add('border-amber-accent', 'border-t-2');
+                    });
+                    item.addEventListener('dragleave', () => {
+                        item.classList.remove('border-amber-accent', 'border-t-2');
+                    });
+                    item.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        item.classList.remove('border-amber-accent', 'border-t-2');
+                        if (draggedDayIndex === null || draggedDayIndex === index) return;
+                        const movedItem = appData.itinerary.splice(draggedDayIndex, 1)[0];
+                        appData.itinerary.splice(index, 0, movedItem);
+                        selectedDayIndex = index;
+                        renderSidebarDays();
+                        renderItineraryDay();
+                        markDirty();
+                        showToast(`已調整為 Day ${index + 1}`);
+                    });
+                }
+
+                // 點選切換天數
+                item.onclick = (e) => {
+                    if (e.target.closest('.drag-handle')) return;
+                    selectedDayIndex = index;
+                    switchTab('itinerary');
+                    renderSidebarDays();
+                    renderItineraryDay();
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.remove('mobile-open');
+                        const backdropEl = document.getElementById('sidebar-backdrop');
+                        if (backdropEl) backdropEl.classList.add('hidden');
+                        updateSidebarPullTab();
+                    }
+                };
+
+                dayListEl.appendChild(item);
+            });
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🎠 天數水平滑動膠囊列渲染 (Day Pill Carousel Scroller)        */
+        /* ------------------------------------------------------------- */
+        function renderDayPillScroller() {
+            const scroller = document.getElementById('day-pill-scroller');
+            if (!scroller) return;
+            scroller.innerHTML = '';
+
+            appData.itinerary.forEach((d, idx) => {
+                const isSel = idx === selectedDayIndex;
+                const pill = document.createElement('button');
+                pill.type = 'button';
+                pill.className = `whitespace-nowrap px-4 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
+                    isSel
+                        ? 'bg-moss-400 text-moss-100 shadow-sm font-black scale-105'
+                        : 'bg-moss-50 hover:bg-moss-100 text-moss-500 border border-moss-200/80'
+                }`;
+                pill.textContent = d.day || `Day ${idx + 1}`;
+                pill.title = `${d.day || `Day ${idx + 1}`} · ${d.title || ''}`;
+                pill.onclick = () => {
+                    selectedDayIndex = idx;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                };
+                scroller.appendChild(pill);
+
+                if (isSel) {
+                    setTimeout(() => {
+                        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }, 50);
+                }
+            });
+        }
+
+        /* ------------------------------------------------------------- */
+        /* ⚙️ 全站設置面板渲染 (Settings Panel)                         */
+        /* ------------------------------------------------------------- */
+        function renderSettingsPanel() {
+            const s = appData.settings;
+            // 綁定所有 data-setting 輸入框
+            document.querySelectorAll('[data-setting]').forEach(el => {
+                const path = el.dataset.setting;
+                const val = getObjectValue(s, path) ?? '';
+                el.value = val;
+            });
+
+            // 預覽 Hero 圖
+            updateHeroImagePreview(s.heroImage);
+
+            // 同步起訖日期小工具
+            syncDateHelpersFromText(s.dateText);
+
+            // 綁定可見頁籤核取方塊
+            const tabs = new Set(s.visibleTabs || []);
+            document.querySelectorAll('.tab-checkbox').forEach(cb => {
+                cb.checked = tabs.has(cb.dataset.tabId);
+            });
+
+            // 配色同步
+            syncThemeInputs();
+        }
+
+        function updateHeroImagePreview(url) {
+            const previewEl = document.getElementById('preview-hero-image');
+            if (url && /^https?:\/\//i.test(url.trim())) {
+                previewEl.innerHTML = `<img src="${escapeHtml(url.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-xs text-red-400\\'>載入失敗</span>'">`;
+            } else {
+                previewEl.innerHTML = `<span class="text-xs text-moss-400">無縮圖</span>`;
+            }
+        }
+
+        function syncDateHelpersFromText(text) {
+            const startHelper = document.getElementById('date-helper-start');
+            const endHelper = document.getElementById('date-helper-end');
+            if (!startHelper || !endHelper) return;
+            if (!text || typeof text !== 'string') {
+                startHelper.value = '';
+                endHelper.value = '';
+                return;
+            }
+            const regex = /(\d{4})[/-](\d{1,2})[/-](\d{1,2})/g;
+            const matches = [...text.matchAll(regex)];
+            if (matches.length >= 1) {
+                const y = matches[0][1];
+                const m = matches[0][2].padStart(2, '0');
+                const d = matches[0][3].padStart(2, '0');
+                startHelper.value = `${y}-${m}-${d}`;
+            } else {
+                startHelper.value = '';
+            }
+            if (matches.length >= 2) {
+                const y = matches[1][1];
+                const m = matches[1][2].padStart(2, '0');
+                const d = matches[1][3].padStart(2, '0');
+                endHelper.value = `${y}-${m}-${d}`;
+            } else {
+                endHelper.value = '';
+            }
+        }
+
+        function syncDayDatePickerFromText(text) {
+            const picker = document.getElementById('day-date-picker-helper');
+            if (!picker) return;
+            if (!text || typeof text !== 'string') {
+                picker.value = '';
+                return;
+            }
+            const match = text.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})/);
+            if (match) {
+                const y = match[1];
+                const m = match[2].padStart(2, '0');
+                const d = match[3].padStart(2, '0');
+                picker.value = `${y}-${m}-${d}`;
+            } else {
+                picker.value = '';
+            }
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 📅 每日行程面板渲染 (Itinerary Panel)                         */
+        /* ------------------------------------------------------------- */
+        function renderItineraryDay() {
+            const day = appData.itinerary[selectedDayIndex];
+            if (!day) return;
+
+            const dayBadgeEl = document.getElementById('current-day-badge');
+            if (dayBadgeEl) dayBadgeEl.textContent = day.day || `Day ${selectedDayIndex + 1}`;
+            const dayDateEl = document.getElementById('current-day-date');
+            if (dayDateEl) dayDateEl.textContent = day.fullDate || '--';
+            updateTopItineraryTitle();
+            renderDayPillScroller();
+
+            // 綁定當日欄位
+            document.querySelectorAll('[data-day-field]').forEach(el => {
+                const path = el.dataset.dayField;
+                el.value = getObjectValue(day, path) ?? '';
+            });
+
+            // 同步當日日曆小工具
+            syncDayDatePickerFromText(day.fullDate);
+
+            // 天氣圖示預覽
+            const iconName = day.weather?.icon || 'ph-sun';
+            document.getElementById('preview-weather-icon').className = `ph ${iconName}`;
+
+            // 當日路線地圖預覽
+            const mapImgEl = document.getElementById('preview-day-map');
+            if (mapImgEl) {
+                if (day.mapImage && /^https?:\/\//i.test(day.mapImage.trim())) {
+                    mapImgEl.innerHTML = `<img src="${escapeHtml(day.mapImage.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`;
+                } else {
+                    mapImgEl.innerHTML = `<span class="text-[10px] text-moss-400">無圖</span>`;
+                }
+            }
+
+            // 當日大圖預覽
+            const dayImgEl = document.getElementById('preview-day-image');
+            if (day.image && /^https?:\/\//i.test(day.image.trim())) {
+                dayImgEl.innerHTML = `<img src="${escapeHtml(day.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`;
+            } else {
+                dayImgEl.innerHTML = `<span class="text-[10px] text-moss-400">無圖</span>`;
+            }
+
+            // 渲染當日待辦清單
+            renderDayTodos(day);
+            // 渲染航班
+            renderFlights(day);
+            // 渲染景點卡片
+            renderSpots(day);
+            // 渲染特別提醒
+            renderSpecialNotes(day);
+            // 渲染生活筆記與彩蛋
+            renderEasterEggs(day);
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 📋 子組件渲染器 (Sub-component Renderers)                      */
+        /* ------------------------------------------------------------- */
+        function renderDayTodos(day) {
+            const container = document.getElementById('day-todos-container');
+            container.innerHTML = '';
+
+            if (!day.todos || !day.todos.length) {
+                container.innerHTML = `<div class="p-3 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">目前無待辦事項，點擊上方按鈕新增</div>`;
+                return;
+            }
+
+            day.todos.forEach((todo, idx) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
+                item.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                    <input type="text" placeholder="待辦任務 (例如：待訂飯店)" value="${escapeHtml(todo.task || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold" data-action="edit-day-todo-task" data-idx="${idx}">
+                    <input type="text" placeholder="補充備註 (例如：確認機場接送)" value="${escapeHtml(todo.note || '')}" class="w-1/3 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none" data-action="edit-day-todo-note" data-idx="${idx}">
+                    <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-day-todo" data-idx="${idx}" title="刪除此項">
+                        <i class="ph ph-trash text-base"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderFlights(day) {
+            const container = document.getElementById('flights-container');
+            container.innerHTML = '';
+
+            if (!day.flights || !day.flights.length) {
+                container.innerHTML = `<div class="p-3 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">目前無航班資訊，點擊上方按鈕新增</div>`;
+                return;
+            }
+
+            day.flights.forEach((flight, idx) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
+                item.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                    <input type="text" placeholder="航班描述 (例如：土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10)" value="${escapeHtml(flight || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-flight" data-idx="${idx}">
+                    <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-flight" data-idx="${idx}" title="刪除此項">
+                        <i class="ph ph-trash text-base"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderSpecialNotes(day) {
+            const container = document.getElementById('special-notes-container');
+            container.innerHTML = '';
+
+            if (!day.specialNotes || !day.specialNotes.length) {
+                container.innerHTML = `<div class="p-3 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">無特別提醒項目</div>`;
+                return;
+            }
+
+            day.specialNotes.forEach((note, idx) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
+                item.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                    <input type="text" placeholder="提醒內容" value="${escapeHtml(note || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-special-note" data-idx="${idx}">
+                    <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-special-note" data-idx="${idx}" title="刪除此項">
+                        <i class="ph ph-trash text-base"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderSpots(day) {
+            const container = document.getElementById('spots-container');
+            container.innerHTML = '';
+
+            if (!day.spots || !day.spots.length) {
+                container.innerHTML = `<div class="p-8 text-center text-moss-400 border border-dashed border-moss-200 rounded-2xl bg-moss-50/40">此日尚無景點，點擊上方「新增景點卡片」開始規劃！</div>`;
+                return;
+            }
+
+            day.spots.forEach((spot, spotIdx) => {
+                const card = document.createElement('div');
+                card.className = 'spot-edit-card rounded-2xl p-4 md:p-5 border border-moss-200 bg-moss-50/40 space-y-4 relative group';
+                card.innerHTML = `
+                    <!-- 景點頭部 -->
+                    <div class="flex items-center justify-between pb-3 border-b border-moss-200/80">
+                        <div class="flex items-center gap-2 font-black text-sm text-moss-500">
+                            <span class="w-6 h-6 rounded-lg bg-moss-400 text-white font-mono text-xs flex items-center justify-center">${spotIdx + 1}</span>
+                            <span>景點 #${spotIdx + 1}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" class="w-7 h-7 rounded-lg border border-moss-200 hover:bg-white text-moss-500 flex items-center justify-center transition-colors" data-action="move-spot" data-spot-idx="${spotIdx}" data-dir="-1" title="往上移">
+                                <i class="ph ph-arrow-up text-sm"></i>
+                            </button>
+                            <button type="button" class="w-7 h-7 rounded-lg border border-moss-200 hover:bg-white text-moss-500 flex items-center justify-center transition-colors" data-action="move-spot" data-spot-idx="${spotIdx}" data-dir="1" title="往下移">
+                                <i class="ph ph-arrow-down text-sm"></i>
+                            </button>
+                            <button type="button" class="w-7 h-7 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors" data-action="del-spot" data-spot-idx="${spotIdx}" title="刪除景點">
+                                <i class="ph ph-trash text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 景點表單 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點名稱 (name)</label>
+                            <input type="text" placeholder="例如：市長官邸" value="${escapeHtml(spot.name || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字 (mapQuery)</label>
+                            <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點照片網址 (image)</label>
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="https://..." value="${escapeHtml(spot.image || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="image" data-spot-idx="${spotIdx}">
+                                <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                    ${spot.image ? `<img src="${escapeHtml(spot.image)}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[9px] text-moss-400">無縮圖</span>`}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹描述 (description)</label>
+                            <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
+                        </div>
+
+                        <!-- 景點專屬備註 (彈窗內容) -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                                <span>景點備註詳細資訊 (note)</span>
+                                <span class="text-moss-400 hover:text-amber-accent cursor-pointer transition-colors" title="前台景點卡片上的 (i) 按鈕展開的完整彈窗內容">
+                                    <i class="ph ph-info text-sm text-amber-accent"></i>
+                                </span>
+                            </label>
+                            <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- 景點層級待辦 (Spot Todos) -->
+                    <div class="pt-3 border-t border-moss-200/80 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                <i class="ph ph-check-square"></i> 景點專屬任務待辦 (Spot Todos)
+                            </span>
+                            <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-moss-200/60 hover:bg-moss-300 text-moss-500 font-bold transition-colors" data-action="add-spot-todo" data-spot-idx="${spotIdx}">
+                                + 新增任務
+                            </button>
+                        </div>
+
+                        <div class="space-y-2">
+                            ${(spot.todos || []).map((todo, tIdx) => `
+                                <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-moss-200">
+                                    <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center">T${tIdx + 1}</span>
+                                    <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                    <input type="text" placeholder="備註 (如：官網代訂)" value="${escapeHtml(todo.note || '')}" class="w-1/3 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                    <button type="button" class="w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0" data-action="del-spot-todo" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}" title="刪除任務">
+                                        <i class="ph ph-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🥚 生活筆記與彩蛋渲染器 (Easter Eggs & Notes)                 */
+        /* ------------------------------------------------------------- */
+        function renderEasterEggs(day) {
+            const container = document.getElementById('easter-eggs-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!Array.isArray(day.easterEggs)) day.easterEggs = [];
+
+            if (day.easterEggs.length === 0) {
+                container.innerHTML = `<div class="p-4 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">尚無彩蛋精選項目，點擊右上角「+」新增（美食、土產、體驗）</div>`;
+                return;
+            }
+
+            day.easterEggs.forEach((egg, idx) => {
+                const item = document.createElement('div');
+                item.className = 'easter-egg-card p-3 rounded-2xl border border-moss-200 bg-moss-50/50 space-y-2 transition-all';
+                item.innerHTML = `
+                    <!-- 第 1 列：序號 + 標籤選單 + 名稱特產描述 + 刪除圖示 -->
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                        <select class="h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none cursor-pointer shrink-0" data-action="edit-egg-tag" data-idx="${idx}">
+                            <option value="eat" ${egg.tag === 'eat' ? 'selected' : ''}>🍽️ 美食</option>
+                            <option value="buy" ${egg.tag === 'buy' ? 'selected' : ''}>🛍️ 土產</option>
+                            <option value="bonus" ${egg.tag === 'bonus' ? 'selected' : ''}>✨ 體驗</option>
+                        </select>
+                        <input type="text" placeholder="名稱與特色描述 (例如：傳統鄂圖曼式建築 Güveç 陶甕風味餐)" value="${escapeHtml(egg.text || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
+                        <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-egg" data-idx="${idx}" title="刪除此項">
+                            <i class="ph ph-trash text-base"></i>
+                        </button>
+                    </div>
+
+                    <!-- 第 2 列：圖片網址 + 縮圖預覽 (向左縮進對齊輸入框) -->
+                    <div class="flex items-center gap-2 pl-8">
+                        <input type="text" placeholder="圖片網址 (https://...)" value="${escapeHtml(egg.image || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-image" data-idx="${idx}">
+                        <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
+                            ${egg.image && /^https?:\/\//i.test(egg.image.trim()) ? `<img src="${escapeHtml(egg.image.trim())}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[10px] text-moss-400">無圖</span>`}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function syncEasterEggsToLegacyStrings(day) {
+            if (!Array.isArray(day.easterEggs)) return;
+            const eats = day.easterEggs.filter(e => e.tag === 'eat');
+            const buys = day.easterEggs.filter(e => e.tag === 'buy');
+            const bonuses = day.easterEggs.filter(e => e.tag === 'bonus');
+            day.eat = eats.map(e => e.text).filter(Boolean).join('、');
+            day.buy = buys.map(e => e.text).filter(Boolean).join('、');
+            day.bonus = bonuses.map(e => e.text).filter(Boolean).join('、');
+            day.eatImage = (eats.find(e => e.image && e.image.trim()) || {}).image || '';
+            day.buyImage = (buys.find(e => e.image && e.image.trim()) || {}).image || '';
+            day.bonusImage = (bonuses.find(e => e.image && e.image.trim()) || {}).image || '';
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 💰 經費預算與記帳渲染器 (Expenses & Accounting Panel)          */
+        /* ------------------------------------------------------------- */
+        function renderExpensesPanel() {
+            const exp = appData.settings.expenses || { tourFee: 0, currency: 'TW$', note: '', records: [] };
+            if (!Array.isArray(exp.records)) exp.records = [];
+
+            const currency = exp.currency || 'TW$';
+            const tourFee = Number(exp.tourFee) || 0;
+            const totalSpent = exp.records.reduce((sum, r) => sum + (Number(r.amount) || 0), 0);
+            const remaining = tourFee - totalSpent;
+
+            // 儀表板數值更新
+            const feeCurrencyEl = document.getElementById('dash-tourfee-currency');
+            const spentCurrencyEl = document.getElementById('dash-spent-currency');
+            const remainCurrencyEl = document.getElementById('dash-remain-currency');
+            if (feeCurrencyEl) feeCurrencyEl.textContent = currency;
+            if (spentCurrencyEl) spentCurrencyEl.textContent = currency;
+            if (remainCurrencyEl) remainCurrencyEl.textContent = currency;
+
+            const feeAmountEl = document.getElementById('dash-tourfee-amount');
+            const spentAmountEl = document.getElementById('dash-spent-amount');
+            const remainAmountEl = document.getElementById('dash-remain-amount');
+            if (feeAmountEl) feeAmountEl.textContent = tourFee.toLocaleString();
+            if (spentAmountEl) spentAmountEl.textContent = totalSpent.toLocaleString();
+            if (remainAmountEl) remainAmountEl.textContent = remaining.toLocaleString();
+
+            const remainBox = document.getElementById('dash-remain-amount-box');
+            if (remainBox) {
+                remainBox.className = `text-xl md:text-2xl font-black truncate font-mono ${remaining < 0 ? 'text-red-500' : 'text-moss-500'}`;
+            }
+
+            renderExpenseRecords();
+        }
+
+        function renderExpenseRecords() {
+            const container = document.getElementById('expense-records-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const exp = appData.settings.expenses || { tourFee: 0, currency: 'TW$', note: '', records: [] };
+            if (!Array.isArray(exp.records)) exp.records = [];
+
+            if (exp.records.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-moss-400 border border-dashed border-moss-200 rounded-2xl bg-moss-50/40">目前尚無開銷記帳明細，點擊上方「+」按鈕開始記錄！</div>`;
+                return;
+            }
+
+            const dayOptions = ['<option value="">全部/整體</option>']
+                .concat(appData.itinerary.map((d, i) => `<option value="${escapeHtml(d.day || `Day ${i+1}`)}">${escapeHtml(d.day || `Day ${i+1}`)}</option>`));
+
+            exp.records.forEach((rec, idx) => {
+                const row = document.createElement('div');
+                row.className = 'expense-record-card p-3 md:p-3.5 rounded-2xl border border-moss-200 bg-moss-50/40 space-y-2';
+                row.innerHTML = `
+                    <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 items-center">
+                        <div class="col-span-1">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">行程日</label>
+                            <select class="w-full h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="dayTag" data-idx="${idx}">
+                                ${dayOptions.map(opt => opt.replace(`value="${escapeHtml(rec.dayTag || '')}"`, `value="${escapeHtml(rec.dayTag || '')}" selected`)).join('')}
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">類別</label>
+                            <select class="w-full h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="category" data-idx="${idx}">
+                                <option value="meal" ${rec.category === 'meal' ? 'selected' : ''}>🍽️ 餐飲</option>
+                                <option value="traffic" ${rec.category === 'traffic' ? 'selected' : ''}>🚗 交通</option>
+                                <option value="ticket" ${rec.category === 'ticket' ? 'selected' : ''}>🎟️ 門票</option>
+                                <option value="hotel" ${rec.category === 'hotel' ? 'selected' : ''}>🏨 住宿</option>
+                                <option value="shopping" ${rec.category === 'shopping' ? 'selected' : ''}>🛍️ 購物</option>
+                                <option value="other" ${rec.category === 'other' ? 'selected' : ''}>💡 雜支</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">支付方式</label>
+                            <select class="w-full h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="payment" data-idx="${idx}">
+                                <option value="cash" ${rec.payment === 'cash' ? 'selected' : ''}>💵 現金</option>
+                                <option value="card" ${rec.payment === 'card' ? 'selected' : ''}>💳 刷卡</option>
+                                <option value="pay" ${rec.payment === 'pay' ? 'selected' : ''}>📱 行動支付</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1 sm:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">支出項目</label>
+                            <input type="text" placeholder="例如：地下水宮殿門票" value="${escapeHtml(rec.title || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="title" data-idx="${idx}">
+                        </div>
+                        <div class="col-span-1 flex items-end gap-1.5">
+                            <div class="flex-1 min-w-0">
+                                <label class="block text-xs font-bold text-moss-500 mb-1">金額 (${currency})</label>
+                                <input type="number" placeholder="0" value="${rec.amount ?? ''}" class="w-full h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="amount" data-idx="${idx}">
+                            </div>
+                            <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-expense-record" data-idx="${idx}" title="刪除此筆">
+                                <i class="ph ph-trash text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🎨 配色系統控制器 (Theme System)                              */
+        /* ------------------------------------------------------------- */
+        function initThemeButtons() {
+            const container = document.getElementById('theme-presets-container');
+            container.innerHTML = '';
+
+            // 預設風格
+            Object.values(PRESET_THEMES).forEach(theme => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'theme-preset-btn p-3 rounded-2xl border border-moss-200 bg-white hover:border-moss-400 text-left transition-all space-y-2';
+                btn.dataset.themeId = theme.id;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-4 h-4 rounded-full" style="background:${theme.primary}"></span>
+                        <span class="w-4 h-4 rounded-full" style="background:${theme.accent}"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-200" style="background:${theme.bg}"></span>
+                    </div>
+                    <div class="text-xs font-bold text-moss-500">${theme.name}</div>
+                `;
+                btn.onclick = () => applyPresetTheme(theme.id);
+                container.appendChild(btn);
+            });
+
+            // 讀取 localStorage 專屬自訂色
+            [1, 2, 3].forEach(num => {
+                try {
+                    const saved = localStorage.getItem(`travel_fav_theme_${num}`);
+                    if (saved) {
+                        const theme = JSON.parse(saved);
+                        if (theme && theme.primary) {
+                            const btn = document.createElement('button');
+                            btn.type = 'button';
+                            btn.className = 'theme-preset-btn p-3 rounded-2xl border border-moss-300 bg-moss-50/80 hover:border-moss-400 text-left transition-all space-y-2';
+                            btn.innerHTML = `
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-4 h-4 rounded-full" style="background:${theme.primary}"></span>
+                                    <span class="w-4 h-4 rounded-full" style="background:${theme.accent}"></span>
+                                    <span class="w-4 h-4 rounded-full border border-gray-200" style="background:${theme.bg}"></span>
+                                </div>
+                                <div class="text-xs font-bold text-moss-500">🌟 專屬色 ${num}</div>
+                            `;
+                            btn.onclick = () => {
+                                appData.settings.theme = `fav_${num}`;
+                                appData.settings.customTheme = { ...theme };
+                                appData.settings.themeColors = { ...theme };
+                                syncThemeInputs();
+                                markDirty();
+                                showToast(`已套用專屬色 ${num}`);
+                            };
+                            container.appendChild(btn);
+                        }
+                    }
+                } catch(e) {}
+            });
+        }
+
+        function applyPresetTheme(themeId) {
+            const theme = PRESET_THEMES[themeId];
+            if (!theme) return;
+
+            appData.settings.theme = themeId;
+            appData.settings.customTheme = {
+                primary: theme.primary,
+                deep: theme.deep,
+                accent: theme.accent,
+                bg: theme.bg
+            };
+            appData.settings.themeColors = { ...appData.settings.customTheme };
+            
+            syncThemeInputs();
+            markDirty();
+            showToast(`已套用「${theme.name}」主題配色`);
+        }
+
+        function syncThemeInputs() {
+            const s = appData.settings;
+            const colors = s.customTheme || s.themeColors || PRESET_THEMES.forest;
+            
+            document.getElementById('color-picker-primary').value = colors.primary || '#315a4c';
+            document.getElementById('color-hex-primary').value = (colors.primary || '#315a4c').toUpperCase();
+
+            document.getElementById('color-picker-deep').value = colors.deep || '#203d34';
+            document.getElementById('color-hex-deep').value = (colors.deep || '#203d34').toUpperCase();
+
+            document.getElementById('color-picker-accent').value = colors.accent || '#cf795f';
+            document.getElementById('color-hex-accent').value = (colors.accent || '#cf795f').toUpperCase();
+
+            document.getElementById('color-picker-bg').value = colors.bg || '#eef2ec';
+            document.getElementById('color-hex-bg').value = (colors.bg || '#eef2ec').toUpperCase();
+
+            let label = '自訂配色';
+            if (PRESET_THEMES[s.theme]) {
+                label = PRESET_THEMES[s.theme].name;
+            } else if (s.theme && s.theme.startsWith('fav_')) {
+                label = `專屬色 ${s.theme.replace('fav_', '')}`;
+            }
+            document.getElementById('theme-status-tag').textContent = label;
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 💾 檔案讀寫與儲存 (File I/O & File System Access API)         */
+        /* ------------------------------------------------------------- */
+        async function openLocalFile() {
+            if (hasUnsavedChanges && !confirm('目前有未儲存的更動，開啟新檔案將放棄變更，是否繼續？')) {
+                return;
+            }
+
+            // 優先使用現代 File System Access API
+            if ('showOpenFilePicker' in window) {
+                try {
+                    const [handle] = await window.showOpenFilePicker({
+                        types: [{ description: 'JSON 行程資料檔', accept: { 'application/json': ['.json'] } }],
+                        multiple: false
+                    });
+                    const file = await handle.getFile();
+                    const text = await file.text();
+                    currentFileHandle = handle;
+                    loadData(JSON.parse(text), file.name);
+                    showToast(`已開啟 ${file.name}（已綁定本機儲存）`);
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.warn('File System Access API 失敗，改用傳統 input:', err);
+                }
+            }
+
+            // 傳統 File input 備援
+            document.getElementById('file-input-fallback').click();
+        }
+
+        async function saveToDisk() {
+            const jsonText = JSON.stringify(appData, null, 2);
+
+            // 若已有 FileHandle，直接覆蓋儲存！
+            if (currentFileHandle && 'createWritable' in currentFileHandle) {
+                try {
+                    const writable = await currentFileHandle.createWritable();
+                    await writable.write(jsonText);
+                    await writable.close();
+                    markClean();
+                    showToast(`已直接覆寫儲存至 ${currentFileHandle.name}！`);
+                    return;
+                } catch (err) {
+                    console.warn('覆寫失敗，改用另存新檔:', err);
+                }
+            }
+
+            // 若瀏覽器支援另存新檔 API
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: currentFileName || '2610.json',
+                        types: [{ description: 'JSON 行程資料檔', accept: { 'application/json': ['.json'] } }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(jsonText);
+                    await writable.close();
+                    currentFileHandle = handle;
+                    currentFileName = handle.name;
+                    sideFilenameEl.textContent = handle.name;
+                    markClean();
+                    showToast(`已儲存至 ${handle.name}！`);
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.warn('另存新檔取消或出錯:', err);
+                }
+            }
+
+            // 最終備援方案：自動下載 Blob 檔案
+            downloadJsonBlob();
+        }
+
+        function downloadJsonBlob() {
+            const jsonText = JSON.stringify(appData, null, 2);
+            const blob = new Blob([jsonText], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFileName || 'itinerary.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            markClean();
+            showToast(`已下載 ${currentFileName || 'itinerary.json'}`);
+        }
+
+        function syncRawJsonView() {
+            rawJsonOutput.value = JSON.stringify(appData, null, 2);
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🕹️ 全域事件監聽 (Event Listeners Binding)                     */
+        /* ------------------------------------------------------------- */
+        function initEventListeners() {
+            // 側邊欄與頁籤切換
+            document.getElementById('tab-nav-settings').onclick = () => switchTab('settings');
+            document.getElementById('tab-nav-itinerary').onclick = () => switchTab('itinerary');
+            document.getElementById('tab-nav-json').onclick = () => switchTab('json');
+            const btnExpTab = document.getElementById('tab-nav-expenses');
+            if (btnExpTab) btnExpTab.onclick = () => switchTab('expenses');
+            const backdropEl = document.getElementById('sidebar-backdrop');
+            
+            // 側邊欄收合與展開 (< 與 > 側拉頁籤)
+            const sideToggleBtn = document.getElementById('sidebar-toggle-btn');
+            if (sideToggleBtn) {
+                sideToggleBtn.onclick = () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.remove('mobile-open');
+                        backdropEl?.classList.add('hidden');
+                    } else {
+                        sidebar.classList.add('desktop-collapsed');
+                    }
+                    updateSidebarPullTab();
+                };
+            }
+
+            const pullTab = document.getElementById('btn-sidebar-pull-tab');
+            if (pullTab) {
+                pullTab.onclick = () => {
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('mobile-open');
+                        backdropEl?.classList.remove('hidden');
+                    } else {
+                        sidebar.classList.remove('desktop-collapsed');
+                    }
+                    updateSidebarPullTab();
+                };
+            }
+
+            if (backdropEl) {
+                backdropEl.onclick = () => {
+                    sidebar.classList.remove('mobile-open');
+                    backdropEl.classList.add('hidden');
+                    updateSidebarPullTab();
+                };
+            }
+
+            window.addEventListener('resize', updateSidebarPullTab);
+
+            // 側邊欄行程目錄集中操作：切換拖曳排序 & 刪除當前所選日
+            const btnSort = document.getElementById('btn-toggle-sort-mode');
+            if (btnSort) {
+                btnSort.onclick = () => {
+                    isSortModeActive = !isSortModeActive;
+                    renderSidebarDays();
+                    showToast(isSortModeActive ? '已開啟拖曳排序模式：請按住並拖動項目調整順序' : '已完成拖曳排序');
+                };
+            }
+
+            const btnDelCurrent = document.getElementById('btn-side-delete-current');
+            if (btnDelCurrent) {
+                btnDelCurrent.onclick = () => {
+                    if (appData.itinerary.length <= 1) {
+                        return showToast('至少需保留一天行程！');
+                    }
+                    const curDay = appData.itinerary[selectedDayIndex];
+                    openConfirm('刪除行程日', `確定刪除「${curDay.day || `Day ${selectedDayIndex + 1}`}」嗎？`, () => {
+                        appData.itinerary.splice(selectedDayIndex, 1);
+                        selectedDayIndex = Math.max(0, selectedDayIndex - 1);
+                        renderSidebarDays();
+                        renderItineraryDay();
+                        markDirty();
+                        showToast('已刪除該日行程');
+                    });
+                };
+            }
+
+            // 新增行程日
+            document.getElementById('btn-add-day').onclick = () => {
+                const newDayNum = appData.itinerary.length + 1;
+                appData.itinerary.push({
+                    day: `Day ${newDayNum}`,
+                    fullDate: '',
+                    title: '新行程日',
+                    weather: { icon: 'ph-sun', temp: '' },
+                    image: '',
+                    mapImage: '',
+                    todos: [],
+                    flights: [],
+                    spots: [],
+                    specialNotes: [],
+                    easterEggs: [],
+                    outfit: '', buy: '', eat: '', bonus: '', eatImage: '', buyImage: '', bonusImage: '', meals: '', lodging: '', tips: ''
+                });
+                selectedDayIndex = appData.itinerary.length - 1;
+                renderSidebarDays();
+                renderItineraryDay();
+                switchTab('itinerary');
+                markDirty();
+                showToast(`已新增 Day ${newDayNum}`);
+            };
+
+            // 前一天 / 後一天
+            document.getElementById('btn-prev-day').onclick = () => {
+                if (selectedDayIndex > 0) {
+                    selectedDayIndex--;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                }
+            };
+            document.getElementById('btn-next-day').onclick = () => {
+                if (selectedDayIndex < appData.itinerary.length - 1) {
+                    selectedDayIndex++;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                }
+            };
+
+            // 上移 / 下移天數 (如存在於介面中)
+            const btnMoveUp = document.getElementById('btn-move-day-up');
+            if (btnMoveUp) {
+                btnMoveUp.onclick = () => {
+                    if (selectedDayIndex === 0) return;
+                    const temp = appData.itinerary[selectedDayIndex];
+                    appData.itinerary[selectedDayIndex] = appData.itinerary[selectedDayIndex - 1];
+                    appData.itinerary[selectedDayIndex - 1] = temp;
+                    selectedDayIndex--;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                    markDirty();
+                    showToast('已往前移動一日');
+                };
+            }
+            const btnMoveDown = document.getElementById('btn-move-day-down');
+            if (btnMoveDown) {
+                btnMoveDown.onclick = () => {
+                    if (selectedDayIndex >= appData.itinerary.length - 1) return;
+                    const temp = appData.itinerary[selectedDayIndex];
+                    appData.itinerary[selectedDayIndex] = appData.itinerary[selectedDayIndex + 1];
+                    appData.itinerary[selectedDayIndex + 1] = temp;
+                    selectedDayIndex++;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                    markDirty();
+                    showToast('已往後移動一日');
+                };
+            }
+
+            // 複製當天
+            const btnDup = document.getElementById('btn-duplicate-day');
+            if (btnDup) {
+                btnDup.onclick = () => {
+                    const clone = JSON.parse(JSON.stringify(appData.itinerary[selectedDayIndex]));
+                    clone.day = `${clone.day || 'Day'} (副本)`;
+                    appData.itinerary.splice(selectedDayIndex + 1, 0, clone);
+                    selectedDayIndex++;
+                    renderSidebarDays();
+                    renderItineraryDay();
+                    markDirty();
+                    showToast('已複製此日行程');
+                };
+            }
+
+            // 刪除當天 (如存在於介面中)
+            const btnDel = document.getElementById('btn-delete-day');
+            if (btnDel) {
+                btnDel.onclick = () => {
+                    if (appData.itinerary.length <= 1) {
+                        return showToast('至少需保留一天行程！');
+                    }
+                    openConfirm('刪除行程日', `確定刪除「${appData.itinerary[selectedDayIndex].day || '此日'}」嗎？`, () => {
+                        appData.itinerary.splice(selectedDayIndex, 1);
+                        selectedDayIndex = Math.max(0, selectedDayIndex - 1);
+                        renderSidebarDays();
+                        renderItineraryDay();
+                        markDirty();
+                        showToast('已刪除該日行程');
+                    });
+                };
+            }
+
+            // 檔案操作按鈕
+            document.getElementById('btn-open-file').onclick = openLocalFile;
+            document.getElementById('btn-save-disk').onclick = saveToDisk;
+            document.getElementById('btn-download-json').onclick = downloadJsonBlob;
+            document.getElementById('btn-copy-raw-json').onclick = async () => {
+                syncRawJsonView();
+                await navigator.clipboard.writeText(rawJsonOutput.value);
+                showToast('已複製完整 JSON 代碼！');
+            };
+
+            // JSON 原始碼解析套用按鈕
+            const btnApplyRaw = document.getElementById('btn-apply-raw-json');
+            if (btnApplyRaw) {
+                btnApplyRaw.onclick = () => {
+                    applyRawJson();
+                };
+            }
+            rawJsonOutput.addEventListener('input', () => {
+                const errBanner = document.getElementById('raw-json-error');
+                if (errBanner) errBanner.classList.add('hidden');
+                markDirty();
+            });
+
+            // 建立全新檔案
+            document.getElementById('btn-create-new').onclick = () => {
+                if (hasUnsavedChanges && !confirm('目前有未儲存的修改，新建檔案將清除現有內容，確定繼續？')) return;
+                loadData(DEFAULT_JSON, 'new_plan.json');
+                currentFileHandle = null;
+                showToast('已建立新行程模板');
+            };
+
+            // 線上載入
+            document.getElementById('btn-load-online').onclick = async () => {
+                if (hasUnsavedChanges && !confirm('目前有未儲存的更動，載入線上檔案將放棄變更，是否繼續？')) return;
+                let name = document.getElementById('input-online-name').value.trim();
+                if (!name) return showToast('請輸入線上檔名');
+                if (!name.endsWith('.json')) name += '.json';
+                try {
+                    showToast(`正在載入 ${name}...`);
+                    const res = await fetch(`WebPage/${name}`);
+                    if (!res.ok) throw new Error(`找不到檔案 (HTTP ${res.status})`);
+                    const json = await res.json();
+                    currentFileHandle = null;
+                    loadData(json, name);
+                    showToast(`成功載入 ${name}`);
+                } catch (e) {
+                    showToast(`載入失敗：${e.message}`);
+                }
+            };
+
+            // 檔案 input 備援監聽
+            document.getElementById('file-input-fallback').onchange = (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    try {
+                        const json = JSON.parse(evt.target.result);
+                        loadData(json, file.name);
+                        showToast(`已載入 ${file.name}`);
+                    } catch (err) {
+                        showToast('JSON 格式錯誤，無法讀取');
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            };
+
+            // 監聽全域輸入更動 (Settings Panel Delegation)
+            const handleSettingsChange = (e) => {
+                const settingKey = e.target.dataset.setting;
+                if (settingKey) {
+                    let val = e.target.value;
+                    if (e.target.type === 'number' || settingKey === 'expenses.tourFee') {
+                        val = Number(val) || 0;
+                    }
+                    
+                    // 防呆：自動萃取 iframe 的 src
+                    if (settingKey === 'overviewMap.iframeUrl' && typeof val === 'string' && val.includes('<iframe')) {
+                        const match = val.match(/src\s*=\s*["']([^"']+)["']/i);
+                        if (match) {
+                            val = match[1];
+                            e.target.value = val;
+                        }
+                    }
+
+                    setObjectValue(appData.settings, settingKey, val);
+                    if (settingKey === 'heroImage') updateHeroImagePreview(val);
+                    if (settingKey === 'dateText') syncDateHelpersFromText(val);
+                    markDirty();
+                }
+            };
+            document.getElementById('panel-settings').addEventListener('input', handleSettingsChange);
+            document.getElementById('panel-settings').addEventListener('change', handleSettingsChange);
+
+            // 可見頁籤勾選切換
+            document.querySelectorAll('.tab-checkbox').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const activeTabs = [];
+                    document.querySelectorAll('.tab-checkbox').forEach(box => {
+                        if (box.checked) activeTabs.push(box.dataset.tabId);
+                    });
+                    appData.settings.visibleTabs = activeTabs;
+                    markDirty();
+                });
+            });
+
+            // 日期輔助工具連動 (以本地時區計算避免跨時區偏差)
+            const dateHelperStart = document.getElementById('date-helper-start');
+            const dateHelperEnd = document.getElementById('date-helper-end');
+            const formatHelperDate = (dateStr) => {
+                if (!dateStr) return '';
+                const parts = dateStr.split('-').map(Number);
+                if (parts.length !== 3) return '';
+                const d = new Date(parts[0], parts[1] - 1, parts[2]);
+                if (isNaN(d.getTime())) return '';
+                const days = ['日', '一', '二', '三', '四', '五', '六'];
+                return `${parts[0]}/${parts[1]}/${parts[2]}(${days[d.getDay()]})`;
+            };
+            const onDateHelperChange = () => {
+                const s = dateHelperStart.value;
+                const e = dateHelperEnd.value;
+                let text = '';
+                if (s) text += formatHelperDate(s);
+                if (e) text += ` ~ ${formatHelperDate(e)}`;
+                if (text) {
+                    document.getElementById('input-date-text').value = text;
+                    appData.settings.dateText = text;
+                    markDirty();
+                }
+            };
+            dateHelperStart.onchange = onDateHelperChange;
+            dateHelperEnd.onchange = onDateHelperChange;
+
+            // 每日日期輔助連動
+            document.getElementById('day-date-picker-helper').onchange = (e) => {
+                const val = e.target.value;
+                if (!val) return;
+                const parts = val.split('-').map(Number);
+                if (parts.length === 3) {
+                    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+                    if (!isNaN(d.getTime())) {
+                        const days = ['日', '一', '二', '三', '四', '五', '六'];
+                        const formatted = `${parts[0]}/${parts[1]}/${parts[2]} (${days[d.getDay()]})`;
+                        document.getElementById('input-day-fulldate').value = formatted;
+                        appData.itinerary[selectedDayIndex].fullDate = formatted;
+                        const dayDateEl = document.getElementById('current-day-date');
+                        if (dayDateEl) dayDateEl.textContent = formatted;
+                        renderSidebarDays();
+                        markDirty();
+                    }
+                }
+            };
+
+            // 每日面板輸入監聽 (Itinerary Input & Change Delegation)
+            const handleItineraryInput = (e) => {
+                const target = e.target;
+                const day = appData.itinerary[selectedDayIndex];
+                if (!day) return;
+
+                // 每日基本欄位
+                const dayField = target.dataset.dayField;
+                if (dayField) {
+                    setObjectValue(day, dayField, target.value);
+                    if (dayField === 'day' || dayField === 'title' || dayField === 'fullDate') {
+                        renderSidebarDays();
+                        updateTopItineraryTitle();
+                        if (dayField === 'fullDate') syncDayDatePickerFromText(target.value);
+                    }
+                    if (dayField === 'weather.icon') {
+                        document.getElementById('preview-weather-icon').className = `ph ${target.value}`;
+                    }
+                    if (dayField === 'mapImage') {
+                        const mapPreview = document.getElementById('preview-day-map');
+                        if (mapPreview) {
+                            mapPreview.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
+                                ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`
+                                : `<span class="text-[10px] text-moss-400">無圖</span>`;
+                        }
+                    }
+                    if (dayField === 'image') {
+                        const preview = document.getElementById('preview-day-image');
+                        if (preview) {
+                            preview.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
+                                ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`
+                                : `<span class="text-[10px] text-moss-400">無圖</span>`;
+                        }
+                    }
+                    markDirty();
+                    return;
+                }
+
+                // 當日待辦
+                if (target.dataset.action === 'edit-day-todo-task') {
+                    day.todos[target.dataset.idx].task = target.value;
+                    markDirty();
+                } else if (target.dataset.action === 'edit-day-todo-note') {
+                    day.todos[target.dataset.idx].note = target.value;
+                    markDirty();
+                }
+
+                // 航班
+                if (target.dataset.action === 'edit-flight') {
+                    day.flights[target.dataset.idx] = target.value;
+                    markDirty();
+                }
+
+                // 特別提醒
+                if (target.dataset.action === 'edit-special-note') {
+                    day.specialNotes[target.dataset.idx] = target.value;
+                    markDirty();
+                }
+
+                // 景點欄位
+                if (target.dataset.action === 'edit-spot-field') {
+                    const spot = day.spots[target.dataset.spotIdx];
+                    spot[target.dataset.field] = target.value;
+                    if (target.dataset.field === 'name' && !spot.mapQuery) {
+                        spot.mapQuery = target.value ? `${target.value}` : '';
+                        const queryInput = target.closest('.spot-edit-card').querySelector('[data-field="mapQuery"]');
+                        if (queryInput) queryInput.value = spot.mapQuery;
+                    }
+                    if (target.dataset.field === 'image') {
+                        const previewBox = target.closest('.flex')?.querySelector('.w-16');
+                        if (previewBox) {
+                            previewBox.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
+                                ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[9px] text-red-400\\'>錯誤</span>'">`
+                                : `<span class="text-[9px] text-moss-400">無縮圖</span>`;
+                        }
+                    }
+                    markDirty();
+                }
+
+                // 景點待辦
+                if (target.dataset.action === 'edit-spot-todo-task') {
+                    day.spots[target.dataset.spotIdx].todos[target.dataset.todoIdx].task = target.value;
+                    markDirty();
+                } else if (target.dataset.action === 'edit-spot-todo-note') {
+                    day.spots[target.dataset.spotIdx].todos[target.dataset.todoIdx].note = target.value;
+                    markDirty();
+                }
+
+                // 生活筆記與彩蛋 (Easter Eggs)
+                if (target.dataset.action === 'edit-egg-tag') {
+                    const idx = Number(target.dataset.idx);
+                    if (day.easterEggs && day.easterEggs[idx]) {
+                        day.easterEggs[idx].tag = target.value;
+                        syncEasterEggsToLegacyStrings(day);
+                        markDirty();
+                    }
+                } else if (target.dataset.action === 'edit-egg-text') {
+                    const idx = Number(target.dataset.idx);
+                    if (day.easterEggs && day.easterEggs[idx]) {
+                        day.easterEggs[idx].text = target.value;
+                        syncEasterEggsToLegacyStrings(day);
+                        markDirty();
+                    }
+                } else if (target.dataset.action === 'edit-egg-image') {
+                    const idx = Number(target.dataset.idx);
+                    if (day.easterEggs && day.easterEggs[idx]) {
+                        day.easterEggs[idx].image = target.value;
+                        const previewBox = target.closest('.flex')?.querySelector('.w-16, .w-9');
+                        if (previewBox) {
+                            previewBox.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
+                                ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.remove()">`
+                                : `<span class="text-[10px] text-moss-400">無圖</span>`;
+                        }
+                        syncEasterEggsToLegacyStrings(day);
+                        markDirty();
+                    }
+                }
+            };
+            document.getElementById('panel-itinerary').addEventListener('input', handleItineraryInput);
+            document.getElementById('panel-itinerary').addEventListener('change', handleItineraryInput);
+
+            // 點擊事件監聽 (Delegation for Add/Del buttons)
+            document.getElementById('panel-itinerary').addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-action]');
+                if (!btn) return;
+                const action = btn.dataset.action;
+                const day = appData.itinerary[selectedDayIndex];
+
+                if (action === 'del-day-todo') {
+                    day.todos.splice(Number(btn.dataset.idx), 1);
+                    renderDayTodos(day);
+                    markDirty();
+                } else if (action === 'del-flight') {
+                    day.flights.splice(Number(btn.dataset.idx), 1);
+                    renderFlights(day);
+                    markDirty();
+                } else if (action === 'del-special-note') {
+                    day.specialNotes.splice(Number(btn.dataset.idx), 1);
+                    renderSpecialNotes(day);
+                    markDirty();
+                } else if (action === 'del-spot') {
+                    day.spots.splice(Number(btn.dataset.spotIdx), 1);
+                    renderSpots(day);
+                    markDirty();
+                } else if (action === 'move-spot') {
+                    const idx = Number(btn.dataset.spotIdx);
+                    const dir = Number(btn.dataset.dir);
+                    const next = idx + dir;
+                    if (next >= 0 && next < day.spots.length) {
+                        const temp = day.spots[idx];
+                        day.spots[idx] = day.spots[next];
+                        day.spots[next] = temp;
+                        renderSpots(day);
+                        markDirty();
+                    }
+                } else if (action === 'add-spot-todo') {
+                    const spot = day.spots[btn.dataset.spotIdx];
+                    if (!Array.isArray(spot.todos)) spot.todos = [];
+                    spot.todos.push({ task: '', note: '' });
+                    renderSpots(day);
+                    markDirty();
+                } else if (action === 'del-spot-todo') {
+                    day.spots[btn.dataset.spotIdx].todos.splice(Number(btn.dataset.todoIdx), 1);
+                    renderSpots(day);
+                    markDirty();
+                } else if (action === 'del-egg') {
+                    day.easterEggs.splice(Number(btn.dataset.idx), 1);
+                    syncEasterEggsToLegacyStrings(day);
+                    renderEasterEggs(day);
+                    markDirty();
+                }
+            });
+
+            // 新增生活筆記與彩蛋
+            const btnAddEgg = document.getElementById('btn-add-easter-egg');
+            if (btnAddEgg) {
+                btnAddEgg.onclick = () => {
+                    const day = appData.itinerary[selectedDayIndex];
+                    if (!Array.isArray(day.easterEggs)) day.easterEggs = [];
+                    day.easterEggs.push({ tag: 'eat', text: '', image: '' });
+                    renderEasterEggs(day);
+                    markDirty();
+                };
+            }
+
+            // 新增當日待辦
+            document.getElementById('btn-add-day-todo').onclick = () => {
+                const day = appData.itinerary[selectedDayIndex];
+                day.todos.push({ task: '', note: '' });
+                renderDayTodos(day);
+                markDirty();
+            };
+
+            // 新增航班
+            document.getElementById('btn-add-flight').onclick = () => {
+                const day = appData.itinerary[selectedDayIndex];
+                day.flights.push('');
+                renderFlights(day);
+                markDirty();
+            };
+
+            // 新增特別提醒
+            document.getElementById('btn-add-special-note').onclick = () => {
+                const day = appData.itinerary[selectedDayIndex];
+                day.specialNotes.push('');
+                renderSpecialNotes(day);
+                markDirty();
+            };
+
+            // 新增景點
+            document.getElementById('btn-add-spot').onclick = () => {
+                const day = appData.itinerary[selectedDayIndex];
+                day.spots.push({
+                    name: '',
+                    mapQuery: '',
+                    image: '',
+                    description: '',
+                    note: '',
+                    todos: []
+                });
+                renderSpots(day);
+                markDirty();
+            };
+
+            // 經費預算與記帳事件監聽 (Expenses Panel Delegation)
+            const panelExpenses = document.getElementById('panel-expenses');
+            if (panelExpenses) {
+                const handleExpenseChange = (e) => {
+                    const target = e.target;
+                    const expSetting = target.dataset.setting;
+                    if (expSetting) {
+                        let val = target.value;
+                        if (target.type === 'number' || expSetting === 'expenses.tourFee') {
+                            val = Number(val) || 0;
+                        }
+                        setObjectValue(appData.settings, expSetting, val);
+                        renderExpensesPanel();
+                        markDirty();
+                        return;
+                    }
+
+                    if (target.dataset.action === 'edit-expense-field') {
+                        const idx = Number(target.dataset.idx);
+                        const field = target.dataset.field;
+                        if (!appData.settings.expenses) appData.settings.expenses = { tourFee: 0, currency: 'TW$', note: '', records: [] };
+                        if (!Array.isArray(appData.settings.expenses.records)) appData.settings.expenses.records = [];
+                        const rec = appData.settings.expenses.records[idx];
+                        if (rec) {
+                            rec[field] = field === 'amount' ? (Number(target.value) || 0) : target.value;
+                            if (field === 'amount') renderExpensesPanel();
+                            markDirty();
+                        }
+                    }
+                };
+                panelExpenses.addEventListener('input', handleExpenseChange);
+                panelExpenses.addEventListener('change', handleExpenseChange);
+
+                panelExpenses.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-action]');
+                    if (!btn) return;
+                    if (btn.dataset.action === 'del-expense-record') {
+                        const idx = Number(btn.dataset.idx);
+                        if (appData.settings.expenses?.records) {
+                            appData.settings.expenses.records.splice(idx, 1);
+                            renderExpensesPanel();
+                            markDirty();
+                        }
+                    }
+                });
+            }
+
+            // 新增開銷記帳明細
+            const btnAddExpense = document.getElementById('btn-add-expense-record');
+            if (btnAddExpense) {
+                btnAddExpense.onclick = () => {
+                    if (!appData.settings.expenses) appData.settings.expenses = { tourFee: 0, currency: 'TW$', note: '', records: [] };
+                    if (!Array.isArray(appData.settings.expenses.records)) appData.settings.expenses.records = [];
+                    const currentDay = appData.itinerary[selectedDayIndex]?.day || '';
+                    appData.settings.expenses.records.push({
+                        dayTag: currentDay,
+                        category: 'meal',
+                        payment: 'cash',
+                        title: '',
+                        amount: 0,
+                        note: ''
+                    });
+                    renderExpensesPanel();
+                    markDirty();
+                };
+            }
+
+            // 自訂顏色輸入綁定
+            ['primary', 'deep', 'accent', 'bg'].forEach(cKey => {
+                const pPicker = document.getElementById(`color-picker-${cKey}`);
+                const pHex = document.getElementById(`color-hex-${cKey}`);
+                
+                pPicker.oninput = (e) => {
+                    const val = e.target.value;
+                    pHex.value = val.toUpperCase();
+                    updateCustomThemeColor(cKey, val);
+                };
+                pHex.oninput = (e) => {
+                    let val = e.target.value.trim();
+                    if (!val.startsWith('#')) val = '#' + val;
+                    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+                        pPicker.value = val;
+                        updateCustomThemeColor(cKey, val);
+                    }
+                };
+            });
+
+            // 記憶專屬色
+            document.getElementById('btn-save-fav1').onclick = () => {
+                localStorage.setItem('travel_fav_theme_1', JSON.stringify(appData.settings.customTheme));
+                showToast('已存入專屬色 1！');
+                initThemeButtons();
+            };
+            document.getElementById('btn-save-fav2').onclick = () => {
+                localStorage.setItem('travel_fav_theme_2', JSON.stringify(appData.settings.customTheme));
+                showToast('已存入專屬色 2！');
+                initThemeButtons();
+            };
+            document.getElementById('btn-save-fav3').onclick = () => {
+                localStorage.setItem('travel_fav_theme_3', JSON.stringify(appData.settings.customTheme));
+                showToast('已存入專屬色 3！');
+                initThemeButtons();
+            };
+
+            // 原生 Confirm Dialog 事件
+            document.getElementById('btn-confirm-cancel').onclick = () => {
+                document.getElementById('modal-confirm').close();
+            };
+            document.getElementById('btn-confirm-ok').onclick = () => {
+                document.getElementById('modal-confirm').close();
+                if (typeof pendingConfirmCallback === 'function') {
+                    pendingConfirmCallback();
+                    pendingConfirmCallback = null;
+                }
+            };
+
+            // 離開頁面防呆提醒
+            window.addEventListener('beforeunload', (e) => {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        }
+
+        function updateCustomThemeColor(key, val) {
+            if (!appData.settings.customTheme) appData.settings.customTheme = {};
+            appData.settings.customTheme[key] = val;
+            appData.settings.theme = 'custom';
+            appData.settings.themeColors = { ...appData.settings.customTheme };
+            document.getElementById('theme-status-tag').textContent = '自訂配色';
+            markDirty();
+        }
+
+        function applyRawJson() {
+            const errorBanner = document.getElementById('raw-json-error');
+            const errorMsg = document.getElementById('raw-json-error-msg');
+            try {
+                const parsed = JSON.parse(rawJsonOutput.value);
+                if (typeof parsed !== 'object' || parsed === null) {
+                    throw new Error('JSON 根節點必須是物件');
+                }
+                if (!parsed.settings || !Array.isArray(parsed.itinerary)) {
+                    throw new Error('JSON 必須包含 settings 物件與 itinerary 陣列');
+                }
+                if (errorBanner) errorBanner.classList.add('hidden');
+                loadData(parsed, currentFileName || '2610.json');
+                markDirty();
+                showToast('已成功解析並套用 JSON！');
+                return true;
+            } catch (err) {
+                if (errorBanner) {
+                    errorBanner.classList.remove('hidden');
+                    if (errorMsg) errorMsg.textContent = `語法或結構錯誤：${err.message}`;
+                }
+                showToast('JSON 語法錯誤，請檢查紅框提示');
+                return false;
+            }
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🛠️ 工具函式 (Helper Utilities)                                 */
+        /* ------------------------------------------------------------- */
+        function getObjectValue(obj, path) {
+            return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined) ? acc[part] : undefined, obj);
+        }
+
+        function setObjectValue(obj, path, value) {
+            const parts = path.split('.');
+            let cur = obj;
+            for (let i = 0; i < parts.length - 1; i++) {
+                if (!cur[parts[i]] || typeof cur[parts[i]] !== 'object') cur[parts[i]] = {};
+                cur = cur[parts[i]];
+            }
+            cur[parts[parts.length - 1]] = value;
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+        }
+
+        let toastTimer = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast-box');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2400);
+        }
+
+        function openConfirm(title, desc, callback) {
+            document.getElementById('confirm-modal-title').textContent = title;
+            document.getElementById('confirm-modal-desc').textContent = desc;
+            pendingConfirmCallback = callback;
+            document.getElementById('modal-confirm').showModal();
+        }
+    </script>
+</body>
+</html>
