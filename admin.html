@@ -130,17 +130,17 @@
             </button>
         </div>
 
-        <!-- 頂部頁籤切換器 (3 欄) -->
+        <!-- 頂部頁籤切換器 (3 欄：全站設置 ｜ 每日行程 ｜ 經費預算) -->
         <div class="p-3 grid grid-cols-3 gap-1.5 border-b border-moss-400/30">
-            <button id="tab-nav-itinerary" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm">
-                <i class="ph ph-calendar-blank text-base"></i>
-                <span>每日行程</span>
-            </button>
-            <button id="tab-nav-settings" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white">
+            <button id="tab-nav-settings" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm" title="全站設置">
                 <i class="ph ph-sliders text-base"></i>
                 <span>全站設置</span>
             </button>
-            <button id="tab-nav-expenses" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white">
+            <button id="tab-nav-itinerary" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="每日行程">
+                <i class="ph ph-calendar-blank text-base"></i>
+                <span>每日行程</span>
+            </button>
+            <button id="tab-nav-expenses" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="經費預算">
                 <i class="ph ph-currency-circle-dollar text-base"></i>
                 <span>經費預算</span>
             </button>
@@ -201,26 +201,25 @@
 
         <!-- 頂部工作列 (Top Bar) -->
         <header class="h-16 px-4 md:px-6 bg-white/80 backdrop-blur-md border-b border-moss-200/80 flex items-center justify-between gap-3 shrink-0 z-20">
-            <!-- 左側標題 (乾淨俐落靠左) -->
+            <!-- 左側標題 (乾淨俐落靠左，預設為全站設置) -->
             <div class="min-w-0">
-                <div id="top-eyebrow" class="text-[10px] md:text-[11px] font-black text-amber-accent tracking-widest uppercase truncate">ITINERARY · DAY 1</div>
-                <h2 id="top-title" class="text-base md:text-lg font-black text-moss-500 truncate leading-snug">每日行程編輯</h2>
+                <div id="top-eyebrow" class="text-[10px] md:text-[11px] font-black text-amber-accent tracking-widest uppercase truncate">GLOBAL SETTINGS</div>
+                <h2 id="top-title" class="text-base md:text-lg font-black text-moss-500 truncate leading-snug">全站整體外觀與主題設置</h2>
             </div>
 
-            <!-- 右側功能按鈕群 (只保留：存檔狀態、儲存、下載) -->
+            <!-- 右側功能按鈕群 (純圖示化：存檔燈號、智慧儲存、下載備份) -->
             <div class="flex items-center gap-2 shrink-0">
-                <!-- 存檔狀態指示燈 -->
-                <div id="save-status-badge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-moss-100 border border-moss-200 text-xs text-moss-500 font-medium">
-                    <span id="save-status-dot" class="w-2 h-2 rounded-full bg-moss-400"></span>
-                    <span id="save-status-text">已就緒 / 已儲存</span>
+                <!-- 存檔狀態指示燈號 (純圖示微型呼吸燈，懸停提示文字) -->
+                <div id="save-status-badge" class="w-9 h-9 rounded-xl bg-moss-100 border border-moss-200 flex items-center justify-center transition-all cursor-default" title="狀態：已就緒 / 已儲存">
+                    <span id="save-status-dot" class="w-2.5 h-2.5 rounded-full bg-moss-400"></span>
                 </div>
 
-                <!-- 一鍵儲存 / 覆寫本機檔 (Primary Action) -->
-                <button id="btn-save-disk" class="w-9 h-9 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all hover:shadow" title="直接儲存回寫本機或另存檔案">
-                    <i class="ph ph-floppy-disk text-lg"></i>
+                <!-- 智慧單一儲存鈕 (本機/線上自動變換圖示與存檔行為) -->
+                <button id="btn-save-disk" class="w-9 h-9 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all hover:shadow" title="儲存行程 (另存新檔)">
+                    <i id="icon-smart-save" class="ph ph-floppy-disk text-lg"></i>
                 </button>
 
-                <!-- 下載 JSON 檔案 -->
+                <!-- 下載 JSON 檔案備份 -->
                 <button id="btn-download-json" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center shadow-sm transition-all" title="下載為 .json 檔案">
                     <i class="ph ph-download-simple text-lg text-moss-400"></i>
                 </button>
@@ -234,9 +233,9 @@
         <div class="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12 no-scrollbar">
             <div class="max-w-5xl mx-auto space-y-6">
                 <!-- ═══════════════════════════════════════════════════ -->
-                <!-- 🅱️ 每日行程編輯面板 (Panel: Itinerary - 預設顯示)    -->
+                <!-- 🅱️ 每日行程編輯面板 (Panel: Itinerary)              -->
                 <!-- ═══════════════════════════════════════════════════ -->
-                <section id="panel-itinerary" class="space-y-6">
+                <section id="panel-itinerary" class="hidden space-y-6">
 
                     <!-- 天數操作滑動列 (Day Carousel & Action Bar) -->
                     <div class="bg-white/95 rounded-2xl p-3 md:p-3.5 border border-moss-200/90 shadow-sm flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
@@ -614,12 +613,12 @@
                                 <h3 class="text-base md:text-lg font-black text-moss-500">JSON 原始碼預覽與直接編輯</h3>
                                 <p class="text-xs text-moss-400 mt-0.5">即時產生的完整資料結構，可直接編輯、套用或複製下載。</p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <button id="btn-apply-raw-json" class="px-3.5 py-2 rounded-xl bg-moss-500 hover:bg-moss-600 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm" title="將文字框內容解析並套用至全站設定與行程">
-                                    <i class="ph ph-check-circle text-base"></i> 解析並套用
+                            <div class="flex items-center gap-1.5">
+                                <button id="btn-apply-raw-json" type="button" class="w-9 h-9 rounded-xl bg-moss-500 hover:bg-moss-600 text-white flex items-center justify-center transition-all shadow-sm" title="解析並套用 JSON 代碼">
+                                    <i class="ph ph-check-circle text-lg"></i>
                                 </button>
-                                <button id="btn-copy-raw-json" class="px-3.5 py-2 rounded-xl bg-moss-400 hover:bg-moss-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm">
-                                    <i class="ph ph-copy text-base"></i> 複製代碼
+                                <button id="btn-copy-raw-json" type="button" class="w-9 h-9 rounded-xl bg-moss-400 hover:bg-moss-500 text-white flex items-center justify-center transition-all shadow-sm" title="複製完整 JSON 代碼">
+                                    <i class="ph ph-copy text-lg"></i>
                                 </button>
                             </div>
                         </div>
@@ -634,33 +633,37 @@
                 </section>
 
                 <!-- ═══════════════════════════════════════════════════ -->
-                <!-- 🅰️ 全站設置面板 (Panel: Settings)                  -->
+                <!-- 🅰️ 全站設置面板 (Panel: Settings - 預設顯示)       -->
                 <!-- ═══════════════════════════════════════════════════ -->
-                <section id="panel-settings" class="hidden space-y-6">
-                <!-- 📁 頂部：檔案操作列 (開啟 / 新建 / 線上載入) -->
-                <div class="bg-white/95 rounded-2xl p-3.5 border border-moss-200/90 shadow-sm">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <!-- 說明文字 -->
-                        <span class="text-[11px] font-bold text-moss-400 uppercase tracking-wider mr-1">檔案操作</span>
+                <section id="panel-settings" class="space-y-6">
+                <!-- 📁 頂部：檔案操作列 (純圖示化) -->
+                <div class="bg-white/95 rounded-2xl p-3 border border-moss-200/90 shadow-sm flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
+                    <!-- 左側：當前編輯檔案標籤 (純圖示+檔名) -->
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-moss-50 border border-moss-200 text-moss-500 text-xs font-mono shadow-2xs" title="當前編輯檔案">
+                            <i id="file-mode-icon" class="ph ph-file text-moss-400 text-base"></i>
+                            <span id="current-file-badge" class="font-bold truncate max-w-[150px] sm:max-w-[240px]">未命名行程.json</span>
+                        </div>
+                    </div>
 
+                    <!-- 右側：純圖示檔案操作按鈕群 -->
+                    <div class="flex items-center gap-1.5 shrink-0">
                         <!-- 開啟本機檔案 -->
-                        <button id="btn-open-file" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-moss-200 bg-moss-50 hover:bg-moss-100 text-moss-500 text-xs font-bold transition-all" title="選取本機 JSON 檔案">
+                        <button id="btn-open-file" type="button" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center transition-all shadow-sm" title="開啟本機檔案 (JSON)">
                             <i class="ph ph-folder-open text-base text-moss-400"></i>
-                            <span>開啟本機檔</span>
                         </button>
 
-                        <!-- 建立新檔案 -->
-                        <button id="btn-create-new" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-moss-200 bg-moss-50 hover:bg-moss-100 text-moss-500 text-xs font-bold transition-all" title="建立全新空白行程">
+                        <!-- 建立全新行程 -->
+                        <button id="btn-create-new" type="button" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center transition-all shadow-sm" title="建立全新空白行程">
                             <i class="ph ph-file-plus text-base text-moss-400"></i>
-                            <span>新建行程</span>
                         </button>
 
                         <!-- 雲端線上載入 (fetch) -->
-                        <div class="flex items-center gap-1 bg-moss-50 p-1 rounded-xl border border-moss-200">
+                        <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-moss-200 shadow-sm">
                             <i class="ph ph-cloud-arrow-down text-base text-moss-400 ml-1"></i>
-                            <input id="input-online-name" type="text" placeholder="檔名 (如 2610)" class="w-24 px-2 py-1 text-xs bg-white rounded-lg border border-moss-200 text-moss-500 outline-none focus:border-moss-400 font-mono">
-                            <button id="btn-load-online" class="px-2 py-1 text-xs font-bold text-moss-500 hover:text-white hover:bg-moss-400 rounded-lg transition-colors" title="從線上載入 (fetch)">
-                                載入
+                            <input id="input-online-name" type="text" placeholder="檔名 (如 2610)" class="w-24 px-2 py-1 text-xs bg-moss-50/50 rounded-lg border border-transparent focus:border-moss-400 text-moss-500 outline-none font-mono">
+                            <button id="btn-load-online" type="button" class="w-7 h-7 rounded-lg bg-moss-400 hover:bg-moss-500 text-white flex items-center justify-center transition-colors" title="從線上載入 (fetch)">
+                                <i class="ph ph-arrow-right text-xs"></i>
                             </button>
                         </div>
                     </div>
@@ -797,8 +800,8 @@
                                     <span class="text-xs font-bold text-moss-500">總覽城市卡片清單</span>
                                     <span class="text-[11px] text-moss-400/80">前台總覽頁籤所展示的橫滑城市視覺卡片</span>
                                 </div>
-                                <button type="button" id="btn-add-overview-city" class="px-2.5 py-1.5 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 text-xs font-bold flex items-center gap-1 transition-all shadow-sm">
-                                    <i class="ph ph-plus font-bold"></i> 新增城市卡片
+                                <button type="button" id="btn-add-overview-city" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center transition-all shadow-sm" title="新增城市卡片">
+                                    <i class="ph ph-plus font-bold text-base"></i>
                                 </button>
                             </div>
 
@@ -836,8 +839,8 @@
                     <div class="pt-3 border-t border-moss-100 space-y-3">
                         <div class="text-xs font-bold text-moss-500 flex items-center justify-between">
                             <span>色彩細部微調 (Hex Code)</span>
-                            <button type="button" id="btn-save-fav" class="text-[11px] px-2.5 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors font-bold flex items-center gap-1 shadow-2xs">
-                                <i class="ph ph-star text-amber-500"></i> 存入專屬色
+                            <button type="button" id="btn-save-fav" class="w-7 h-7 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors flex items-center justify-center shadow-2xs" title="存入專屬色">
+                                <i class="ph ph-star text-amber-500 text-sm"></i>
                             </button>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5 text-xs">
@@ -978,6 +981,45 @@
         </div>
     </dialog>
 
+    <!-- 雲端安全回存對話框 (Cloud Save Dialog) -->
+    <dialog id="modal-cloud-save" class="rounded-3xl p-0 overflow-hidden shadow-2xl border border-moss-200 w-full max-w-sm">
+        <div class="p-6 bg-white space-y-4">
+            <div class="flex items-center gap-3 text-moss-500">
+                <div class="w-10 h-10 rounded-2xl bg-moss-100 flex items-center justify-center text-xl shrink-0">
+                    <i class="ph ph-cloud-arrow-up text-moss-500"></i>
+                </div>
+                <div class="min-w-0">
+                    <h4 class="font-black text-base text-moss-500">線上安全回存至 GitHub</h4>
+                    <p id="cloud-save-filename-desc" class="text-xs text-moss-400 mt-0.5 font-mono truncate">目標：WebPage/2610.json</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 pt-1">
+                <div>
+                    <label class="block text-xs font-bold text-moss-500 mb-1">管理金鑰密碼 (ADMIN_SECRET)</label>
+                    <input id="input-cloud-password" type="password" placeholder="請輸入 Cloudflare 設定的管理密碼" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-moss-50/50 text-xs text-moss-500 focus:bg-white focus:border-moss-400 outline-none font-mono">
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <label class="flex items-center gap-1.5 cursor-pointer text-moss-500 font-bold select-none">
+                        <input id="cb-remember-password" type="checkbox" class="w-3.5 h-3.5 rounded accent-moss-400">
+                        <span>在此裝置記住密碼</span>
+                    </label>
+                    <button id="btn-forget-password" type="button" class="text-[11px] text-moss-400 hover:text-red-500 transition-colors hidden" title="清除記住的密碼">清除記憶</button>
+                </div>
+            </div>
+
+            <div id="cloud-save-error" class="hidden p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-mono"></div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-2">
+                <button id="btn-cloud-cancel" type="button" class="px-4 py-2 rounded-xl border border-moss-200 text-xs font-bold text-moss-500 hover:bg-moss-50 transition-colors">取消</button>
+                <button id="btn-cloud-confirm" type="button" class="px-4 py-2 rounded-xl bg-moss-500 hover:bg-moss-600 text-white text-xs font-black transition-colors flex items-center gap-1.5 shadow-sm">
+                    <span id="cloud-confirm-spinner" class="hidden"><i class="ph ph-spinner animate-spin text-sm"></i></span>
+                    <span id="cloud-confirm-text">確認回存</span>
+                </button>
+            </div>
+        </div>
+    </dialog>
+
     <!-- ════════════════════════════════════════════════════════════ -->
     <!-- ⚙️ JavaScript 核心驅動邏輯 (State & Controllers)           -->
     <!-- ════════════════════════════════════════════════════════════ -->
@@ -1071,10 +1113,11 @@
         // 狀態管理物件
         let appData = JSON.parse(JSON.stringify(DEFAULT_JSON));
         let selectedDayIndex = 0;
-        let currentTab = 'itinerary'; // 'itinerary' | 'expenses' | 'json'
+        let currentTab = 'settings'; // 預設開啟全站設置
+        let currentFileMode = 'new'; // 'new' (全新公版) | 'local' (本機覆寫) | 'online' (雲端同步)
         let hasUnsavedChanges = false;
         let currentFileHandle = null;
-        let currentFileName = '2610.json';
+        let currentFileName = '未命名行程.json';
         let pendingConfirmCallback = null;
 
         // UI 元素捷徑
@@ -1083,7 +1126,6 @@
         const rawJsonOutput = document.getElementById('raw-json-output');
         const saveStatusBadge = document.getElementById('save-status-badge');
         const saveStatusDot = document.getElementById('save-status-dot');
-        const saveStatusText = document.getElementById('save-status-text');
         const sideFilenameEl = document.getElementById('side-filename');
 
         /* ------------------------------------------------------------- */
@@ -1093,25 +1135,15 @@
             initEventListeners();
             initThemeButtons();
             
-            // 嘗試載入預設 2610.json，若在本地 file:// 協議失敗則載入 DEFAULT_JSON
-            try {
-                const res = await fetch('WebPage/2610.json');
-                if (res.ok) {
-                    const json = await res.json();
-                    loadData(json, '2610.json');
-                    showToast('已載入 WebPage/2610.json');
-                    return;
-                }
-            } catch (e) {
-                // 忽略 file:// 安全性攔截，載入乾淨初始模板
-            }
-            loadData(DEFAULT_JSON, 'new_plan.json');
+            // 預設以乾淨公版全新模板啟動，絕不自動載入任何特定行程，防止誤改
+            loadData(DEFAULT_JSON, '未命名行程.json', 'new');
+            switchTab('settings');
         });
 
         /* ------------------------------------------------------------- */
         /* 📂 資料載入與規範化 (Load & Normalize)                         */
         /* ------------------------------------------------------------- */
-        function loadData(json, fileName = 'data.json') {
+        function loadData(json, fileName = '未命名行程.json', mode = 'new') {
             appData = {
                 settings: Object.assign({}, DEFAULT_JSON.settings, json.settings || {}),
                 itinerary: Array.isArray(json.itinerary) && json.itinerary.length ? json.itinerary : [DEFAULT_JSON.itinerary[0]]
@@ -1179,9 +1211,10 @@
             });
 
             currentFileName = fileName;
-            sideFilenameEl.textContent = fileName;
+            currentFileMode = mode;
             selectedDayIndex = 0;
             markClean();
+            updateSmartSaveUI();
 
             renderSidebarDays();
             renderSettingsPanel();
@@ -1192,17 +1225,43 @@
             updateSidebarPullTab();
         }
 
+        function updateSmartSaveUI() {
+            const btnSave = document.getElementById('btn-save-disk');
+            const iconSave = document.getElementById('icon-smart-save');
+            const fileBadge = document.getElementById('current-file-badge');
+            const fileIcon = document.getElementById('file-mode-icon');
+            const sideFilename = document.getElementById('side-filename');
+
+            const displayName = currentFileName || '未命名行程.json';
+            if (fileBadge) fileBadge.textContent = displayName;
+            if (sideFilename) sideFilename.textContent = displayName;
+
+            if (currentFileMode === 'local') {
+                if (iconSave) iconSave.className = 'ph ph-floppy-disk text-lg';
+                if (btnSave) btnSave.title = '儲存至本機檔案 (直接覆寫)';
+                if (fileIcon) fileIcon.className = 'ph ph-laptop text-moss-400 text-base';
+            } else if (currentFileMode === 'online') {
+                if (iconSave) iconSave.className = 'ph ph-cloud-arrow-up text-lg';
+                if (btnSave) btnSave.title = '安全儲存至 GitHub (線上回存)';
+                if (fileIcon) fileIcon.className = 'ph ph-cloud text-moss-400 text-base';
+            } else {
+                if (iconSave) iconSave.className = 'ph ph-floppy-disk text-lg';
+                if (btnSave) btnSave.title = '儲存行程 (另存新檔)';
+                if (fileIcon) fileIcon.className = 'ph ph-file text-moss-400 text-base';
+            }
+        }
+
         function markDirty() {
             hasUnsavedChanges = true;
-            saveStatusDot.className = 'w-2 h-2 rounded-full bg-amber-accent';
-            saveStatusText.textContent = '有未儲存更動';
+            saveStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-accent';
+            if (saveStatusBadge) saveStatusBadge.title = '狀態：有未儲存更動';
             document.getElementById('btn-save-disk').classList.add('needs-save');
         }
 
         function markClean() {
             hasUnsavedChanges = false;
-            saveStatusDot.className = 'w-2 h-2 rounded-full bg-moss-400';
-            saveStatusText.textContent = '已就緒 / 已儲存';
+            saveStatusDot.className = 'w-2.5 h-2.5 rounded-full bg-moss-400';
+            if (saveStatusBadge) saveStatusBadge.title = '狀態：已就緒 / 已儲存';
             document.getElementById('btn-save-disk').classList.remove('needs-save');
         }
 
@@ -2072,7 +2131,7 @@
                     const file = await handle.getFile();
                     const text = await file.text();
                     currentFileHandle = handle;
-                    loadData(JSON.parse(text), file.name);
+                    loadData(JSON.parse(text), file.name, 'local');
                     showToast(`已開啟 ${file.name}（已綁定本機儲存）`);
                     return;
                 } catch (err) {
@@ -2094,6 +2153,8 @@
                     const writable = await currentFileHandle.createWritable();
                     await writable.write(jsonText);
                     await writable.close();
+                    currentFileMode = 'local';
+                    updateSmartSaveUI();
                     markClean();
                     showToast(`已直接覆寫儲存至 ${currentFileHandle.name}！`);
                     return;
@@ -2114,7 +2175,8 @@
                     await writable.close();
                     currentFileHandle = handle;
                     currentFileName = handle.name;
-                    sideFilenameEl.textContent = handle.name;
+                    currentFileMode = 'local';
+                    updateSmartSaveUI();
                     markClean();
                     showToast(`已儲存至 ${handle.name}！`);
                     return;
@@ -2126,6 +2188,118 @@
 
             // 最終備援方案：自動下載 Blob 檔案
             downloadJsonBlob();
+        }
+
+        /* ------------------------------------------------------------- */
+        /* ☁️ 雲端安全回存與智慧分流 (Cloud Save & Smart Dispatcher)     */
+        /* ------------------------------------------------------------- */
+        async function handleSmartSave() {
+            if (currentFileMode === 'local') {
+                await saveToDisk();
+            } else if (currentFileMode === 'online') {
+                openCloudSaveModal();
+            } else {
+                // 'new' 全新未命名行程：若支援直接另存本機則另存本機，若在線上則引導線上儲存
+                if (window.location.protocol.startsWith('http') && !('showSaveFilePicker' in window)) {
+                    openCloudSaveModal();
+                } else {
+                    await saveToDisk();
+                }
+            }
+        }
+
+        function openCloudSaveModal() {
+            const modal = document.getElementById('modal-cloud-save');
+            const desc = document.getElementById('cloud-save-filename-desc');
+            const pwInput = document.getElementById('input-cloud-password');
+            const cbRemember = document.getElementById('cb-remember-password');
+            const btnForget = document.getElementById('btn-forget-password');
+            const errBox = document.getElementById('cloud-save-error');
+
+            if (!modal) return;
+
+            let targetName = currentFileName || '2610.json';
+            if (targetName === '未命名行程.json' || targetName === 'new_plan.json') {
+                const userEntered = prompt('請輸入要儲存在雲端的檔名（例如：2610 或 tokyo）：', '2610');
+                if (!userEntered || !userEntered.trim()) return;
+                targetName = userEntered.trim();
+                if (!targetName.endsWith('.json')) targetName += '.json';
+                currentFileName = targetName;
+                currentFileMode = 'online';
+                updateSmartSaveUI();
+            }
+
+            desc.textContent = `目標：WebPage/${currentFileName}`;
+            errBox.classList.add('hidden');
+            errBox.textContent = '';
+
+            const savedPw = localStorage.getItem('travel_admin_secret');
+            if (savedPw) {
+                pwInput.value = savedPw;
+                cbRemember.checked = true;
+                btnForget?.classList.remove('hidden');
+            } else {
+                pwInput.value = '';
+                cbRemember.checked = false;
+                btnForget?.classList.add('hidden');
+            }
+
+            modal.showModal();
+        }
+
+        async function submitCloudSave() {
+            const pwInput = document.getElementById('input-cloud-password');
+            const cbRemember = document.getElementById('cb-remember-password');
+            const errBox = document.getElementById('cloud-save-error');
+            const spinner = document.getElementById('cloud-confirm-spinner');
+            const btnConfirm = document.getElementById('btn-cloud-confirm');
+            const modal = document.getElementById('modal-cloud-save');
+
+            const password = pwInput.value.trim();
+            if (!password) {
+                errBox.textContent = '請輸入管理密碼 (ADMIN_SECRET)';
+                errBox.classList.remove('hidden');
+                return;
+            }
+
+            spinner.classList.remove('hidden');
+            btnConfirm.disabled = true;
+            errBox.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: currentFileName,
+                        content: appData,
+                        password: password
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+
+                if (cbRemember.checked) {
+                    localStorage.setItem('travel_admin_secret', password);
+                } else {
+                    localStorage.removeItem('travel_admin_secret');
+                }
+
+                currentFileMode = 'online';
+                updateSmartSaveUI();
+                modal.close();
+                markClean();
+                showToast(`🎉 已成功同步至 GitHub！(${currentFileName})`);
+            } catch (err) {
+                errBox.textContent = `回存失敗：${err.message}`;
+                errBox.classList.remove('hidden');
+            } finally {
+                spinner.classList.add('hidden');
+                btnConfirm.disabled = false;
+            }
         }
 
         function downloadJsonBlob() {
@@ -2326,15 +2500,31 @@
                 };
             }
 
-            // 檔案操作按鈕
+            // 檔案操作按鈕 (智慧單一儲存、開啟、新建、下載)
             document.getElementById('btn-open-file').onclick = openLocalFile;
-            document.getElementById('btn-save-disk').onclick = saveToDisk;
+            document.getElementById('btn-save-disk').onclick = handleSmartSave;
             document.getElementById('btn-download-json').onclick = downloadJsonBlob;
             document.getElementById('btn-copy-raw-json').onclick = async () => {
                 syncRawJsonView();
                 await navigator.clipboard.writeText(rawJsonOutput.value);
                 showToast('已複製完整 JSON 代碼！');
             };
+
+            // 雲端回存彈窗按鈕事件
+            const btnCloudCancel = document.getElementById('btn-cloud-cancel');
+            if (btnCloudCancel) btnCloudCancel.onclick = () => document.getElementById('modal-cloud-save').close();
+            const btnCloudConfirm = document.getElementById('btn-cloud-confirm');
+            if (btnCloudConfirm) btnCloudConfirm.onclick = submitCloudSave;
+            const btnForget = document.getElementById('btn-forget-password');
+            if (btnForget) {
+                btnForget.onclick = () => {
+                    localStorage.removeItem('travel_admin_secret');
+                    document.getElementById('input-cloud-password').value = '';
+                    document.getElementById('cb-remember-password').checked = false;
+                    btnForget.classList.add('hidden');
+                    showToast('已清除記住的密碼');
+                };
+            }
 
             // JSON 原始碼解析套用按鈕
             const btnApplyRaw = document.getElementById('btn-apply-raw-json');
@@ -2352,7 +2542,7 @@
             // 建立全新檔案
             document.getElementById('btn-create-new').onclick = () => {
                 if (hasUnsavedChanges && !confirm('目前有未儲存的修改，新建檔案將清除現有內容，確定繼續？')) return;
-                loadData(DEFAULT_JSON, 'new_plan.json');
+                loadData(DEFAULT_JSON, '未命名行程.json', 'new');
                 currentFileHandle = null;
                 showToast('已建立新行程模板');
             };
@@ -2369,7 +2559,7 @@
                     if (!res.ok) throw new Error(`找不到檔案 (HTTP ${res.status})`);
                     const json = await res.json();
                     currentFileHandle = null;
-                    loadData(json, name);
+                    loadData(json, name, 'online');
                     showToast(`成功載入 ${name}`);
                 } catch (e) {
                     showToast(`載入失敗：${e.message}`);
@@ -2384,7 +2574,7 @@
                 reader.onload = (evt) => {
                     try {
                         const json = JSON.parse(evt.target.result);
-                        loadData(json, file.name);
+                        loadData(json, file.name, 'local');
                         showToast(`已載入 ${file.name}`);
                     } catch (err) {
                         showToast('JSON 格式錯誤，無法讀取');
