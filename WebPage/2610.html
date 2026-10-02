@@ -517,9 +517,10 @@
                 html += `<p class="text-body text-moss-400 font-medium py-6 text-center bg-moss-100 rounded-xl border border-moss-200 border-dashed mb-6">所有待辦事項皆已完成 🎉</p>`;
             }
 
+            const wasCompletedOpen = document.getElementById('details-completed-todos')?.hasAttribute('open');
             if (completedCount > 0) {
                 html += `
-                    <details class="group bg-moss-100 border border-moss-200 rounded-2xl p-4 transition-all duration-300">
+                    <details id="details-completed-todos" class="group bg-moss-100 border border-moss-200 rounded-2xl p-4 transition-all duration-300" ${wasCompletedOpen ? 'open' : ''}>
                         <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-400 text-body opacity-80 hover:opacity-100 transition-opacity">
                             <span class="flex items-center gap-2"><i class="ph ph-check-circle text-xl"></i> 已完成項目 (${completedCount})</span>
                             <div class="w-8 h-8 rounded-full bg-moss-200/50 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform"><i class="ph ph-caret-down font-bold"></i></div>
@@ -534,12 +535,39 @@
             container.innerHTML = html;
         }
 
-        function initTodos() {
+        /* 🔄 同步行程中的待辦膠囊顯隱 (已完成直接隱藏，未完成則顯示) */
+        function syncTodoVisibility() {
             const savedTodos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
             
             document.querySelectorAll('.spot-todo-cb').forEach(cb => {
-                cb.checked = !!savedTodos[cb.id];
-                
+                const isChecked = !!savedTodos[cb.id];
+                cb.checked = isChecked;
+                const label = cb.closest('label');
+                if (label) {
+                    if (isChecked) {
+                        label.classList.add('hidden');
+                    } else {
+                        label.classList.remove('hidden');
+                    }
+                }
+            });
+
+            // 若群組中所有待辦均已完成隱藏，則一併隱藏外層容器避免殘留空白間距
+            document.querySelectorAll('.todo-group-container').forEach(group => {
+                const totalItems = group.querySelectorAll('label').length;
+                const hiddenItems = group.querySelectorAll('label.hidden').length;
+                if (totalItems > 0 && totalItems === hiddenItems) {
+                    group.classList.add('hidden');
+                } else {
+                    group.classList.remove('hidden');
+                }
+            });
+        }
+
+        function initTodos() {
+            syncTodoVisibility();
+            
+            document.querySelectorAll('.spot-todo-cb').forEach(cb => {
                 const newCb = cb.cloneNode(true);
                 cb.parentNode.replaceChild(newCb, cb);
                 
@@ -549,6 +577,8 @@
                     const todos = JSON.parse(localStorage.getItem('travel_todos') || '{}');
                     todos[id] = isChecked;
                     localStorage.setItem('travel_todos', JSON.stringify(todos));
+                    
+                    syncTodoVisibility();
                     
                     if (window.travelItineraryData) {
                         renderTodos(window.travelItineraryData);
@@ -567,8 +597,7 @@
                     todos[id] = isChecked;
                     localStorage.setItem('travel_todos', JSON.stringify(todos));
                     
-                    const spotCb = document.getElementById(id);
-                    if (spotCb) spotCb.checked = isChecked;
+                    syncTodoVisibility();
                     
                     if (window.travelItineraryData) {
                         renderTodos(window.travelItineraryData);
@@ -1057,7 +1086,7 @@
 
                 let dailyTodoHtml = '';
                 if (day.todos && day.todos.length > 0) {
-                    dailyTodoHtml = '<div class="mb-5 flex flex-wrap gap-2">';
+                    dailyTodoHtml = '<div class="todo-group-container mb-5 flex flex-wrap gap-2">';
                     day.todos.forEach((todoObj, tIdx) => {
                         const task = typeof todoObj === 'string' ? todoObj : todoObj.task;
                         const todoId = `todo-day-${index}-${tIdx}`;
@@ -1065,7 +1094,7 @@
                             <label class="cursor-pointer group relative">
                                 <input type="checkbox" id="${todoId}" data-day="${index}" data-type="day" data-todo="${tIdx}" class="spot-todo-cb peer sr-only">
                                 <div class="px-3 py-1.5 rounded-full text-small font-bold transition-all shadow-sm bg-moss-200 text-moss-500 hover:bg-moss-300 peer-checked:bg-moss-100 peer-checked:text-moss-400/60 peer-checked:line-through peer-checked:shadow-none border border-transparent peer-checked:border-moss-200">
-                                    ${task}
+                                    ${escapeHtml(task)}
                                 </div>
                             </label>
                         `;
@@ -1116,7 +1145,7 @@
 
                         let todoHtml = '';
                         if (spot.todos && spot.todos.length > 0) {
-                            todoHtml = '<div class="mt-4 flex flex-wrap gap-2">';
+                            todoHtml = '<div class="todo-group-container mt-4 flex flex-wrap gap-2">';
                             spot.todos.forEach((todoObj, tIdx) => {
                                 const task = typeof todoObj === 'string' ? todoObj : todoObj.task;
                                 const todoId = `todo-${index}-${spotIndex}-${tIdx}`;
