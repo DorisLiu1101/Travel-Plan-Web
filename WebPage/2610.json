@@ -10,32 +10,85 @@
       "itinerary",
       "overview"
     ],
-    "theme": "forest",
+    "theme": "moss",
     "customTheme": {
-      "primary": "#315a4c",
-      "accent": "#cf795f",
-      "bg": "#eef2ec",
-      "deep": "#203d34"
+      "primary": "#6F7F5A",
+      "deep": "#3C4733",
+      "accent": "#A9B482",
+      "line": "#D8D2A7",
+      "bg": "#F4EFD9"
+    },
+    "themeColors": {
+      "primary": "#6F7F5A",
+      "deep": "#3C4733",
+      "accent": "#A9B482",
+      "line": "#D8D2A7",
+      "bg": "#F4EFD9"
     },
     "overviewMap": {
       "image": "",
       "iframeUrl": "https://www.google.com/maps/d/embed?mid=1AKPm6i_BLlMD3cy0YLVSWmuNVfNCdLY&ehbc=2E312F"
     },
+    "cities": [
+      {
+        "name": "番紅花城",
+        "desc": "世界遺產．鄂圖曼山城",
+        "tag": "Day 1-2",
+        "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "安卡拉",
+        "desc": "土耳其心臟．國父紀念館",
+        "tag": "Day 3",
+        "image": "https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "卡帕多奇亞",
+        "desc": "熱氣球．奇岩怪石仙境",
+        "tag": "Day 3-5",
+        "image": "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "孔亞",
+        "desc": "旋轉舞發源地．古驛站",
+        "tag": "Day 6",
+        "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "巴穆卡麗 (棉花堡)",
+        "desc": "純白溫泉石灰棚．希拉波利斯",
+        "tag": "Day 7",
+        "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "艾菲索斯",
+        "desc": "世界七大奇蹟．羅馬古城",
+        "tag": "Day 8",
+        "image": "https://images.unsplash.com/photo-1565011523534-747a8601f10a?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "庫薩達西",
+        "desc": "愛琴海渡假勝地．夕陽海港",
+        "tag": "Day 8-9",
+        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "伊斯坦堡",
+        "desc": "橫跨歐亞．藍色清真寺海峽遊船",
+        "tag": "Day 9-11",
+        "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop"
+      }
+    ],
     "expenses": {
       "tourFee": 100000,
       "currency": "TW$",
-      "note": "含折扣 $5,900"
+      "note": "含折扣 $5,900",
+      "records": []
     },
     "info": {
       "title": "說明",
-      "text": "行鍵",
+      "text": "行健",
       "link": "https://www.unotour.com.tw/03_category_info.asp?sn=51198"
-    },
-    "themeColors": {
-      "primary": "#315a4c",
-      "deep": "#203d34",
-      "accent": "#cf795f",
-      "bg": "#eef2ec"
     },
     "typography": {
       "style": "modern",
@@ -69,7 +122,10 @@
       "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1200&auto=format&fit=crop",
       "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
       "todos": [
-        { "task": "待訂飯店", "note": "確認機場接送" }
+        {
+          "task": "待訂飯店",
+          "note": "確認機場接送"
+        }
       ],
       "flights": [
         "【去程國際線】土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 (+1日) *(時差：慢台灣5小時)*",
@@ -83,8 +139,14 @@
           "image": "https://pimg.1px.tw/kenfoto/1738334391-3616794821-g.jpg",
           "note": "",
           "todos": [
-            { "task": "購買市長官邸門票", "note": "通過小紅書預約" },
-            { "task": "領取導覽耳機", "note": "" }
+            {
+              "task": "購買市長官邸門票",
+              "note": "通過小紅書預約"
+            },
+            {
+              "task": "領取導覽耳機",
+              "note": ""
+            }
           ]
         },
         {
@@ -92,14 +154,16 @@
           "description": "悠閒漫步沙夫蘭波爾起伏巷弄，尋訪古法手工銅製品與傳統糕點鋪。",
           "mapQuery": "鵝卵石古鎮 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "希德爾立克山丘",
           "description": "登臨番紅花城絕佳觀景台，俯瞰被列入世界遺產的古色古香山城全景。",
           "mapQuery": "希德爾立克山丘 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -110,7 +174,38 @@
       "eat": "傳統鄂圖曼式建築 Güveç 陶甕風味餐、土耳其紅茶。",
       "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。",
       "meals": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐",
-      "lodging": "HILTON GARDEN INN SAFRANBOLU"
+      "lodging": "HILTON GARDEN INN SAFRANBOLU",
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "傳統鄂圖曼式建築 Güveç 陶甕風味餐",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "土耳其紅茶。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "番紅花城手工紅銅器",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "傳統立體鄂圖曼軟糖",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "特色手工蕾絲織品。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 3",
@@ -122,7 +217,10 @@
       },
       "image": "https://images.pexels.com/photos/13320762/pexels-photo-13320762.jpeg",
       "todos": [
-        { "task": "飯店待訂", "note": "" }
+        {
+          "task": "飯店待訂",
+          "note": ""
+        }
       ],
       "spots": [
         {
@@ -130,21 +228,24 @@
           "description": "參觀融匯古今現代建築傑作，向土耳其國父凱末爾致敬的莊嚴陵寢。",
           "mapQuery": "阿塔圖爾克紀念館 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "凱末爾博物館",
           "description": "珍藏國父生前親筆信函、肖像與隨身歷史物件，感受人民深厚的愛戴。",
           "mapQuery": "凱末爾博物館 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "土耳其之夜",
           "description": "晚間於天然岩穴旅館欣賞傳統民俗舞蹈與肚皮舞秀，無限暢飲獅子奶酒。",
           "mapQuery": "土耳其之夜 土耳其",
           "image": "https://www.jeffiafang.com/wp-content/uploads/2025/12/014-5.jpg",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -155,7 +256,34 @@
       "eat": "土耳其傳統香料烤雞翅、道地 Raki（獅子奶酒）。",
       "tips": "獅子奶酒酒精濃度高且後勁強，建議酌量飲用；岩穴旅館每間格局略有大小差異。",
       "meals": "午：香料烤翅風味餐 / 晚：旅館自助式或套餐",
-      "lodging": "KALSEDON CAVE HOTEL"
+      "lodging": "KALSEDON CAVE HOTEL",
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "土耳其傳統香料烤雞翅",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "道地 Raki（獅子奶酒）。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "安卡拉當地特色天然果乾",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "卡巴德基亞熱氣球造型紀念小品。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 4",
@@ -172,28 +300,32 @@
           "description": "探訪開鑿於奇特地貌的洞窟修道院，讚嘆托卡裏教堂絕美拜占庭壁畫。",
           "mapQuery": "哥樂美露天博物館 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "精靈煙囪奇景",
           "description": "乘車巡禮蘑菇谷、駱駝岩、烏其莎城堡與鴿子谷，見證大自然的調皮傑作。",
           "mapQuery": "精靈煙囪奇景 土耳其",
           "image": "https://plus.unsplash.com/premium_photo-1661957726761-ccf728cc01b2?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "基督徒地下城",
           "description": "鑽入深埋地底的避難迷宮，驚嘆垂直循環通氣孔與兩噸重禦敵石門。",
           "mapQuery": "基督徒地下城 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "傳統工藝巡禮",
           "description": "參觀百年皇家級手工地毯編織教學、綠松石珠寶工藝，品嚐道地土式咖啡。",
           "mapQuery": "傳統工藝巡禮 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -205,7 +337,45 @@
       "eat": "道地土耳其冰淇淋、土式鄉村下午茶、肥美多汁傳統烤羊肉。",
       "tips": "參觀地毯坊與珠寶店時微笑道別即可，殺價為當地樂趣；下午茶與冰淇淋為特別招待。",
       "meals": "午：土式佐傳統烤羊肉風味餐 / 晚：旅館自助式或套餐",
-      "lodging": "KALSEDON CAVE HOTEL"
+      "lodging": "KALSEDON CAVE HOTEL",
+      "todos": [],
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "道地土耳其冰淇淋",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "土式鄉村下午茶",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "肥美多汁傳統烤羊肉。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "土耳其石（綠松石）純銀飾品",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "游牧民族手工幾何圖騰地毯",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "惡魔之眼掛飾。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 5",
@@ -222,21 +392,24 @@
           "description": "途經13世紀塞爾柱時期供絲路商旅與駱駝過夜歇息的壯麗古老驛站。",
           "mapQuery": "蘇丹哈尼古驛站 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "梅烏拉那博物館",
           "description": "仰望孔亞最著名的鮮豔綠瓷磚尖頂，感受蘇菲教團旋轉舞發源地的莊嚴。",
           "mapQuery": "梅烏拉那博物館 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "地中海濱安塔麗亞",
           "description": "傍晚翻越托羅斯山脈，抵達風光明媚、擁抱蔚藍海水的南岸度假首府。",
           "mapQuery": "地中海濱安塔麗亞 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -247,7 +420,40 @@
       "eat": "土耳其特色長條披薩（Pide）、地中海風味橄欖冷盤。",
       "tips": "孔亞為宗教氣氛較濃厚的傳統聖城，參觀博物館相關園區請保持衣著端莊與輕聲細語。",
       "meals": "午：土式餐食佐 Pide 風味餐 / 晚：旅館自助式或套餐",
-      "lodging": "DOUBLE TREE BY HILTON ANTALYA"
+      "lodging": "DOUBLE TREE BY HILTON ANTALYA",
+      "todos": [],
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "土耳其特色長條披薩（Pide）",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "地中海風味橄欖冷盤。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "孔亞旋轉舞者白衣陶瓷娃娃",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "安那托利亞天然草本茶",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "梅烏拉那紀念書籤。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 6",
@@ -264,21 +470,24 @@
           "description": "穿過古羅馬凱旋門漫步進入古鎮，探訪凱鍚克喚拜樓與卡拉裏歐魯公園。",
           "mapQuery": "哈德良門舊城 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "地中海搭船出海",
           "description": "於舊城港口乘船乘風破浪，近距離欣賞懸崖瀑布直衝入海的杜登奇觀。",
           "mapQuery": "地中海搭船出海 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "巴穆卡麗溫泉鄉",
           "description": "午後驅車前往棉堡所在地，於溫泉飯店享用具礦物質療效的天然溫泉。",
           "mapQuery": "巴穆卡麗溫泉鄉 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -289,7 +498,40 @@
       "eat": "地中海特色餐廳鮮魚風味餐、土耳其街頭現榨石榴汁。",
       "tips": "出海行程容易暈船者，請出發前30分鐘服用暈船藥；飯店溫泉區地板濕滑請小心行走。",
       "meals": "午：土耳其鮮魚風味餐 / 晚：旅館自助式或套餐",
-      "lodging": "COLOSSAE TERMAL HOTEL"
+      "lodging": "COLOSSAE TERMAL HOTEL",
+      "todos": [],
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "地中海特色餐廳鮮魚風味餐",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "土耳其街頭現榨石榴汁。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "地中海產天然純橄欖油護手霜",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "土耳其藍手工彩瓷盤",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "天然頂級無花果乾。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 7",
@@ -306,28 +548,32 @@
           "description": "漫步於富含碳酸鈣湧泉結晶而成的潔白石灰華梯堤，宛如踏入銀色幻境。",
           "mapQuery": "巴穆卡麗棉堡 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "石灰棚赤足體驗",
           "description": "依規定脫去鞋襪親踩溫熱泉水，體驗略帶微痛感的天然鈣質腳底按摩。",
           "mapQuery": "石灰棚赤足體驗 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "希拉波利斯古城",
           "description": "環抱西元前2世紀遺留的廣闊神殿、古羅馬大劇場與傾圮的水底宮殿。",
           "mapQuery": "希拉波利斯古城 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "庫薩達西濱海",
           "description": "傍晚抵達愛琴海畔著名的港口度假城市，享受浪漫愜意的海濱夜色。",
           "mapQuery": "庫薩達西濱海 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -338,7 +584,40 @@
       "eat": "愛琴海沿岸特色炭烤肉串（Kebab）、土耳其國民酸奶（Ayran）。",
       "tips": "赤腳踩在結晶岩面上略帶刺痛感，行走務必踏穩；古溫泉游泳戲水需現地自費買門票。",
       "meals": "午：土耳其式餐食 / 晚：旅館自助式或套餐",
-      "lodging": "CHARISMA DE LUXE HOTEL"
+      "lodging": "CHARISMA DE LUXE HOTEL",
+      "todos": [],
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "愛琴海沿岸特色炭烤肉串（Kebab）",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "土耳其國民酸奶（Ayran）。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "棉堡限定天然溫泉泥面膜",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "愛琴海頂級精油香皂",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "天然無花果夾心巧克力。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 8",
@@ -358,21 +637,24 @@
           "description": "欣賞名模演繹高級進口皮件，啜飲道地蘋果茶，學習分辨頂級皮革工藝。",
           "mapQuery": "時尚皮衣秀 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "艾菲索斯古城",
           "description": "走入小亞細亞最繁榮的遺址，仰望塞爾薩斯圖書館與兩萬人大劇場。",
           "mapQuery": "艾菲索斯古城 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "席林杰小鎮",
           "description": "漫步於以19世紀鄂圖曼農村民居與滿山果園著稱的「露天建築博物館」。",
           "mapQuery": "席林杰小鎮 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -383,7 +665,39 @@
       "eat": "席林杰山城著名水果酒佐餐、道地土耳其旋轉烤肉沙威瑪（Döner）。",
       "tips": "以弗所大理石地面經千年踩踏極為光滑，易滑倒請小心；皮衣坊無購買意願微笑道別即可。",
       "meals": "午：席林杰水果酒風味餐 / 晚：發放餐費美金20元自理",
-      "lodging": "LIONEL HOTEL ISTANBUL"
+      "lodging": "LIONEL HOTEL ISTANBUL",
+      "todos": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "席林杰山城著名水果酒佐餐",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "道地土耳其旋轉烤肉沙威瑪（Döner）。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "席林杰限定特色水果酒（黑莓/石榴）",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "頂級輕柔小羊皮衣",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "聖經以弗所主題書冊。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 9",
@@ -400,35 +714,40 @@
           "description": "探訪鄂圖曼帝國核心，見證中國古代瓷器館、謁見室與穆罕默德聖遺物室。",
           "mapQuery": "托普卡帕宮 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "聖索菲亞清真寺",
           "description": "凝視基督教與伊斯蘭完美融合的巨大穹頂，見證東羅馬最高建築傑作。",
           "mapQuery": "聖索菲亞清真寺 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "藍色清真寺",
           "description": "走入全球唯一六根尖塔清真寺，被兩萬多片伊茲尼克藍白彩釉瓷磚包圍。",
           "mapQuery": "藍色清真寺 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "君士坦丁地下水庫",
           "description": "深入336根大理石柱支撐的貯水宮殿，聆聽水光倒影中的神秘悠揚樂聲。",
           "mapQuery": "君士坦丁地下水庫 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "埃及香料市集",
           "description": "闖入色彩繽紛的百年舊市集，尋訪土耳其乳香、肉桂與各式神秘中東香料。",
           "mapQuery": "埃及香料市集 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -439,7 +758,40 @@
       "eat": "宮廷風格米其林推薦餐廳料理、傳統開心果層酥甜點（Baklava）。",
       "tips": "地下水庫內部燈光較暗且濕滑；香料市集人潮擁擠，包包建議往前背以防扒手。",
       "meals": "午：宮廷風米其林推薦料理 / 晚：中式合菜7菜1湯含水果",
-      "lodging": "LIONEL HOTEL ISTANBUL"
+      "lodging": "LIONEL HOTEL ISTANBUL",
+      "todos": [],
+      "flights": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "宮廷風格米其林推薦餐廳料理",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "傳統開心果層酥甜點（Baklava）。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "經典現磨 Mehmet Efendi 土耳其咖啡粉",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "天然中東綜合香料組",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "道地頂級番紅花乾。",
+          "image": ""
+        }
+      ]
     },
     {
       "day": "Day 10-11",
@@ -459,28 +811,32 @@
           "description": "拜訪耗資14噸黃金建造的皇宮，仰望重達4.5噸、擁有750個燈泡的水晶吊燈。",
           "mapQuery": "多瑪巴切宮 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "博斯普魯斯遊船",
           "description": "搭乘專屬遊船蜿蜒航行，一眼看盡左岸歐洲、右岸亞洲的宮殿別墅群。",
           "mapQuery": "博斯普魯斯遊船 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "喀帕爾大市集",
           "description": "迷失在擁有四千多家鋪面的全世界最大有頂迷宮，享受現地殺價尋寶樂趣。",
           "mapQuery": "喀帕爾大市集 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         },
         {
           "name": "告別土耳其",
           "description": "晚餐後驅車前往伊斯坦堡國際機場，帶著滿滿的星月傳奇記憶登機返台。",
           "mapQuery": "告別土耳其 土耳其",
           "image": "",
-          "note": ""
+          "note": "",
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -491,7 +847,44 @@
       "eat": "網紅人氣美式料理、馬爾馬拉海鮮鮮魚風味餐、機上精緻早午餐。",
       "tips": "大市集開價通常偏高，對半砍價再往上添是基本心法；今日市區行程結束後直奔機場。",
       "meals": "午：網紅美式餐廳 / 晚：馬爾馬拉鮮魚餐 / 18溫暖的家",
-      "lodging": "夜宿機上 ｜ 10"
+      "lodging": "夜宿機上 ｜ 10",
+      "todos": [],
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": [
+        {
+          "tag": "eat",
+          "text": "網紅人氣美式料理",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "馬爾馬拉海鮮鮮魚風味餐",
+          "image": ""
+        },
+        {
+          "tag": "eat",
+          "text": "機上精緻早午餐。",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "手工細膩彩釉陶瓷隔熱墊",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "海泡石手工雕刻煙斗",
+          "image": ""
+        },
+        {
+          "tag": "buy",
+          "text": "鄂圖曼復古彩色琉璃吊燈。",
+          "image": ""
+        }
+      ]
     }
   ]
 }

@@ -107,7 +107,7 @@
         }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden antialiased select-none-text">
+<body class="min-h-screen h-[100dvh] flex overflow-hidden antialiased select-none-text">
 
     <!-- 移動端側邊欄遮罩 (Backdrop) -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-moss-900/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
@@ -231,7 +231,7 @@
         <input id="file-input-fallback" type="file" accept=".json,application/json" class="hidden">
 
         <!-- 滾動內容面板 (Scroll Container) -->
-        <div class="flex-1 overflow-y-auto p-4 md:p-8 no-scrollbar">
+        <div class="flex-1 overflow-y-auto p-4 pb-28 md:p-8 md:pb-12 no-scrollbar">
             <div class="max-w-5xl mx-auto space-y-6">
                 <!-- ═══════════════════════════════════════════════════ -->
                 <!-- 🅱️ 每日行程編輯面板 (Panel: Itinerary - 預設顯示)    -->
@@ -272,95 +272,91 @@
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-calendar-check text-xl text-moss-400"></i>
                                 <h3 class="text-base md:text-lg">當日核心資訊</h3>
-                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、完整日期、當日標題、天氣、路線地圖與封面大圖">
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、日期、標題、天氣、路線地圖與封面大圖">
                                     <i class="ph ph-info text-base"></i>
                                 </span>
                             </div>
                             <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
 
-        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">天數代號 (day)</label>
-                                <input type="text" data-day-field="day" placeholder="Day 1" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日完整日期 (fullDate)</label>
-                                <div class="flex gap-2">
-                                    <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="2026/10/8 (四)" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
-                                    <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none">
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">天數代號</label>
+                                    <input type="text" data-day-field="day" placeholder="Day 1" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                                 </div>
-                            </div>
 
-                            <div class="md:col-span-3">
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題與核心亮點 (title)</label>
-                                <input type="text" data-day-field="title" placeholder="啟程星月國度 ｜ 漫步番紅花城" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
-                            </div>
-
-                            <!-- 天氣圖示、氣溫與穿搭建議 -->
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">天氣圖示</label>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-9 h-9 rounded-xl bg-moss-100 flex items-center justify-center text-moss-500 text-lg shrink-0 border border-moss-200">
-                                        <i id="preview-weather-icon" class="ph ph-sun"></i>
-                                    </div>
-                                    <select id="select-weather-icon" data-day-field="weather.icon" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                                        <option value="ph-sun">晴天</option>
-                                        <option value="ph-cloud-sun">晴時多雲</option>
-                                        <option value="ph-cloud">多雲</option>
-                                        <option value="ph-cloud-rain">降雨</option>
-                                        <option value="ph-cloud-snow">降雪</option>
-                                        <option value="ph-cloud-fog">起霧</option>
-                                        <option value="ph-lightning">雷雨</option>
-                                        <option value="ph-wind">強風</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">氣溫範圍 (weather.temp)</label>
-                                <input type="text" data-day-field="weather.temp" placeholder="10-18°C" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
-                            </div>
-
-                            <!-- 穿搭建議 (移入核心資訊) -->
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">穿搭建議 (outfit)</label>
-                                <input type="text" data-day-field="outfit" placeholder="女性需戴頭巾、防風連帽外套" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                            </div>
-
-                            <!-- 路線折疊圖網址 (換行獨立一列) -->
-                            <div class="md:col-span-3">
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">路線地圖圖片網址 (mapImage)</label>
-                                <div class="flex gap-2">
-                                    <input type="text" data-day-field="mapImage" placeholder="https://..." class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                                    <div id="preview-day-map" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                                        <span class="text-[10px] text-moss-400">無圖</span>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日日期</label>
+                                    <div class="flex gap-2">
+                                        <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="2026/10/8 (四)" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                        <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none shrink-0">
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- 當日封面照片 -->
-                            <div class="md:col-span-3">
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日 Hero 大圖網址 (image)</label>
-                                <div class="flex gap-3">
-                                    <input type="text" data-day-field="image" placeholder="https://..." class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                                    <div id="preview-day-image" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                                        <span class="text-[10px] text-moss-400">無圖</span>
+                                <div class="md:col-span-3">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題</label>
+                                    <input type="text" data-day-field="title" placeholder="啟程星月國度 ｜ 漫步番紅花城" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
+                                </div>
+
+                                <!-- 天氣與氣溫組合 (佔 1 欄) -->
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">天氣與氣溫</label>
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-9 h-9 rounded-xl bg-moss-100 flex items-center justify-center text-moss-500 text-lg shrink-0 border border-moss-200">
+                                            <i id="preview-weather-icon" class="ph ph-sun"></i>
+                                        </div>
+                                        <select id="select-weather-icon" data-day-field="weather.icon" class="w-24 sm:w-28 h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none shrink-0">
+                                            <option value="ph-sun">晴天</option>
+                                            <option value="ph-cloud-sun">晴時多雲</option>
+                                            <option value="ph-cloud">多雲</option>
+                                            <option value="ph-cloud-rain">降雨</option>
+                                            <option value="ph-cloud-snow">降雪</option>
+                                            <option value="ph-cloud-fog">起霧</option>
+                                            <option value="ph-lightning">雷雨</option>
+                                            <option value="ph-wind">強風</option>
+                                        </select>
+                                        <input type="text" data-day-field="weather.temp" placeholder="10-18°C" class="flex-1 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                    </div>
+                                </div>
+
+                                <!-- 穿搭建議 (跨 2 欄) -->
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">穿搭建議</label>
+                                    <input type="text" data-day-field="outfit" placeholder="女性需戴頭巾、防風連帽外套" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                </div>
+
+                                <!-- 路線地圖網址 -->
+                                <div class="md:col-span-3">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">路線地圖圖片網址</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" data-day-field="mapImage" placeholder="https://..." class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                        <div id="preview-day-map" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                            <span class="text-[10px] text-moss-400">無圖</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 當日封面照片 -->
+                                <div class="md:col-span-3">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日封面大圖網址</label>
+                                    <div class="flex gap-3">
+                                        <input type="text" data-day-field="image" placeholder="https://..." class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                        <div id="preview-day-image" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                            <span class="text-[10px] text-moss-400">無圖</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </details>
 
-                    <!-- 當日專屬待辦 (Day-level Todos) -->
+                    <!-- 當日專屬待辦 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-check-square-offset text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">當日待辦任務清單 (Day Todos)</h3>
+                                <h3 class="text-base md:text-lg">當日待辦任務</h3>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button id="btn-add-day-todo" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增待辦">
@@ -376,12 +372,12 @@
                         </div>
                     </details>
 
-                    <!-- 航班資訊 (Flights) -->
+                    <!-- 航班資訊 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-airplane-tilt text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">航班資訊 (Flights)</h3>
+                                <h3 class="text-base md:text-lg">航班資訊</h3>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button id="btn-add-flight" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增航班">
@@ -397,12 +393,12 @@
                         </div>
                     </details>
 
-                    <!-- 景點列表 (Spots) -->
+                    <!-- 景點列表 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-map-pin text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">景點與走訪清單 (Spots)</h3>
+                                <h3 class="text-base md:text-lg">景點清單</h3>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button id="btn-add-spot" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all" title="新增景點卡片">
@@ -418,12 +414,12 @@
                         </div>
                     </details>
 
-                    <!-- 當日特別提醒 (Special Notes) -->
+                    <!-- 當日特別提醒 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-warning-circle text-xl text-amber-accent"></i>
-                                <h3 class="text-base md:text-lg">當日特別提醒 (Special Notes)</h3>
+                                <h3 class="text-base md:text-lg">特別提醒</h3>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button id="btn-add-special-note" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增提醒">
@@ -439,12 +435,12 @@
                         </div>
                     </details>
 
-                    <!-- 旅遊備註與彩蛋資料 (Travel Notes & Easter Eggs) -->
+                    <!-- 旅遊備註與彩蛋資料 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-notebook text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">生活筆記與彩蛋 (Notes & Easter Eggs)</h3>
+                                <h3 class="text-base md:text-lg">生活筆記與彩蛋</h3>
                                 <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定美食、土產、體驗彩蛋標籤，以及餐飲與住宿安排">
                                     <i class="ph ph-info text-base"></i>
                                 </span>
@@ -458,7 +454,7 @@
                         </summary>
 
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
-                            <!-- 彩蛋動態清單 (標籤選單：美食/土產/體驗 + 文字說明 + 圖片連結) -->
+                            <!-- 彩蛋動態清單 -->
                             <div class="space-y-2">
                                 <label class="block text-xs font-bold text-moss-500">彩蛋精選項目 (可選標籤：🍽️ 美食、🛍️ 土產、✨ 體驗)</label>
                                 <div id="easter-eggs-container" class="space-y-2.5">
@@ -469,28 +465,28 @@
                             <!-- 當日餐飲與住宿 -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-moss-100">
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日餐飲安排 (meals)</label>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">餐飲安排</label>
                                     <textarea data-day-field="meals" rows="2" placeholder="午：宮廷風米其林推薦 / 晚：鮮魚風味餐" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">住宿飯店資訊 (lodging)</label>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">住宿安排</label>
                                     <textarea data-day-field="lodging" rows="2" placeholder="LIONEL HOTEL ISTANBUL" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
                                 </div>
                             </div>
                         </div>
                     </details>
 
-                    <!-- 當日貼心叮嚀 (Tips) - 移至最後 -->
+                    <!-- 當日貼心叮嚀 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-lightbulb text-xl text-amber-accent"></i>
-                                <h3 class="text-base md:text-lg">貼心小撇步與叮嚀 (Tips)</h3>
+                                <h3 class="text-base md:text-lg">貼心叮嚀</h3>
                             </div>
                             <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">貼心叮嚀內容 (tips)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">貼心叮嚀</label>
                             <textarea data-day-field="tips" rows="3" placeholder="內部燈光較暗且濕滑；隨身包包往前背、注意集合時間..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed"></textarea>
                         </div>
                     </details>
@@ -555,29 +551,29 @@
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">預估團費金額 (tourFee)</label>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">預估團費</label>
                                     <input type="number" data-setting="expenses.tourFee" placeholder="100000" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">主要幣別代碼 (currency)</label>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">幣別符號</label>
                                     <input type="text" data-setting="expenses.currency" placeholder="TW$" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">團費備註 (note)</label>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">費用備註</label>
                                     <input type="text" data-setting="expenses.note" placeholder="含早鳥折扣 $5,900" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                 </div>
 
                                 <div class="md:col-span-3 pt-2 border-t border-moss-100/70 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
-                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">外部說明標題 (info.title)</label>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">說明標題</label>
                                         <input type="text" data-setting="info.title" placeholder="說明 / 行程總表" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">按鈕顯示文字 (info.text)</label>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">說明文字</label>
                                         <input type="text" data-setting="info.text" placeholder="行健旅遊官網" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">連結超連結網址 (info.link)</label>
+                                        <label class="block text-xs font-bold text-moss-500 mb-1.5">外部連結網址</label>
                                         <input type="text" data-setting="info.link" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                     </div>
                                 </div>
@@ -687,18 +683,18 @@
                     <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">網頁瀏覽器分頁標題 (pageTitle)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">網頁分頁標題</label>
                             <input type="text" data-setting="pageTitle" placeholder="土耳其傳奇 11 日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁主視覺大標題 (heroTitle)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">行程大標題</label>
                             <input type="text" data-setting="heroTitle" placeholder="星月傳奇．土耳其11日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                         </div>
 
                         <!-- 日期文字與連動日期選擇器 (響應式防破版排版) -->
                         <div class="md:col-span-2 space-y-2">
-                            <label class="block text-xs font-bold text-moss-500">行程日期文字 (dateText)</label>
+                            <label class="block text-xs font-bold text-moss-500">行程日期</label>
                             <input id="input-date-text" type="text" data-setting="dateText" placeholder="2026/10/8(四) ~ 2026/10/18(日)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono min-w-0">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-moss-50 p-2.5 rounded-xl border border-moss-200 text-xs">
                                 <div class="flex items-center gap-2 min-w-0">
@@ -714,13 +710,13 @@
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題 / 行程摘要 (subtitle)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題</label>
                             <input type="text" data-setting="subtitle" placeholder="跟團-行健 · 11 天 · 2026 秋季" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                         </div>
 
                         <!-- 封面 Hero 圖片網址與即時縮圖 -->
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁主視覺背景圖片網址 (heroImage)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁封面大圖網址</label>
                             <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                                 <textarea data-setting="heroImage" rows="2" placeholder="https://images.unsplash.com/..." class="flex-1 p-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none resize-none min-w-0"></textarea>
                                 <div id="preview-hero-image" class="w-full sm:w-36 h-20 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
@@ -730,56 +726,90 @@
                         </div>
                     </div>
 
-                    <!-- 前台首頁開放瀏覽頁籤 (visibleTabs) -->
+                    <!-- 前台首頁開放瀏覽頁籤 -->
                     <div class="pt-4 border-t border-moss-100">
-                        <label class="block text-xs font-bold text-moss-500 mb-2">前台首頁開放瀏覽頁籤 (visibleTabs)</label>
+                        <label class="block text-xs font-bold text-moss-500 mb-2">前台顯示頁籤</label>
                         <div class="flex flex-wrap gap-4 text-xs font-bold text-moss-500">
                             <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="overview" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
-                                <span>總覽 (overview)</span>
+                                <span>總覽</span>
                             </label>
                             <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="itinerary" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
-                                <span>每日行程 (itinerary)</span>
+                                <span>每日行程</span>
                             </label>
                             <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="expenses" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
-                                <span>經費預估 (expenses)</span>
+                                <span>經費預估</span>
                             </label>
                             <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="todo" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
-                                <span>待辦清單 (todo)</span>
+                                <span>待辦清單</span>
                             </label>
                         </div>
                     </div>
                     </div>
                 </details>
 
-                <!-- 卡片 2: 總覽 Google My Maps 嵌入設定 - 預設收合 -->
-                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
+                <!-- 卡片 2: 總覽地圖與城市設定 (Overview Map & Cities) -->
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
                             <i class="ph ph-map-trifold text-xl text-moss-400"></i>
-                            <h3 class="text-base md:text-lg">總覽地圖設定 (Google My Maps)</h3>
-                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="嵌入連結設定、iframe 乾淨網址萃取">
+                            <h3 class="text-base md:text-lg">總覽地圖與城市設定</h3>
+                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="嵌入地圖設定、備用圖片、導航地圖引擎，以及總覽橫滑城市卡片清單">
                                 <i class="ph ph-info text-base"></i>
                             </span>
                         </div>
                         <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                     </summary>
 
-                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">
-                                Google My Maps 嵌入網址 (iframeUrl) 
-                                <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
-                            </label>
-                            <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">
+                                    Google 地圖嵌入網址 
+                                    <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
+                                </label>
+                                <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">備用靜態地圖網址</label>
+                                <input type="text" data-setting="overviewMap.image" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">導航地圖引擎</label>
+                                <select data-setting="mapEngine" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                    <option value="google">Google Map (國際通用)</option>
+                                    <option value="amap">高德地圖 (中國大陸地區)</option>
+                                    <option value="baidu">百度地圖 (中國大陸地區)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 總覽城市亮點卡片管理 -->
+                        <div class="pt-4 border-t border-moss-100 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="ph ph-buildings text-base text-moss-400"></i>
+                                    <span class="text-xs font-bold text-moss-500">總覽城市卡片清單</span>
+                                    <span class="text-[11px] text-moss-400/80">前台總覽頁籤所展示的橫滑城市視覺卡片</span>
+                                </div>
+                                <button type="button" id="btn-add-overview-city" class="px-2.5 py-1.5 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 text-xs font-bold flex items-center gap-1 transition-all shadow-sm">
+                                    <i class="ph ph-plus font-bold"></i> 新增城市卡片
+                                </button>
+                            </div>
+
+                            <div id="overview-cities-container" class="space-y-3">
+                                <!-- 城市項目卡片由 JS 動態渲染 -->
+                            </div>
                         </div>
                     </div>
                 </details>
 
-                <!-- 卡片 3: 主題色彩設定 (Theme & Colors) -->
+                <!-- 卡片 3: 主題色彩設定 -->
                 <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
@@ -797,47 +827,52 @@
 
                     <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
 
-                    <!-- 預設配色方塊 -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="theme-presets-container">
+                    <!-- 預設配色方塊 (彈性網格) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5" id="theme-presets-container">
                         <!-- 預設按鈕由 JS 產生 -->
                     </div>
 
-                    <!-- 自訂調色盤 -->
+                    <!-- 自訂調色盤 (5 色完整架構) -->
                     <div class="pt-3 border-t border-moss-100 space-y-3">
                         <div class="text-xs font-bold text-moss-500 flex items-center justify-between">
                             <span>色彩細部微調 (Hex Code)</span>
-                            <div class="flex gap-1.5">
-                                <button type="button" id="btn-save-fav1" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 1</button>
-                                <button type="button" id="btn-save-fav2" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 2</button>
-                                <button type="button" id="btn-save-fav3" class="text-[11px] px-2 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors">存入專屬色 3</button>
-                            </div>
+                            <button type="button" id="btn-save-fav" class="text-[11px] px-2.5 py-1 rounded-lg border border-moss-200 hover:bg-moss-100 transition-colors font-bold flex items-center gap-1 shadow-2xs">
+                                <i class="ph ph-star text-amber-500"></i> 存入專屬色
+                            </button>
                         </div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5 text-xs">
                             <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
-                                <label class="block font-bold text-moss-500">主色調 (Primary)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="color" id="color-picker-primary" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                <label class="block font-bold text-moss-500">主色 (400)</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="color-picker-primary" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent shrink-0">
                                     <input type="text" id="color-hex-primary" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
                                 </div>
                             </div>
                             <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
-                                <label class="block font-bold text-moss-500">深色底 (Deep)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="color" id="color-picker-deep" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                <label class="block font-bold text-moss-500">深色 (500)</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="color-picker-deep" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent shrink-0">
                                     <input type="text" id="color-hex-deep" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
                                 </div>
                             </div>
                             <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
-                                <label class="block font-bold text-moss-500">點綴色 (Accent)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="color" id="color-picker-accent" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                <label class="block font-bold text-moss-500">點綴 (300)</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="color-picker-accent" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent shrink-0">
                                     <input type="text" id="color-hex-accent" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
                                 </div>
                             </div>
                             <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
-                                <label class="block font-bold text-moss-500">背景底 (Background)</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="color" id="color-picker-bg" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent">
+                                <label class="block font-bold text-moss-500">邊框 (200)</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="color-picker-line" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent shrink-0">
+                                    <input type="text" id="color-hex-line" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                <label class="block font-bold text-moss-500">底色 (100)</label>
+                                <div class="flex items-center gap-1.5">
+                                    <input type="color" id="color-picker-bg" class="w-8 h-8 rounded-lg cursor-pointer border-0 p-0 bg-transparent shrink-0">
                                     <input type="text" id="color-hex-bg" class="w-full h-8 px-2 rounded-lg border border-moss-200 bg-white font-mono text-xs uppercase" maxlength="7">
                                 </div>
                             </div>
@@ -851,7 +886,7 @@
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
                             <i class="ph ph-text-aa text-xl text-moss-400"></i>
-                            <h3 class="text-base md:text-lg">排版與字體風格 (Typography)</h3>
+                            <h3 class="text-base md:text-lg">排版與字體風格</h3>
                             <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="選擇整體字體風格，並分別微調大標、區塊標、內文、輔助文字的電腦與手機尺寸">
                                 <i class="ph ph-info text-base"></i>
                             </span>
@@ -871,18 +906,18 @@
                         </select>
                     </div>
 
-                    <!-- 4 級字體大小微調 (拆三列：標題 - 電腦 - 手機) -->
+                    <!-- 4 級字體大小微調 -->
                     <div class="pt-3 border-t border-moss-100 space-y-2.5">
-                        <label class="block text-xs font-bold text-moss-500">各級字體尺寸 (對照三列：標題 - 電腦 - 手機 px)</label>
+                        <label class="block text-xs font-bold text-moss-500">字體尺寸 (電腦 / 手機 px)</label>
                         <div class="overflow-x-auto rounded-xl border border-moss-200 bg-moss-50/50 p-3 no-scrollbar">
                             <div class="min-w-[440px] space-y-2.5 text-xs">
                                 <!-- 第 1 列：標題 -->
                                 <div class="grid grid-cols-5 gap-2 items-center text-moss-500 font-bold text-[11px] pb-2 border-b border-moss-200/80 text-center">
                                     <div class="text-left text-moss-400 font-bold">層級名稱</div>
-                                    <div class="p-1 rounded bg-moss-200/60 truncate">L1 大標 (Hero)</div>
-                                    <div class="p-1 rounded bg-moss-200/60 truncate">L2 區塊 (Heading)</div>
-                                    <div class="p-1 rounded bg-moss-200/60 truncate">L3 內文 (Body)</div>
-                                    <div class="p-1 rounded bg-moss-200/60 truncate">L4 輔助 (Small)</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L1 大標</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L2 區塊</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L3 內文</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L4 輔助</div>
                                 </div>
                                 <!-- 第 2 列：電腦尺寸 -->
                                 <div class="grid grid-cols-5 gap-2 items-center">
@@ -959,23 +994,26 @@
                 heroImage: "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
                 mapEngine: "google",
                 visibleTabs: ["itinerary", "overview", "todo"],
-                theme: "forest",
+                theme: "moss",
                 customTheme: {
-                    primary: "#315a4c",
-                    deep: "#203d34",
-                    accent: "#cf795f",
-                    bg: "#eef2ec"
+                    primary: "#6F7F5A",
+                    deep: "#3C4733",
+                    accent: "#A9B482",
+                    line: "#D8D2A7",
+                    bg: "#F4EFD9"
                 },
                 themeColors: {
-                    primary: "#315a4c",
-                    deep: "#203d34",
-                    accent: "#cf795f",
-                    bg: "#eef2ec"
+                    primary: "#6F7F5A",
+                    deep: "#3C4733",
+                    accent: "#A9B482",
+                    line: "#D8D2A7",
+                    bg: "#F4EFD9"
                 },
                 overviewMap: {
                     image: "",
                     iframeUrl: ""
                 },
+                cities: [],
                 expenses: {
                     tourFee: 0,
                     currency: "TW$",
@@ -1023,10 +1061,11 @@
         };
 
         const PRESET_THEMES = {
-            forest: { id: 'forest', name: '森林松綠', primary: '#315a4c', deep: '#203d34', accent: '#cf795f', bg: '#eef2ec' },
-            ocean:  { id: 'ocean',  name: '蔚藍海島', primary: '#1f648d', deep: '#133d57', accent: '#e6823b', bg: '#edf4f8' },
-            sand:   { id: 'sand',   name: '大地暖沙', primary: '#7d5a3c', deep: '#4d3723', accent: '#d97706', bg: '#f7f4ee' },
-            kyoto:  { id: 'kyoto',  name: '京都緋紅', primary: '#8c2d2d', deep: '#571a1a', accent: '#52744d', bg: '#f9f3f3' }
+            moss:        { id: 'moss',        name: '古籍苔綠', primary: '#6F7F5A', deep: '#3C4733', accent: '#A9B482', line: '#D8D2A7', bg: '#F4EFD9' },
+            mountain:    { id: 'mountain',    name: '遠山黛色', primary: '#4A6572', deep: '#2D3E50', accent: '#6B8E9E', line: '#9BB5C2', bg: '#F0F4F7' },
+            sandalwood:  { id: 'sandalwood',  name: '檀木沉香', primary: '#795548', deep: '#5D4037', accent: '#A1887F', line: '#D7CCC8', bg: '#F5F0E6' },
+            cinnabar:    { id: 'cinnabar',    name: '朱砂墨韻', primary: '#A62424', deep: '#5C3D3D', accent: '#8C5A5A', line: '#D9B8B8', bg: '#F5EBEB' },
+            autumn:      { id: 'autumn',      name: '自然秋金', primary: '#AF7E22', deep: '#212410', accent: '#D9AF29', line: '#725B15', bg: '#FAF6EA' }
         };
 
         // 狀態管理物件
@@ -1083,6 +1122,7 @@
             if (!Array.isArray(appData.settings.expenses.records)) appData.settings.expenses.records = [];
             if (!appData.settings.info) appData.settings.info = Object.assign({}, DEFAULT_JSON.settings.info);
             if (!appData.settings.overviewMap) appData.settings.overviewMap = Object.assign({}, DEFAULT_JSON.settings.overviewMap);
+            if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
             if (!appData.settings.customTheme) appData.settings.customTheme = Object.assign({}, DEFAULT_JSON.settings.customTheme);
             if (!appData.settings.typography) appData.settings.typography = Object.assign({}, DEFAULT_JSON.settings.typography);
             const defaultTypo = DEFAULT_JSON.settings.typography;
@@ -1409,6 +1449,52 @@
 
             // 配色同步
             syncThemeInputs();
+
+            // 總覽城市卡片渲染
+            renderOverviewCitiesSetting();
+        }
+
+        function renderOverviewCitiesSetting() {
+            const container = document.getElementById('overview-cities-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const cities = appData.settings.cities || [];
+            if (!cities.length) {
+                container.innerHTML = `<div class="p-3 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">目前無總覽城市卡片，點擊上方「新增城市卡片」建立</div>`;
+                return;
+            }
+
+            cities.forEach((city, idx) => {
+                const item = document.createElement('div');
+                item.className = 'p-3 rounded-xl border border-moss-200 bg-moss-50/60 space-y-2.5';
+                const hasImg = city.image && /^https?:\/\//i.test(city.image.trim());
+                item.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                            <input type="text" placeholder="城市名稱" value="${escapeHtml(city.name || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="name">
+                            <input type="text" placeholder="天數標籤" value="${escapeHtml(city.tag || '')}" class="w-24 sm:w-28 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none shrink-0" data-action="edit-city-field" data-city-idx="${idx}" data-field="tag">
+                            <button type="button" class="sm:hidden w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
+                                <i class="ph ph-trash text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2 flex-1 min-w-0 pl-8 sm:pl-0">
+                            <input type="text" placeholder="城市簡介特色" value="${escapeHtml(city.desc || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="desc">
+                            <button type="button" class="hidden sm:flex w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
+                                <i class="ph ph-trash text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 pl-8">
+                        <input type="text" placeholder="代表照片網址 (https://...)" value="${escapeHtml(city.image || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="image">
+                        <div class="w-12 h-8 rounded-lg bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                            ${hasImg ? `<img src="${escapeHtml(city.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[9px] text-red-400\\'>錯誤</span>'">` : `<span class="text-[9px] text-moss-400">無圖</span>`}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
         }
 
         function updateHeroImagePreview(url) {
@@ -1541,8 +1627,8 @@
                 item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
                 item.innerHTML = `
                     <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                    <input type="text" placeholder="待辦任務 (例如：待訂飯店)" value="${escapeHtml(todo.task || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold" data-action="edit-day-todo-task" data-idx="${idx}">
-                    <input type="text" placeholder="補充備註 (例如：確認機場接送)" value="${escapeHtml(todo.note || '')}" class="w-1/3 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none" data-action="edit-day-todo-note" data-idx="${idx}">
+                    <input type="text" placeholder="待辦任務 (例如：待訂飯店)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold" data-action="edit-day-todo-task" data-idx="${idx}">
+                    <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none" data-action="edit-day-todo-note" data-idx="${idx}">
                     <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-day-todo" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
                     </button>
@@ -1565,7 +1651,7 @@
                 item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
                 item.innerHTML = `
                     <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                    <input type="text" placeholder="航班描述 (例如：土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10)" value="${escapeHtml(flight || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-flight" data-idx="${idx}">
+                    <input type="text" placeholder="航班描述 (例如：土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10)" value="${escapeHtml(flight || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-flight" data-idx="${idx}">
                     <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-flight" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
                     </button>
@@ -1588,7 +1674,7 @@
                 item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
                 item.innerHTML = `
                     <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                    <input type="text" placeholder="提醒內容" value="${escapeHtml(note || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-special-note" data-idx="${idx}">
+                    <input type="text" placeholder="提醒內容" value="${escapeHtml(note || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-special-note" data-idx="${idx}">
                     <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-special-note" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
                     </button>
@@ -1632,19 +1718,19 @@
                     <!-- 景點表單 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                         <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點名稱 (name)</label>
-                            <input type="text" placeholder="例如：市長官邸" value="${escapeHtml(spot.name || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點名稱</label>
+                            <input type="text" placeholder="例如：市長官邸" value="${escapeHtml(spot.name || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字 (mapQuery)</label>
-                            <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字</label>
+                            <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點照片網址 (image)</label>
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點照片網址</label>
                             <div class="flex gap-2">
-                                <input type="text" placeholder="https://..." value="${escapeHtml(spot.image || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="image" data-spot-idx="${spotIdx}">
+                                <input type="text" placeholder="https://..." value="${escapeHtml(spot.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="image" data-spot-idx="${spotIdx}">
                                 <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
                                     ${spot.image ? `<img src="${escapeHtml(spot.image)}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[9px] text-moss-400">無縮圖</span>`}
                                 </div>
@@ -1652,19 +1738,19 @@
                         </div>
 
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹描述 (description)</label>
-                            <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
+                            <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹</label>
+                            <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
                         </div>
 
                         <!-- 景點專屬備註 (彈窗內容) -->
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-moss-500 mb-1 flex items-center gap-1.5">
-                                <span>景點備註詳細資訊 (note)</span>
+                                <span>景點詳細備註</span>
                                 <span class="text-moss-400 hover:text-amber-accent cursor-pointer transition-colors" title="前台景點卡片上的 (i) 按鈕展開的完整彈窗內容">
                                     <i class="ph ph-info text-sm text-amber-accent"></i>
                                 </span>
                             </label>
-                            <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
+                            <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
                         </div>
                     </div>
 
@@ -1672,7 +1758,7 @@
                     <div class="pt-3 border-t border-moss-200/80 space-y-2">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-bold text-moss-500 flex items-center gap-1.5">
-                                <i class="ph ph-check-square"></i> 景點專屬任務待辦 (Spot Todos)
+                                <i class="ph ph-check-square"></i> 景點專屬任務待辦
                             </span>
                             <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-moss-200/60 hover:bg-moss-300 text-moss-500 font-bold transition-colors" data-action="add-spot-todo" data-spot-idx="${spotIdx}">
                                 + 新增任務
@@ -1682,9 +1768,9 @@
                         <div class="space-y-2">
                             ${(spot.todos || []).map((todo, tIdx) => `
                                 <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-moss-200">
-                                    <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center">T${tIdx + 1}</span>
-                                    <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
-                                    <input type="text" placeholder="備註 (如：官網代訂)" value="${escapeHtml(todo.note || '')}" class="w-1/3 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                    <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center shrink-0">T${tIdx + 1}</span>
+                                    <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                    <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
                                     <button type="button" class="w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0" data-action="del-spot-todo" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}" title="刪除任務">
                                         <i class="ph ph-trash text-sm"></i>
                                     </button>
@@ -1724,7 +1810,7 @@
                             <option value="buy" ${egg.tag === 'buy' ? 'selected' : ''}>🛍️ 土產</option>
                             <option value="bonus" ${egg.tag === 'bonus' ? 'selected' : ''}>✨ 體驗</option>
                         </select>
-                        <input type="text" placeholder="名稱與特色描述 (例如：傳統鄂圖曼式建築 Güveç 陶甕風味餐)" value="${escapeHtml(egg.text || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
+                        <input type="text" placeholder="名稱與特色描述 (例如：傳統鄂圖曼式建築 Güveç 陶甕風味餐)" value="${escapeHtml(egg.text || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
                         <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-egg" data-idx="${idx}" title="刪除此項">
                             <i class="ph ph-trash text-base"></i>
                         </button>
@@ -1732,7 +1818,7 @@
 
                     <!-- 第 2 列：圖片網址 + 縮圖預覽 (向左縮進對齊輸入框) -->
                     <div class="flex items-center gap-2 pl-8">
-                        <input type="text" placeholder="圖片網址 (https://...)" value="${escapeHtml(egg.image || '')}" class="flex-1 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-image" data-idx="${idx}">
+                        <input type="text" placeholder="圖片網址 (https://...)" value="${escapeHtml(egg.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-image" data-idx="${idx}">
                         <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
                             ${egg.image && /^https?:\/\//i.test(egg.image.trim()) ? `<img src="${escapeHtml(egg.image.trim())}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[10px] text-moss-400">無圖</span>`}
                         </div>
@@ -1836,18 +1922,18 @@
                                 <option value="pay" ${rec.payment === 'pay' ? 'selected' : ''}>📱 行動支付</option>
                             </select>
                         </div>
-                        <div class="col-span-1 sm:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1">支出項目</label>
-                            <input type="text" placeholder="例如：地下水宮殿門票" value="${escapeHtml(rec.title || '')}" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="title" data-idx="${idx}">
-                        </div>
                         <div class="col-span-1 flex items-end gap-1.5">
                             <div class="flex-1 min-w-0">
                                 <label class="block text-xs font-bold text-moss-500 mb-1">金額 (${currency})</label>
-                                <input type="number" placeholder="0" value="${rec.amount ?? ''}" class="w-full h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="amount" data-idx="${idx}">
+                                <input type="number" placeholder="0" value="${rec.amount ?? ''}" class="w-full min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="amount" data-idx="${idx}">
                             </div>
                             <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-expense-record" data-idx="${idx}" title="刪除此筆">
                                 <i class="ph ph-trash text-base"></i>
                             </button>
+                        </div>
+                        <div class="col-span-2 sm:col-span-2">
+                            <label class="block text-xs font-bold text-moss-500 mb-1">支出項目</label>
+                            <input type="text" placeholder="例如：地下水宮殿門票" value="${escapeHtml(rec.title || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="title" data-idx="${idx}">
                         </div>
                     </div>
                 `;
@@ -1862,55 +1948,58 @@
             const container = document.getElementById('theme-presets-container');
             container.innerHTML = '';
 
-            // 預設風格
+            // 預設風格 (5 款風格，每款展現 5 色)
             Object.values(PRESET_THEMES).forEach(theme => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'theme-preset-btn p-3 rounded-2xl border border-moss-200 bg-white hover:border-moss-400 text-left transition-all space-y-2';
+                btn.className = 'theme-preset-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-moss-200 bg-white hover:border-moss-400 text-center transition-all gap-1.5 shadow-sm';
                 btn.dataset.themeId = theme.id;
                 btn.innerHTML = `
-                    <div class="flex items-center gap-1.5">
-                        <span class="w-4 h-4 rounded-full" style="background:${theme.primary}"></span>
-                        <span class="w-4 h-4 rounded-full" style="background:${theme.accent}"></span>
-                        <span class="w-4 h-4 rounded-full border border-gray-200" style="background:${theme.bg}"></span>
+                    <div class="flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.primary}" title="主色"></span>
+                        <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.deep}" title="深色"></span>
+                        <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.accent}" title="點綴"></span>
+                        <span class="w-3 h-3 rounded-full shrink-0 border border-gray-200" style="background:${theme.line}" title="邊框"></span>
+                        <span class="w-3 h-3 rounded-full shrink-0 border border-gray-200" style="background:${theme.bg}" title="底色"></span>
                     </div>
-                    <div class="text-xs font-bold text-moss-500">${theme.name}</div>
+                    <div class="text-[11px] sm:text-xs font-bold text-moss-500 whitespace-nowrap">${theme.name}</div>
                 `;
                 btn.onclick = () => applyPresetTheme(theme.id);
                 container.appendChild(btn);
             });
 
-            // 讀取 localStorage 專屬自訂色
-            [1, 2, 3].forEach(num => {
-                try {
-                    const saved = localStorage.getItem(`travel_fav_theme_${num}`);
-                    if (saved) {
-                        const theme = JSON.parse(saved);
-                        if (theme && theme.primary) {
-                            const btn = document.createElement('button');
-                            btn.type = 'button';
-                            btn.className = 'theme-preset-btn p-3 rounded-2xl border border-moss-300 bg-moss-50/80 hover:border-moss-400 text-left transition-all space-y-2';
-                            btn.innerHTML = `
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-4 h-4 rounded-full" style="background:${theme.primary}"></span>
-                                    <span class="w-4 h-4 rounded-full" style="background:${theme.accent}"></span>
-                                    <span class="w-4 h-4 rounded-full border border-gray-200" style="background:${theme.bg}"></span>
-                                </div>
-                                <div class="text-xs font-bold text-moss-500">🌟 專屬色 ${num}</div>
-                            `;
-                            btn.onclick = () => {
-                                appData.settings.theme = `fav_${num}`;
-                                appData.settings.customTheme = { ...theme };
-                                appData.settings.themeColors = { ...theme };
-                                syncThemeInputs();
-                                markDirty();
-                                showToast(`已套用專屬色 ${num}`);
-                            };
-                            container.appendChild(btn);
-                        }
+            // 讀取 localStorage 專屬自訂色 (單一專屬色)
+            try {
+                const saved = localStorage.getItem('travel_fav_theme') || localStorage.getItem('travel_fav_theme_1');
+                if (saved) {
+                    const theme = JSON.parse(saved);
+                    if (theme && theme.primary) {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'theme-preset-btn flex flex-col items-center justify-center p-2 rounded-2xl border border-moss-300 bg-moss-50/80 hover:border-moss-400 text-center transition-all gap-1.5 shadow-sm';
+                        btn.innerHTML = `
+                            <div class="flex items-center gap-1">
+                                <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.primary}"></span>
+                                <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.deep || '#3C4733'}"></span>
+                                <span class="w-3 h-3 rounded-full shrink-0 shadow-xs" style="background:${theme.accent}"></span>
+                                <span class="w-3 h-3 rounded-full shrink-0 border border-gray-200" style="background:${theme.line || '#D8D2A7'}"></span>
+                                <span class="w-3 h-3 rounded-full shrink-0 border border-gray-200" style="background:${theme.bg}"></span>
+                            </div>
+                            <div class="text-[11px] sm:text-xs font-bold text-moss-500 whitespace-nowrap">🌟 專屬色</div>
+                        `;
+                        btn.onclick = () => {
+                            appData.settings.theme = 'fav';
+                            appData.settings.customTheme = { ...theme };
+                            if (!appData.settings.customTheme.line) appData.settings.customTheme.line = '#D8D2A7';
+                            appData.settings.themeColors = { ...appData.settings.customTheme };
+                            syncThemeInputs();
+                            markDirty();
+                            showToast('已套用專屬色');
+                        };
+                        container.appendChild(btn);
                     }
-                } catch(e) {}
-            });
+                }
+            } catch(e) {}
         }
 
         function applyPresetTheme(themeId) {
@@ -1922,6 +2011,7 @@
                 primary: theme.primary,
                 deep: theme.deep,
                 accent: theme.accent,
+                line: theme.line,
                 bg: theme.bg
             };
             appData.settings.themeColors = { ...appData.settings.customTheme };
@@ -1933,25 +2023,33 @@
 
         function syncThemeInputs() {
             const s = appData.settings;
-            const colors = s.customTheme || s.themeColors || PRESET_THEMES.forest;
+            const colors = s.customTheme || s.themeColors || PRESET_THEMES.moss;
             
-            document.getElementById('color-picker-primary').value = colors.primary || '#315a4c';
-            document.getElementById('color-hex-primary').value = (colors.primary || '#315a4c').toUpperCase();
+            document.getElementById('color-picker-primary').value = colors.primary || '#6F7F5A';
+            document.getElementById('color-hex-primary').value = (colors.primary || '#6F7F5A').toUpperCase();
 
-            document.getElementById('color-picker-deep').value = colors.deep || '#203d34';
-            document.getElementById('color-hex-deep').value = (colors.deep || '#203d34').toUpperCase();
+            document.getElementById('color-picker-deep').value = colors.deep || '#3C4733';
+            document.getElementById('color-hex-deep').value = (colors.deep || '#3C4733').toUpperCase();
 
-            document.getElementById('color-picker-accent').value = colors.accent || '#cf795f';
-            document.getElementById('color-hex-accent').value = (colors.accent || '#cf795f').toUpperCase();
+            document.getElementById('color-picker-accent').value = colors.accent || '#A9B482';
+            document.getElementById('color-hex-accent').value = (colors.accent || '#A9B482').toUpperCase();
 
-            document.getElementById('color-picker-bg').value = colors.bg || '#eef2ec';
-            document.getElementById('color-hex-bg').value = (colors.bg || '#eef2ec').toUpperCase();
+            const lineVal = colors.line || '#D8D2A7';
+            const linePicker = document.getElementById('color-picker-line');
+            const lineHex = document.getElementById('color-hex-line');
+            if (linePicker) linePicker.value = lineVal;
+            if (lineHex) lineHex.value = lineVal.toUpperCase();
+
+            document.getElementById('color-picker-bg').value = colors.bg || '#F4EFD9';
+            document.getElementById('color-hex-bg').value = (colors.bg || '#F4EFD9').toUpperCase();
 
             let label = '自訂配色';
             if (PRESET_THEMES[s.theme]) {
                 label = PRESET_THEMES[s.theme].name;
-            } else if (s.theme && s.theme.startsWith('fav_')) {
-                label = `專屬色 ${s.theme.replace('fav_', '')}`;
+            } else if (s.theme === 'forest') {
+                label = '古籍苔綠';
+            } else if (s.theme && s.theme.startsWith('fav')) {
+                label = '🌟 專屬色';
             }
             document.getElementById('theme-status-tag').textContent = label;
         }
@@ -2318,10 +2416,48 @@
                     if (settingKey === 'heroImage') updateHeroImagePreview(val);
                     if (settingKey === 'dateText') syncDateHelpersFromText(val);
                     markDirty();
+                    return;
+                }
+
+                if (e.target.dataset.action === 'edit-city-field') {
+                    const idx = Number(e.target.dataset.cityIdx);
+                    const field = e.target.dataset.field;
+                    if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
+                    if (appData.settings.cities[idx]) {
+                        appData.settings.cities[idx][field] = e.target.value;
+                        if (field === 'image') {
+                            const previewBox = e.target.closest('.flex')?.querySelector('.w-12');
+                            if (previewBox) {
+                                previewBox.innerHTML = (e.target.value && /^https?:\/\//i.test(e.target.value.trim()))
+                                    ? `<img src="${escapeHtml(e.target.value.trim())}" class="w-full h-full object-cover" onerror="this.remove()">`
+                                    : `<span class="text-[9px] text-moss-400">無圖</span>`;
+                            }
+                        }
+                        markDirty();
+                    }
                 }
             };
             document.getElementById('panel-settings').addEventListener('input', handleSettingsChange);
             document.getElementById('panel-settings').addEventListener('change', handleSettingsChange);
+
+            // 總覽城市卡片新增與刪除點擊監聽
+            document.getElementById('panel-settings').addEventListener('click', (e) => {
+                const btn = e.target.closest('#btn-add-overview-city, [data-action="del-city"]');
+                if (!btn) return;
+                if (btn.id === 'btn-add-overview-city') {
+                    if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
+                    appData.settings.cities.push({ name: '', desc: '', tag: '', image: '' });
+                    renderOverviewCitiesSetting();
+                    markDirty();
+                } else if (btn.dataset.action === 'del-city') {
+                    const idx = Number(btn.dataset.cityIdx);
+                    if (Array.isArray(appData.settings.cities)) {
+                        appData.settings.cities.splice(idx, 1);
+                        renderOverviewCitiesSetting();
+                        markDirty();
+                    }
+                }
+            });
 
             // 可見頁籤勾選切換
             document.querySelectorAll('.tab-checkbox').forEach(cb => {
@@ -2673,8 +2809,8 @@
                 };
             }
 
-            // 自訂顏色輸入綁定
-            ['primary', 'deep', 'accent', 'bg'].forEach(cKey => {
+            // 自訂顏色輸入綁定 (5 階色票)
+            ['primary', 'deep', 'accent', 'line', 'bg'].forEach(cKey => {
                 const pPicker = document.getElementById(`color-picker-${cKey}`);
                 const pHex = document.getElementById(`color-hex-${cKey}`);
                 
@@ -2693,22 +2829,16 @@
                 };
             });
 
-            // 記憶專屬色
-            document.getElementById('btn-save-fav1').onclick = () => {
-                localStorage.setItem('travel_fav_theme_1', JSON.stringify(appData.settings.customTheme));
-                showToast('已存入專屬色 1！');
-                initThemeButtons();
-            };
-            document.getElementById('btn-save-fav2').onclick = () => {
-                localStorage.setItem('travel_fav_theme_2', JSON.stringify(appData.settings.customTheme));
-                showToast('已存入專屬色 2！');
-                initThemeButtons();
-            };
-            document.getElementById('btn-save-fav3').onclick = () => {
-                localStorage.setItem('travel_fav_theme_3', JSON.stringify(appData.settings.customTheme));
-                showToast('已存入專屬色 3！');
-                initThemeButtons();
-            };
+            // 記憶專屬色 (單一專屬色)
+            const btnSaveFav = document.getElementById('btn-save-fav');
+            if (btnSaveFav) {
+                btnSaveFav.onclick = () => {
+                    const themeToSave = appData.settings.customTheme || appData.settings.themeColors || PRESET_THEMES.moss;
+                    localStorage.setItem('travel_fav_theme', JSON.stringify(themeToSave));
+                    showToast('已存入專屬色！');
+                    initThemeButtons();
+                };
+            }
 
             // 原生 Confirm Dialog 事件
             document.getElementById('btn-confirm-cancel').onclick = () => {

@@ -12,18 +12,70 @@ const siteSettings = {
     "theme": "forest",
     "customTheme": {
         "primary": "#315a4c",
+        "deep": "#203d34",
         "accent": "#cf795f",
-        "bg": "#eef2ec",
-        "deep": "#203d34"
+        "line": "#d5ded3",
+        "bg": "#eef2ec"
     },
     "overviewMap": {
         "image": "",
         "iframeUrl": "https://www.google.com/maps/d/embed?mid=1AKPm6i_BLlMD3cy0YLVSWmuNVfNCdLY&ehbc=2E312F"
     },
+    "cities": [
+        {
+            "name": "番紅花城",
+            "desc": "世界遺產．鄂圖曼山城",
+            "tag": "Day 1-2",
+            "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "安卡拉",
+            "desc": "土耳其心臟．國父紀念館",
+            "tag": "Day 3",
+            "image": "https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "卡帕多奇亞",
+            "desc": "熱氣球．奇岩怪石仙境",
+            "tag": "Day 3-5",
+            "image": "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "孔亞",
+            "desc": "旋轉舞發源地．古驛站",
+            "tag": "Day 6",
+            "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "巴穆卡麗 (棉花堡)",
+            "desc": "純白溫泉石灰棚．希拉波利斯",
+            "tag": "Day 7",
+            "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "艾菲索斯",
+            "desc": "世界七大奇蹟．羅馬古城",
+            "tag": "Day 8",
+            "image": "https://images.unsplash.com/photo-1565011523534-747a8601f10a?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "庫薩達西",
+            "desc": "愛琴海渡假勝地．夕陽海港",
+            "tag": "Day 8-9",
+            "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop"
+        },
+        {
+            "name": "伊斯坦堡",
+            "desc": "橫跨歐亞．藍色清真寺海峽遊船",
+            "tag": "Day 9-11",
+            "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop"
+        }
+    ],
     "themeColors": {
         "primary": "#315a4c",
         "deep": "#203d34",
         "accent": "#cf795f",
+        "line": "#d5ded3",
         "bg": "#eef2ec"
     },
     "typography": {
