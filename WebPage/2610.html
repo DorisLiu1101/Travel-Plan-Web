@@ -341,22 +341,36 @@
             const targetTab = document.getElementById(tabId);
             if(targetTab) targetTab.classList.remove('hidden');
             
-            // PC 樣式切換
+            // PC 樣式切換 (保留 hidden 狀態)
             document.querySelectorAll('.main-tab-btn-pc').forEach(btn => {
-                btn.className = "main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0";
+                const isActive = (btn.id === 'btn-pc-' + tabId);
+                const isHidden = btn.classList.contains('hidden');
+                btn.className = isActive
+                    ? "main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active"
+                    : "main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0";
+                if (isHidden) btn.classList.add('hidden');
             });
-            const activePc = document.getElementById('btn-pc-' + tabId);
-            if(activePc) {
-                activePc.className = "main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active";
-            }
 
-            // 手機底部樣式切換 (加強未選與點選的對比度，縮小文字間隔)
+            // 手機底部樣式切換 (保留 hidden 狀態，加強未選與點選的對比度，縮小文字間隔)
             document.querySelectorAll('.main-tab-btn-mob').forEach(btn => {
-                btn.className = "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200";
+                const isActive = (btn.id === 'btn-mob-' + tabId);
+                const isHidden = btn.classList.contains('hidden');
+                btn.className = isActive
+                    ? "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs"
+                    : "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200";
+                if (isHidden) btn.classList.add('hidden');
             });
-            const activeMob = document.getElementById('btn-mob-' + tabId);
-            if(activeMob) {
-                activeMob.className = "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs";
+
+            // 確保依據 settings.visibleTabs 嚴格維持頁籤隱藏狀態
+            const visibleTabs = window.currentSiteSettings?.visibleTabs;
+            if (Array.isArray(visibleTabs) && visibleTabs.length > 0) {
+                const tabSet = new Set(visibleTabs);
+                ['overview', 'itinerary', 'expenses', 'todo'].forEach(id => {
+                    if (!tabSet.has(id)) {
+                        document.getElementById(`btn-pc-tab-${id}`)?.classList.add('hidden');
+                        document.getElementById(`btn-mob-tab-${id}`)?.classList.add('hidden');
+                    }
+                });
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1227,13 +1241,26 @@
                 let availableTypes = [];
 
                 if (Array.isArray(day.easterEggs) && day.easterEggs.length > 0) {
-                    const eats = day.easterEggs.filter(e => e.tag === 'eat' && e.text);
-                    const buys = day.easterEggs.filter(e => e.tag === 'buy' && e.text);
-                    const bonuses = day.easterEggs.filter(e => e.tag === 'bonus' && e.text);
-
-                    if (eats.length > 0) availableTypes.push({ id: 'eat', label: '美食', items: eats.map(e => ({ name: e.text, image: e.image })) });
-                    if (buys.length > 0) availableTypes.push({ id: 'buy', label: '土產', items: buys.map(e => ({ name: e.text, image: e.image })) });
-                    if (bonuses.length > 0) availableTypes.push({ id: 'bonus', label: '體驗', items: bonuses.map(e => ({ name: e.text, image: e.image })) });
+                    const tagMeta = {
+                        eat:    { label: '美食', icon: 'ph-fork-knife' },
+                        buy:    { label: '土產', icon: 'ph-shopping-bag' },
+                        bonus:  { label: '體驗', icon: 'ph-sparkle' },
+                        spot:   { label: '私房', icon: 'ph-camera' },
+                        cafe:   { label: '咖啡', icon: 'ph-coffee' },
+                        ticket: { label: '活動', icon: 'ph-ticket' }
+                    };
+                    const grouped = {};
+                    day.easterEggs.forEach(e => {
+                        if (!e.text) return;
+                        const t = e.tag || 'eat';
+                        if (!grouped[t]) grouped[t] = [];
+                        grouped[t].push({ name: e.text, image: e.image });
+                    });
+                    Object.keys(tagMeta).forEach(t => {
+                        if (grouped[t] && grouped[t].length > 0) {
+                            availableTypes.push({ id: t, label: tagMeta[t].label, icon: tagMeta[t].icon, items: grouped[t] });
+                        }
+                    });
                 } else {
                     const parseItems = (str) => {
                         if(typeof str !== 'string') return [];
@@ -1243,9 +1270,9 @@
                     let buyItems = day.buy ? parseItems(day.buy) : [];
                     let bonusItems = day.bonus ? parseItems(day.bonus) : []; 
 
-                    if(eatItems.length > 0) availableTypes.push({ id: 'eat', label: '美食', items: eatItems.map((name, i) => ({ name, image: i === 0 ? (day.eatImage || '') : '' })) });
-                    if(buyItems.length > 0) availableTypes.push({ id: 'buy', label: '土產', items: buyItems.map((name, i) => ({ name, image: i === 0 ? (day.buyImage || '') : '' })) });
-                    if(bonusItems.length > 0) availableTypes.push({ id: 'bonus', label: '體驗', items: bonusItems.map((name, i) => ({ name, image: i === 0 ? (day.bonusImage || '') : '' })) });
+                    if(eatItems.length > 0) availableTypes.push({ id: 'eat', label: '美食', icon: 'ph-fork-knife', items: eatItems.map((name, i) => ({ name, image: i === 0 ? (day.eatImage || '') : '' })) });
+                    if(buyItems.length > 0) availableTypes.push({ id: 'buy', label: '土產', icon: 'ph-shopping-bag', items: buyItems.map((name, i) => ({ name, image: i === 0 ? (day.buyImage || '') : '' })) });
+                    if(bonusItems.length > 0) availableTypes.push({ id: 'bonus', label: '體驗', icon: 'ph-sparkle', items: bonusItems.map((name, i) => ({ name, image: i === 0 ? (day.bonusImage || '') : '' })) });
                 }
 
                 if (availableTypes.length > 0) {
@@ -1260,12 +1287,13 @@
                         const displayClass = isActive ? '' : 'hidden';
 
                         tabsMenuHtml += `
-                            <button id="btn-egg-${typeObj.id}-${dayId}" onclick="switchEggTab('${dayId}', '${typeObj.id}')" class="egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-small transition-all flex-1 md:flex-none text-center md:text-left ${activeBtnClass}">
-                                ${typeObj.label}
+                            <button id="btn-egg-${typeObj.id}-${dayId}" onclick="switchEggTab('${dayId}', '${typeObj.id}')" class="egg-tab-${dayId} px-3 py-2 rounded-xl font-bold text-small transition-all flex items-center justify-center md:justify-start gap-1.5 flex-1 md:flex-none text-center md:text-left ${activeBtnClass}">
+                                <i class="ph ${typeObj.icon || 'ph-sparkle'} text-sm"></i>
+                                <span>${typeObj.label}</span>
                             </button>
                         `;
 
-                        let defaultIcon = typeObj.id === 'eat' ? 'ph-fork-knife' : (typeObj.id === 'buy' ? 'ph-shopping-bag' : 'ph-sparkle');
+                        let defaultIcon = typeObj.icon || 'ph-sparkle';
                         
                         let cardsHtml = '<div class="w-2 md:w-6 shrink-0 pointer-events-none"></div>'; // spacer left
                         cardsHtml += typeObj.items.map(item => `

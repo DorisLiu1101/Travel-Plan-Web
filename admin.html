@@ -351,7 +351,7 @@
                     </details>
 
                     <!-- 當日專屬待辦 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-check-square-offset text-xl text-moss-400"></i>
@@ -372,7 +372,7 @@
                     </details>
 
                     <!-- 航班資訊 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-airplane-tilt text-xl text-moss-400"></i>
@@ -393,28 +393,34 @@
                     </details>
 
                     <!-- 景點列表 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-map-pin text-xl text-moss-400"></i>
                                 <h3 class="text-base md:text-lg">景點清單</h3>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <button id="btn-add-spot" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all" title="新增景點卡片">
+                            <div class="flex items-center gap-1.5">
+                                <button id="btn-toggle-spot-sort" type="button" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all shadow-sm" title="編輯排序（拖曳調整順序）">
+                                    <i id="icon-spot-sort" class="ph ph-pencil-simple text-sm"></i>
+                                </button>
+                                <button id="btn-clear-day-spots" type="button" class="w-8 h-8 rounded-xl bg-red-950/20 hover:bg-red-600 text-red-500 hover:text-white flex items-center justify-center transition-all shadow-sm" title="清空當日所有景點">
+                                    <i class="ph ph-trash text-sm"></i>
+                                </button>
+                                <button id="btn-add-spot" type="button" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center shadow-sm transition-all" title="新增景點卡片">
                                     <i class="ph ph-plus text-base"></i>
                                 </button>
                                 <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                             </div>
                         </summary>
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
-                            <div id="spots-container" class="space-y-5">
+                            <div id="spots-container" class="space-y-3.5">
                                 <!-- 景點項目由 JS 動態產生 -->
                             </div>
                         </div>
                     </details>
 
                     <!-- 當日特別提醒 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-warning-circle text-xl text-amber-accent"></i>
@@ -435,12 +441,12 @@
                     </details>
 
                     <!-- 旅遊備註與彩蛋資料 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-notebook text-xl text-moss-400"></i>
                                 <h3 class="text-base md:text-lg">生活筆記與彩蛋</h3>
-                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定美食、土產、體驗彩蛋標籤，以及餐飲與住宿安排">
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定特色精選項目，以及餐飲與住宿安排">
                                     <i class="ph ph-info text-base"></i>
                                 </span>
                             </div>
@@ -455,7 +461,7 @@
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
                             <!-- 彩蛋動態清單 -->
                             <div class="space-y-2">
-                                <label class="block text-xs font-bold text-moss-500">彩蛋精選項目 (可選標籤：🍽️ 美食、🛍️ 土產、✨ 體驗)</label>
+                                <label class="block text-xs font-bold text-moss-500">彩蛋精選項目 (可選類別：餐飲美食、土產伴手、特色體驗、私房打卡...)</label>
                                 <div id="easter-eggs-container" class="space-y-2.5">
                                     <!-- 由 JS 動態渲染 -->
                                 </div>
@@ -476,7 +482,7 @@
                     </details>
 
                     <!-- 當日貼心叮嚀 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-lightbulb text-xl text-amber-accent"></i>
@@ -581,7 +587,7 @@
                     </details>
 
                     <!-- 卡片 2: 旅行記帳明細列表 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-receipt text-xl text-moss-400"></i>
@@ -755,7 +761,7 @@
                 </details>
 
                 <!-- 卡片 2: 總覽地圖與城市設定 (Overview Map & Cities) -->
-                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
                             <i class="ph ph-map-trifold text-xl text-moss-400"></i>
@@ -813,7 +819,7 @@
                 </details>
 
                 <!-- 卡片 3: 主題色彩設定 -->
-                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
                             <i class="ph ph-palette text-xl text-moss-400"></i>
@@ -885,7 +891,7 @@
                 </details>
 
                 <!-- 卡片 4: 字體風格設定 (Typography) -->
-                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
                             <i class="ph ph-text-aa text-xl text-moss-400"></i>
@@ -1331,6 +1337,23 @@
 
         let isSortModeActive = false;
         let draggedDayIndex = null;
+        let isSpotSortModeActive = false;
+        let draggedSpotIndex = null;
+        let openSpotIndexSet = new Set([0]); // 預設第 1 個景點展開
+
+        // 生活筆記與彩蛋質感線條圖示與類別定義
+        const EASTER_EGG_TAGS = {
+            eat:    { label: '餐飲美食', icon: 'ph-fork-knife' },
+            buy:    { label: '土產伴手', icon: 'ph-shopping-bag' },
+            bonus:  { label: '特色體驗', icon: 'ph-sparkle' },
+            spot:   { label: '私房打卡', icon: 'ph-camera' },
+            cafe:   { label: '咖啡茶歇', icon: 'ph-coffee' },
+            ticket: { label: '活動票券', icon: 'ph-ticket' }
+        };
+
+        function getEggTagMeta(tag) {
+            return EASTER_EGG_TAGS[tag] || { label: '特色體驗', icon: 'ph-sparkle' };
+        }
 
         /* ------------------------------------------------------------- */
         /* 側拉頁籤狀態同步 (Sidebar Pull Tab Synchronizer)                */
@@ -1746,98 +1769,175 @@
             const container = document.getElementById('spots-container');
             container.innerHTML = '';
 
+            // 更新景點排序按鈕外觀狀態
+            const sortBtn = document.getElementById('btn-toggle-spot-sort');
+            const sortIcon = document.getElementById('icon-spot-sort');
+            if (sortBtn && sortIcon) {
+                if (isSpotSortModeActive) {
+                    sortBtn.className = 'w-8 h-8 rounded-xl bg-amber-accent text-white flex items-center justify-center transition-colors shadow-sm ring-2 ring-amber-300/40';
+                    sortIcon.className = 'ph ph-check text-sm font-bold';
+                    sortBtn.title = '完成拖曳排序';
+                } else {
+                    sortBtn.className = 'w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all shadow-sm';
+                    sortIcon.className = 'ph ph-pencil-simple text-sm';
+                    sortBtn.title = '編輯排序（拖曳調整順序）';
+                }
+            }
+
             if (!day.spots || !day.spots.length) {
-                container.innerHTML = `<div class="p-8 text-center text-moss-400 border border-dashed border-moss-200 rounded-2xl bg-moss-50/40">此日尚無景點，點擊上方「新增景點卡片」開始規劃！</div>`;
+                container.innerHTML = `<div class="p-8 text-center text-moss-400 border border-dashed border-moss-200 rounded-2xl bg-moss-50/40">此日尚無景點，點擊上方「+」開始規劃！</div>`;
                 return;
             }
 
             day.spots.forEach((spot, spotIdx) => {
-                const card = document.createElement('div');
-                card.className = 'spot-edit-card rounded-2xl p-4 md:p-5 border border-moss-200 bg-moss-50/40 space-y-4 relative group';
+                const isOpen = openSpotIndexSet.has(spotIdx) || day.spots.length === 1;
+                const card = document.createElement('details');
+                card.className = `spot-edit-card group rounded-2xl border border-moss-200 bg-moss-50/40 overflow-hidden transition-all ${isSpotSortModeActive ? 'ring-2 ring-amber-300/40' : ''}`;
+                if (isOpen) card.setAttribute('open', '');
+                card.dataset.spotIdx = spotIdx;
+
                 card.innerHTML = `
-                    <!-- 景點頭部 -->
-                    <div class="flex items-center justify-between pb-3 border-b border-moss-200/80">
-                        <div class="flex items-center gap-2 font-black text-sm text-moss-500">
-                            <span class="w-6 h-6 rounded-lg bg-moss-400 text-white font-mono text-xs flex items-center justify-center">${spotIdx + 1}</span>
-                            <span>景點 #${spotIdx + 1}</span>
+                    <!-- 景點頭部 (名稱輸入框整合在此，可收合) -->
+                    <summary class="flex items-center justify-between p-3 md:p-3.5 cursor-pointer list-none select-none hover:bg-moss-100/50 transition-colors gap-2">
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            ${isSpotSortModeActive ? `
+                                <span class="drag-spot-handle cursor-grab active:cursor-grabbing text-moss-400 hover:text-moss-600 p-0.5 shrink-0" title="按住上下拖曳排序">
+                                    <i class="ph ph-dots-six-vertical text-base"></i>
+                                </span>
+                            ` : ''}
+                            <span class="w-6 h-6 rounded-lg bg-moss-400 text-white font-mono text-xs flex items-center justify-center shrink-0 font-bold">
+                                ${String(spotIdx + 1).padStart(2, '0')}
+                            </span>
+                            <input type="text" placeholder="輸入景點名稱 (例如：市長官邸)" value="${escapeHtml(spot.name || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <button type="button" class="w-7 h-7 rounded-lg border border-moss-200 hover:bg-white text-moss-500 flex items-center justify-center transition-colors" data-action="move-spot" data-spot-idx="${spotIdx}" data-dir="-1" title="往上移">
-                                <i class="ph ph-arrow-up text-sm"></i>
-                            </button>
-                            <button type="button" class="w-7 h-7 rounded-lg border border-moss-200 hover:bg-white text-moss-500 flex items-center justify-center transition-colors" data-action="move-spot" data-spot-idx="${spotIdx}" data-dir="1" title="往下移">
-                                <i class="ph ph-arrow-down text-sm"></i>
-                            </button>
-                            <button type="button" class="w-7 h-7 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors" data-action="del-spot" data-spot-idx="${spotIdx}" title="刪除景點">
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-spot" data-spot-idx="${spotIdx}" title="刪除此景點">
                                 <i class="ph ph-trash text-sm"></i>
                             </button>
+                            <div class="w-7 h-7 rounded-lg flex items-center justify-center text-moss-400 hover:text-moss-600">
+                                <i class="ph ph-caret-down text-base group-open:rotate-180 transition-transform"></i>
+                            </div>
                         </div>
-                    </div>
+                    </summary>
 
-                    <!-- 景點表單 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                        <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點名稱</label>
-                            <input type="text" placeholder="例如：市長官邸" value="${escapeHtml(spot.name || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
-                        </div>
+                    <!-- 景點表單詳細內容 -->
+                    <div class="p-4 md:p-5 pt-2 border-t border-moss-200/80 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字</label>
+                                <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
+                            </div>
 
-                        <div>
-                            <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字</label>
-                            <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點照片網址</label>
-                            <div class="flex gap-2">
-                                <input type="text" placeholder="https://..." value="${escapeHtml(spot.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="image" data-spot-idx="${spotIdx}">
-                                <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                                    ${spot.image ? `<img src="${escapeHtml(spot.image)}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[9px] text-moss-400">無縮圖</span>`}
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1">景點照片網址</label>
+                                <div class="flex gap-2">
+                                    <input type="text" placeholder="https://..." value="${escapeHtml(spot.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="image" data-spot-idx="${spotIdx}">
+                                    <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                        ${spot.image ? `<img src="${escapeHtml(spot.image)}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[9px] text-moss-400">無縮圖</span>`}
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹</label>
+                                <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
+                            </div>
+
+                            <!-- 景點專屬備註 (彈窗內容) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                                    <span>景點詳細備註</span>
+                                    <span class="text-moss-400 hover:text-amber-accent cursor-pointer transition-colors" title="前台景點卡片上的 (i) 按鈕展開的完整彈窗內容">
+                                        <i class="ph ph-info text-sm text-amber-accent"></i>
+                                    </span>
+                                </label>
+                                <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
                             </div>
                         </div>
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹</label>
-                            <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
-                        </div>
-
-                        <!-- 景點專屬備註 (彈窗內容) -->
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1 flex items-center gap-1.5">
-                                <span>景點詳細備註</span>
-                                <span class="text-moss-400 hover:text-amber-accent cursor-pointer transition-colors" title="前台景點卡片上的 (i) 按鈕展開的完整彈窗內容">
-                                    <i class="ph ph-info text-sm text-amber-accent"></i>
+                        <!-- 景點層級待辦 (Spot Todos) -->
+                        <div class="pt-3 border-t border-moss-200/80 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                    <i class="ph ph-check-square"></i> 景點專屬任務待辦
                                 </span>
-                            </label>
-                            <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
-                        </div>
-                    </div>
+                                <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-moss-200/60 hover:bg-moss-300 text-moss-500 font-bold transition-colors" data-action="add-spot-todo" data-spot-idx="${spotIdx}">
+                                    + 新增任務
+                                </button>
+                            </div>
 
-                    <!-- 景點層級待辦 (Spot Todos) -->
-                    <div class="pt-3 border-t border-moss-200/80 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-moss-500 flex items-center gap-1.5">
-                                <i class="ph ph-check-square"></i> 景點專屬任務待辦
-                            </span>
-                            <button type="button" class="text-xs px-2.5 py-1 rounded-lg bg-moss-200/60 hover:bg-moss-300 text-moss-500 font-bold transition-colors" data-action="add-spot-todo" data-spot-idx="${spotIdx}">
-                                + 新增任務
-                            </button>
-                        </div>
-
-                        <div class="space-y-2">
-                            ${(spot.todos || []).map((todo, tIdx) => `
-                                <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-moss-200">
-                                    <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center shrink-0">T${tIdx + 1}</span>
-                                    <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
-                                    <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
-                                    <button type="button" class="w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0" data-action="del-spot-todo" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}" title="刪除任務">
-                                        <i class="ph ph-trash text-sm"></i>
-                                    </button>
-                                </div>
-                            `).join('')}
+                            <div class="space-y-2">
+                                ${(spot.todos || []).map((todo, tIdx) => `
+                                    <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-moss-200">
+                                        <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center shrink-0">T${tIdx + 1}</span>
+                                        <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                        <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                        <button type="button" class="w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0" data-action="del-spot-todo" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}" title="刪除任務">
+                                            <i class="ph ph-trash text-sm"></i>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
+
+                // 避免在點擊名稱輸入框或刪除按鈕時觸發 details 收合
+                const inputName = card.querySelector('[data-field="name"]');
+                if (inputName) {
+                    inputName.addEventListener('click', (e) => e.stopPropagation());
+                    inputName.addEventListener('keydown', (e) => e.stopPropagation());
+                }
+                const delBtn = card.querySelector('[data-action="del-spot"]');
+                if (delBtn) {
+                    delBtn.addEventListener('click', (e) => e.stopPropagation());
+                }
+
+                // 監聽自身展開/收合狀態以在 re-render 時維持
+                card.addEventListener('toggle', () => {
+                    if (card.open) {
+                        openSpotIndexSet.add(spotIdx);
+                    } else {
+                        openSpotIndexSet.delete(spotIdx);
+                    }
+                });
+
+                // 拖曳排序事件綁定
+                if (isSpotSortModeActive) {
+                    card.draggable = true;
+                    card.addEventListener('dragstart', (e) => {
+                        draggedSpotIndex = spotIdx;
+                        e.dataTransfer.effectAllowed = 'move';
+                        card.classList.add('opacity-40');
+                    });
+                    card.addEventListener('dragend', () => {
+                        draggedSpotIndex = null;
+                        card.classList.remove('opacity-40');
+                        document.querySelectorAll('.spot-edit-card').forEach(el => el.classList.remove('border-amber-accent', 'border-t-4'));
+                    });
+                    card.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        card.classList.add('border-amber-accent', 'border-t-4');
+                    });
+                    card.addEventListener('dragleave', () => {
+                        card.classList.remove('border-amber-accent', 'border-t-4');
+                    });
+                    card.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        card.classList.remove('border-amber-accent', 'border-t-4');
+                        if (draggedSpotIndex !== null && draggedSpotIndex !== spotIdx) {
+                            const [movedSpot] = day.spots.splice(draggedSpotIndex, 1);
+                            day.spots.splice(spotIdx, 0, movedSpot);
+                            openSpotIndexSet.clear();
+                            openSpotIndexSet.add(spotIdx);
+                            renderSpots(day);
+                            markDirty();
+                            showToast(`景點已重新排序`);
+                        }
+                    });
+                }
+
                 container.appendChild(card);
             });
         }
@@ -1853,21 +1953,30 @@
             if (!Array.isArray(day.easterEggs)) day.easterEggs = [];
 
             if (day.easterEggs.length === 0) {
-                container.innerHTML = `<div class="p-4 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">尚無彩蛋精選項目，點擊右上角「+」新增（美食、土產、體驗）</div>`;
+                container.innerHTML = `<div class="p-4 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">尚無彩蛋精選項目，點擊右上角「+」新增（餐飲美食、土產伴手、特色體驗）</div>`;
                 return;
             }
 
             day.easterEggs.forEach((egg, idx) => {
+                const currentTag = egg.tag || 'eat';
+                const meta = getEggTagMeta(currentTag);
                 const item = document.createElement('div');
                 item.className = 'easter-egg-card p-3 rounded-2xl border border-moss-200 bg-moss-50/50 space-y-2 transition-all';
                 item.innerHTML = `
-                    <!-- 第 1 列：序號 + 標籤選單 + 名稱特產描述 + 刪除圖示 -->
+                    <!-- 第 1 列：序號 + 圖示預覽 + 標籤選單 + 名稱特產描述 + 刪除圖示 -->
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                        <!-- 質感線條圖示預覽方塊 -->
+                        <div class="w-9 h-9 rounded-xl bg-white border border-moss-200 text-moss-500 flex items-center justify-center text-lg shrink-0 shadow-2xs">
+                            <i id="preview-egg-icon-${idx}" class="ph ${meta.icon}"></i>
+                        </div>
                         <select class="h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none cursor-pointer shrink-0" data-action="edit-egg-tag" data-idx="${idx}">
-                            <option value="eat" ${egg.tag === 'eat' ? 'selected' : ''}>🍽️ 美食</option>
-                            <option value="buy" ${egg.tag === 'buy' ? 'selected' : ''}>🛍️ 土產</option>
-                            <option value="bonus" ${egg.tag === 'bonus' ? 'selected' : ''}>✨ 體驗</option>
+                            <option value="eat" ${currentTag === 'eat' ? 'selected' : ''}>餐飲美食</option>
+                            <option value="buy" ${currentTag === 'buy' ? 'selected' : ''}>土產伴手</option>
+                            <option value="bonus" ${currentTag === 'bonus' ? 'selected' : ''}>特色體驗</option>
+                            <option value="spot" ${currentTag === 'spot' ? 'selected' : ''}>私房打卡</option>
+                            <option value="cafe" ${currentTag === 'cafe' ? 'selected' : ''}>咖啡茶歇</option>
+                            <option value="ticket" ${currentTag === 'ticket' ? 'selected' : ''}>活動票券</option>
                         </select>
                         <input type="text" placeholder="名稱與特色描述 (例如：傳統鄂圖曼式建築 Güveç 陶甕風味餐)" value="${escapeHtml(egg.text || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
                         <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-egg" data-idx="${idx}" title="刪除此項">
@@ -1889,9 +1998,9 @@
 
         function syncEasterEggsToLegacyStrings(day) {
             if (!Array.isArray(day.easterEggs)) return;
-            const eats = day.easterEggs.filter(e => e.tag === 'eat');
+            const eats = day.easterEggs.filter(e => e.tag === 'eat' || e.tag === 'cafe');
             const buys = day.easterEggs.filter(e => e.tag === 'buy');
-            const bonuses = day.easterEggs.filter(e => e.tag === 'bonus');
+            const bonuses = day.easterEggs.filter(e => e.tag === 'bonus' || e.tag === 'spot' || e.tag === 'ticket');
             day.eat = eats.map(e => e.text).filter(Boolean).join('、');
             day.buy = buys.map(e => e.text).filter(Boolean).join('、');
             day.bonus = bonuses.map(e => e.text).filter(Boolean).join('、');
@@ -2801,6 +2910,10 @@
                     const idx = Number(target.dataset.idx);
                     if (day.easterEggs && day.easterEggs[idx]) {
                         day.easterEggs[idx].tag = target.value;
+                        const iconPreview = document.getElementById(`preview-egg-icon-${idx}`);
+                        if (iconPreview) {
+                            iconPreview.className = `ph ${getEggTagMeta(target.value).icon}`;
+                        }
                         syncEasterEggsToLegacyStrings(day);
                         markDirty();
                     }
@@ -2849,20 +2962,12 @@
                     renderSpecialNotes(day);
                     markDirty();
                 } else if (action === 'del-spot') {
-                    day.spots.splice(Number(btn.dataset.spotIdx), 1);
+                    const spotIdx = Number(btn.dataset.spotIdx);
+                    day.spots.splice(spotIdx, 1);
+                    openSpotIndexSet.delete(spotIdx);
                     renderSpots(day);
                     markDirty();
-                } else if (action === 'move-spot') {
-                    const idx = Number(btn.dataset.spotIdx);
-                    const dir = Number(btn.dataset.dir);
-                    const next = idx + dir;
-                    if (next >= 0 && next < day.spots.length) {
-                        const temp = day.spots[idx];
-                        day.spots[idx] = day.spots[next];
-                        day.spots[next] = temp;
-                        renderSpots(day);
-                        markDirty();
-                    }
+                    showToast('已刪除景點');
                 } else if (action === 'add-spot-todo') {
                     const spot = day.spots[btn.dataset.spotIdx];
                     if (!Array.isArray(spot.todos)) spot.todos = [];
@@ -2884,42 +2989,52 @@
             // 新增生活筆記與彩蛋
             const btnAddEgg = document.getElementById('btn-add-easter-egg');
             if (btnAddEgg) {
-                btnAddEgg.onclick = () => {
+                btnAddEgg.onclick = (e) => {
+                    e.stopPropagation();
                     const day = appData.itinerary[selectedDayIndex];
                     if (!Array.isArray(day.easterEggs)) day.easterEggs = [];
                     day.easterEggs.push({ tag: 'eat', text: '', image: '' });
+                    btnAddEgg.closest('details')?.setAttribute('open', '');
                     renderEasterEggs(day);
                     markDirty();
                 };
             }
 
             // 新增當日待辦
-            document.getElementById('btn-add-day-todo').onclick = () => {
+            document.getElementById('btn-add-day-todo').onclick = (e) => {
+                e.stopPropagation();
                 const day = appData.itinerary[selectedDayIndex];
                 day.todos.push({ task: '', note: '' });
+                document.getElementById('btn-add-day-todo').closest('details')?.setAttribute('open', '');
                 renderDayTodos(day);
                 markDirty();
             };
 
             // 新增航班
-            document.getElementById('btn-add-flight').onclick = () => {
+            document.getElementById('btn-add-flight').onclick = (e) => {
+                e.stopPropagation();
                 const day = appData.itinerary[selectedDayIndex];
                 day.flights.push('');
+                document.getElementById('btn-add-flight').closest('details')?.setAttribute('open', '');
                 renderFlights(day);
                 markDirty();
             };
 
             // 新增特別提醒
-            document.getElementById('btn-add-special-note').onclick = () => {
+            document.getElementById('btn-add-special-note').onclick = (e) => {
+                e.stopPropagation();
                 const day = appData.itinerary[selectedDayIndex];
                 day.specialNotes.push('');
+                document.getElementById('btn-add-special-note').closest('details')?.setAttribute('open', '');
                 renderSpecialNotes(day);
                 markDirty();
             };
 
             // 新增景點
-            document.getElementById('btn-add-spot').onclick = () => {
+            document.getElementById('btn-add-spot').onclick = (e) => {
+                e.stopPropagation();
                 const day = appData.itinerary[selectedDayIndex];
+                if (!Array.isArray(day.spots)) day.spots = [];
                 day.spots.push({
                     name: '',
                     mapQuery: '',
@@ -2928,8 +3043,46 @@
                     note: '',
                     todos: []
                 });
+                openSpotIndexSet.add(day.spots.length - 1);
+                document.getElementById('btn-add-spot').closest('details')?.setAttribute('open', '');
                 renderSpots(day);
                 markDirty();
+                showToast(`已新增景點 #${day.spots.length}`);
+            };
+
+            // 切換景點拖曳排序模式
+            const btnToggleSpotSort = document.getElementById('btn-toggle-spot-sort');
+            if (btnToggleSpotSort) {
+                btnToggleSpotSort.onclick = (e) => {
+                    e.stopPropagation();
+                    const day = appData.itinerary[selectedDayIndex];
+                    if (!day.spots || day.spots.length <= 1) {
+                        return showToast('至少需有兩個景點才能進行排序');
+                    }
+                    isSpotSortModeActive = !isSpotSortModeActive;
+                    btnToggleSpotSort.closest('details')?.setAttribute('open', '');
+                    renderSpots(day);
+                    showToast(isSpotSortModeActive ? '已開啟拖曳排序：按住景點上下拖曳' : '已完成拖曳排序');
+                };
+            }
+
+            // 清空當日所有景點
+            const btnClearDaySpots = document.getElementById('btn-clear-day-spots');
+            if (btnClearDaySpots) {
+                btnClearDaySpots.onclick = (e) => {
+                    e.stopPropagation();
+                    const day = appData.itinerary[selectedDayIndex];
+                    if (!day.spots || day.spots.length === 0) {
+                        return showToast('當日目前沒有任何景點');
+                    }
+                    openConfirm('清空當日景點', `確定要清空「${day.day || '當日'}」的所有景點卡片嗎？`, () => {
+                        day.spots = [];
+                        openSpotIndexSet.clear();
+                        renderSpots(day);
+                        markDirty();
+                        showToast('已清空當日所有景點');
+                    });
+                };
             };
 
             // 經費預算與記帳事件監聽 (Expenses Panel Delegation)
