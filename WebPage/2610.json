@@ -7,8 +7,9 @@
     "heroImage": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
     "mapEngine": "google",
     "visibleTabs": [
+      "overview",
       "itinerary",
-      "overview"
+      "expenses"
     ],
     "theme": "moss",
     "customTheme": {
