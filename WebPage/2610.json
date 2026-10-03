@@ -139,7 +139,8 @@
       "eatImage": "",
       "buyImage": "",
       "bonusImage": "",
-      "easterEggs": []
+      "easterEggs": [],
+      "city": "伊斯坦堡ISTANBUL"
     },
     {
       "day": "Day 2",
@@ -213,7 +214,8 @@
           "text": "特色手工蕾絲織品",
           "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/%C4%B0%C4%9Fne_Oyas%C4%B1.jpeg"
         }
-      ]
+      ],
+      "city": "安卡拉ANKARA"
     },
     {
       "day": "Day 3",
@@ -291,7 +293,8 @@
           "text": "卡巴德基亞熱氣球造型紀念小品。",
           "image": ""
         }
-      ]
+      ],
+      "city": "番紅花城SAFRANBOLU"
     },
     {
       "day": "Day 4",
@@ -383,7 +386,8 @@
           "text": "惡魔之眼掛飾",
           "image": ""
         }
-      ]
+      ],
+      "city": "卡巴德基亞CAPPADOCIA"
     },
     {
       "day": "Day 5",
@@ -461,7 +465,8 @@
           "text": "梅烏拉那紀念書籤。",
           "image": ""
         }
-      ]
+      ],
+      "city": "孔亞KONYA"
     },
     {
       "day": "Day 6",
@@ -539,7 +544,8 @@
           "text": "天然頂級無花果乾。",
           "image": ""
         }
-      ]
+      ],
+      "city": "安塔麗亞ANTALYA"
     },
     {
       "day": "Day 7",
@@ -626,7 +632,8 @@
           "image": ""
         }
       ],
-      "mapImage": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg"
+      "mapImage": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
+      "city": "巴穆卡麗PAMUKKALE"
     },
     {
       "day": "Day 8",
@@ -706,7 +713,8 @@
           "text": "聖經以弗所主題書冊。",
           "image": ""
         }
-      ]
+      ],
+      "city": "艾菲索斯EPHESUS"
     },
     {
       "day": "Day 9",
@@ -800,7 +808,8 @@
           "text": "道地頂級番紅花乾",
           "image": ""
         }
-      ]
+      ],
+      "city": "伊斯坦堡ISTANBUL"
     },
     {
       "day": "Day 10-11",
@@ -888,7 +897,8 @@
           "text": "鄂圖曼復古彩色琉璃吊燈。",
           "image": ""
         }
-      ]
+      ],
+      "city": "伊斯坦堡ISTANBUL"
     }
   ]
 }

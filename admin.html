@@ -78,6 +78,14 @@
             #sidebar.desktop-collapsed {
                 margin-left: -18rem;
             }
+            /* 電腦版收合時：側拉展開按鈕無條件強制顯示 */
+            #sidebar.desktop-collapsed ~ #btn-sidebar-pull-tab {
+                display: flex !important;
+            }
+            /* 電腦版展開時：側拉展開按鈕無條件隱藏 */
+            #sidebar:not(.desktop-collapsed) ~ #btn-sidebar-pull-tab {
+                display: none !important;
+            }
         }
         @media (max-width: 767px) {
             #sidebar {
@@ -94,6 +102,14 @@
             }
             #sidebar.mobile-open {
                 transform: translateY(0);
+            }
+            /* 手機版：側欄未展開時無條件顯示側拉按鈕 */
+            #sidebar:not(.mobile-open) ~ #btn-sidebar-pull-tab {
+                display: flex !important;
+            }
+            /* 手機版：側欄展開時隱藏側拉按鈕 */
+            #sidebar.mobile-open ~ #btn-sidebar-pull-tab {
+                display: none !important;
             }
         }
 
@@ -113,7 +129,7 @@
     <div id="sidebar-backdrop" class="fixed inset-0 bg-moss-900/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
 
     <!-- 側邊欄 (Sidebar) - 毛玻璃半透明質感 -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 md:relative md:inset-auto md:z-30 w-72 bg-moss-500/90 backdrop-blur-xl border-r border-moss-400/30 text-moss-100 flex flex-col shrink-0 shadow-2xl">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 md:relative md:inset-auto md:z-30 w-64 bg-moss-500/90 backdrop-blur-xl border-r border-moss-400/30 text-moss-100 flex flex-col shrink-0 shadow-2xl">
         <!-- 品牌標誌與回首頁 -->
         <div class="h-16 px-4 flex items-center justify-between border-b border-moss-400/30">
             <div class="flex items-center gap-2.5 min-w-0">
@@ -130,11 +146,15 @@
             </button>
         </div>
 
-        <!-- 頂部頁籤切換器 (3 欄：全站設置 ｜ 每日行程 ｜ 經費預算) -->
-        <div class="p-3 grid grid-cols-3 gap-1.5 border-b border-moss-400/30">
+        <!-- 頂部頁籤切換器 (2x2 四宮格：全站設置 ｜ 行程總覽 ｜ 每日行程 ｜ 經費預算) -->
+        <div class="p-3 grid grid-cols-2 gap-1.5 border-b border-moss-400/30">
             <button id="tab-nav-settings" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm" title="全站設置">
                 <i class="ph ph-sliders text-base"></i>
                 <span>全站設置</span>
+            </button>
+            <button id="tab-nav-overview" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="行程總覽">
+                <i class="ph ph-map-trifold text-base"></i>
+                <span>行程總覽</span>
             </button>
             <button id="tab-nav-itinerary" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="每日行程">
                 <i class="ph ph-calendar-blank text-base"></i>
@@ -153,7 +173,7 @@
                     <span class="flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
                         <i class="ph ph-compass text-sm text-moss-300"></i> 行程目錄
                     </span>
-                    <span id="side-days-count" class="px-2 py-0.5 rounded-full bg-moss-400/40 text-[10px] font-mono text-moss-100">0 DAYS</span>
+                    <span id="side-days-count" class="px-2 py-0.5 rounded-full bg-moss-400/40 text-[10px] font-mono text-moss-100">0</span>
                 </div>
                 <!-- 集中操作：拖曳排序切換 & 刪除當前所選日 -->
                 <div class="flex items-center gap-1 shrink-0">
@@ -192,7 +212,7 @@
     </aside>
 
     <!-- 側欄收合時貼邊顯示的微型展開頁籤 (>) -->
-    <button id="btn-sidebar-pull-tab" class="fixed left-0 top-1/2 -translate-y-1/2 z-40 w-5 hover:w-6 h-14 rounded-r-xl bg-moss-500/90 hover:bg-moss-500 backdrop-blur-md text-white border-y border-r border-moss-300/40 shadow-xl flex items-center justify-center transition-all cursor-pointer hidden group" title="展開側邊欄 (>)">
+    <button id="btn-sidebar-pull-tab" class="fixed left-0 top-1/2 -translate-y-1/2 z-40 w-5 hover:w-6 h-14 rounded-r-xl bg-moss-500/90 hover:bg-moss-500 backdrop-blur-md text-white border-y border-r border-moss-300/40 shadow-xl flex items-center justify-center transition-all cursor-pointer group" title="展開側邊欄 (>)">
         <i class="ph ph-caret-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
     </button>
 
@@ -237,13 +257,13 @@
                 <!-- ═══════════════════════════════════════════════════ -->
                 <section id="panel-itinerary" class="hidden space-y-6">
 
-                    <!-- 天數操作滑動列 (Day Carousel & Action Bar) -->
-                    <div class="bg-white/95 rounded-2xl p-3 md:p-3.5 border border-moss-200/90 shadow-sm flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
+                    <!-- 天數操作滑動列 (Day Carousel & Action Bar) - 保持置頂 -->
+                    <div class="sticky top-0 z-30 bg-white/95 backdrop-blur-md rounded-2xl p-3 md:p-3.5 border border-moss-200/90 shadow-md flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
                         <!-- 滑動天數選擇軌道 (Horizontal Pill Track) -->
                         <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                            <!-- 前一天按鈕 (←) -->
-                            <button id="btn-prev-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 flex items-center justify-center text-moss-500 transition-colors shrink-0" title="前一天 (←)">
-                                <i class="ph ph-arrow-left text-base"></i>
+                            <!-- 前一天按鈕 (<) - 簡潔無框 -->
+                            <button id="btn-prev-day" class="w-8 h-8 rounded-lg hover:bg-moss-100 text-moss-400 hover:text-moss-600 flex items-center justify-center transition-colors shrink-0" title="前一天 (<)">
+                                <i class="ph ph-caret-left text-lg"></i>
                             </button>
 
                             <!-- 水平滾動膠囊區 (Pill Scroller) -->
@@ -251,14 +271,17 @@
                                 <!-- 由 JS 動態產生各天膠囊 -->
                             </div>
 
-                            <!-- 後一天按鈕 (→) -->
-                            <button id="btn-next-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 flex items-center justify-center text-moss-500 transition-colors shrink-0" title="後一天 (→)">
-                                <i class="ph ph-arrow-right text-base"></i>
+                            <!-- 後一天按鈕 (>) - 簡潔無框 -->
+                            <button id="btn-next-day" class="w-8 h-8 rounded-lg hover:bg-moss-100 text-moss-400 hover:text-moss-600 flex items-center justify-center transition-colors shrink-0" title="後一天 (>)">
+                                <i class="ph ph-caret-right text-lg"></i>
                             </button>
                         </div>
 
-                        <!-- 右側輔助動作：複製此日 (純圖示) -->
+                        <!-- 右側輔助動作：一鍵智慧填入全行程天氣 (純圖示) & 複製此日 -->
                         <div class="flex items-center gap-2 shrink-0">
+                            <button id="btn-fetch-all-weather" type="button" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" title="一鍵智慧查詢全行程天氣與氣溫">
+                                <i class="ph ph-cloud-sun text-lg text-moss-400"></i>
+                            </button>
                             <button id="btn-duplicate-day" class="w-9 h-9 rounded-xl border border-moss-200 hover:bg-moss-100 text-moss-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" title="複製此日行程">
                                 <i class="ph ph-copy text-base"></i>
                             </button>
@@ -271,7 +294,7 @@
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-calendar-check text-xl text-moss-400"></i>
                                 <h3 class="text-base md:text-lg">當日核心資訊</h3>
-                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、日期、標題、天氣、路線地圖與封面大圖">
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、日期、城市、標題、天氣、穿搭、封面大圖與路線地圖">
                                     <i class="ph ph-info text-base"></i>
                                 </span>
                             </div>
@@ -279,71 +302,88 @@
                         </summary>
 
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- 第 1 列：天數代號 (左) ｜ 當日日期 (右) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">天數代號</label>
-                                    <input type="text" data-day-field="day" placeholder="Day 1" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5 flex items-center justify-between">
+                                        <span>天數代號</span>
+                                        <span class="text-[10px] text-moss-300 font-normal">輸入 1 自動轉換為 D1</span>
+                                    </label>
+                                    <input type="text" data-day-field="day" placeholder="例如：D1" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none">
                                 </div>
-
-                                <div class="md:col-span-2">
+                                <div>
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">當日日期</label>
                                     <div class="flex gap-2">
-                                        <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="2026/10/8 (四)" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
-                                        <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none shrink-0">
+                                        <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="例如：2026/10/8 (四)" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                        <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none shrink-0" title="開啟日曆選擇">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 第 2 列：所在城市 (City) -->
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5 flex items-center gap-1">
+                                    <i class="ph ph-map-pin text-moss-400"></i>
+                                    <span>所在城市 (City)</span>
+                                </label>
+                                <input type="text" data-day-field="city" placeholder="例如：伊斯坦堡 或 Istanbul" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+
+                            <!-- 第 3 列：當日大標題 -->
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題</label>
+                                <input type="text" data-day-field="title" placeholder="例如：啟程星月國度 ｜ 漫步番紅花城" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
+                            </div>
+
+                            <!-- 第 4 列：天氣與氣溫 (含單日智慧查詢) -->
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="block text-xs font-bold text-moss-500">天氣與氣溫</label>
+                                    <button id="btn-fetch-day-weather" type="button" class="text-[11px] text-moss-400 hover:text-moss-600 font-bold flex items-center gap-1 transition-colors" title="依所在城市與日期自動抓取天氣">
+                                        <i class="ph ph-sparkle text-amber-accent"></i> 智慧查詢
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-9 h-9 rounded-xl bg-moss-100 flex items-center justify-center text-moss-500 text-lg shrink-0 border border-moss-200">
+                                        <i id="preview-weather-icon" class="ph ph-sun"></i>
+                                    </div>
+                                    <select id="select-weather-icon" data-day-field="weather.icon" class="w-28 sm:w-32 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none shrink-0">
+                                        <option value="ph-sun">☀️ 晴天</option>
+                                        <option value="ph-cloud-sun">⛅ 晴時多雲</option>
+                                        <option value="ph-cloud">☁️ 多雲</option>
+                                        <option value="ph-cloud-rain">🌧️ 降雨</option>
+                                        <option value="ph-cloud-snow">🌨️ 降雪</option>
+                                        <option value="ph-cloud-fog">🌫️ 起霧</option>
+                                        <option value="ph-lightning">⛈️ 雷雨</option>
+                                        <option value="ph-wind">💨 強風</option>
+                                    </select>
+                                    <input type="text" data-day-field="weather.temp" placeholder="例如：10-18°C" class="flex-1 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                </div>
+                            </div>
+
+                            <!-- 第 5 列：穿搭建議 -->
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">穿搭建議</label>
+                                <input type="text" data-day-field="outfit" placeholder="例如：女性需戴頭巾、防風連帽外套" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+
+                            <!-- 第 6 列：封面大圖網址 (下方預覽) ｜ 路線地圖圖片網址 (下方預覽) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                                <!-- 封面大圖 -->
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-moss-500">當日封面大圖網址</label>
+                                    <input type="text" data-day-field="image" placeholder="https://..." class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                    <div id="preview-day-image" class="w-full h-36 rounded-xl bg-moss-50 border border-moss-200 overflow-hidden flex items-center justify-center transition-all">
+                                        <span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-image text-base"></i> 無圖片預覽</span>
                                     </div>
                                 </div>
 
-                                <div class="md:col-span-3">
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題</label>
-                                    <input type="text" data-day-field="title" placeholder="啟程星月國度 ｜ 漫步番紅花城" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
-                                </div>
-
-                                <!-- 天氣與氣溫組合 (佔 1 欄) -->
-                                <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">天氣與氣溫</label>
-                                    <div class="flex items-center gap-1.5">
-                                        <div class="w-9 h-9 rounded-xl bg-moss-100 flex items-center justify-center text-moss-500 text-lg shrink-0 border border-moss-200">
-                                            <i id="preview-weather-icon" class="ph ph-sun"></i>
-                                        </div>
-                                        <select id="select-weather-icon" data-day-field="weather.icon" class="w-24 sm:w-28 h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none shrink-0">
-                                            <option value="ph-sun">晴天</option>
-                                            <option value="ph-cloud-sun">晴時多雲</option>
-                                            <option value="ph-cloud">多雲</option>
-                                            <option value="ph-cloud-rain">降雨</option>
-                                            <option value="ph-cloud-snow">降雪</option>
-                                            <option value="ph-cloud-fog">起霧</option>
-                                            <option value="ph-lightning">雷雨</option>
-                                            <option value="ph-wind">強風</option>
-                                        </select>
-                                        <input type="text" data-day-field="weather.temp" placeholder="10-18°C" class="flex-1 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
-                                    </div>
-                                </div>
-
-                                <!-- 穿搭建議 (跨 2 欄) -->
-                                <div class="md:col-span-2">
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">穿搭建議</label>
-                                    <input type="text" data-day-field="outfit" placeholder="女性需戴頭巾、防風連帽外套" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                                </div>
-
-                                <!-- 路線地圖網址 -->
-                                <div class="md:col-span-3">
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">路線地圖圖片網址</label>
-                                    <div class="flex gap-2">
-                                        <input type="text" data-day-field="mapImage" placeholder="https://..." class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                                        <div id="preview-day-map" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                                            <span class="text-[10px] text-moss-400">無圖</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 當日封面照片 -->
-                                <div class="md:col-span-3">
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">當日封面大圖網址</label>
-                                    <div class="flex gap-3">
-                                        <input type="text" data-day-field="image" placeholder="https://..." class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                                        <div id="preview-day-image" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                                            <span class="text-[10px] text-moss-400">無圖</span>
-                                        </div>
+                                <!-- 路線地圖圖片 -->
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-moss-500">路線地圖圖片網址</label>
+                                    <input type="text" data-day-field="mapImage" placeholder="https://..." class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                    <div id="preview-day-map" class="w-full h-36 rounded-xl bg-moss-50 border border-moss-200 overflow-hidden flex items-center justify-center transition-all">
+                                        <span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-map-trifold text-base"></i> 無路線地圖預覽</span>
                                     </div>
                                 </div>
                             </div>
@@ -639,6 +679,76 @@
                 </section>
 
                 <!-- ═══════════════════════════════════════════════════ -->
+                <!-- 🅾️ 行程總覽面板 (Panel: Overview)                  -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-overview" class="hidden space-y-6">
+                    <!-- 卡片 1: 全行程路線地圖設定 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-map-trifold text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">全行程路線地圖設定</h3>
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定 Google My Maps 嵌入連結、備用靜態地圖網址與導航地圖引擎">
+                                    <i class="ph ph-info text-base"></i>
+                                </span>
+                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">
+                                        Google 地圖嵌入網址 
+                                        <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
+                                    </label>
+                                    <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">備用靜態地圖網址</label>
+                                    <input type="text" data-setting="overviewMap.image" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">導航地圖引擎</label>
+                                    <select data-setting="mapEngine" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                        <option value="google">Google Map (國際通用)</option>
+                                        <option value="amap">高德地圖 (中國大陸地區)</option>
+                                        <option value="baidu">百度地圖 (中國大陸地區)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 卡片 2: 主要城市巡禮卡片清單 -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-buildings text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">主要城市巡禮卡片清單</h3>
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定前台總覽頁籤所展示的橫滑城市視覺卡片">
+                                    <i class="ph ph-info text-base"></i>
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" id="btn-add-overview-city" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center transition-all shadow-sm" title="新增城市卡片">
+                                    <i class="ph ph-plus font-bold text-base"></i>
+                                </button>
+                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                            </div>
+                        </summary>
+
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                            <div id="overview-cities-container" class="space-y-3">
+                                <!-- 城市項目卡片由 JS 動態渲染 -->
+                            </div>
+                        </div>
+                    </details>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
                 <!-- 🅰️ 全站設置面板 (Panel: Settings - 預設顯示)       -->
                 <!-- ═══════════════════════════════════════════════════ -->
                 <section id="panel-settings" class="space-y-6">
@@ -764,66 +874,8 @@
                     </div>
                     </div>
                 </details>
-
-                <!-- 卡片 2: 總覽地圖與城市設定 (Overview Map & Cities) -->
-                <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
-                    <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
-                        <div class="flex items-center gap-2.5 text-moss-500 font-black">
-                            <i class="ph ph-map-trifold text-xl text-moss-400"></i>
-                            <h3 class="text-base md:text-lg">總覽地圖與城市設定</h3>
-                            <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="嵌入地圖設定、備用圖片、導航地圖引擎，以及總覽橫滑城市卡片清單">
-                                <i class="ph ph-info text-base"></i>
-                            </span>
-                        </div>
-                        <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
-                    </summary>
-
-                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="md:col-span-2">
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">
-                                    Google 地圖嵌入網址 
-                                    <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
-                                </label>
-                                <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">備用靜態地圖網址</label>
-                                <input type="text" data-setting="overviewMap.image" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-bold text-moss-500 mb-1.5">導航地圖引擎</label>
-                                <select data-setting="mapEngine" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                                    <option value="google">Google Map (國際通用)</option>
-                                    <option value="amap">高德地圖 (中國大陸地區)</option>
-                                    <option value="baidu">百度地圖 (中國大陸地區)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- 總覽城市亮點卡片管理 -->
-                        <div class="pt-4 border-t border-moss-100 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-buildings text-base text-moss-400"></i>
-                                    <span class="text-xs font-bold text-moss-500">總覽城市卡片清單</span>
-                                    <span class="text-[11px] text-moss-400/80">前台總覽頁籤所展示的橫滑城市視覺卡片</span>
-                                </div>
-                                <button type="button" id="btn-add-overview-city" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center transition-all shadow-sm" title="新增城市卡片">
-                                    <i class="ph ph-plus font-bold text-base"></i>
-                                </button>
-                            </div>
-
-                            <div id="overview-cities-container" class="space-y-3">
-                                <!-- 城市項目卡片由 JS 動態渲染 -->
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <!-- 卡片 3: 主題色彩設定 -->
+ 
+                <!-- 卡片 2: 主題色彩設定 -->
                 <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
@@ -895,7 +947,7 @@
                     </div>
                 </details>
 
-                <!-- 卡片 4: 字體風格設定 (Typography) -->
+                <!-- 卡片 3: 字體風格設定 (Typography) -->
                 <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                     <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                         <div class="flex items-center gap-2.5 text-moss-500 font-black">
@@ -1097,6 +1149,7 @@
             itinerary: [
                 {
                     day: "Day 1",
+                    city: "",
                     fullDate: "",
                     title: "啟程首日",
                     weather: { icon: "ph-sun", temp: "" },
@@ -1185,6 +1238,7 @@
 
             // 規範化每天欄位
             appData.itinerary.forEach((day, idx) => {
+                if (typeof day.city !== 'string') day.city = '';
                 if (!day.weather) day.weather = { icon: 'ph-sun', temp: '' };
                 if (!Array.isArray(day.todos)) day.todos = [];
                 if (!Array.isArray(day.flights)) day.flights = [];
@@ -1237,6 +1291,7 @@
 
             renderSidebarDays();
             renderSettingsPanel();
+            renderOverviewPanel();
             renderItineraryDay();
             renderExpensesPanel();
             syncRawJsonView();
@@ -1255,16 +1310,16 @@
             if (fileBadge) fileBadge.textContent = displayName;
             if (sideFilename) sideFilename.textContent = displayName;
 
+            // 儲存按鈕一律統一維持經典磁碟片圖示，建立穩定明確的存檔心理意象
+            if (iconSave) iconSave.className = 'ph ph-floppy-disk text-lg';
+
             if (currentFileMode === 'local') {
-                if (iconSave) iconSave.className = 'ph ph-floppy-disk text-lg';
                 if (btnSave) btnSave.title = '儲存至本機檔案 (直接覆寫)';
                 if (fileIcon) fileIcon.className = 'ph ph-laptop text-moss-400 text-base';
             } else if (currentFileMode === 'online') {
-                if (iconSave) iconSave.className = 'ph ph-cloud-arrow-up text-lg';
-                if (btnSave) btnSave.title = '安全儲存至 GitHub (線上回存)';
+                if (btnSave) btnSave.title = '儲存至雲端 (GitHub 安全回存)';
                 if (fileIcon) fileIcon.className = 'ph ph-cloud text-moss-400 text-base';
             } else {
-                if (iconSave) iconSave.className = 'ph ph-floppy-disk text-lg';
                 if (btnSave) btnSave.title = '儲存行程 (另存新檔)';
                 if (fileIcon) fileIcon.className = 'ph ph-file text-moss-400 text-base';
             }
@@ -1298,11 +1353,13 @@
 
             currentTab = tabId;
             const panelSettings  = document.getElementById('panel-settings');
+            const panelOverview  = document.getElementById('panel-overview');
             const panelItinerary = document.getElementById('panel-itinerary');
             const panelExpenses  = document.getElementById('panel-expenses');
             const panelJson      = document.getElementById('panel-json');
 
             if (panelSettings)  panelSettings.classList.toggle('hidden', tabId !== 'settings');
+            if (panelOverview)  panelOverview.classList.toggle('hidden', tabId !== 'overview');
             if (panelItinerary) panelItinerary.classList.toggle('hidden', tabId !== 'itinerary');
             if (panelExpenses)  panelExpenses.classList.toggle('hidden', tabId !== 'expenses');
             if (panelJson)      panelJson.classList.toggle('hidden', tabId !== 'json');
@@ -1310,17 +1367,25 @@
             // 頁籤樣式高亮
             const INACTIVE = 'nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white';
             const ACTIVE   = 'nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm';
-            const btnItinerary = document.getElementById('tab-nav-itinerary');
             const btnSettings  = document.getElementById('tab-nav-settings');
+            const btnOverview  = document.getElementById('tab-nav-overview');
+            const btnItinerary = document.getElementById('tab-nav-itinerary');
             const btnExpenses  = document.getElementById('tab-nav-expenses');
-            if (btnItinerary) btnItinerary.className = tabId === 'itinerary' ? ACTIVE : INACTIVE;
             if (btnSettings)  btnSettings.className  = tabId === 'settings'  ? ACTIVE : INACTIVE;
+            if (btnOverview)  btnOverview.className  = tabId === 'overview'  ? ACTIVE : INACTIVE;
+            if (btnItinerary) btnItinerary.className = tabId === 'itinerary' ? ACTIVE : INACTIVE;
             if (btnExpenses)  btnExpenses.className  = tabId === 'expenses'  ? ACTIVE : INACTIVE;
+            // 同步側邊欄行程卡片選取高亮狀態（非「每日行程」頁籤時，所有天數卡片一律不亮起）
+            renderSidebarDays();
 
             if (tabId === 'settings') {
                 document.getElementById('top-eyebrow').textContent = 'GLOBAL SETTINGS';
                 document.getElementById('top-title').textContent = '全站整體外觀與主題設置';
                 renderSettingsPanel();
+            } else if (tabId === 'overview') {
+                document.getElementById('top-eyebrow').textContent = 'OVERVIEW';
+                document.getElementById('top-title').textContent = '全行程路線與主要城市總覽';
+                renderOverviewPanel();
             } else if (tabId === 'itinerary') {
                 updateTopItineraryTitle();
             } else if (tabId === 'expenses') {
@@ -1343,7 +1408,9 @@
         function updateTopItineraryTitle() {
             const day = appData.itinerary[selectedDayIndex];
             if (day) {
-                document.getElementById('top-eyebrow').textContent = `ITINERARY · ${day.day || 'DAY'}`;
+                const dayTag = day.day || 'DAY';
+                const cityTag = day.city ? ` · ${day.city}` : '';
+                document.getElementById('top-eyebrow').textContent = `ITINERARY · ${dayTag}${cityTag}`;
                 document.getElementById('top-title').textContent = day.title || '未命名行程日';
             }
         }
@@ -1372,22 +1439,14 @@
         /* 側拉頁籤狀態同步 (Sidebar Pull Tab Synchronizer)                */
         /* ------------------------------------------------------------- */
         function updateSidebarPullTab() {
-            const isMobile = window.innerWidth < 768;
-            const isCollapsed = isMobile 
-                ? !sidebar.classList.contains('mobile-open')
-                : sidebar.classList.contains('desktop-collapsed');
-            const pullTab = document.getElementById('btn-sidebar-pull-tab');
-            if (pullTab) {
-                pullTab.classList.toggle('hidden', !isCollapsed);
-                pullTab.classList.toggle('flex', isCollapsed);
-            }
+            // 已由 CSS 兄弟選擇器原生接管側拉頁籤的顯示與隱藏，無需手動切換 class
         }
 
         /* ------------------------------------------------------------- */
         /* 🎨 側邊欄渲染 (Sidebar Rendering) - 簡潔清爽 & 支援拖曳排序     */
         /* ------------------------------------------------------------- */
         function renderSidebarDays() {
-            document.getElementById('side-days-count').textContent = `${appData.itinerary.length} DAYS`;
+            document.getElementById('side-days-count').textContent = `${appData.itinerary.length}`;
             dayListEl.innerHTML = '';
 
             // 更新排序按鈕外觀狀態
@@ -1425,7 +1484,7 @@
                         ${String(index + 1).padStart(2, '0')}
                     </span>
                     <div class="min-w-0 flex-1">
-                        <div class="truncate text-[11px] font-bold">${escapeHtml(day.day || `Day ${index + 1}`)} · ${escapeHtml(day.title || '未命名')}</div>
+                        <div class="truncate text-[11px] font-bold">${escapeHtml(day.day || `Day ${index + 1}`)}${day.city ? ` · ${escapeHtml(day.city)}` : ''}</div>
                         <div class="truncate text-[10px] opacity-70 font-mono">${escapeHtml(day.fullDate || '--')}</div>
                     </div>
                 `;
@@ -1544,8 +1603,21 @@
 
             // 配色同步
             syncThemeInputs();
+        }
 
-            // 總覽城市卡片渲染
+        /* ------------------------------------------------------------- */
+        /* 🗺️ 行程總覽面板渲染 (Overview Panel)                         */
+        /* ------------------------------------------------------------- */
+        function renderOverviewPanel() {
+            const s = appData.settings;
+            const panel = document.getElementById('panel-overview');
+            if (panel) {
+                panel.querySelectorAll('[data-setting]').forEach(el => {
+                    const path = el.dataset.setting;
+                    const val = getObjectValue(s, path) ?? '';
+                    el.value = val;
+                });
+            }
             renderOverviewCitiesSetting();
         }
 
@@ -1681,7 +1753,7 @@
                 if (day.mapImage && /^https?:\/\//i.test(day.mapImage.trim())) {
                     mapImgEl.innerHTML = `<img src="${escapeHtml(day.mapImage.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`;
                 } else {
-                    mapImgEl.innerHTML = `<span class="text-[10px] text-moss-400">無圖</span>`;
+                    mapImgEl.innerHTML = `<span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-map-trifold text-base"></i> 無路線地圖預覽</span>`;
                 }
             }
 
@@ -1690,7 +1762,7 @@
             if (day.image && /^https?:\/\//i.test(day.image.trim())) {
                 dayImgEl.innerHTML = `<img src="${escapeHtml(day.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`;
             } else {
-                dayImgEl.innerHTML = `<span class="text-[10px] text-moss-400">無圖</span>`;
+                dayImgEl.innerHTML = `<span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-image text-base"></i> 無圖片預覽</span>`;
             }
 
             // 渲染當日待辦清單
@@ -2236,34 +2308,385 @@
         }
 
         /* ------------------------------------------------------------- */
+        /* 🌦️ Open-Meteo 氣象整合模組 (Weather Integration Module)        */
+        /* ------------------------------------------------------------- */
+        const WMO_CODE_TO_ICON = {
+            0: 'ph-sun',           // 晴朗無雲
+            1: 'ph-cloud-sun',     // 晴時多雲
+            2: 'ph-cloud-sun',     // 多雲時晴
+            3: 'ph-cloud',         // 多雲 / 陰天
+            45: 'ph-cloud-fog',    // 霧
+            48: 'ph-cloud-fog',    // 濃霧
+            51: 'ph-cloud-rain',   // 毛毛細雨
+            53: 'ph-cloud-rain',   // 中度毛毛雨
+            55: 'ph-cloud-rain',   // 密毛毛雨
+            61: 'ph-cloud-rain',   // 小雨
+            63: 'ph-cloud-rain',   // 中雨
+            65: 'ph-cloud-rain',   // 大雨
+            71: 'ph-cloud-snow',   // 小雪
+            73: 'ph-cloud-snow',   // 中雪
+            75: 'ph-cloud-snow',   // 大雪
+            77: 'ph-cloud-snow',   // 冰霰微粒
+            80: 'ph-cloud-rain',   // 短暫小陣雨
+            81: 'ph-cloud-rain',   // 陣雨
+            82: 'ph-cloud-rain',   // 強陣雨
+            85: 'ph-cloud-snow',   // 短暫陣雪
+            86: 'ph-cloud-snow',   // 強陣雪
+            95: 'ph-lightning',    // 雷陣雨
+            96: 'ph-lightning',    // 夾冰雹雷雨
+            99: 'ph-lightning'     // 強烈冰雹雷雨
+        };
+
+        const cityGeocodeCache = new Map();
+
+        async function getCityGeocode(cityName) {
+            const raw = String(cityName || '').trim();
+            if (!raw) return null;
+            if (cityGeocodeCache.has(raw)) return cityGeocodeCache.get(raw);
+
+            // 智慧拆解候選搜尋詞：妥善應對「伊斯坦堡ISTANBUL」或「番紅花城 (Safranbolu)」等中英混和字串
+            const candidates = [];
+
+            // 1. 若包含英文字母，優先抽取英文名稱（在國際 GeoNames / Open-Meteo 庫中精確度最高）
+            const enMatch = raw.match(/[a-zA-Z]+/g);
+            if (enMatch && enMatch.length > 0) {
+                const enStr = enMatch.join(' ').trim();
+                if (enStr.length >= 2) {
+                    candidates.push({ q: enStr, lang: 'en' });
+                }
+            }
+
+            // 2. 若包含中文字，抽取純中文名稱
+            const zhMatch = raw.match(/[\u4e00-\u9fa5]+/g);
+            if (zhMatch && zhMatch.length > 0) {
+                const zhStr = zhMatch.join('').trim();
+                if (zhStr.length >= 2) {
+                    candidates.push({ q: zhStr, lang: 'zh' });
+                }
+            }
+
+            // 3. 原始清理字串備援 (移除括號或斜線等符號)
+            const cleanRaw = raw.replace(/[()（）\[\]【】\/\-_·,，]/g, ' ').replace(/\s+/g, ' ').trim();
+            if (cleanRaw && !candidates.some(c => c.q.toLowerCase() === cleanRaw.toLowerCase())) {
+                candidates.push({ q: cleanRaw, lang: 'zh' });
+                candidates.push({ q: cleanRaw, lang: '' });
+            }
+
+            for (const cand of candidates) {
+                if (!cand.q) continue;
+                try {
+                    const langParam = cand.lang ? `&language=${cand.lang}` : '';
+                    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cand.q)}&count=1${langParam}&format=json`;
+                    const res = await fetch(url);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.results && data.results.length > 0) {
+                            const hit = data.results[0];
+                            const geo = {
+                                lat: hit.latitude,
+                                lon: hit.longitude,
+                                name: hit.name || cand.q,
+                                country: hit.country || ''
+                            };
+                            cityGeocodeCache.set(raw, geo);
+                            return geo;
+                        }
+                    }
+                } catch (e) {
+                    console.warn(`[Geocoding error for ${cand.q}]:`, e);
+                }
+            }
+
+            return null;
+        }
+
+        async function fetchWeatherForDay(dayObj) {
+            const city = (dayObj.city && dayObj.city.trim()) || '';
+            if (!city) {
+                throw new Error('未設定城市名稱');
+            }
+
+            const geo = await getCityGeocode(city);
+            if (!geo) {
+                throw new Error(`找不到城市「${city}」地理座標，請嘗試輸入英文名稱或常見譯名`);
+            }
+
+            // 解析年月日
+            let targetDate = null;
+            let m = 10, d = 1;
+            const match = String(dayObj.fullDate || '').match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+            if (match) {
+                const y = parseInt(match[1], 10);
+                m = parseInt(match[2], 10);
+                d = parseInt(match[3], 10);
+                targetDate = new Date(y, m - 1, d);
+            }
+
+            const today = new Date();
+            let isNearForecast = false;
+            let targetDateStr = '';
+
+            if (targetDate) {
+                const diffDays = Math.round((targetDate - today) / (1000 * 60 * 60 * 24));
+                // 14 天內為精準預報範圍
+                if (diffDays >= -1 && diffDays <= 14) {
+                    isNearForecast = true;
+                    targetDateStr = `${targetDate.getFullYear()}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                }
+            }
+
+            // 1. 若在 14 天預報範圍內，抓取即時天氣預報
+            if (isNearForecast && targetDateStr) {
+                try {
+                    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${geo.lat}&longitude=${geo.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&start_date=${targetDateStr}&end_date=${targetDateStr}`;
+                    const res = await fetch(forecastUrl);
+                    if (res.ok) {
+                        const data = await res.json();
+                        const daily = data.daily;
+                        if (daily && daily.weathercode?.length) {
+                            const code = daily.weathercode[0];
+                            const max = Math.round(daily.temperature_2m_max[0]);
+                            const min = Math.round(daily.temperature_2m_min[0]);
+                            return {
+                                icon: WMO_CODE_TO_ICON[code] || 'ph-sun',
+                                temp: `${min}-${max}°C`,
+                                isForecast: true,
+                                cityName: geo.name
+                            };
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[Forecast API error]:', e);
+                }
+            }
+
+            // 2. 超過 14 天（遠期行程）或過去行程：使用 Open-Meteo Archive API 抓取歷史同期氣候 (2024 年同月同日)
+            try {
+                const mStr = String(m).padStart(2, '0');
+                const dStr = String(d).padStart(2, '0');
+                const refDate = `2024-${mStr}-${dStr}`;
+                const archiveUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${geo.lat}&longitude=${geo.lon}&start_date=${refDate}&end_date=${refDate}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`;
+                const res = await fetch(archiveUrl);
+                if (res.ok) {
+                    const data = await res.json();
+                    const daily = data.daily;
+                    if (daily && daily.weathercode?.length) {
+                        const code = daily.weathercode[0];
+                        const max = Math.round(daily.temperature_2m_max[0]);
+                        const min = Math.round(daily.temperature_2m_min[0]);
+                        return {
+                            icon: WMO_CODE_TO_ICON[code] || 'ph-sun',
+                            temp: `${min}-${max}°C`,
+                            isForecast: false,
+                            cityName: geo.name
+                        };
+                    }
+                }
+            } catch (e) {
+                console.warn('[Archive API error]:', e);
+            }
+
+            // 3. 基本後備方案
+            return {
+                icon: 'ph-sun',
+                temp: '16-24°C',
+                isForecast: false,
+                cityName: geo.name
+            };
+        }
+
+        async function fetchSingleDayWeather() {
+            const day = appData.itinerary[selectedDayIndex];
+            if (!day) return;
+
+            const btn = document.getElementById('btn-fetch-day-weather');
+            const originalHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph ph-spinner animate-spin text-amber-accent"></i> 查詢中...`;
+            }
+
+            try {
+                // 若當天沒填城市，嘗試自動繼承前一天或全站主要城市
+                if (!day.city || !day.city.trim()) {
+                    let fallbackCity = '';
+                    for (let i = selectedDayIndex - 1; i >= 0; i--) {
+                        if (appData.itinerary[i]?.city?.trim()) {
+                            fallbackCity = appData.itinerary[i].city.trim();
+                            break;
+                        }
+                    }
+                    if (!fallbackCity && appData.settings.cities?.[0]?.name) {
+                        fallbackCity = appData.settings.cities[0].name.trim();
+                    }
+                    if (fallbackCity) {
+                        day.city = fallbackCity;
+                        const cityInput = document.querySelector('[data-day-field="city"]');
+                        if (cityInput) cityInput.value = fallbackCity;
+                    } else {
+                        throw new Error('請先於「所在城市 (City)」欄位輸入城市名稱');
+                    }
+                }
+
+                const result = await fetchWeatherForDay(day);
+                if (!day.weather) day.weather = {};
+                day.weather.icon = result.icon;
+                day.weather.temp = result.temp;
+
+                // 即時更新介面控制項
+                const selectIcon = document.getElementById('select-weather-icon');
+                const previewIcon = document.getElementById('preview-weather-icon');
+                const inputTemp = document.getElementById('input-day-temp') || document.querySelector('[data-day-field="weather.temp"]');
+
+                if (selectIcon) selectIcon.value = result.icon;
+                if (previewIcon) previewIcon.className = `ph ${result.icon}`;
+                if (inputTemp) inputTemp.value = result.temp;
+
+                renderSidebarDays();
+                updateTopItineraryTitle();
+                markDirty();
+
+                const tag = result.isForecast ? '即時預報' : '歷史均溫';
+                showToast(`已更新 ${day.day || '當日'} 天氣：${result.cityName} (${result.temp} · ${tag})`);
+            } catch (err) {
+                showToast(`查詢天氣失敗：${err.message}`);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        async function fetchAllDaysWeather() {
+            if (!appData.itinerary || !appData.itinerary.length) {
+                return showToast('目前尚無行程天數！');
+            }
+
+            const btn = document.getElementById('btn-fetch-all-weather');
+            const originalHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph ph-spinner animate-spin text-base text-amber-accent"></i>`;
+            }
+
+            showToast('開始智慧查詢全行程天氣，請稍候...');
+
+            let updatedCount = 0;
+            let lastKnownCity = appData.settings.cities?.[0]?.name?.trim() || '';
+            const failedCities = [];
+
+            try {
+                for (let i = 0; i < appData.itinerary.length; i++) {
+                    const day = appData.itinerary[i];
+                    
+                    // 若當天城市為空，自動繼承上一天的城市或全站城市
+                    if (!day.city || !day.city.trim()) {
+                        if (lastKnownCity) {
+                            day.city = lastKnownCity;
+                        }
+                    } else {
+                        lastKnownCity = day.city.trim();
+                    }
+
+                    if (day.city && day.city.trim()) {
+                        try {
+                            const result = await fetchWeatherForDay(day);
+                            if (!day.weather) day.weather = {};
+                            day.weather.icon = result.icon;
+                            day.weather.temp = result.temp;
+                            updatedCount++;
+                        } catch (e) {
+                            console.warn(`第 ${i + 1} 天天氣查詢失敗:`, e);
+                            failedCities.push(day.city);
+                        }
+                    }
+
+                    // 稍微停頓 150ms 避免超出 API 速率限制
+                    await new Promise(r => setTimeout(r, 150));
+                }
+
+                renderSidebarDays();
+                renderItineraryDay();
+                markDirty();
+
+                if (updatedCount > 0) {
+                    let msg = `🎉 已成功智慧預填 ${updatedCount} 天的天氣與氣溫！`;
+                    if (failedCities.length > 0) {
+                        msg += `（部分未找到：${[...new Set(failedCities)].slice(0, 2).join(', ')}）`;
+                    }
+                    showToast(msg);
+                } else if (failedCities.length > 0) {
+                    showToast(`⚠️ 查無座標：無法辨識「${[...new Set(failedCities)].slice(0, 2).join(', ')}」，請嘗試簡化名稱（如純中文或英文）`);
+                } else {
+                    showToast('請先填寫各天的「所在城市 (City)」，再執行一鍵查詢');
+                }
+            } catch (err) {
+                showToast(`批次查詢遭遇異常：${err.message}`);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        }
+
+        /* ------------------------------------------------------------- */
         /* 💾 檔案讀寫與儲存 (File I/O & File System Access API)         */
         /* ------------------------------------------------------------- */
+        let isOpeningFile = false; // 防連點保護鎖
         async function openLocalFile() {
+            if (isOpeningFile) return;
             if (hasUnsavedChanges && !confirm('目前有未儲存的更動，開啟新檔案將放棄變更，是否繼續？')) {
                 return;
             }
 
-            // 優先使用現代 File System Access API
-            if ('showOpenFilePicker' in window) {
-                try {
-                    const [handle] = await window.showOpenFilePicker({
-                        types: [{ description: 'JSON 行程資料檔', accept: { 'application/json': ['.json'] } }],
-                        multiple: false
-                    });
-                    const file = await handle.getFile();
-                    const text = await file.text();
-                    currentFileHandle = handle;
-                    loadData(JSON.parse(text), file.name, 'local');
-                    showToast(`已開啟 ${file.name}（已綁定本機儲存）`);
-                    return;
-                } catch (err) {
-                    if (err.name === 'AbortError') return;
-                    console.warn('File System Access API 失敗，改用傳統 input:', err);
-                }
-            }
+            isOpeningFile = true;
+            try {
+                // 智慧環境辨識：現代 File System Access API 僅在安全上下文 (http/https/localhost) 且非 file:// 本機受限協定下可用
+                const canUseSystemPicker = ('showOpenFilePicker' in window) 
+                    && Boolean(window.isSecureContext) 
+                    && location.protocol !== 'file:';
 
-            // 傳統 File input 備援
-            document.getElementById('file-input-fallback').click();
+                if (canUseSystemPicker) {
+                    let handle = null;
+                    try {
+                        const [h] = await window.showOpenFilePicker({
+                            types: [{ description: 'JSON 行程資料檔', accept: { 'application/json': ['.json'] } }],
+                            multiple: false
+                        });
+                        handle = h;
+                    } catch (err) {
+                        if (err.name === 'AbortError') return; // 使用者主動取消，直接返回，不彈出備用視窗
+                        console.warn('File System Access API 未能開啟或不支援，改用傳統 input:', err);
+                    }
+
+                    // 若使用者在系統選檔視窗已選取檔案
+                    if (handle) {
+                        try {
+                            const file = await handle.getFile();
+                            let text = await file.text();
+                            // 防呆：過濾 Windows/VS Code 隱藏 BOM 開頭標記 (\uFEFF)
+                            if (text && text.charCodeAt(0) === 0xFEFF) {
+                                text = text.slice(1);
+                            }
+                            currentFileHandle = handle;
+                            loadData(JSON.parse(text), file.name, 'local');
+                            showToast(`已開啟 ${file.name}（已綁定本機儲存）`);
+                        } catch (readErr) {
+                            console.error('讀取或解析本機檔案失敗:', readErr);
+                            showToast(`開啟檔案失敗：${readErr.message}`);
+                        }
+                        return; // ★ 核心關鍵：已完成選檔，無論成功與否，絕不再彈出第二次選檔視窗！
+                    }
+                }
+
+                // 在 VS Code 內建瀏覽器或 file:// 本機環境下，直接啟動安全相容的傳統選檔（只彈窗 1 次且絕不報錯）
+                document.getElementById('file-input-fallback').click();
+            } finally {
+                // 延遲解除保護鎖
+                setTimeout(() => { isOpeningFile = false; }, 400);
+            }
         }
 
         async function saveToDisk() {
@@ -2286,8 +2709,12 @@
                 }
             }
 
-            // 若瀏覽器支援另存新檔 API
-            if ('showSaveFilePicker' in window) {
+            // 若環境支援現代另存新檔 API (需安全上下文且非 file:// 協定)
+            const canUseSavePicker = ('showSaveFilePicker' in window) 
+                && Boolean(window.isSecureContext) 
+                && location.protocol !== 'file:';
+
+            if (canUseSavePicker) {
                 try {
                     const handle = await window.showSaveFilePicker({
                         suggestedName: currentFileName || '2610.json',
@@ -2533,6 +2960,8 @@
         function initEventListeners() {
             // 側邊欄與頁籤切換
             document.getElementById('tab-nav-settings').onclick = () => switchTab('settings');
+            const btnOverviewTab = document.getElementById('tab-nav-overview');
+            if (btnOverviewTab) btnOverviewTab.onclick = () => switchTab('overview');
             document.getElementById('tab-nav-itinerary').onclick = () => switchTab('itinerary');
             document.getElementById('tab-nav-json').onclick = () => switchTab('json');
             const btnExpTab = document.getElementById('tab-nav-expenses');
@@ -2608,7 +3037,8 @@
             document.getElementById('btn-add-day').onclick = () => {
                 const newDayNum = appData.itinerary.length + 1;
                 appData.itinerary.push({
-                    day: `Day ${newDayNum}`,
+                    day: `D${newDayNum}`,
+                    city: '',
                     fullDate: '',
                     title: '新行程日',
                     weather: { icon: 'ph-sun', temp: '' },
@@ -2626,7 +3056,7 @@
                 renderItineraryDay();
                 switchTab('itinerary');
                 markDirty();
-                showToast(`已新增 Day ${newDayNum}`);
+                showToast(`已新增 D${newDayNum}`);
             };
 
             // 前一天 / 後一天
@@ -2714,6 +3144,11 @@
             document.getElementById('btn-download-json').onclick = downloadJsonBlob;
             const btnDlHtml = document.getElementById('btn-download-companion-html');
             if (btnDlHtml) btnDlHtml.onclick = () => downloadCompanionHtml();
+            // 智慧天氣按鈕綁定 (單日查詢 & 全行程一鍵預填)
+            const btnFetchDayWeather = document.getElementById('btn-fetch-day-weather');
+            if (btnFetchDayWeather) btnFetchDayWeather.onclick = fetchSingleDayWeather;
+            const btnFetchAllWeather = document.getElementById('btn-fetch-all-weather');
+            if (btnFetchAllWeather) btnFetchAllWeather.onclick = fetchAllDaysWeather;
             document.getElementById('btn-copy-raw-json').onclick = async () => {
                 syncRawJsonView();
                 await navigator.clipboard.writeText(rawJsonOutput.value);
@@ -2783,7 +3218,12 @@
                 const reader = new FileReader();
                 reader.onload = (evt) => {
                     try {
-                        const json = JSON.parse(evt.target.result);
+                        let text = evt.target.result;
+                        // 防呆：去除開頭 UTF-8 BOM (\uFEFF)
+                        if (text && text.charCodeAt(0) === 0xFEFF) {
+                            text = text.slice(1);
+                        }
+                        const json = JSON.parse(text);
                         loadData(json, file.name, 'local');
                         showToast(`已載入 ${file.name}`);
                     } catch (err) {
@@ -2840,24 +3280,29 @@
             document.getElementById('panel-settings').addEventListener('input', handleSettingsChange);
             document.getElementById('panel-settings').addEventListener('change', handleSettingsChange);
 
-            // 總覽城市卡片新增與刪除點擊監聽
-            document.getElementById('panel-settings').addEventListener('click', (e) => {
-                const btn = e.target.closest('#btn-add-overview-city, [data-action="del-city"]');
-                if (!btn) return;
-                if (btn.id === 'btn-add-overview-city') {
-                    if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
-                    appData.settings.cities.push({ name: '', desc: '', tag: '', image: '' });
-                    renderOverviewCitiesSetting();
-                    markDirty();
-                } else if (btn.dataset.action === 'del-city') {
-                    const idx = Number(btn.dataset.cityIdx);
-                    if (Array.isArray(appData.settings.cities)) {
-                        appData.settings.cities.splice(idx, 1);
+            // 行程總覽面板事件監聽 (Overview Panel Delegation)
+            const panelOverview = document.getElementById('panel-overview');
+            if (panelOverview) {
+                panelOverview.addEventListener('input', handleSettingsChange);
+                panelOverview.addEventListener('change', handleSettingsChange);
+                panelOverview.addEventListener('click', (e) => {
+                    const btn = e.target.closest('#btn-add-overview-city, [data-action="del-city"]');
+                    if (!btn) return;
+                    if (btn.id === 'btn-add-overview-city') {
+                        if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
+                        appData.settings.cities.push({ name: '', desc: '', tag: '', image: '' });
                         renderOverviewCitiesSetting();
                         markDirty();
+                    } else if (btn.dataset.action === 'del-city') {
+                        const idx = Number(btn.dataset.cityIdx);
+                        if (Array.isArray(appData.settings.cities)) {
+                            appData.settings.cities.splice(idx, 1);
+                            renderOverviewCitiesSetting();
+                            markDirty();
+                        }
                     }
-                }
-            });
+                });
+            }
 
             // 可見頁籤勾選切換
             document.querySelectorAll('.tab-checkbox').forEach(cb => {
@@ -2927,8 +3372,20 @@
                 // 每日基本欄位
                 const dayField = target.dataset.dayField;
                 if (dayField) {
-                    setObjectValue(day, dayField, target.value);
-                    if (dayField === 'day' || dayField === 'title' || dayField === 'fullDate') {
+                    let val = target.value;
+                    // 當編輯天數代號時，若使用者鍵入純數字 (如 "1") 或 "d1"，在 change/focusout 時自動識別為 "D1"
+                    if (dayField === 'day' && (e.type === 'change' || e.type === 'focusout')) {
+                        const trimmed = val.trim();
+                        if (/^\d+$/.test(trimmed)) {
+                            val = `D${trimmed}`;
+                            target.value = val;
+                        } else if (/^d\s*(\d+)$/i.test(trimmed)) {
+                            val = `D${RegExp.$1}`;
+                            target.value = val;
+                        }
+                    }
+                    setObjectValue(day, dayField, val);
+                    if (dayField === 'day' || dayField === 'title' || dayField === 'fullDate' || dayField === 'city') {
                         renderSidebarDays();
                         updateTopItineraryTitle();
                         if (dayField === 'fullDate') syncDayDatePickerFromText(target.value);
@@ -2941,7 +3398,7 @@
                         if (mapPreview) {
                             mapPreview.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
                                 ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`
-                                : `<span class="text-[10px] text-moss-400">無圖</span>`;
+                                : `<span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-map-trifold text-base"></i> 無路線地圖預覽</span>`;
                         }
                     }
                     if (dayField === 'image') {
@@ -2949,7 +3406,7 @@
                         if (preview) {
                             preview.innerHTML = (target.value && /^https?:\/\//i.test(target.value.trim()))
                                 ? `<img src="${escapeHtml(target.value.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`
-                                : `<span class="text-[10px] text-moss-400">無圖</span>`;
+                                : `<span class="text-xs text-moss-400 flex items-center gap-1.5"><i class="ph ph-image text-base"></i> 無圖片預覽</span>`;
                         }
                     }
                     markDirty();
@@ -3042,6 +3499,7 @@
             };
             document.getElementById('panel-itinerary').addEventListener('input', handleItineraryInput);
             document.getElementById('panel-itinerary').addEventListener('change', handleItineraryInput);
+            document.getElementById('panel-itinerary').addEventListener('focusout', handleItineraryInput);
 
             // 點擊事件監聽 (Delegation for Add/Del buttons)
             document.getElementById('panel-itinerary').addEventListener('click', (e) => {

@@ -1085,11 +1085,11 @@
                 pcHtml += `
                     <a href="#${dayId}" class="nav-item nav-day flex items-center gap-3 px-3 py-2.5 rounded-xl text-moss-500 font-bold hover:bg-moss-200/50 transition-all group" data-target="${dayId}">
                         <div class="nav-icon w-8 h-8 rounded-full bg-moss-200 group-hover:bg-moss-300 flex items-center justify-center text-small shrink-0">${index + 1}</div>
-                        <div class="nav-text truncate min-w-0"><p class="text-small font-black opacity-70 tracking-wider">${day.day}</p><p class="text-body font-bold truncate">${day.title}</p></div>
+                        <div class="nav-text truncate min-w-0"><p class="text-small font-black opacity-70 tracking-wider">${escapeHtml(day.day)}${day.city ? ` · ${escapeHtml(day.city)}` : ''}</p><p class="text-body font-bold truncate">${escapeHtml(day.title || '')}</p></div>
                     </a>
                 `;
                 mobileHtml += `
-                    <a href="#${dayId}" class="nav-item nav-day shrink-0 px-5 py-2 rounded-full text-body font-bold text-moss-500 hover:bg-moss-200/50 transition-colors" data-target="${dayId}">${day.day}</a>
+                    <a href="#${dayId}" class="nav-item nav-day shrink-0 px-5 py-2 rounded-full text-body font-bold text-moss-500 hover:bg-moss-200/50 transition-colors" data-target="${dayId}">${escapeHtml(day.day)}${day.city ? ` · ${escapeHtml(day.city)}` : ''}</a>
                 `;
             });
 
@@ -1363,8 +1363,8 @@
                 html += `
                     <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
                         <div class="mb-5">
-                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-small tracking-widest mb-2 shadow-sm uppercase">${day.fullDate} &middot; ${day.day}</span>
-                            <h2 class="text-heading font-serif font-black text-moss-500 leading-tight">${day.title}</h2>
+                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-small tracking-widest mb-2 shadow-sm uppercase">${day.fullDate ? `${escapeHtml(day.fullDate)} &middot; ` : ''}${escapeHtml(day.day)}${day.city ? ` &middot; ${escapeHtml(day.city)}` : ''}</span>
+                            <h2 class="text-heading font-serif font-black text-moss-500 leading-tight">${escapeHtml(day.title || '')}</h2>
                         </div>
                         
                         ${weatherOutfitHtml}
