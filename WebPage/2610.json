@@ -152,10 +152,7 @@
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103741-3950.webp",
       "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
       "todos": [],
-      "flights": [
-        "土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 (+1日) *(時差：慢台灣5小時)*",
-        "【土國國內線】土耳其航空 TK2108 ｜ 伊斯坦堡 08:00 － 安卡拉 09:15"
-      ],
+      "flights": [],
       "spots": [
         {
           "name": "市長官邸",
@@ -226,7 +223,7 @@
         "icon": "ph-cloud-moon",
         "temp": "8-19°C"
       },
-      "image": "https://images.pexels.com/photos/13320762/pexels-photo-13320762.jpeg",
+      "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103915-1290.webp",
       "todos": [
         {
           "task": "飯店待訂",
@@ -238,7 +235,7 @@
           "name": "阿塔圖爾克紀念館",
           "description": "參觀融匯古今現代建築傑作，向土耳其國父凱末爾致敬的莊嚴陵寢。",
           "mapQuery": "阿塔圖爾克紀念館 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-103915-2690.webp",
           "note": "",
           "todos": []
         },
@@ -304,13 +301,13 @@
         "icon": "ph-sun",
         "temp": "6-18°C"
       },
-      "image": "https://images.unsplash.com/photo-1507727181676-4767e3a89e98?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104037-1211.webp",
       "spots": [
         {
           "name": "哥樂美露天博物館",
           "description": "探訪開鑿於奇特地貌的洞窟修道院，讚嘆托卡裏教堂絕美拜占庭壁畫。",
           "mapQuery": "哥樂美露天博物館 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-104037-3210.webp",
           "note": "",
           "todos": []
         },
@@ -344,8 +341,8 @@
         "天候允許將搭乘熱氣球；地下城通道極度狹窄，幽閉恐懼或膝蓋不便者請自行評估入內。"
       ],
       "outfit": "清晨若搭乘熱氣球氣溫逼近零度，需備毛帽與防風手套；白天洋蔥式穿搭。",
-      "buy": "土耳其石（綠松石）純銀飾品、游牧民族手工幾何圖騰地毯、惡魔之眼掛飾。",
-      "eat": "道地土耳其冰淇淋、土式鄉村下午茶、肥美多汁傳統烤羊肉。",
+      "buy": "綠松石純銀飾品、游牧民族手工幾何圖騰地毯、惡魔之眼掛飾",
+      "eat": "道地土耳其冰淇淋、土式鄉村下午茶、肥美多汁傳統烤羊肉",
       "tips": "參觀地毯坊與珠寶店時微笑道別即可，殺價為當地樂趣；下午茶與冰淇淋為特別招待。",
       "meals": "午：土式佐傳統烤羊肉風味餐 / 晚：旅館自助式或套餐",
       "lodging": "KALSEDON CAVE HOTEL",
@@ -368,12 +365,12 @@
         },
         {
           "tag": "eat",
-          "text": "肥美多汁傳統烤羊肉。",
+          "text": "肥美多汁傳統烤羊肉",
           "image": ""
         },
         {
           "tag": "buy",
-          "text": "土耳其石（綠松石）純銀飾品",
+          "text": "綠松石純銀飾品",
           "image": ""
         },
         {
@@ -383,7 +380,7 @@
         },
         {
           "tag": "buy",
-          "text": "惡魔之眼掛飾。",
+          "text": "惡魔之眼掛飾",
           "image": ""
         }
       ]
@@ -396,7 +393,7 @@
         "icon": "ph-sun",
         "temp": "12-24°C"
       },
-      "image": "https://images.unsplash.com/photo-1582202534571-081e7d23d8c1?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104132-9210.webp",
       "spots": [
         {
           "name": "蘇丹哈尼古驛站",
@@ -474,21 +471,21 @@
         "icon": "ph-sun",
         "temp": "16-26°C"
       },
-      "image": "https://images.unsplash.com/photo-1524230626359-eb01235471d4?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-145806-1210.webp",
       "spots": [
         {
           "name": "哈德良門舊城",
           "description": "穿過古羅馬凱旋門漫步進入古鎮，探訪凱鍚克喚拜樓與卡拉裏歐魯公園。",
           "mapQuery": "哈德良門舊城 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-145806-2740.webp",
           "note": "",
           "todos": []
         },
         {
           "name": "地中海搭船出海",
           "description": "於舊城港口乘船乘風破浪，近距離欣賞懸崖瀑布直衝入海的杜登奇觀。",
-          "mapQuery": "地中海搭船出海 土耳其",
-          "image": "",
+          "mapQuery": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-104239-8750.webp",
           "note": "",
           "todos": []
         },
@@ -558,7 +555,7 @@
           "name": "巴穆卡麗棉堡",
           "description": "漫步於富含碳酸鈣湧泉結晶而成的潔白石灰華梯堤，宛如踏入銀色幻境。",
           "mapQuery": "巴穆卡麗棉堡 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-104354-8600.webp",
           "note": "",
           "todos": []
         },
@@ -574,7 +571,7 @@
           "name": "希拉波利斯古城",
           "description": "環抱西元前2世紀遺留的廣闊神殿、古羅馬大劇場與傾圮的水底宮殿。",
           "mapQuery": "希拉波利斯古城 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-104354-9050.webp",
           "note": "",
           "todos": []
         },
@@ -628,7 +625,8 @@
           "text": "天然無花果夾心巧克力。",
           "image": ""
         }
-      ]
+      ],
+      "mapImage": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg"
     },
     {
       "day": "Day 8",
@@ -655,7 +653,7 @@
           "name": "艾菲索斯古城",
           "description": "走入小亞細亞最繁榮的遺址，仰望塞爾薩斯圖書館與兩萬人大劇場。",
           "mapQuery": "艾菲索斯古城 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-104458-8680.webp",
           "note": "",
           "todos": []
         },
@@ -663,7 +661,7 @@
           "name": "席林杰小鎮",
           "description": "漫步於以19世紀鄂圖曼農村民居與滿山果園著稱的「露天建築博物館」。",
           "mapQuery": "席林杰小鎮 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-104458-9220.webp",
           "note": "",
           "todos": []
         }
@@ -724,7 +722,7 @@
           "name": "托普卡帕宮",
           "description": "探訪鄂圖曼帝國核心，見證中國古代瓷器館、謁見室與穆罕默德聖遺物室。",
           "mapQuery": "托普卡帕宮 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-104728-5650.webp",
           "note": "",
           "todos": []
         },
@@ -732,7 +730,7 @@
           "name": "聖索菲亞清真寺",
           "description": "凝視基督教與伊斯蘭完美融合的巨大穹頂，見證東羅馬最高建築傑作。",
           "mapQuery": "聖索菲亞清真寺 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_3-20261002-104728-6190.webp",
           "note": "",
           "todos": []
         },
@@ -740,7 +738,7 @@
           "name": "藍色清真寺",
           "description": "走入全球唯一六根尖塔清真寺，被兩萬多片伊茲尼克藍白彩釉瓷磚包圍。",
           "mapQuery": "藍色清真寺 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-104728-5130.webp",
           "note": "",
           "todos": []
         },
@@ -748,7 +746,7 @@
           "name": "君士坦丁地下水庫",
           "description": "深入336根大理石柱支撐的貯水宮殿，聆聽水光倒影中的神秘悠揚樂聲。",
           "mapQuery": "君士坦丁地下水庫 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104728-3620.webp",
           "note": "",
           "todos": []
         },
@@ -765,8 +763,8 @@
         "若遇藍色清真寺整修或宗教儀式關閉，將改參觀蘇萊曼、新清真寺或奴魯奧斯瑪尼耶清真寺。"
       ],
       "outfit": "清真寺規定「女性需戴頭巾、男女皆嚴禁短褲/無袖/透視裝」，入內需脫鞋。",
-      "buy": "經典現磨 Mehmet Efendi 土耳其咖啡粉、天然中東綜合香料組、道地頂級番紅花乾。",
-      "eat": "宮廷風格米其林推薦餐廳料理、傳統開心果層酥甜點（Baklava）。",
+      "buy": "經典現磨 Mehmet Efendi 土耳其咖啡粉、天然中東綜合香料組、道地頂級番紅花乾",
+      "eat": "宮廷風格米其林推薦餐廳料理、傳統開心果層酥甜點(Baklava)",
       "tips": "地下水庫內部燈光較暗且濕滑；香料市集人潮擁擠，包包建議往前背以防扒手。",
       "meals": "午：宮廷風米其林推薦料理 / 晚：中式合菜7菜1湯含水果",
       "lodging": "LIONEL HOTEL ISTANBUL",
@@ -784,7 +782,7 @@
         },
         {
           "tag": "eat",
-          "text": "傳統開心果層酥甜點（Baklava）。",
+          "text": "傳統開心果層酥甜點(Baklava)",
           "image": ""
         },
         {
@@ -799,7 +797,7 @@
         },
         {
           "tag": "buy",
-          "text": "道地頂級番紅花乾。",
+          "text": "道地頂級番紅花乾",
           "image": ""
         }
       ]
