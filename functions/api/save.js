@@ -7,7 +7,7 @@ export async function onRequestPost(context) {
 
     try {
         const body = await request.json();
-        const { filename, content, password } = body;
+        const { filename, content, password, createHtml } = body;
 
         // 1. 驗證管理密碼 (防護第一道防線)
         const adminSecret = env.ADMIN_SECRET;
@@ -104,7 +104,69 @@ export async function onRequestPost(context) {
             });
         }
 
-        return new Response(JSON.stringify({ success: true, message: `成功同步 ${cleanName} 至 GitHub` }), {
+        // 7. 若勾選「同時建立同名 HTML 展示頁」且非 catalog.json
+        let htmlMessage = '';
+        if (createHtml && cleanName.toLowerCase() !== 'catalog.json') {
+            const baseName = cleanName.replace(/\.json$/i, '');
+            const htmlPath = `WebPage/${baseName}.html`;
+            const htmlApiBase = `https://api.github.com/repos/${githubRepo}/contents/${htmlPath}`;
+
+            // 先檢查目標 HTML 是否已經存在
+            const checkHtmlRes = await fetch(htmlApiBase, {
+                headers: {
+                    'User-Agent': 'Cloudflare-Travel-Admin',
+                    'Authorization': `Bearer ${githubToken}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (checkHtmlRes.ok) {
+                htmlMessage = `（展示頁 ${baseName}.html 已存在，保留既有檔案不覆蓋）`;
+            } else if (checkHtmlRes.status === 404) {
+                // 從 GitHub 抓取 WebPage/Template.html 作為公版樣板
+                const templateApi = `https://api.github.com/repos/${githubRepo}/contents/WebPage/Template.html`;
+                const templateRes = await fetch(templateApi, {
+                    headers: {
+                        'User-Agent': 'Cloudflare-Travel-Admin',
+                        'Authorization': `Bearer ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (templateRes.ok) {
+                    const templateData = await templateRes.json();
+                    if (templateData.content) {
+                        const cleanBase64 = templateData.content.replace(/\s+/g, '');
+                        const putHtmlRes = await fetch(htmlApiBase, {
+                            method: 'PUT',
+                            headers: {
+                                'User-Agent': 'Cloudflare-Travel-Admin',
+                                'Authorization': `Bearer ${githubToken}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: `feat(itinerary): create ${baseName}.html from template`,
+                                content: cleanBase64
+                            })
+                        });
+
+                        if (putHtmlRes.ok) {
+                            htmlMessage = `，並已自動建立 ${baseName}.html 展示頁！`;
+                        } else {
+                            htmlMessage = `（提示：JSON 已儲存，但自動建立 ${baseName}.html 時遭遇錯誤）`;
+                        }
+                    }
+                } else {
+                    htmlMessage = `（提示：未在 GitHub 上找到 WebPage/Template.html 樣板檔）`;
+                }
+            }
+        }
+
+        return new Response(JSON.stringify({ 
+            success: true, 
+            message: `成功同步 ${cleanName} 至 GitHub${htmlMessage}` 
+        }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

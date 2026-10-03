@@ -664,6 +664,11 @@
                             <i class="ph ph-file-plus text-base text-moss-400"></i>
                         </button>
 
+                        <!-- 下載同名 HTML 展示頁 -->
+                        <button id="btn-download-companion-html" type="button" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-50 text-moss-500 flex items-center justify-center transition-all shadow-sm" title="下載對應同名的 HTML 展示頁">
+                            <i class="ph ph-file-html text-base text-moss-400"></i>
+                        </button>
+
                         <!-- 雲端線上載入 (fetch) -->
                         <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-moss-200 shadow-sm">
                             <i class="ph ph-cloud-arrow-down text-base text-moss-400 ml-1"></i>
@@ -1011,6 +1016,14 @@
                         <span>在此裝置記住密碼</span>
                     </label>
                     <button id="btn-forget-password" type="button" class="text-[11px] text-moss-400 hover:text-red-500 transition-colors hidden" title="清除記住的密碼">清除記憶</button>
+                </div>
+                <!-- 同時建立同名 HTML 展示頁 -->
+                <div id="cloud-create-html-box" class="pt-2.5 border-t border-moss-100">
+                    <label class="flex items-center gap-2 cursor-pointer text-xs text-moss-500 font-bold select-none">
+                        <input id="cb-cloud-create-html" type="checkbox" checked class="w-4 h-4 rounded text-moss-400 accent-moss-400">
+                        <span>同時建立同名展示頁 (<span id="cloud-companion-html-name" class="font-mono text-moss-400">2610.html</span>)</span>
+                    </label>
+                    <p class="text-[11px] text-moss-400/80 ml-6 mt-0.5">以標準公版 (Template.html) 為底，若展示頁已存在則不會覆蓋</p>
                 </div>
             </div>
 
@@ -2254,6 +2267,7 @@
         }
 
         async function saveToDisk() {
+            const isNewFile = (currentFileMode === 'new');
             const jsonText = JSON.stringify(appData, null, 2);
 
             // 若已有 FileHandle，直接覆蓋儲存！
@@ -2288,6 +2302,15 @@
                     updateSmartSaveUI();
                     markClean();
                     showToast(`已儲存至 ${handle.name}！`);
+
+                    const baseName = currentFileName.replace(/\.json$/i, '');
+                    if (isNewFile && baseName.toLowerCase() !== 'catalog') {
+                        openConfirm(
+                            '建立同名展示頁面',
+                            `已成功儲存 ${currentFileName}！是否同時下載對應的展示頁面（${baseName}.html）放入同資料夾中？`,
+                            () => downloadCompanionHtml(baseName)
+                        );
+                    }
                     return;
                 } catch (err) {
                     if (err.name === 'AbortError') return;
@@ -2297,6 +2320,68 @@
 
             // 最終備援方案：自動下載 Blob 檔案
             downloadJsonBlob();
+            const baseName = (currentFileName || 'itinerary.json').replace(/\.json$/i, '');
+            if (isNewFile && baseName.toLowerCase() !== 'catalog') {
+                openConfirm(
+                    '建立同名展示頁面',
+                    `已下載 ${currentFileName}！是否同時下載對應的展示頁面（${baseName}.html）放入同資料夾中？`,
+                    () => downloadCompanionHtml(baseName)
+                );
+            }
+        }
+
+        async function downloadCompanionHtml(targetBaseName) {
+            let base = targetBaseName || currentFileName || 'itinerary';
+            base = base.replace(/\.json$/i, '').trim();
+            if (base === '未命名行程' || base === 'new_plan' || !base) {
+                const userEntered = prompt('請輸入展示頁檔名（例如 2610 或 tokyo）：', '2610');
+                if (!userEntered || !userEntered.trim()) return;
+                base = userEntered.trim().replace(/\.html$/i, '');
+            }
+
+            if (base.toLowerCase() === 'catalog') {
+                return showToast('catalog 為目錄索引檔，無需建立展示網頁');
+            }
+
+            showToast(`正在準備 ${base}.html 展示頁...`);
+            try {
+                let templateText = '';
+                // 1. 優先從相對路徑讀取本機 WebPage/Template.html
+                try {
+                    const res = await fetch('WebPage/Template.html');
+                    if (res.ok) templateText = await res.text();
+                } catch (e) {}
+
+                if (!templateText) {
+                    try {
+                        const res = await fetch('Template.html');
+                        if (res.ok) templateText = await res.text();
+                    } catch (e) {}
+                }
+
+                // 2. 備援：若處於本機離線或路徑異常，從 GitHub raw 抓取
+                if (!templateText) {
+                    try {
+                        const ghRes = await fetch('https://raw.githubusercontent.com/DorisLiu/Travel-Plan-Web/main/WebPage/Template.html');
+                        if (ghRes.ok) templateText = await ghRes.text();
+                    } catch (e) {}
+                }
+
+                if (!templateText) {
+                    throw new Error('未能讀取 WebPage/Template.html 樣板檔');
+                }
+
+                const blob = new Blob([templateText], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${base}.html`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast(`🎉 已成功下載 ${base}.html 展示頁！`);
+            } catch (err) {
+                showToast(`下載展示頁失敗：${err.message}`);
+            }
         }
 
         /* ------------------------------------------------------------- */
@@ -2324,6 +2409,8 @@
             const cbRemember = document.getElementById('cb-remember-password');
             const btnForget = document.getElementById('btn-forget-password');
             const errBox = document.getElementById('cloud-save-error');
+            const companionHtmlBox = document.getElementById('cloud-create-html-box');
+            const companionHtmlName = document.getElementById('cloud-companion-html-name');
 
             if (!modal) return;
 
@@ -2341,6 +2428,16 @@
             desc.textContent = `目標：WebPage/${currentFileName}`;
             errBox.classList.add('hidden');
             errBox.textContent = '';
+
+            const baseName = currentFileName.replace(/\.json$/i, '');
+            if (companionHtmlBox && companionHtmlName) {
+                if (baseName.toLowerCase() === 'catalog') {
+                    companionHtmlBox.classList.add('hidden');
+                } else {
+                    companionHtmlBox.classList.remove('hidden');
+                    companionHtmlName.textContent = `${baseName}.html`;
+                }
+            }
 
             const savedPw = localStorage.getItem('travel_admin_secret');
             if (savedPw) {
@@ -2363,6 +2460,7 @@
             const spinner = document.getElementById('cloud-confirm-spinner');
             const btnConfirm = document.getElementById('btn-cloud-confirm');
             const modal = document.getElementById('modal-cloud-save');
+            const shouldCreateHtml = document.getElementById('cb-cloud-create-html')?.checked ?? false;
 
             const password = pwInput.value.trim();
             if (!password) {
@@ -2382,7 +2480,8 @@
                     body: JSON.stringify({
                         filename: currentFileName,
                         content: appData,
-                        password: password
+                        password: password,
+                        createHtml: shouldCreateHtml
                     })
                 });
 
@@ -2401,7 +2500,7 @@
                 updateSmartSaveUI();
                 modal.close();
                 markClean();
-                showToast(`🎉 已成功同步至 GitHub！(${currentFileName})`);
+                showToast(data.message || `🎉 已成功同步至 GitHub！(${currentFileName})`);
             } catch (err) {
                 errBox.textContent = `回存失敗：${err.message}`;
                 errBox.classList.remove('hidden');
@@ -2613,6 +2712,8 @@
             document.getElementById('btn-open-file').onclick = openLocalFile;
             document.getElementById('btn-save-disk').onclick = handleSmartSave;
             document.getElementById('btn-download-json').onclick = downloadJsonBlob;
+            const btnDlHtml = document.getElementById('btn-download-companion-html');
+            if (btnDlHtml) btnDlHtml.onclick = () => downloadCompanionHtml();
             document.getElementById('btn-copy-raw-json').onclick = async () => {
                 syncRawJsonView();
                 await navigator.clipboard.writeText(rawJsonOutput.value);
