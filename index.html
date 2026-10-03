@@ -264,7 +264,7 @@
                 <article class="catalog-entry">
                     <div class="catalog-entry-head"><span>攻略 ${String(index + 1).padStart(2, '0')}</span><button class="catalog-remove-entry" type="button" data-catalog-remove="${index}" aria-label="刪除攻略 ${index + 1}" title="刪除此攻略"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M9 7V4.8h6V7m3 0-.8 12H6.8L6 7m3.5 3.5v5m5-5v5"/></svg></button></div>
                     <div class="catalog-entry-grid">
-                        <label class="catalog-entry-field">攻略標題<input type="text" data-catalog-index="${index}" data-catalog-field="title" value="${escapeHtml(entry.title)}" placeholder="例如：星月傳奇．土耳其11日"></label>
+                        <label class="catalog-entry-field">攻略標題<input type="text" data-catalog-index="${index}" data-catalog-field="title" value="${escapeHtml(entry.title)}" placeholder="輸入行程標題"></label>
                         <label class="catalog-entry-field">日期<input type="text" data-catalog-index="${index}" data-catalog-field="date" value="${escapeHtml(entry.date)}" placeholder="2026/10/8 - 10/18"></label>
                         <label class="catalog-entry-field">HTML 檔名<input type="text" data-catalog-index="${index}" data-catalog-field="html" value="${escapeHtml(entry.html)}" placeholder="2610.html"></label>
                         <label class="catalog-entry-field">封面圖片網址<input type="url" data-catalog-index="${index}" data-catalog-field="image" value="${escapeHtml(entry.image)}" placeholder="https://..."></label>
