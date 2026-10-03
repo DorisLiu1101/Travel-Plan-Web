@@ -142,6 +142,35 @@
         .mobile-bottom-bar {
             box-shadow: 0 -4px 20px rgba(var(--color-deep-rgb), 0.08);
         }
+
+        /* 🏙️ 城市卡片 3D 翻轉效果 */
+        .city-flip-card {
+            perspective: 1000px;
+        }
+        .city-flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .city-flip-card.is-flipped .city-flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .city-flip-card-front,
+        .city-flip-card-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 2rem;
+            overflow: hidden;
+        }
+        .city-flip-card-back {
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
 <body class="antialiased relative selection:bg-moss-300 selection:text-moss-500">
@@ -1030,18 +1059,19 @@
             if (Array.isArray(settings?.cities) && settings.cities.length > 0) {
                 cityList = settings.cities;
             } else if (itineraryData && itineraryData.length > 0) {
-                // 備援：若無 cities 設定，提取景點作為後備
-                itineraryData.forEach(day => {
-                    if (day.spots) {
-                        day.spots.forEach(spot => {
-                            if (spot.image && cityList.length < 8) {
-                                cityList.push({
-                                    name: spot.name,
-                                    desc: '行程亮點',
-                                    tag: day.day || 'Highlight',
-                                    image: spot.image
-                                });
-                            }
+                // 備援：若無 cities 設定，提取每日行程之城市作為後備
+                const seenCities = new Set();
+                itineraryData.forEach((day, idx) => {
+                    const c = (day.city || '').trim();
+                    if (c && !seenCities.has(c.toLowerCase())) {
+                        seenCities.add(c.toLowerCase());
+                        const zh = (c.match(/[\u4e00-\u9fa5]+/g) || []).join('');
+                        cityList.push({
+                            name: (zh && zh.length >= 2) ? zh : c,
+                            desc: '行程精選',
+                            tag: day.day || `Day ${idx + 1}`,
+                            image: day.image || '',
+                            detail: ''
                         });
                     }
                 });
@@ -1055,23 +1085,70 @@
 
             if (section) section.classList.remove('hidden');
 
-            let html = '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
+            let html = '<div class="w-[calc(50%-6.5rem)] md:w-[calc(50%-8rem)] shrink-0 pointer-events-none"></div>';
             cityList.forEach(city => {
                 const imgUrl = city.image || 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800';
                 html += `
-                <div class="w-40 md:w-52 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[3/4] snap-center bg-moss-200/50">
-                    <img src="${escapeHtml(imgUrl)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${escapeHtml(city.name || '')}">
-                    <div class="absolute inset-0 bg-gradient-to-t from-moss-500/90 via-moss-500/25 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-4 md:p-5 flex flex-col justify-end text-moss-100">
-                        ${city.tag ? `<span class="text-small font-mono font-black tracking-widest uppercase opacity-85 mb-1 drop-shadow-md text-moss-300">${escapeHtml(city.tag)}</span>` : ''}
-                        <h4 class="font-black text-heading truncate shadow-sm drop-shadow-md">${escapeHtml(city.name || '城市')}</h4>
-                        ${city.desc ? `<p class="text-small font-medium tracking-wide mt-0.5 opacity-90 truncate drop-shadow-md">${escapeHtml(city.desc)}</p>` : ''}
+                <div class="city-flip-card w-52 md:w-64 shrink-0 aspect-[4/5] snap-center cursor-pointer select-none" data-action="flip-city-card">
+                    <div class="city-flip-card-inner">
+                        <!-- 正面: 圖片面 (僅顯示上排城市名稱、下排簡介) -->
+                        <div class="city-flip-card-front shadow-sm border border-moss-200 bg-moss-200/50 group">
+                            <img src="${escapeHtml(imgUrl)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${escapeHtml(city.name || '')}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-moss-500/95 via-moss-500/30 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-4 md:p-5 flex flex-col justify-end text-moss-100">
+                                <h4 class="font-black text-heading truncate drop-shadow-md">${escapeHtml(city.name || '城市')}</h4>
+                                ${city.desc ? `<p class="text-small font-medium tracking-wide mt-1 opacity-90 truncate drop-shadow-md">${escapeHtml(city.desc)}</p>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- 背面: 詳細說明面 (純粹深苔綠便籤，拉桿隱形，僅保留說明文字) -->
+                        <div class="city-flip-card-back shadow-md border border-moss-400/30 bg-moss-500 text-moss-100 p-5 md:p-6 flex flex-col justify-start">
+                            <div class="text-sm md:text-base leading-relaxed text-moss-100/95 overflow-y-auto no-scrollbar whitespace-pre-line flex-1">
+                                ${escapeHtml(city.detail || city.desc || '暫無詳細說明')}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 `;
             });
-            html += '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
+            html += '<div class="w-[calc(50%-6.5rem)] md:w-[calc(50%-8rem)] shrink-0 pointer-events-none"></div>';
             container.innerHTML = html;
+
+            // 翻牌互動：點擊卡片翻面
+            container.onclick = (e) => {
+                const card = e.target.closest('.city-flip-card');
+                if (!card) return;
+                const isFlipped = card.classList.contains('is-flipped');
+                // 先翻回其他所有已翻轉卡片
+                container.querySelectorAll('.city-flip-card.is-flipped').forEach(c => {
+                    if (c !== card) c.classList.remove('is-flipped');
+                });
+                // 切換當前卡片
+                if (isFlipped) {
+                    card.classList.remove('is-flipped');
+                } else {
+                    card.classList.add('is-flipped');
+                }
+            };
+
+            // 自動回翻防呆：當使用者滑動橫滑容器（移至下一張卡片）時，自動翻回圖片面
+            if (!container.dataset.flipBound) {
+                container.dataset.flipBound = 'true';
+                container.addEventListener('scroll', () => {
+                    container.querySelectorAll('.city-flip-card.is-flipped').forEach(c => {
+                        c.classList.remove('is-flipped');
+                    });
+                }, { passive: true });
+
+                // 點擊容器外部時也翻回圖片面
+                document.addEventListener('click', (e) => {
+                    if (!container.contains(e.target)) {
+                        container.querySelectorAll('.city-flip-card.is-flipped').forEach(c => {
+                            c.classList.remove('is-flipped');
+                        });
+                    }
+                });
+            }
         }
 
 

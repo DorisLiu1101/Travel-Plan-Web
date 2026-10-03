@@ -35,49 +35,57 @@
         "name": "番紅花城",
         "desc": "世界遺產．鄂圖曼山城",
         "tag": "Day 1-2",
-        "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800&auto=format&fit=crop",
+        "detail": "世界文化遺產山城，完整保存鄂圖曼帝國時期的木造宅邸聚落與紅瓦斜頂。漫步於鵝卵石街道間，可品嚐道地軟糖、探索古老鐵匠鋪與精美手工紅銅工藝。"
       },
       {
         "name": "安卡拉",
         "desc": "土耳其心臟．國父紀念館",
         "tag": "Day 3",
-        "image": "https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1584646098378-0874589d76b1?q=80&w=800&auto=format&fit=crop",
+        "detail": "土耳其政治中心與現代首都，造訪莊嚴壯麗的阿塔圖爾克國父紀念館與安納托利亞文明博物館，見證融匯古今橫跨千年的歷史縮影。"
       },
       {
         "name": "卡帕多奇亞",
         "desc": "熱氣球．奇岩怪石仙境",
         "tag": "Day 3-5",
-        "image": "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?q=80&w=800&auto=format&fit=crop",
+        "detail": "大自然鬼斧神工的風化奇岩與地下城仙境。清晨搭乘五彩熱氣球俯瞰格雷梅峽谷壯麗日出，夜晚入住天然洞穴旅館，體驗道地土耳其之夜民俗盛宴。"
       },
       {
         "name": "孔亞",
         "desc": "旋轉舞發源地．古驛站",
         "tag": "Day 6",
-        "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=800&auto=format&fit=crop",
+        "detail": "塞爾柱土耳其古都與蘇菲派神秘旋轉舞發源聖地。走訪梅夫拉那博物館與絲路古驛站蘇丹哈尼，感受靈性智慧與沙漠綠洲的沉靜莊嚴。"
       },
       {
         "name": "巴穆卡麗 (棉花堡)",
         "desc": "純白溫泉石灰棚．希拉波利斯",
         "tag": "Day 7",
-        "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop",
+        "detail": "大自然雪白階梯狀石灰棚溫泉，被譽為宛如雲朵落入人間的棉花城堡；山頂緊鄰希拉波利斯古羅馬溫泉遺址，赤足涉水踏在溫暖泉水中別有一番詩意。"
       },
       {
         "name": "艾菲索斯",
         "desc": "世界七大奇蹟．羅馬古城",
         "tag": "Day 8",
-        "image": "https://images.unsplash.com/photo-1565011523534-747a8601f10a?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1565011523534-747a8601f10a?q=80&w=800&auto=format&fit=crop",
+        "detail": "地中海東部保存最完整的古羅馬大城，漫步於光滑的大理石街道，仰望宏偉震撼的塞爾蘇斯圖書館立面與能容納兩萬五千人的古羅馬露天大劇場。"
       },
       {
         "name": "庫薩達西",
         "desc": "愛琴海渡假勝地．夕陽海港",
         "tag": "Day 8-9",
-        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop",
+        "detail": "濱臨愛琴海的渡假明珠海港，享受金色夕陽餘暉、微鹹海風吹拂與海景飯店悠閒時光，是銜接古代文明與現代浪漫海島風情的璀璨綠洲。"
       },
       {
         "name": "伊斯坦堡",
         "desc": "橫跨歐亞．藍色清真寺海峽遊船",
         "tag": "Day 9-11",
-        "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop"
+        "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=800&auto=format&fit=crop",
+        "detail": "橫跨歐亞兩大洲的世界歷史十字路口。搭乘遊船暢遊博斯普魯斯海峽，參觀聖索菲亞大教堂、六座宣禮塔的藍色清真寺與琳瑯滿目的有頂大市集。"
       }
     ],
     "expenses": {

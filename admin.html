@@ -727,7 +727,11 @@
                                 </span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button type="button" id="btn-add-overview-city" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center transition-all shadow-sm" title="新增城市卡片">
+                                <button type="button" id="btn-sync-overview-cities" class="h-8 px-2.5 rounded-xl bg-moss-100 hover:bg-moss-200 text-moss-600 flex items-center gap-1.5 transition-all text-xs font-bold border border-moss-200 shadow-2xs" title="自每日行程自動擷取城市與天數標籤">
+                                    <i class="ph ph-arrows-clockwise text-sm"></i>
+                                    <span class="hidden sm:inline">同步每日城市</span>
+                                </button>
+                                <button type="button" id="btn-add-overview-city" class="w-8 h-8 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 flex items-center justify-center transition-all shadow-sm" title="手動新增城市卡片">
                                     <i class="ph ph-plus font-bold text-base"></i>
                                 </button>
                                 <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
@@ -1221,6 +1225,13 @@
             if (!appData.settings.info) appData.settings.info = Object.assign({}, DEFAULT_JSON.settings.info);
             if (!appData.settings.overviewMap) appData.settings.overviewMap = Object.assign({}, DEFAULT_JSON.settings.overviewMap);
             if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
+            appData.settings.cities = appData.settings.cities.map(c => ({
+                name: c.name || '',
+                tag: c.tag || '',
+                desc: c.desc || '',
+                image: c.image || '',
+                detail: c.detail || ''
+            }));
             if (!appData.settings.customTheme) appData.settings.customTheme = Object.assign({}, DEFAULT_JSON.settings.customTheme);
             if (!appData.settings.typography) appData.settings.typography = Object.assign({}, DEFAULT_JSON.settings.typography);
             const defaultTypo = DEFAULT_JSON.settings.typography;
@@ -1678,6 +1689,127 @@
             renderOverviewCitiesSetting();
         }
 
+        // 格式化天數連續與跳天陣列：如 [1, 2] -> "Day 1-2"；[1, 9, 10] -> "Day 1, 9-10"
+        function formatDayRanges(days) {
+            if (!days || !days.length) return '';
+            const sorted = Array.from(new Set(days)).sort((a, b) => a - b);
+            const ranges = [];
+            let start = sorted[0];
+            let prev = sorted[0];
+
+            for (let i = 1; i < sorted.length; i++) {
+                const curr = sorted[i];
+                if (curr === prev + 1) {
+                    prev = curr;
+                } else {
+                    ranges.push(start === prev ? `${start}` : `${start}-${prev}`);
+                    start = curr;
+                    prev = curr;
+                }
+            }
+            ranges.push(start === prev ? `${start}` : `${start}-${prev}`);
+            return `Day ${ranges.join(', ')}`;
+        }
+
+        // 智慧比對城市名稱（包含中文抽取與子字串判定）
+        function isSameCityName(nameA, nameB) {
+            if (!nameA || !nameB) return false;
+            const a = String(nameA).trim().toLowerCase();
+            const b = String(nameB).trim().toLowerCase();
+            if (a === b) return true;
+            if ((a.length >= 2 && b.includes(a)) || (b.length >= 2 && a.includes(b))) return true;
+            const zhA = (String(nameA).match(/[\u4e00-\u9fa5]+/g) || []).join('');
+            const zhB = (String(nameB).match(/[\u4e00-\u9fa5]+/g) || []).join('');
+            if (zhA && zhB && zhA === zhB) return true;
+            return false;
+        }
+
+        function syncOverviewCitiesFromItinerary(silent = false) {
+            if (!Array.isArray(appData.itinerary) || appData.itinerary.length === 0) {
+                if (!silent) showToast('目前無每日行程資料可同步');
+                return;
+            }
+
+            // 1. 依序收集行程中的城市與出現的天數 (保留出現順序)
+            const cityGroups = []; // { name: string, days: number[] }
+
+            appData.itinerary.forEach((dayObj, idx) => {
+                const rawCity = (dayObj.city || '').trim();
+                if (!rawCity) return;
+
+                // 嘗試提取主要中文字串，例如 "番紅花城SAFRANBOLU" -> "番紅花城"
+                const zhMatch = (rawCity.match(/[\u4e00-\u9fa5]+/g) || []).join('');
+                const cleanName = (zhMatch && zhMatch.length >= 2) ? zhMatch : rawCity;
+
+                // 解析天數編號
+                let dayNum = idx + 1;
+                const numMatch = String(dayObj.day || '').match(/\d+/);
+                if (numMatch) {
+                    dayNum = parseInt(numMatch[0], 10);
+                }
+
+                const existingGroup = cityGroups.find(g => isSameCityName(g.name, rawCity));
+                if (existingGroup) {
+                    existingGroup.days.push(dayNum);
+                } else {
+                    cityGroups.push({
+                        name: cleanName,
+                        days: [dayNum]
+                    });
+                }
+            });
+
+            if (cityGroups.length === 0) {
+                if (!silent) showToast('每日行程中尚未填寫「城市」欄位');
+                return;
+            }
+
+            if (!Array.isArray(appData.settings.cities)) {
+                appData.settings.cities = [];
+            }
+
+            const currentCities = appData.settings.cities;
+            const newCities = [];
+
+            // 2. 組裝城市卡片並嚴格保留已有資料
+            cityGroups.forEach((group) => {
+                const autoTag = formatDayRanges(group.days);
+                const existing = currentCities.find(c => isSameCityName(c.name, group.name));
+                if (existing) {
+                    newCities.push({
+                        name: existing.name || group.name,
+                        tag: autoTag,
+                        desc: existing.desc || '',
+                        image: existing.image || '',
+                        detail: existing.detail || ''
+                    });
+                } else {
+                    newCities.push({
+                        name: group.name,
+                        tag: autoTag,
+                        desc: '',
+                        image: '',
+                        detail: ''
+                    });
+                }
+            });
+
+            // 3. 保留使用者手動新增但不包含在行程內的其他城市
+            currentCities.forEach(c => {
+                const found = cityGroups.some(g => isSameCityName(g.name, c.name));
+                if (!found && (c.name || '').trim()) {
+                    newCities.push({ ...c });
+                }
+            });
+
+            appData.settings.cities = newCities;
+            renderOverviewCitiesSetting();
+            markDirty();
+            if (!silent) {
+                showToast(`🎉 已成功同步 ${cityGroups.length} 座城市與天數標籤！`);
+            }
+        }
+
         function renderOverviewCitiesSetting() {
             const container = document.getElementById('overview-cities-container');
             if (!container) return;
@@ -1685,35 +1817,51 @@
 
             const cities = appData.settings.cities || [];
             if (!cities.length) {
-                container.innerHTML = `<div class="p-3 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50">目前無總覽城市卡片，點擊上方「新增城市卡片」建立</div>`;
+                container.innerHTML = `<div class="p-4 text-xs text-moss-400 text-center border border-dashed border-moss-200 rounded-xl bg-moss-50/50 flex flex-col items-center justify-center gap-2">
+                    <span>目前無總覽城市卡片</span>
+                    <button type="button" onclick="syncOverviewCitiesFromItinerary(false)" class="px-3 py-1.5 rounded-lg bg-moss-400 text-moss-100 text-xs font-bold hover:bg-moss-500 transition-colors flex items-center gap-1.5 shadow-2xs">
+                        <i class="ph ph-arrows-clockwise text-sm"></i> 自每日行程自動同步
+                    </button>
+                </div>`;
                 return;
             }
 
             cities.forEach((city, idx) => {
                 const item = document.createElement('div');
-                item.className = 'p-3 rounded-xl border border-moss-200 bg-moss-50/60 space-y-2.5';
+                item.className = 'p-3 sm:p-3.5 rounded-xl border border-moss-200 bg-moss-50/60 space-y-2.5';
                 const hasImg = city.image && /^https?:\/\//i.test(city.image.trim());
                 item.innerHTML = `
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                    <div class="space-y-2">
+                        <!-- 第一列：序號、城市名稱、天數標籤、刪除按鈕 -->
+                        <div class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                            <input type="text" placeholder="城市名稱" value="${escapeHtml(city.name || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="name">
-                            <input type="text" placeholder="天數標籤" value="${escapeHtml(city.tag || '')}" class="w-24 sm:w-28 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none shrink-0" data-action="edit-city-field" data-city-idx="${idx}" data-field="tag">
-                            <button type="button" class="sm:hidden w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
+                            <div class="flex-1 min-w-0">
+                                <input type="text" placeholder="城市名稱 (如：番紅花城)" value="${escapeHtml(city.name || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="name">
+                            </div>
+                            <div class="w-24 sm:w-28 shrink-0">
+                                <input type="text" placeholder="天數 (如：Day 1-2)" value="${escapeHtml(city.tag || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="tag">
+                            </div>
+                            <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
                                 <i class="ph ph-trash text-sm"></i>
                             </button>
                         </div>
-                        <div class="flex items-center gap-2 flex-1 min-w-0 pl-8 sm:pl-0">
-                            <input type="text" placeholder="城市簡介特色" value="${escapeHtml(city.desc || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="desc">
-                            <button type="button" class="hidden sm:flex w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
-                                <i class="ph ph-trash text-sm"></i>
-                            </button>
+
+                        <!-- 第二列：正面簡介 -->
+                        <div class="pl-8">
+                            <input type="text" placeholder="正面簡介 (卡片正面文字，如：世界遺產．鄂圖曼山城)" value="${escapeHtml(city.desc || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="desc">
                         </div>
-                    </div>
-                    <div class="flex items-center gap-2 pl-8">
-                        <input type="text" placeholder="代表照片網址 (https://...)" value="${escapeHtml(city.image || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="image">
-                        <div class="w-12 h-8 rounded-lg bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
-                            ${hasImg ? `<img src="${escapeHtml(city.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[9px] text-red-400\\'>錯誤</span>'">` : `<span class="text-[9px] text-moss-400">無圖</span>`}
+
+                        <!-- 第三列：翻面詳細說明 -->
+                        <div class="pl-8">
+                            <textarea rows="2" placeholder="翻面詳細說明 (點擊卡片翻面後顯示之特色介紹、歷史典故或旅遊備註...)" class="w-full p-2 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-y leading-relaxed" data-action="edit-city-field" data-city-idx="${idx}" data-field="detail">${escapeHtml(city.detail || '')}</textarea>
+                        </div>
+
+                        <!-- 第四列：照片網址與縮圖預覽 -->
+                        <div class="pl-8 flex items-center gap-2">
+                            <input type="text" placeholder="代表照片網址 (https://...)" value="${escapeHtml(city.image || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="image">
+                            <div class="preview-city-img w-12 h-8 rounded-lg bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
+                                ${hasImg ? `<img src="${escapeHtml(city.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[9px] text-red-400\\'>錯誤</span>'">` : `<span class="text-[9px] text-moss-400">無圖</span>`}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -3357,7 +3505,8 @@
                     if (appData.settings.cities[idx]) {
                         appData.settings.cities[idx][field] = e.target.value;
                         if (field === 'image') {
-                            const previewBox = e.target.closest('.flex')?.querySelector('.w-12');
+                            const previewBox = e.target.closest('.space-y-2')?.querySelector('.preview-city-img') 
+                                            || e.target.closest('.flex')?.querySelector('.w-12');
                             if (previewBox) {
                                 previewBox.innerHTML = (e.target.value && /^https?:\/\//i.test(e.target.value.trim()))
                                     ? `<img src="${escapeHtml(e.target.value.trim())}" class="w-full h-full object-cover" onerror="this.remove()">`
@@ -3377,13 +3526,15 @@
                 panelOverview.addEventListener('input', handleSettingsChange);
                 panelOverview.addEventListener('change', handleSettingsChange);
                 panelOverview.addEventListener('click', (e) => {
-                    const btn = e.target.closest('#btn-add-overview-city, [data-action="del-city"]');
+                    const btn = e.target.closest('#btn-add-overview-city, #btn-sync-overview-cities, [data-action="del-city"]');
                     if (!btn) return;
                     if (btn.id === 'btn-add-overview-city') {
                         if (!Array.isArray(appData.settings.cities)) appData.settings.cities = [];
-                        appData.settings.cities.push({ name: '', desc: '', tag: '', image: '' });
+                        appData.settings.cities.push({ name: '', desc: '', tag: '', image: '', detail: '' });
                         renderOverviewCitiesSetting();
                         markDirty();
+                    } else if (btn.id === 'btn-sync-overview-cities') {
+                        syncOverviewCitiesFromItinerary(false);
                     } else if (btn.dataset.action === 'del-city') {
                         const idx = Number(btn.dataset.cityIdx);
                         if (Array.isArray(appData.settings.cities)) {
