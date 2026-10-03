@@ -716,7 +716,34 @@
                         </div>
                     </details>
 
-                    <!-- 卡片 2: 主要城市巡禮卡片清單 -->
+                    <!-- 卡片 2: 旅程備註與參考說明 (Info / 說明) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
+                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
+                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
+                                <i class="ph ph-info text-xl text-moss-400"></i>
+                                <h3 class="text-base md:text-lg">旅程備註與參考說明</h3>
+                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定前台總覽資訊列第三列所顯示的說明文字或外部行程連結">
+                                    <i class="ph ph-question text-base"></i>
+                                </span>
+                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">說明文字 (前台顯示文字)</label>
+                                    <input type="text" data-setting="info.text" placeholder="例如：行健、官方參考手冊 (留空則不顯示)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">參考連結網址 (選填，可點擊跳轉)</label>
+                                    <input type="text" data-setting="info.link" placeholder="https://... (留空則純文字顯示)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- 卡片 3: 主要城市巡禮卡片清單 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">

@@ -215,24 +215,29 @@
         <!-- 1. 總覽 (Overview) -->
         <main id="tab-overview" class="main-content-pane block space-y-8 animate-[rise_0.3s_ease-out]">
             
-            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-start justify-start gap-5 md:gap-8 border border-white">
-                <div class="md:w-[35%] shrink-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Dates / 日期</p>
-                    <p id="ui-overview-date" class="text-body font-bold text-moss-500">--</p>
+            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col gap-4 border border-white">
+                <!-- 第一列: 日期欄位 | 天數 -->
+                <div class="flex items-center flex-wrap gap-2 text-body font-bold text-moss-500">
+                    <span class="flex items-center gap-2">
+                        <i class="ph ph-calendar-blank text-xl text-moss-400 shrink-0"></i>
+                        <span id="ui-overview-date">--</span>
+                    </span>
+                    <span class="text-moss-300 mx-1">|</span>
+                    <span id="ui-overview-days" class="font-mono font-black text-moss-500">-- DAYS</span>
                 </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
-                <div class="md:w-[20%] shrink-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Duration / 天數</p>
-                    <p id="ui-overview-days" class="text-body font-bold text-moss-500">--</p>
+
+                <!-- 第二列: 地點 -->
+                <div class="flex items-start gap-2 text-body font-bold text-moss-500">
+                    <i class="ph ph-map-pin text-xl text-moss-400 shrink-0 mt-0.5"></i>
+                    <p id="ui-overview-cities" class="leading-relaxed break-words flex-1 min-w-0">--</p>
                 </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Cities / 地點</p>
-                    <p id="ui-overview-cities" class="text-body font-bold text-moss-500 leading-relaxed break-words">--</p>
-                </div>
-                <div id="ui-overview-info-col" class="hidden flex-1 min-w-0">
-                    <p id="ui-overview-info-title" class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Info / 說明</p>
-                    <p class="text-body font-bold text-moss-500 leading-relaxed truncate"><a id="ui-overview-info-link" href="#" target="_blank" class="hover:text-moss-400 underline underline-offset-4 decoration-moss-300/50">--</a></p>
+
+                <!-- 第三列: 說明 (純資訊圖示 + 文字/連結) -->
+                <div id="ui-overview-info-row" class="hidden flex items-start sm:items-center gap-2 text-body font-bold text-moss-500">
+                    <i class="ph ph-info text-xl text-moss-400 shrink-0 mt-0.5 sm:mt-0"></i>
+                    <span class="truncate min-w-0">
+                        <a id="ui-overview-info-link" href="#" target="_blank" class="hover:text-moss-400 underline underline-offset-4 decoration-moss-300/50">--</a>
+                    </span>
                 </div>
             </div>
 
@@ -964,21 +969,24 @@
                 document.getElementById('hero').style.backgroundImage = `url('${settings.heroImage}')`;
             }
 
-            if (settings.info) {
-                const infoCol = document.getElementById('ui-overview-info-col');
-                const infoTitle = document.getElementById('ui-overview-info-title');
+            if (settings.info && settings.info.text && String(settings.info.text).trim()) {
+                const infoRow = document.getElementById('ui-overview-info-row');
                 const infoLink = document.getElementById('ui-overview-info-link');
                 
-                infoTitle.textContent = settings.info.title || 'Info / 說明';
-                infoLink.textContent = settings.info.text || '--';
-                if (settings.info.link) {
-                    infoLink.href = settings.info.link;
-                    infoLink.classList.add('underline');
-                } else {
-                    infoLink.removeAttribute('href');
-                    infoLink.classList.remove('underline');
+                if (infoLink) {
+                    infoLink.textContent = String(settings.info.text).trim();
+                    if (settings.info.link && String(settings.info.link).trim()) {
+                        infoLink.href = String(settings.info.link).trim();
+                        infoLink.classList.add('underline');
+                    } else {
+                        infoLink.removeAttribute('href');
+                        infoLink.classList.remove('underline');
+                    }
                 }
-                infoCol.classList.remove('hidden');
+                if (infoRow) infoRow.classList.remove('hidden');
+            } else {
+                const infoRow = document.getElementById('ui-overview-info-row');
+                if (infoRow) infoRow.classList.add('hidden');
             }
 
             if (settings.overviewMap && (settings.overviewMap.iframeUrl || settings.overviewMap.image)) {
