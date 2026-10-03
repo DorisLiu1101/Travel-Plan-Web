@@ -1107,19 +1107,12 @@
                 
                 let weatherOutfitHtml = '';
                 const hasWeather = !!(day.weather && (day.weather.icon || day.weather.temp));
-                const hasOutfit = !!(day.outfit && String(day.outfit).trim());
-                if (hasWeather || hasOutfit) {
-                    weatherOutfitHtml = '<div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">';
-                    if (hasWeather) {
-                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon || 'ph-sun'} text-lg"></i> ${escapeHtml(day.weather.temp || '')}</span>`;
-                    }
-                    if (hasWeather && hasOutfit) {
-                        weatherOutfitHtml += `<span class="text-moss-300/60 font-black">|</span>`;
-                    }
-                    if (hasOutfit) {
-                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ph-t-shirt text-lg"></i> ${escapeHtml(day.outfit)}</span>`;
-                    }
-                    weatherOutfitHtml += '</div>';
+                if (hasWeather) {
+                    weatherOutfitHtml = `
+                        <div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">
+                            <span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon || 'ph-sun'} text-lg"></i> ${escapeHtml(day.weather.temp || '')}</span>
+                        </div>
+                    `;
                 }
 
                 let flightsHtml = '';
@@ -1127,17 +1120,29 @@
                     flightsHtml = `
                         <div class="mb-6 bg-moss-500 border border-moss-400 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                             <div class="flex items-center gap-2 mb-4 border-b border-moss-400/50 pb-2">
-                                <i class="ph ph-airplane-tilt text-moss-100 text-xl"></i>
-                                <span class="text-small text-moss-300 font-black tracking-widest uppercase">Flight Information</span>
+                                <i class="ph ph-compass text-moss-100 text-xl"></i>
+                                <span class="text-small text-moss-300 font-black tracking-widest uppercase">Transportation 交通資訊</span>
                             </div>
                             <div class="space-y-2 relative z-10">
                     `;
                     day.flights.forEach(flight => {
-                        let flightText = typeof flight === 'string' ? flight : `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`;
+                        let flightText = '';
+                        let flightIcon = 'ph-airplane-tilt';
+                        if (typeof flight === 'string') {
+                            flightText = flight;
+                            if (/高鐵|火車|鐵路|動車|捷運|地鐵|列車/i.test(flight)) flightIcon = 'ph-train-simple';
+                            else if (/巴士|公車|客運|專車|接駁/i.test(flight)) flightIcon = 'ph-bus';
+                            else if (/船|渡輪|遊輪|快艇|渡船/i.test(flight)) flightIcon = 'ph-boat';
+                            else if (/包車|自駕|計程車|小客車/i.test(flight)) flightIcon = 'ph-car';
+                            else if (/步行|散步|散策|健行/i.test(flight)) flightIcon = 'ph-person-simple-walk';
+                        } else if (typeof flight === 'object' && flight !== null) {
+                            flightText = flight.text || `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`.trim();
+                            flightIcon = flight.icon || 'ph-airplane-tilt';
+                        }
                         flightsHtml += `
-                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-body text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2">
-                                <i class="ph ph-ticket text-moss-300 mt-1 shrink-0"></i>
-                                <span>${flightText}</span>
+                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-body text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2.5">
+                                <i class="ph ${flightIcon} text-moss-300 mt-1 text-lg shrink-0"></i>
+                                <span class="leading-relaxed">${flightText}</span>
                             </div>
                         `;
                     });
@@ -1242,16 +1247,41 @@
                 }
 
                 let specialNotesHtml = '';
-                if (day.specialNotes && day.specialNotes.length > 0) {
-                    specialNotesHtml = `
-                        <div class="mb-5 p-3.5 rounded-2xl bg-moss-300/15 border border-moss-300/40 text-moss-500 text-body font-medium flex items-start gap-2.5">
-                            <i class="ph ph-warning-circle text-moss-400 text-lg font-bold shrink-0 mt-0.5"></i>
-                            <div class="space-y-1">
-                                <div class="font-bold text-moss-500">【當日特別提醒】</div>
-                                ${day.specialNotes.map(n => `<div>• ${escapeHtml(n)}</div>`).join('')}
+                // 整合穿搭與特別提醒，平滑向下相容純字串與舊版獨立 outfit
+                let combinedNotes = Array.isArray(day.specialNotes) ? [...day.specialNotes] : [];
+                if (day.outfit && String(day.outfit).trim()) {
+                    const hasOutfitAlready = combinedNotes.some(n => 
+                        (typeof n === 'object' && (n.icon === 'ph-t-shirt' || n.text === day.outfit.trim())) ||
+                        n === day.outfit.trim()
+                    );
+                    if (!hasOutfitAlready) {
+                        combinedNotes.unshift({ icon: 'ph-t-shirt', text: day.outfit.trim() });
+                    }
+                }
+
+                if (combinedNotes.length > 0) {
+                    const validNotes = combinedNotes.filter(n => {
+                        if (!n) return false;
+                        if (typeof n === 'string') return !!n.trim();
+                        return !!(n.text && String(n.text).trim());
+                    });
+
+                    if (validNotes.length > 0) {
+                        specialNotesHtml = `
+                            <div class="mb-5 p-4 md:p-5 rounded-2xl bg-moss-300/15 border border-moss-300/35 text-moss-500 text-body font-medium space-y-2.5">
+                                ${validNotes.map(n => {
+                                    const text = typeof n === 'string' ? n.trim() : (n.text || '').trim();
+                                    const icon = (typeof n === 'object' && n.icon) ? n.icon : 'ph-warning-circle';
+                                    return `
+                                        <div class="flex items-start gap-3">
+                                            <i class="ph ${icon} text-lg text-moss-500 shrink-0 mt-0.5"></i>
+                                            <span class="flex-1 leading-relaxed">${escapeHtml(text)}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
                             </div>
-                        </div>
-                    `;
+                        `;
+                    }
                 }
 
                 let tipsHtml = '';

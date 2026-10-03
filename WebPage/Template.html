@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
     
     <script>
-        /* 色彩系統設定 (支援動態 CSS 變數，完美相容 /opacity 語法) */
+        /* 色彩系統設定 (支援 2610.json 動態 CSS 變數，完美相容 /opacity 語法) */
         function withOpacity(varName) {
             return ({ opacityValue }) => {
                 if (opacityValue !== undefined) {
@@ -51,7 +51,7 @@
 
     <style>
         :root {
-            /* 預設色彩變數 (將由行程 JSON settings 動態覆寫) */
+            /* 預設色彩變數 (將由 2610.json settings 動態覆寫) */
             --color-bg: #F4EFD9;
             --color-line: #D8D2A7;
             --color-accent: #A9B482;
@@ -662,7 +662,7 @@
                 const pRgb = hexToRgb(primary);
                 const bgRgb = hexToRgb(bg);
                 const lineR = Math.round(pRgb.r * 0.25 + bgRgb.r * 0.75);
-                const lineG = Math.round(pRgb.g * 0.25 + bgRgb.r * 0.75);
+                const lineG = Math.round(pRgb.g * 0.25 + bgRgb.g * 0.75);
                 const lineB = Math.round(pRgb.b * 0.25 + bgRgb.b * 0.75);
                 line = `rgb(${lineR}, ${lineG}, ${lineB})`;
             }
@@ -770,7 +770,7 @@
                 if (mobBtn) mobBtn.classList.toggle('hidden', !isVis);
             });
 
-            // 優先開啟 visibleTabs 中設定的第一個可用分頁
+            // 優先開啟 visibleTabs 中設定的第一個可用分頁 (例如 2610.json 的 "itinerary")
             const initialTab = tabs.find(t => tabIds.includes(t)) || 'itinerary';
             switchMainTab(`tab-${initialTab}`);
         }
@@ -799,15 +799,15 @@
                     return `${baseName}.json`;
                 }
             } catch (e) {}
-            return 'Template.json';
+            return '2610.json';
         }
 
         const EMPTY_PLAN_DATA = {
             settings: {
                 pageTitle: "旅程規劃",
-                heroTitle: "新旅程規劃",
+                heroTitle: "尚未載入行程資料",
                 dateText: "--",
-                subtitle: "請於行程後台編輯或確認同目錄下是否存在對應的 .json 檔案",
+                subtitle: "請確認同目錄下是否存在對應的 .json 檔案",
                 heroImage: "",
                 visibleTabs: ["itinerary", "overview"]
             },
@@ -832,7 +832,7 @@
                 }
 
                 if (!data) {
-                    console.warn(`未找到 ${targetJson}，使用預設空資料狀態呈現`);
+                    console.warn(`未找到 ${targetJson}，使用無資料狀態呈現`);
                     data = EMPTY_PLAN_DATA;
                 }
 
@@ -1020,7 +1020,7 @@
             }
         }
 
-        /* 🏙️ 總覽城市亮點卡片 (Overview Cities) */
+        /* 🏙️ 總覽城市亮點卡片 (Overview Cities) - 完整來自 2610.json settings.cities */
         function renderOverviewCities(settings, itineraryData) {
             const container = document.getElementById('overview-city-cards');
             const section = document.getElementById('overview-city-cards-section');
@@ -1074,6 +1074,7 @@
             container.innerHTML = html;
         }
 
+
         function renderNavigation(itineraryData) {
             const pcNavContainer = document.getElementById('pc-nav-links');
             const mobileNavContainer = document.getElementById('itinerary-mobile-nav');
@@ -1085,11 +1086,11 @@
                 pcHtml += `
                     <a href="#${dayId}" class="nav-item nav-day flex items-center gap-3 px-3 py-2.5 rounded-xl text-moss-500 font-bold hover:bg-moss-200/50 transition-all group" data-target="${dayId}">
                         <div class="nav-icon w-8 h-8 rounded-full bg-moss-200 group-hover:bg-moss-300 flex items-center justify-center text-small shrink-0">${index + 1}</div>
-                        <div class="nav-text truncate min-w-0"><p class="text-small font-black opacity-70 tracking-wider">${escapeHtml(day.day)}${day.city ? ` · ${escapeHtml(day.city)}` : ''}</p><p class="text-body font-bold truncate">${escapeHtml(day.title || '')}</p></div>
+                        <div class="nav-text truncate min-w-0"><p class="text-small font-black opacity-70 tracking-wider">${day.day}</p><p class="text-body font-bold truncate">${day.title}</p></div>
                     </a>
                 `;
                 mobileHtml += `
-                    <a href="#${dayId}" class="nav-item nav-day shrink-0 px-5 py-2 rounded-full text-body font-bold text-moss-500 hover:bg-moss-200/50 transition-colors" data-target="${dayId}">${escapeHtml(day.day)}${day.city ? ` · ${escapeHtml(day.city)}` : ''}</a>
+                    <a href="#${dayId}" class="nav-item nav-day shrink-0 px-5 py-2 rounded-full text-body font-bold text-moss-500 hover:bg-moss-200/50 transition-colors" data-target="${dayId}">${day.day}</a>
                 `;
             });
 
@@ -1106,19 +1107,12 @@
                 
                 let weatherOutfitHtml = '';
                 const hasWeather = !!(day.weather && (day.weather.icon || day.weather.temp));
-                const hasOutfit = !!(day.outfit && String(day.outfit).trim());
-                if (hasWeather || hasOutfit) {
-                    weatherOutfitHtml = '<div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">';
-                    if (hasWeather) {
-                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon || 'ph-sun'} text-lg"></i> ${escapeHtml(day.weather.temp || '')}</span>`;
-                    }
-                    if (hasWeather && hasOutfit) {
-                        weatherOutfitHtml += `<span class="text-moss-300/60 font-black">|</span>`;
-                    }
-                    if (hasOutfit) {
-                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ph-t-shirt text-lg"></i> ${escapeHtml(day.outfit)}</span>`;
-                    }
-                    weatherOutfitHtml += '</div>';
+                if (hasWeather) {
+                    weatherOutfitHtml = `
+                        <div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">
+                            <span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon || 'ph-sun'} text-lg"></i> ${escapeHtml(day.weather.temp || '')}</span>
+                        </div>
+                    `;
                 }
 
                 let flightsHtml = '';
@@ -1126,17 +1120,29 @@
                     flightsHtml = `
                         <div class="mb-6 bg-moss-500 border border-moss-400 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                             <div class="flex items-center gap-2 mb-4 border-b border-moss-400/50 pb-2">
-                                <i class="ph ph-airplane-tilt text-moss-100 text-xl"></i>
-                                <span class="text-small text-moss-300 font-black tracking-widest uppercase">Flight Information</span>
+                                <i class="ph ph-compass text-moss-100 text-xl"></i>
+                                <span class="text-small text-moss-300 font-black tracking-widest uppercase">Transportation 交通資訊</span>
                             </div>
                             <div class="space-y-2 relative z-10">
                     `;
                     day.flights.forEach(flight => {
-                        let flightText = typeof flight === 'string' ? flight : `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`;
+                        let flightText = '';
+                        let flightIcon = 'ph-airplane-tilt';
+                        if (typeof flight === 'string') {
+                            flightText = flight;
+                            if (/高鐵|火車|鐵路|動車|捷運|地鐵|列車/i.test(flight)) flightIcon = 'ph-train-simple';
+                            else if (/巴士|公車|客運|專車|接駁/i.test(flight)) flightIcon = 'ph-bus';
+                            else if (/船|渡輪|遊輪|快艇|渡船/i.test(flight)) flightIcon = 'ph-boat';
+                            else if (/包車|自駕|計程車|小客車/i.test(flight)) flightIcon = 'ph-car';
+                            else if (/步行|散步|散策|健行/i.test(flight)) flightIcon = 'ph-person-simple-walk';
+                        } else if (typeof flight === 'object' && flight !== null) {
+                            flightText = flight.text || `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`.trim();
+                            flightIcon = flight.icon || 'ph-airplane-tilt';
+                        }
                         flightsHtml += `
-                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-body text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2">
-                                <i class="ph ph-ticket text-moss-300 mt-1 shrink-0"></i>
-                                <span>${flightText}</span>
+                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-body text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2.5">
+                                <i class="ph ${flightIcon} text-moss-300 mt-1 text-lg shrink-0"></i>
+                                <span class="leading-relaxed">${flightText}</span>
                             </div>
                         `;
                     });
@@ -1190,7 +1196,7 @@
                                     <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-moss-100 hover:bg-moss-400 text-moss-500 hover:text-moss-100 border border-moss-200 flex items-center justify-center transition-all shadow-sm" title="地圖導航 (${escapeHtml(spot.mapQuery)})">
                                         <i class="ph ph-map-pin text-sm"></i>
                                     </a>
-                                `;
+                                								`;
                             }
                             if (spot.note) {
                                 spotActionsHtml += `
@@ -1241,16 +1247,41 @@
                 }
 
                 let specialNotesHtml = '';
-                if (day.specialNotes && day.specialNotes.length > 0) {
-                    specialNotesHtml = `
-                        <div class="mb-5 p-3.5 rounded-2xl bg-moss-300/15 border border-moss-300/40 text-moss-500 text-body font-medium flex items-start gap-2.5">
-                            <i class="ph ph-warning-circle text-moss-400 text-lg font-bold shrink-0 mt-0.5"></i>
-                            <div class="space-y-1">
-                                <div class="font-bold text-moss-500">【當日特別提醒】</div>
-                                ${day.specialNotes.map(n => `<div>• ${escapeHtml(n)}</div>`).join('')}
+                // 整合穿搭與特別提醒，平滑向下相容純字串與舊版獨立 outfit
+                let combinedNotes = Array.isArray(day.specialNotes) ? [...day.specialNotes] : [];
+                if (day.outfit && String(day.outfit).trim()) {
+                    const hasOutfitAlready = combinedNotes.some(n => 
+                        (typeof n === 'object' && (n.icon === 'ph-t-shirt' || n.text === day.outfit.trim())) ||
+                        n === day.outfit.trim()
+                    );
+                    if (!hasOutfitAlready) {
+                        combinedNotes.unshift({ icon: 'ph-t-shirt', text: day.outfit.trim() });
+                    }
+                }
+
+                if (combinedNotes.length > 0) {
+                    const validNotes = combinedNotes.filter(n => {
+                        if (!n) return false;
+                        if (typeof n === 'string') return !!n.trim();
+                        return !!(n.text && String(n.text).trim());
+                    });
+
+                    if (validNotes.length > 0) {
+                        specialNotesHtml = `
+                            <div class="mb-5 p-4 md:p-5 rounded-2xl bg-moss-300/15 border border-moss-300/35 text-moss-500 text-body font-medium space-y-2.5">
+                                ${validNotes.map(n => {
+                                    const text = typeof n === 'string' ? n.trim() : (n.text || '').trim();
+                                    const icon = (typeof n === 'object' && n.icon) ? n.icon : 'ph-warning-circle';
+                                    return `
+                                        <div class="flex items-start gap-3">
+                                            <i class="ph ${icon} text-lg text-moss-500 shrink-0 mt-0.5"></i>
+                                            <span class="flex-1 leading-relaxed">${escapeHtml(text)}</span>
+                                        </div>
+                                    `;
+                                }).join('')}
                             </div>
-                        </div>
-                    `;
+                        `;
+                    }
                 }
 
                 let tipsHtml = '';
@@ -1363,8 +1394,8 @@
                 html += `
                     <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
                         <div class="mb-5">
-                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-small tracking-widest mb-2 shadow-sm uppercase">${day.fullDate ? `${escapeHtml(day.fullDate)} &middot; ` : ''}${escapeHtml(day.day)}${day.city ? ` &middot; ${escapeHtml(day.city)}` : ''}</span>
-                            <h2 class="text-heading font-serif font-black text-moss-500 leading-tight">${escapeHtml(day.title || '')}</h2>
+                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-small tracking-widest mb-2 shadow-sm uppercase">${day.fullDate} &middot; ${day.day}</span>
+                            <h2 class="text-heading font-serif font-black text-moss-500 leading-tight">${day.title}</h2>
                         </div>
                         
                         ${weatherOutfitHtml}
