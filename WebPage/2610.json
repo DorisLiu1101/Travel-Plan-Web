@@ -819,7 +819,7 @@
           "name": "多瑪巴切宮",
           "description": "拜訪耗資14噸黃金建造的皇宮，仰望重達4.5噸、擁有750個燈泡的水晶吊燈。",
           "mapQuery": "多瑪巴切宮 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-105139-1210.webp",
           "note": "",
           "todos": []
         },
@@ -827,7 +827,7 @@
           "name": "博斯普魯斯遊船",
           "description": "搭乘專屬遊船蜿蜒航行，一眼看盡左岸歐洲、右岸亞洲的宮殿別墅群。",
           "mapQuery": "博斯普魯斯遊船 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_2-20261002-105139-1770.webp",
           "note": "",
           "todos": []
         },
@@ -835,7 +835,7 @@
           "name": "喀帕爾大市集",
           "description": "迷失在擁有四千多家鋪面的全世界最大有頂迷宮，享受現地殺價尋寶樂趣。",
           "mapQuery": "喀帕爾大市集 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_3-20261002-105139-2280.webp",
           "note": "",
           "todos": []
         },
@@ -853,10 +853,10 @@
       ],
       "outfit": "海峽遊船甲板風勢強勁需穿防風連帽衣；晚間準備登機，建議換穿寬鬆舒適褲裝。",
       "buy": "手工細膩彩釉陶瓷隔熱墊、海泡石手工雕刻煙斗、鄂圖曼復古彩色琉璃吊燈。",
-      "eat": "網紅人氣美式料理、馬爾馬拉海鮮鮮魚風味餐、機上精緻早午餐。",
+      "eat": "網紅人氣美式料理、馬爾馬拉海鮮鮮魚風味餐",
       "tips": "大市集開價通常偏高，對半砍價再往上添是基本心法；今日市區行程結束後直奔機場。",
-      "meals": "午：網紅美式餐廳 / 晚：馬爾馬拉鮮魚餐 / 18溫暖的家",
-      "lodging": "夜宿機上 ｜ 10",
+      "meals": "午：網紅美式餐廳 / 晚：馬爾馬拉鮮魚餐",
+      "lodging": "夜宿機上",
       "todos": [],
       "bonus": "",
       "eatImage": "",
@@ -871,11 +871,6 @@
         {
           "tag": "eat",
           "text": "馬爾馬拉海鮮鮮魚風味餐",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "機上精緻早午餐。",
           "image": ""
         },
         {
