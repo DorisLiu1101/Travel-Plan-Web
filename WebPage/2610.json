@@ -113,8 +113,37 @@
   },
   "itinerary": [
     {
-      "day": "Day 1-2",
-      "fullDate": "2026/10/8 (四) - 10/9 (五)",
+      "day": "Day 1",
+      "fullDate": "2026/10/8 (四)",
+      "title": "啟程星月國度",
+      "weather": {
+        "icon": "ph-cloud-sun",
+        "temp": "29°C"
+      },
+      "image": "",
+      "mapImage": "",
+      "todos": [],
+      "flights": [
+        "土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 (+1日) *(時差：慢台灣5小時)*",
+        "【土國國內線】土耳其航空 TK2108 ｜ 伊斯坦堡 08:00 － 安卡拉 09:15"
+      ],
+      "spots": [],
+      "specialNotes": [],
+      "outfit": "搭機舒適穿著",
+      "buy": "",
+      "eat": "",
+      "tips": "",
+      "meals": "飛機餐",
+      "lodging": "機上過夜",
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "easterEggs": []
+    },
+    {
+      "day": "Day 2",
+      "fullDate": "2026/10/9 (五)",
       "title": "啟程星月國度 ｜ 漫步番紅花城",
       "weather": {
         "icon": "ph-cloud-sun",
