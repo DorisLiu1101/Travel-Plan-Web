@@ -35,7 +35,7 @@ export async function onRequestPost(context) {
             });
         }
 
-        // 3. 檔名正規化：限制僅能寫入 WebPage/*.json，防止路徑穿越
+        // 3. 檔名正規化：允許根目錄 catalog.json 或 WebPage/*.json，防止路徑穿越
         let cleanName = String(filename).trim().replace(/^WebPage\//, '').replace(/^(\.\.[\/\\])+/, '');
         if (!cleanName.endsWith('.json')) {
             cleanName += '.json';
@@ -47,7 +47,8 @@ export async function onRequestPost(context) {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
-        const filePath = `WebPage/${cleanName}`;
+        const filePath = cleanName.toLowerCase() === 'catalog.json' ? 'catalog.json' : `WebPage/${cleanName}`;
+
 
         // 4. 查詢現有檔案取得 SHA (若已存在，GitHub PUT 需要提供 sha)
         const githubApiBase = `https://api.github.com/repos/${githubRepo}/contents/${filePath}`;

@@ -141,7 +141,7 @@
     <dialog id="catalog-settings-dialog" class="catalog-dialog" aria-labelledby="catalog-dialog-title">
         <div class="catalog-dialog-inner">
             <header class="catalog-dialog-head">
-                <div><h2 id="catalog-dialog-title">首頁設置</h2><p>選取本機 catalog.js 後可授權回寫，也可下載更新檔。</p></div>
+                <div><h2 id="catalog-dialog-title">首頁設置</h2><p>可直接雲端回存至 GitHub，或本機回寫/下載更新檔。</p></div>
                 <button id="close-catalog-settings" class="catalog-dialog-close" type="button" aria-label="關閉設置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
             </header>
             <div class="catalog-dialog-body">
@@ -152,28 +152,53 @@
                 </section>
                 <section aria-label="攻略清單管理">
                     <div class="catalog-dialog-section-head">
-                        <div><h3>攻略清單</h3><span id="catalog-source-name" class="catalog-source-name">目前來源：catalog.js（選取原檔以授權回寫）</span></div>
+                        <div><h3>攻略清單</h3><span id="catalog-source-name" class="catalog-source-name">目前來源：catalog.json</span></div>
                         <div class="catalog-source-tools">
-                            <button id="choose-catalog-source" class="catalog-tool-button" type="button">選取本機 catalog.js</button>
-                            <input id="catalog-source-file" class="catalog-hidden-input" type="file" accept=".js,application/javascript,text/javascript">
+                            <button id="choose-catalog-source" class="catalog-tool-button" type="button">選取本機 catalog.json</button>
+                            <input id="catalog-source-file" class="catalog-hidden-input" type="file" accept=".json,application/json">
                             <button id="catalog-add" class="catalog-tool-button primary" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增攻略</button>
                         </div>
                     </div>
                     <div id="catalog-list" class="catalog-entry-list"></div>
                 </section>
-                <section class="catalog-export-section" aria-label="匯出 catalog.js">
-                    <div class="catalog-export-head"><p>下載後取代根目錄的 catalog.js。</p><div class="catalog-export-tools">
-                        <button id="catalog-preview" class="catalog-tool-button" type="button">產生預覽</button>
-                        <button id="catalog-copy" class="catalog-tool-button" type="button">複製</button>
-                        <button id="save-catalog" class="catalog-tool-button icon-only" type="button" title="儲存回原檔" aria-label="儲存回原檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h12l3.5 3.5v13.5H3.5V3.5H5Z"/><path d="M7 3.5v6h9v-6M7 20v-7h10v7"/></svg></button>
-                        <button id="catalog-download" class="catalog-tool-button primary" type="button">下載 catalog.js</button>
+                <section class="catalog-export-section" aria-label="匯出與儲存">
+                    <div class="catalog-export-head"><p>修改完成後可線上存檔或下載更新。</p><div class="catalog-export-tools">
+                        <button id="save-catalog-cloud" class="catalog-tool-button primary" type="button" title="雲端同步回存至 GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M12 12v9m-4-4 4-4 4 4"/></svg>雲端儲存</button>
+                        <button id="save-catalog" class="catalog-tool-button icon-only" type="button" title="本機覆寫原檔" aria-label="本機覆寫原檔" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h12l3.5 3.5v13.5H3.5V3.5H5Z"/><path d="M7 3.5v6h9v-6M7 20v-7h10v7"/></svg></button>
+                        <button id="catalog-download" class="catalog-tool-button" type="button">下載 catalog.json</button>
                     </div></div>
-                    <textarea id="catalog-output" readonly spellcheck="false" aria-label="產生的 catalog.js 內容" placeholder="編輯完成後產生 catalog.js 預覽"></textarea>
+                    <textarea id="catalog-output" readonly spellcheck="false" aria-label="產生的 JSON 內容" placeholder="點擊預覽或直接存檔"></textarea>
                 </section>
             </div>
         </div>
     </dialog>
-    <script src="catalog.js"></script>
+
+    <!-- 雲端安全回存對話框 (Cloud Save Dialog) -->
+    <dialog id="modal-cloud-save" class="catalog-dialog" style="max-width: 420px; padding: 22px; border-radius: 12px;">
+        <div style="display: grid; gap: 14px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <h3 style="margin: 0; font-size: 16px; color: var(--green);">線上同步至 GitHub</h3>
+                <button id="btn-cloud-cancel" type="button" class="catalog-dialog-close" style="width: 28px; height: 28px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+            </div>
+            <p style="margin: 0; font-size: 11px; color: var(--muted);">將首頁配置寫入 catalog.json 並發布至網站。</p>
+            <div>
+                <label style="display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #59655e;">管理金鑰密碼 (ADMIN_SECRET)</label>
+                <input id="input-cloud-password" type="password" placeholder="請輸入 Cloudflare 設定的管理密碼" style="width: 100%; height: 36px; padding: 0 10px; border: 1px solid #dce2da; border-radius: 5px; font-family: monospace; font-size: 12px; outline: none; box-sizing: border-box;">
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #59655e;">
+                    <input id="cb-remember-password" type="checkbox" style="width: 14px; height: 14px;">
+                    <span>在此裝置記住密碼</span>
+                </label>
+                <button id="btn-forget-password" type="button" style="background: none; border: none; color: #c96f50; cursor: pointer; display: none; font-size: 11px;">清除記憶</button>
+            </div>
+            <div id="cloud-save-error" style="display: none; padding: 8px 10px; border-radius: 5px; background: #fff0eb; border: 1px solid #f2c7bc; color: #a85f52; font-size: 11px; font-family: monospace;"></div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+                <button id="btn-cloud-confirm" type="button" class="catalog-tool-button primary" style="min-height: 36px; padding: 0 14px;">確認回存</button>
+            </div>
+        </div>
+    </dialog>
+
     <script>
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
@@ -181,16 +206,17 @@
 
         const defaultCatalogSettings = {
             title: 'Doris的旅遊行程攻略集',
-            backgroundImage: 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop'
+            backgroundImage: 'https://images.pexels.com/photos/35489614/pexels-photo-35489614.jpeg'
         };
-        let catalogDraft = Array.isArray(window.travelPageCatalog) ? window.travelPageCatalog.map((entry) => ({ ...entry })) : [];
-        let catalogSettingsDraft = { ...defaultCatalogSettings, ...(window.travelPageSettings || {}) };
-        let catalogFileName = 'catalog.js';
+        let catalogDraft = [];
+        let catalogSettingsDraft = { ...defaultCatalogSettings };
+        let catalogFileName = 'catalog.json';
         let catalogSourceHandle = null;
         let catalogSourceSnapshot = '';
         let useFallbackCatalogPicker = false;
         let catalogHasChanges = false;
         const catalogSettingsDialog = document.getElementById('catalog-settings-dialog');
+        const modalCloudSave = document.getElementById('modal-cloud-save');
         const list = document.getElementById('trip-list');
 
         function applyCatalogSettings() {
@@ -255,33 +281,30 @@
             catalogHasChanges = true;
             document.getElementById('catalog-output').value = '';
             updateCatalogSaveButton();
-            updateCatalogStatus(`目前來源：${catalogFileName} · 有未匯出的修改`);
+            updateCatalogStatus(`目前來源：${catalogFileName} · 有未儲存的修改`);
         }
 
-        function parseCatalogFile(source) {
-            const catalogMatch = source.match(/\bwindow\.travelPageCatalog\s*=\s*([\s\S]*);\s*$/);
-            if (!catalogMatch) throw new Error('找不到 window.travelPageCatalog 清單。');
-            const entries = JSON.parse(catalogMatch[1]);
-            if (!Array.isArray(entries)) throw new Error('travelPageCatalog 必須是陣列。');
-            const settingsMatch = source.match(/\bwindow\.travelPageSettings\s*=\s*([\s\S]*?);\s*(?=window\.travelPageCatalog\b)/);
-            const settings = settingsMatch ? JSON.parse(settingsMatch[1]) : {};
+        function parseCatalogJson(source) {
+            let data = typeof source === 'string' ? JSON.parse(source) : source;
+            let entries = Array.isArray(data.catalog) ? data.catalog : (Array.isArray(data) ? data : []);
+            let settings = data.settings && typeof data.settings === 'object' ? data.settings : {};
             return { entries, settings };
         }
 
         async function loadCatalogFile(file, fileHandle = null) {
-            if (catalogHasChanges && !window.confirm('攻略清單有尚未匯出的修改，確定切換資料來源嗎？')) return;
+            if (catalogHasChanges && !window.confirm('攻略清單有尚未儲存的修改，確定切換資料來源嗎？')) return;
             try {
-            const source = await file.text();
-            const parsedCatalog = parseCatalogFile(source);
+                const source = await file.text();
+                const parsedCatalog = parseCatalogJson(source);
                 catalogDraft = parsedCatalog.entries.map((entry) => ({ ...entry }));
                 catalogSettingsDraft = { ...defaultCatalogSettings, ...parsedCatalog.settings };
                 catalogFileName = file.name;
-            catalogSourceHandle = fileHandle;
-            catalogSourceSnapshot = source;
+                catalogSourceHandle = fileHandle;
+                catalogSourceSnapshot = source;
                 catalogHasChanges = false;
                 document.getElementById('catalog-output').value = '';
-            updateCatalogStatus(fileHandle ? `目前來源：${file.name} · 可授權回寫` : `目前來源：${file.name} · 僅可下載`);
-            updateCatalogSaveButton();
+                updateCatalogStatus(fileHandle ? `目前來源：${file.name} · 可本機回寫` : `目前來源：${file.name} · 僅可下載`);
+                updateCatalogSaveButton();
                 renderCatalogSettings();
                 renderCatalogEntries();
                 renderHomeTrips();
@@ -305,7 +328,7 @@
             }
             try {
                 const [fileHandle] = await window.showOpenFilePicker({
-                    types: [{ description: 'JavaScript 檔案', accept: { 'text/javascript': ['.js'] } }],
+                    types: [{ description: 'JSON 檔案', accept: { 'application/json': ['.json'] } }],
                     multiple: false
                 });
                 const file = await fileHandle.getFile();
@@ -315,7 +338,7 @@
                 useFallbackCatalogPicker = true;
                 catalogSourceHandle = null;
                 updateCatalogSaveButton();
-                updateCatalogStatus('瀏覽器限制直接讀取檔案；請在接續的檔案視窗重新選取，並以下載方式更新原檔。');
+                updateCatalogStatus('瀏覽器限制直接讀取檔案；請在接續的檔案視窗重新選取。');
                 fileInput.click();
             }
         }
@@ -329,16 +352,19 @@
                 if (permission !== 'granted') throw new Error('未取得寫入權限。');
                 const currentSource = await (await catalogSourceHandle.getFile()).text();
                 if (currentSource !== catalogSourceSnapshot) throw new Error('原檔在載入後已有變更，請重新選取檔案以避免覆蓋。');
-                makeCatalogExport();
-                const source = document.getElementById('catalog-output').value;
-                parseCatalogFile(source);
+                const exportObj = {
+                    settings: catalogSettingsDraft,
+                    catalog: catalogDraft
+                };
+                const source = JSON.stringify(exportObj, null, 2);
                 writable = await catalogSourceHandle.createWritable();
                 await writable.write(source);
                 await writable.close();
                 catalogSourceSnapshot = source;
                 catalogHasChanges = false;
+                document.getElementById('catalog-output').value = source;
                 updateCatalogSaveButton();
-                updateCatalogStatus(`已回寫：${catalogFileName}`);
+                updateCatalogStatus(`已本機回寫：${catalogFileName}`);
             } catch (error) {
                 if (writable) {
                     try { await writable.abort(); } catch {}
@@ -347,14 +373,115 @@
             }
         }
 
-        function makeCatalogExport() {
-            document.getElementById('catalog-output').value = `window.travelPageSettings = ${JSON.stringify(catalogSettingsDraft, null, 4)};\n\nwindow.travelPageCatalog = ${JSON.stringify(catalogDraft, null, 4)};\n`;
+        function getCatalogDataBundle() {
+            return {
+                settings: catalogSettingsDraft,
+                catalog: catalogDraft
+            };
         }
 
-        renderCatalogSettings();
-        renderCatalogEntries();
-        renderHomeTrips();
-        applyCatalogSettings();
+        function makeCatalogExport() {
+            const bundle = getCatalogDataBundle();
+            document.getElementById('catalog-output').value = JSON.stringify(bundle, null, 2);
+        }
+
+        function openCloudSaveModal() {
+            const pwInput = document.getElementById('input-cloud-password');
+            const cbRemember = document.getElementById('cb-remember-password');
+            const btnForget = document.getElementById('btn-forget-password');
+            const errBox = document.getElementById('cloud-save-error');
+
+            errBox.style.display = 'none';
+            errBox.textContent = '';
+
+            const savedSecret = localStorage.getItem('travel_admin_secret');
+            if (savedSecret) {
+                pwInput.value = savedSecret;
+                cbRemember.checked = true;
+                btnForget.style.display = 'inline-block';
+            } else {
+                pwInput.value = '';
+                cbRemember.checked = false;
+                btnForget.style.display = 'none';
+            }
+
+            modalCloudSave.showModal();
+        }
+
+        async function submitCloudSave() {
+            const pwInput = document.getElementById('input-cloud-password');
+            const cbRemember = document.getElementById('cb-remember-password');
+            const errBox = document.getElementById('cloud-save-error');
+            const btnConfirm = document.getElementById('btn-cloud-confirm');
+
+            const password = pwInput.value.trim();
+            if (!password) {
+                errBox.textContent = '請輸入管理密碼 (ADMIN_SECRET)';
+                errBox.style.display = 'block';
+                return;
+            }
+
+            btnConfirm.disabled = true;
+            btnConfirm.textContent = '儲存中...';
+            errBox.style.display = 'none';
+
+            try {
+                const bundle = getCatalogDataBundle();
+                const res = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: 'catalog.json',
+                        content: bundle,
+                        password: password
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+
+                if (cbRemember.checked) {
+                    localStorage.setItem('travel_admin_secret', password);
+                } else {
+                    localStorage.removeItem('travel_admin_secret');
+                }
+
+                catalogHasChanges = false;
+                updateCatalogStatus(`已成功線上回存至 GitHub (catalog.json)！`);
+                modalCloudSave.close();
+                alert('🎉 已成功同步首頁至 GitHub！');
+            } catch (err) {
+                errBox.textContent = `儲存失敗：${err.message}`;
+                errBox.style.display = 'block';
+            } finally {
+                btnConfirm.disabled = false;
+                btnConfirm.textContent = '確認回存';
+            }
+        }
+
+        // 初始化載入 catalog.json
+        async function initCatalog() {
+            try {
+                const response = await fetch('catalog.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    const parsed = parseCatalogJson(data);
+                    catalogDraft = parsed.entries.map((entry) => ({ ...entry }));
+                    catalogSettingsDraft = { ...defaultCatalogSettings, ...parsed.settings };
+                    catalogFileName = 'catalog.json';
+                }
+            } catch (err) {
+                console.warn('載入 catalog.json 失敗，使用預設值', err);
+            }
+            renderCatalogSettings();
+            renderCatalogEntries();
+            renderHomeTrips();
+            applyCatalogSettings();
+        }
+
+        initCatalog();
 
         document.getElementById('open-catalog-settings').addEventListener('click', () => catalogSettingsDialog.showModal());
         document.getElementById('close-catalog-settings').addEventListener('click', () => catalogSettingsDialog.close());
@@ -379,6 +506,16 @@
             event.target.value = '';
         });
         document.getElementById('save-catalog').addEventListener('click', saveCatalogFile);
+        document.getElementById('save-catalog-cloud').addEventListener('click', openCloudSaveModal);
+        document.getElementById('btn-cloud-cancel').addEventListener('click', () => modalCloudSave.close());
+        document.getElementById('btn-cloud-confirm').addEventListener('click', submitCloudSave);
+        document.getElementById('btn-forget-password').addEventListener('click', () => {
+            localStorage.removeItem('travel_admin_secret');
+            document.getElementById('input-cloud-password').value = '';
+            document.getElementById('cb-remember-password').checked = false;
+            document.getElementById('btn-forget-password').style.display = 'none';
+        });
+
         document.getElementById('catalog-add').addEventListener('click', () => {
             catalogDraft.push({ title: '', date: '', description: '', html: '', image: '' });
             renderCatalogEntries();
@@ -401,28 +538,10 @@
             renderHomeTrips();
             markCatalogChanged();
         });
-        document.getElementById('catalog-preview').addEventListener('click', () => {
-            makeCatalogExport();
-            document.getElementById('catalog-output').scrollIntoView({behavior: 'smooth', block: 'nearest'});
-            updateCatalogStatus(`預覽已產生：${catalogFileName}`);
-        });
-        document.getElementById('catalog-copy').addEventListener('click', async () => {
-            const output = document.getElementById('catalog-output');
-            if (!output.value) makeCatalogExport();
-            try {
-                await navigator.clipboard.writeText(output.value);
-            } catch {
-                output.focus();
-                output.select();
-                document.execCommand('copy');
-                output.setSelectionRange(0, 0);
-            }
-            updateCatalogStatus(catalogHasChanges ? `已複製；原檔尚未回寫：${catalogFileName}` : `已複製：${catalogFileName}`);
-        });
         document.getElementById('catalog-download').addEventListener('click', () => {
-            const output = document.getElementById('catalog-output');
-            if (!output.value) makeCatalogExport();
-            const file = new Blob([output.value], {type: 'text/javascript;charset=utf-8'});
+            makeCatalogExport();
+            const output = document.getElementById('catalog-output').value;
+            const file = new Blob([output], {type: 'application/json;charset=utf-8'});
             const url = URL.createObjectURL(file);
             const link = document.createElement('a');
             link.href = url;

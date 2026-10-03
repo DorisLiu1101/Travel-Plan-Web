@@ -1,0 +1,94 @@
+{
+  "settings": {
+    "pageTitle": "成都.貴州.雲南 ( 2026/12/26 - 2027/01/07 )",
+    "heroTitle": "跨年逍遙遊13日",
+    "dateText": "2026/12/26(六) ~ 2027/1/7(四)",
+    "subtitle": "自由行 / 成都、貴州、雲南 (昆明.大理.麗江) ",
+    "heroImage": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/looypopvm483kwmviwov/%E9%9B%B2%E5%8D%97%E6%98%86%E6%98%8E%E5%A4%A7%E7%90%86%E9%BA%97%E6%B1%9F%E9%A6%99%E6%A0%BC%E9%87%8C%E6%8B%898%E6%97%A5%E9%81%8A-Klook.jpg",
+    "mapEngine": "google",
+    "visibleTabs": [
+      "overview",
+      "itinerary",
+      "expenses",
+      "todo"
+    ],
+    "theme": "moss",
+    "customTheme": {
+      "primary": "#6F7F5A",
+      "deep": "#3C4733",
+      "accent": "#A9B482",
+      "line": "#D8D2A7",
+      "bg": "#F4EFD9"
+    },
+    "themeColors": {
+      "primary": "#6F7F5A",
+      "deep": "#3C4733",
+      "accent": "#A9B482",
+      "line": "#D8D2A7",
+      "bg": "#F4EFD9"
+    },
+    "overviewMap": {
+      "image": "",
+      "iframeUrl": ""
+    },
+    "cities": [],
+    "expenses": {
+      "tourFee": 0,
+      "currency": "TW$",
+      "note": "",
+      "records": []
+    },
+    "info": {
+      "title": "行程說明",
+      "text": "",
+      "link": ""
+    },
+    "typography": {
+      "style": "modern",
+      "hero": {
+        "desktop": 38,
+        "mobile": 30
+      },
+      "heading": {
+        "desktop": 22,
+        "mobile": 18
+      },
+      "body": {
+        "desktop": 18,
+        "mobile": 18
+      },
+      "small": {
+        "desktop": 15,
+        "mobile": 15
+      }
+    }
+  },
+  "itinerary": [
+    {
+      "day": "Day 1",
+      "fullDate": "",
+      "title": "啟程首日",
+      "weather": {
+        "icon": "ph-sun",
+        "temp": ""
+      },
+      "image": "",
+      "mapImage": "",
+      "todos": [],
+      "flights": [],
+      "spots": [],
+      "specialNotes": [],
+      "easterEggs": [],
+      "outfit": "",
+      "buy": "",
+      "eat": "",
+      "bonus": "",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "",
+      "meals": "",
+      "lodging": "",
+      "tips": ""
+    }
+  ]
+}
