@@ -146,33 +146,33 @@
             </button>
         </div>
 
-        <!-- 頂部頁籤切換器 (2x2 四宮格：全站設置 ｜ 行程總覽 ｜ 每日行程 ｜ 經費預算) -->
+        <!-- 頂部頁籤切換器 (2x2 四宮格：全站設置 ｜ 行程預覽 ｜ 經費預算 ｜ 資訊頁面) -->
         <div class="p-3 grid grid-cols-2 gap-1.5 border-b border-moss-400/30">
             <button id="tab-nav-settings" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm" title="全站設置">
                 <i class="ph ph-sliders text-base"></i>
                 <span>全站設置</span>
             </button>
-            <button id="tab-nav-overview" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="行程總覽">
-                <i class="ph ph-map-trifold text-base"></i>
-                <span>行程總覽</span>
-            </button>
-            <button id="tab-nav-itinerary" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="每日行程">
-                <i class="ph ph-calendar-blank text-base"></i>
-                <span>每日行程</span>
+            <button id="tab-nav-overview" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="行程預覽">
+                <i class="ph ph-compass text-base"></i>
+                <span>行程預覽</span>
             </button>
             <button id="tab-nav-expenses" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="經費預算">
                 <i class="ph ph-currency-circle-dollar text-base"></i>
                 <span>經費預算</span>
             </button>
+            <button id="tab-nav-info" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="資訊頁面">
+                <i class="ph ph-info text-base"></i>
+                <span>資訊頁面</span>
+            </button>
         </div>
 
-        <!-- 行程日導航清單 (Daily Navigation) -->
+        <!-- 每日行程導航清單 (Daily Navigation) -->
         <div class="flex-1 flex flex-col min-h-0 overflow-hidden">
             <div class="px-3.5 py-2.5 flex items-center justify-between text-xs font-bold text-moss-200 border-b border-moss-400/20">
                 <div class="flex items-center gap-2 min-w-0">
-                    <span class="flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
-                        <i class="ph ph-compass text-sm text-moss-300"></i> 行程目錄
-                    </span>
+                    <button id="tab-nav-itinerary" type="button" class="flex items-center gap-1.5 uppercase tracking-wider text-[11px] hover:text-white transition-colors" title="切換至每日行程">
+                        <i class="ph ph-calendar-blank text-sm text-moss-300"></i> 每日行程
+                    </button>
                     <span id="side-days-count" class="px-2 py-0.5 rounded-full bg-moss-400/40 text-[10px] font-mono text-moss-100">0</span>
                 </div>
                 <!-- 集中操作：拖曳排序切換 & 刪除當前所選日 -->
@@ -293,7 +293,7 @@
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-calendar-check text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">當日核心資訊</h3>
+                                <h3 class="text-base md:text-lg">核心資訊</h3>
                                 <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定天數代號、日期、城市、標題、天氣、穿搭、封面大圖與路線地圖">
                                     <i class="ph ph-info text-base"></i>
                                 </span>
@@ -389,7 +389,7 @@
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-check-square-offset text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">當日待辦任務</h3>
+                                <h3 class="text-base md:text-lg">當日待辦</h3>
                             </div>
                             <div class="flex items-center gap-2">
                                 <button id="btn-add-day-todo" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增待辦">
@@ -453,80 +453,127 @@
                         </div>
                     </details>
 
-                    <!-- 當日特別提醒 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm transition-all open:overflow-visible">
-                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
-                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
-                                <i class="ph ph-warning-circle text-xl text-amber-accent"></i>
-                                <h3 class="text-base md:text-lg">特別提醒</h3>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button id="btn-add-special-note" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增提醒">
-                                    <i class="ph ph-plus text-base"></i>
-                                </button>
-                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
-                            </div>
-                        </summary>
-                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
-                            <div id="special-notes-container" class="space-y-2.5">
-                                <!-- 特別提醒由 JS 動態產生 -->
-                            </div>
-                        </div>
-                    </details>
-
                     <!-- 旅遊備註與彩蛋資料 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
                                 <i class="ph ph-notebook text-xl text-moss-400"></i>
                                 <h3 class="text-base md:text-lg">生活筆記與彩蛋</h3>
-                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定特色精選項目，以及餐飲與住宿安排">
-                                    <i class="ph ph-info text-base"></i>
-                                </span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" id="btn-add-easter-egg" class="w-8 h-8 rounded-xl bg-moss-400/20 hover:bg-moss-400 text-moss-500 hover:text-white flex items-center justify-center transition-all" title="新增一筆彩蛋標籤">
-                                    <i class="ph ph-plus text-base"></i>
-                                </button>
-                                <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
-                            </div>
+                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
 
                         <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
-                            <!-- 彩蛋動態清單 -->
-                            <div class="space-y-2">
-                                <label class="block text-xs font-bold text-moss-500">彩蛋精選項目 (可選類別：餐飲美食、土產伴手、特色體驗、私房打卡...)</label>
-                                <div id="easter-eggs-container" class="space-y-2.5">
-                                    <!-- 由 JS 動態渲染 -->
+                            <!-- 1. 當晚住宿安排 (單行文字框) -->
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                    <i class="ph ph-bed text-sm text-moss-400"></i>
+                                    <span>當晚住宿安排</span>
+                                </label>
+                                <input type="text" data-day-field="lodging" placeholder="例如：LIONEL HOTEL ISTANBUL (留空表示無住宿/夜泊)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none transition-all">
+                            </div>
+
+                            <!-- 2. 當日餐飲安排 (動態按 + 加入餐別標籤) -->
+                            <div class="pt-3 border-t border-moss-100 space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                        <i class="ph ph-fork-knife text-sm text-moss-400"></i>
+                                        <span>當日餐飲安排</span>
+                                    </label>
+                                    <div class="relative icon-picker-box">
+                                        <button type="button" id="btn-toggle-meal-picker" class="h-7 px-2.5 rounded-lg bg-moss-100 hover:bg-moss-200 text-moss-600 text-[11px] font-bold flex items-center gap-1 transition-colors border border-moss-200 shadow-2xs">
+                                            <i class="ph ph-plus text-xs"></i>
+                                            <span>新增餐別</span>
+                                            <i class="ph ph-caret-down text-[10px]"></i>
+                                        </button>
+                                        <!-- 餐別快速選單 -->
+                                        <div id="picker-meal-menu" class="hidden absolute right-0 top-full mt-1.5 w-32 bg-white border border-moss-200 rounded-xl shadow-lg p-1.5 z-30 space-y-0.5">
+                                            <button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold text-moss-500 hover:bg-moss-100 flex items-center justify-between transition-colors" data-action="add-meal-item" data-meal-tag="早餐">
+                                                <span>早餐</span>
+                                                <span class="text-[10px] text-moss-400 font-mono">BFAST</span>
+                                            </button>
+                                            <button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold text-moss-500 hover:bg-moss-100 flex items-center justify-between transition-colors" data-action="add-meal-item" data-meal-tag="午餐">
+                                                <span>午餐</span>
+                                                <span class="text-[10px] text-moss-400 font-mono">LUNCH</span>
+                                            </button>
+                                            <button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold text-moss-500 hover:bg-moss-100 flex items-center justify-between transition-colors" data-action="add-meal-item" data-meal-tag="晚餐">
+                                                <span>晚餐</span>
+                                                <span class="text-[10px] text-moss-400 font-mono">DINNER</span>
+                                            </button>
+                                            <button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold text-moss-500 hover:bg-moss-100 flex items-center justify-between transition-colors" data-action="add-meal-item" data-meal-tag="點心">
+                                                <span>點心</span>
+                                                <span class="text-[10px] text-moss-400 font-mono">SNACK</span>
+                                            </button>
+                                            <button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold text-moss-500 hover:bg-moss-100 flex items-center justify-between transition-colors" data-action="add-meal-item" data-meal-tag="宵夜">
+                                                <span>宵夜</span>
+                                                <span class="text-[10px] text-moss-400 font-mono">LATE</span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="day-meals-container" class="space-y-2">
+                                    <!-- 由 JS 動態渲染餐飲條目 -->
                                 </div>
                             </div>
 
-                            <!-- 當日餐飲與住宿 -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-moss-100">
-                                <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">餐飲安排</label>
-                                    <textarea data-day-field="meals" rows="2" placeholder="午：宮廷風米其林推薦 / 晚：鮮魚風味餐" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
+                            <!-- 3. 彩蛋精選項目 -->
+                            <div class="pt-3 border-t border-moss-100 space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                        <i class="ph ph-sparkle text-sm text-amber-accent"></i>
+                                        <span>彩蛋精選項目</span>
+                                        <span class="text-[11px] text-moss-400 font-normal">(美食、伴手禮、私房體驗...)</span>
+                                    </label>
+                                    <button type="button" id="btn-add-easter-egg" class="h-7 px-2.5 rounded-lg bg-moss-100 hover:bg-moss-200 text-moss-600 text-[11px] font-bold flex items-center gap-1 transition-colors border border-moss-200 shadow-2xs" title="新增一筆彩蛋標籤">
+                                        <i class="ph ph-plus text-xs"></i>
+                                        <span>新增彩蛋</span>
+                                    </button>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">住宿安排</label>
-                                    <textarea data-day-field="lodging" rows="2" placeholder="LIONEL HOTEL ISTANBUL" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none"></textarea>
+                                <div id="easter-eggs-container" class="space-y-2.5">
+                                    <!-- 由 JS 動態渲染 -->
                                 </div>
                             </div>
                         </div>
                     </details>
 
-                    <!-- 當日貼心叮嚀 -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all">
+                    <!-- 行程備註 (整合特別提醒與貼心叮嚀，置於最下方) -->
+                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm transition-all open:overflow-visible">
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
-                                <i class="ph ph-lightbulb text-xl text-amber-accent"></i>
-                                <h3 class="text-base md:text-lg">貼心叮嚀</h3>
+                                <i class="ph ph-note-pencil text-xl text-amber-accent"></i>
+                                <h3 class="text-base md:text-lg">行程備註</h3>
                             </div>
                             <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
-                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100">
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">貼心叮嚀</label>
-                            <textarea data-day-field="tips" rows="3" placeholder="內部燈光較暗且濕滑；隨身包包往前背、注意集合時間..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed"></textarea>
+
+                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
+                            <!-- 區塊 1: 特別提醒 (可選圖示) -->
+                            <div class="space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <label class="block text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                        <i class="ph ph-warning-circle text-sm text-amber-accent"></i>
+                                        <span>特別提醒</span>
+                                        <span class="text-[11px] text-moss-400 font-normal">(穿搭裝備、防寒防曬、重要注意)</span>
+                                    </label>
+                                    <button type="button" id="btn-add-special-note" class="h-7 px-2.5 rounded-lg bg-moss-100 hover:bg-moss-200 text-moss-600 text-[11px] font-bold flex items-center gap-1 transition-colors border border-moss-200 shadow-2xs" title="新增提醒">
+                                        <i class="ph ph-plus text-xs"></i>
+                                        <span>新增提醒</span>
+                                    </button>
+                                </div>
+                                <div id="special-notes-container" class="space-y-2.5">
+                                    <!-- 特別提醒由 JS 動態產生 -->
+                                </div>
+                            </div>
+
+                            <!-- 區塊 2: 貼心叮嚀 (文字方塊) -->
+                            <div class="pt-4 border-t border-moss-100 space-y-2">
+                                <label class="block text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                    <i class="ph ph-lightbulb text-sm text-amber-accent"></i>
+                                    <span>貼心叮嚀</span>
+                                </label>
+                                <textarea data-day-field="tips" rows="3" placeholder="內部燈光較暗且濕滑；隨身包包往前背、注意集合時間..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans"></textarea>
+                            </div>
                         </div>
                     </details>
                 </section>
@@ -774,6 +821,83 @@
                 </section>
 
                 <!-- ═══════════════════════════════════════════════════ -->
+                <!-- ℹ️ 資訊頁面主面板 (Panel: Info - 待辦/飯店/備忘)     -->
+                <!-- ═══════════════════════════════════════════════════ -->
+                <section id="panel-info" class="hidden space-y-6">
+                    <!-- 頂部膠囊切換列 (Pill Tabs: 待辦清單 | 飯店資訊 | 行程備忘) -->
+                    <div class="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-moss-200/90 shadow-sm flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button type="button" id="btn-info-subtab-todos" onclick="switchInfoSubtab('todos')" class="info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-1.5">
+                                <i class="ph ph-check-square text-sm"></i>
+                                <span>待辦清單</span>
+                            </button>
+                            <button type="button" id="btn-info-subtab-hotels" onclick="switchInfoSubtab('hotels')" class="info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5">
+                                <i class="ph ph-buildings text-sm"></i>
+                                <span>飯店資訊</span>
+                            </button>
+                            <button type="button" id="btn-info-subtab-memo" onclick="switchInfoSubtab('memo')" class="info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5">
+                                <i class="ph ph-note-pencil text-sm"></i>
+                                <span>行程備忘</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 子面板 1: 待辦清單 (Todos) -->
+                    <div id="info-subpanel-todos" class="space-y-4">
+                        <div class="bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm p-5 md:p-6 space-y-4">
+                            <div class="flex items-center justify-between border-b border-moss-100 pb-3">
+                                <div>
+                                    <h3 class="text-base font-black text-moss-500 flex items-center gap-2">
+                                        <i class="ph ph-check-square text-lg text-moss-400"></i>
+                                        <span>行程全待辦彙整清單</span>
+                                    </h3>
+                                    <p class="text-xs text-moss-400 mt-0.5">自動提取各天待辦事項，支援集中編輯並雙向同步至各日行程</p>
+                                </div>
+                                <button type="button" onclick="addGlobalTodo()" class="h-8 px-3 rounded-xl bg-moss-400 hover:bg-moss-500 text-moss-100 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs">
+                                    <i class="ph ph-plus"></i>
+                                    <span>新增待辦</span>
+                                </button>
+                            </div>
+                            <div id="info-todos-container" class="space-y-2.5">
+                                <!-- 由 JS 動態生成所有天數的待辦 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 子面板 2: 飯店資訊 (Hotels) -->
+                    <div id="info-subpanel-hotels" class="hidden space-y-4">
+                        <div class="bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm p-5 md:p-6 space-y-4">
+                            <div class="border-b border-moss-100 pb-3">
+                                <h3 class="text-base font-black text-moss-500 flex items-center gap-2">
+                                    <i class="ph ph-bed text-lg text-moss-400"></i>
+                                    <span>全行程下榻飯店與預約憑證</span>
+                                </h3>
+                                <p class="text-xs text-moss-400 mt-0.5">自動撈取每日行程中的日期、城市與飯店名稱，可直接編輯飯店與輸入訂房預約代號</p>
+                            </div>
+                            <div id="info-hotels-container" class="space-y-3">
+                                <!-- 由 JS 動態生成每晚飯店清單 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 子面板 3: 行程備忘 (Memo) -->
+                    <div id="info-subpanel-memo" class="hidden space-y-4">
+                        <div class="bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm p-5 md:p-6 space-y-4">
+                            <div class="border-b border-moss-100 pb-3">
+                                <h3 class="text-base font-black text-moss-500 flex items-center gap-2">
+                                    <i class="ph ph-note-pencil text-lg text-moss-400"></i>
+                                    <span>行程備忘筆記</span>
+                                </h3>
+                                <p class="text-xs text-moss-400 mt-0.5">隨手紀錄行李打包、重要電話、退稅提醒或自訂旅遊筆記（前台同步展示）</p>
+                            </div>
+                            <div>
+                                <textarea id="info-memo-textarea" rows="12" placeholder="在此輸入行程備忘事項、隨身筆記或重要提醒..." class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════════════════ -->
                 <!-- 🅰️ 全站設置面板 (Panel: Settings - 預設顯示)       -->
                 <!-- ═══════════════════════════════════════════════════ -->
                 <section id="panel-settings" class="space-y-6">
@@ -888,8 +1012,12 @@
                                 <span>每日行程</span>
                             </label>
                             <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" data-tab-id="info" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
+                                <span>資訊頁面</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="expenses" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
-                                <span>經費預估</span>
+                                <span>經費預算</span>
                             </label>
                             <label class="inline-flex items-center gap-2 cursor-pointer">
                                 <input type="checkbox" data-tab-id="todo" class="tab-checkbox w-4 h-4 rounded text-moss-400 accent-moss-400">
@@ -997,21 +1125,22 @@
                         </select>
                     </div>
 
-                    <!-- 4 級字體大小微調 -->
+                    <!-- 5 級字體大小微調 -->
                     <div class="pt-3 border-t border-moss-100 space-y-2.5">
                         <label class="block text-xs font-bold text-moss-500">字體尺寸 (電腦 / 手機 px)</label>
                         <div class="overflow-x-auto rounded-xl border border-moss-200 bg-moss-50/50 p-3 no-scrollbar">
-                            <div class="min-w-[440px] space-y-2.5 text-xs">
+                            <div class="min-w-[520px] space-y-2.5 text-xs">
                                 <!-- 第 1 列：標題 -->
-                                <div class="grid grid-cols-5 gap-2 items-center text-moss-500 font-bold text-[11px] pb-2 border-b border-moss-200/80 text-center">
+                                <div class="grid grid-cols-6 gap-2 items-center text-moss-500 font-bold text-[11px] pb-2 border-b border-moss-200/80 text-center">
                                     <div class="text-left text-moss-400 font-bold">層級名稱</div>
                                     <div class="p-1 rounded bg-moss-200/60 truncate">L1 大標</div>
                                     <div class="p-1 rounded bg-moss-200/60 truncate">L2 區塊</div>
                                     <div class="p-1 rounded bg-moss-200/60 truncate">L3 內文</div>
                                     <div class="p-1 rounded bg-moss-200/60 truncate">L4 輔助</div>
+                                    <div class="p-1 rounded bg-moss-200/60 truncate">L5 徽章</div>
                                 </div>
                                 <!-- 第 2 列：電腦尺寸 -->
-                                <div class="grid grid-cols-5 gap-2 items-center">
+                                <div class="grid grid-cols-6 gap-2 items-center">
                                     <div class="text-moss-500 font-bold flex items-center gap-1.5 text-xs">
                                         <i class="ph ph-desktop text-sm text-moss-400"></i>
                                         <span>電腦 (px)</span>
@@ -1020,9 +1149,10 @@
                                     <input type="number" data-setting="typography.heading.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                     <input type="number" data-setting="typography.body.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                     <input type="number" data-setting="typography.small.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.badge.desktop" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                 </div>
                                 <!-- 第 3 列：手機尺寸 -->
-                                <div class="grid grid-cols-5 gap-2 items-center">
+                                <div class="grid grid-cols-6 gap-2 items-center">
                                     <div class="text-moss-500 font-bold flex items-center gap-1.5 text-xs">
                                         <i class="ph ph-device-mobile text-sm text-moss-400"></i>
                                         <span>手機 (px)</span>
@@ -1031,6 +1161,7 @@
                                     <input type="number" data-setting="typography.heading.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                     <input type="number" data-setting="typography.body.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                     <input type="number" data-setting="typography.small.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
+                                    <input type="number" data-setting="typography.badge.mobile" class="w-full h-8 px-1.5 rounded-lg border border-moss-200 bg-white text-center font-mono text-xs text-moss-500 outline-none focus:border-moss-400">
                                 </div>
                             </div>
                         </div>
@@ -1168,7 +1299,8 @@
                     hero: { desktop: 38, mobile: 30 },
                     heading: { desktop: 22, mobile: 18 },
                     body: { desktop: 18, mobile: 18 },
-                    small: { desktop: 15, mobile: 15 }
+                    small: { desktop: 15, mobile: 15 },
+                    badge: { desktop: 12, mobile: 12 }
                 }
             },
             itinerary: [
@@ -1266,7 +1398,9 @@
             if (!appData.settings.typography.heading) appData.settings.typography.heading = { ...defaultTypo.heading };
             if (!appData.settings.typography.body) appData.settings.typography.body = { ...defaultTypo.body };
             if (!appData.settings.typography.small) appData.settings.typography.small = { ...defaultTypo.small };
+            if (!appData.settings.typography.badge) appData.settings.typography.badge = { ...defaultTypo.badge };
             if (!Array.isArray(appData.settings.visibleTabs)) appData.settings.visibleTabs = ["itinerary", "overview"];
+            if (typeof appData.settings.memo !== 'string') appData.settings.memo = '';
 
             // 規範化每天欄位
             appData.itinerary.forEach((day, idx) => {
@@ -1312,7 +1446,12 @@
                 if (typeof day.outfit !== 'string') day.outfit = '';
                 if (typeof day.tips !== 'string') day.tips = '';
                 if (typeof day.meals !== 'string') day.meals = '';
+                if (!Array.isArray(day.mealItems)) {
+                    day.mealItems = parseMealsToItems(day.meals);
+                }
                 if (typeof day.lodging !== 'string') day.lodging = '';
+                if (typeof day.lodgingBooking !== 'string') day.lodgingBooking = '';
+                if (typeof day.lodgingInfo !== 'string') day.lodgingInfo = '';
                 if (typeof day.eatImage !== 'string') day.eatImage = '';
                 if (typeof day.buyImage !== 'string') day.buyImage = '';
                 if (typeof day.bonusImage !== 'string') day.bonusImage = '';
@@ -1418,12 +1557,14 @@
             const panelOverview  = document.getElementById('panel-overview');
             const panelItinerary = document.getElementById('panel-itinerary');
             const panelExpenses  = document.getElementById('panel-expenses');
+            const panelInfo      = document.getElementById('panel-info');
             const panelJson      = document.getElementById('panel-json');
 
             if (panelSettings)  panelSettings.classList.toggle('hidden', tabId !== 'settings');
             if (panelOverview)  panelOverview.classList.toggle('hidden', tabId !== 'overview');
             if (panelItinerary) panelItinerary.classList.toggle('hidden', tabId !== 'itinerary');
             if (panelExpenses)  panelExpenses.classList.toggle('hidden', tabId !== 'expenses');
+            if (panelInfo)      panelInfo.classList.toggle('hidden', tabId !== 'info');
             if (panelJson)      panelJson.classList.toggle('hidden', tabId !== 'json');
 
             // 頁籤樣式高亮
@@ -1433,10 +1574,16 @@
             const btnOverview  = document.getElementById('tab-nav-overview');
             const btnItinerary = document.getElementById('tab-nav-itinerary');
             const btnExpenses  = document.getElementById('tab-nav-expenses');
+            const btnInfo      = document.getElementById('tab-nav-info');
             if (btnSettings)  btnSettings.className  = tabId === 'settings'  ? ACTIVE : INACTIVE;
             if (btnOverview)  btnOverview.className  = tabId === 'overview'  ? ACTIVE : INACTIVE;
-            if (btnItinerary) btnItinerary.className = tabId === 'itinerary' ? ACTIVE : INACTIVE;
             if (btnExpenses)  btnExpenses.className  = tabId === 'expenses'  ? ACTIVE : INACTIVE;
+            if (btnInfo)      btnInfo.className      = tabId === 'info'      ? ACTIVE : INACTIVE;
+            if (btnItinerary) {
+                btnItinerary.className = tabId === 'itinerary'
+                    ? 'flex items-center gap-1.5 uppercase tracking-wider text-[11px] text-white font-black'
+                    : 'flex items-center gap-1.5 uppercase tracking-wider text-[11px] text-moss-200 hover:text-white transition-colors';
+            }
             // 同步側邊欄行程卡片選取高亮狀態（非「每日行程」頁籤時，所有天數卡片一律不亮起）
             renderSidebarDays();
 
@@ -1454,6 +1601,10 @@
                 document.getElementById('top-eyebrow').textContent = 'EXPENSES';
                 document.getElementById('top-title').textContent = '經費預算與記帳';
                 renderExpensesPanel();
+            } else if (tabId === 'info') {
+                document.getElementById('top-eyebrow').textContent = 'INFORMATION & MEMOS';
+                document.getElementById('top-title').textContent = '待辦清單、飯店憑證與行程備忘';
+                renderInfoPanel();
             } else if (tabId === 'json') {
                 document.getElementById('top-eyebrow').textContent = 'RAW DATA';
                 document.getElementById('top-title').textContent = 'JSON 原始碼預覽';
@@ -2003,6 +2154,8 @@
             renderFlights(day);
             // 渲染景點卡片
             renderSpots(day);
+            // 渲染當日餐飲條目
+            renderDayMeals(day);
             // 渲染特別提醒
             renderSpecialNotes(day);
             // 渲染生活筆記與彩蛋
@@ -2358,6 +2511,215 @@
             day.eatImage = (eats.find(e => e.image && e.image.trim()) || {}).image || '';
             day.buyImage = (buys.find(e => e.image && e.image.trim()) || {}).image || '';
             day.bonusImage = (bonuses.find(e => e.image && e.image.trim()) || {}).image || '';
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🍴 當日餐飲動態條目管理 (Daily Meals Helper & Renderer)        */
+        /* ------------------------------------------------------------- */
+        function parseMealsToItems(mealsStr) {
+            if (!mealsStr || typeof mealsStr !== 'string') return [];
+            const parts = mealsStr.split(/\s*[\/\n]\s*/).map(s => s.trim()).filter(Boolean);
+            const items = [];
+            parts.forEach(part => {
+                const match = part.match(/^(午餐|晚餐|點心|宵夜|早餐|早|午|晚|茶|下午茶)[:：]\s*(.*)$/);
+                if (match) {
+                    let tag = match[1];
+                    if (tag === '早') tag = '早餐';
+                    else if (tag === '午') tag = '午餐';
+                    else if (tag === '晚') tag = '晚餐';
+                    else if (tag === '茶' || tag === '下午茶') tag = '點心';
+                    items.push({ tag, text: match[2].trim() });
+                } else {
+                    items.push({ tag: '其他', text: part });
+                }
+            });
+            return items;
+        }
+
+        function syncMealItemsToString(day) {
+            if (!Array.isArray(day.mealItems)) day.mealItems = [];
+            day.meals = day.mealItems
+                .filter(m => m.text && m.text.trim())
+                .map(m => `${m.tag}：${m.text.trim()}`)
+                .join(' / ');
+        }
+
+        function renderDayMeals(day) {
+            const container = document.getElementById('day-meals-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!Array.isArray(day.mealItems)) {
+                day.mealItems = parseMealsToItems(day.meals);
+            }
+
+            if (!day.mealItems.length) {
+                container.innerHTML = `
+                    <div class="p-3 text-center text-xs text-moss-400 border border-dashed border-moss-200 rounded-xl bg-moss-50/30">
+                        目前尚未設定餐飲安排（點擊右上角「+ 新增餐別」即可加入）
+                    </div>
+                `;
+                return;
+            }
+
+            day.mealItems.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2 p-2 rounded-xl border border-moss-200 bg-moss-50/50';
+                row.innerHTML = `
+                    <span class="px-2.5 py-1 rounded-lg bg-moss-200 text-moss-600 font-bold text-xs shrink-0 select-none">
+                        ${escapeHtml(item.tag || '餐飲')}
+                    </span>
+                    <input type="text" value="${escapeHtml(item.text || '')}" placeholder="請輸入餐飲內容 (如：宮廷風米其林推薦)" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-meal-item-text" data-idx="${idx}">
+                    <button type="button" class="w-7 h-7 rounded-lg text-moss-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 shadow-2xs" data-action="del-meal-item" data-idx="${idx}" title="刪除此餐別">
+                        <i class="ph ph-trash text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        /* ------------------------------------------------------------- */
+        /* ℹ️ 資訊頁面主面板渲染 (Info Panel: Todos / Hotels / Memo)      */
+        /* ------------------------------------------------------------- */
+        let currentInfoSubtab = 'todos';
+
+        function switchInfoSubtab(subtab) {
+            currentInfoSubtab = subtab;
+            const btnTodos = document.getElementById('btn-info-subtab-todos');
+            const btnHotels = document.getElementById('btn-info-subtab-hotels');
+            const btnMemo = document.getElementById('btn-info-subtab-memo');
+
+            const pnlTodos = document.getElementById('info-subpanel-todos');
+            const pnlHotels = document.getElementById('info-subpanel-hotels');
+            const pnlMemo = document.getElementById('info-subpanel-memo');
+
+            const ACTIVE = 'info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-1.5';
+            const INACTIVE = 'info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5';
+
+            if (btnTodos) btnTodos.className = subtab === 'todos' ? ACTIVE : INACTIVE;
+            if (btnHotels) btnHotels.className = subtab === 'hotels' ? ACTIVE : INACTIVE;
+            if (btnMemo) btnMemo.className = subtab === 'memo' ? ACTIVE : INACTIVE;
+
+            if (pnlTodos) pnlTodos.classList.toggle('hidden', subtab !== 'todos');
+            if (pnlHotels) pnlHotels.classList.toggle('hidden', subtab !== 'hotels');
+            if (pnlMemo) pnlMemo.classList.toggle('hidden', subtab !== 'memo');
+
+            if (subtab === 'todos') renderInfoTodos();
+            else if (subtab === 'hotels') renderInfoHotels();
+            else if (subtab === 'memo') renderInfoMemo();
+        }
+
+        function renderInfoPanel() {
+            switchInfoSubtab(currentInfoSubtab);
+        }
+
+        function renderInfoTodos() {
+            const container = document.getElementById('info-todos-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let totalTodosCount = 0;
+
+            appData.itinerary.forEach((day, dayIdx) => {
+                if (!Array.isArray(day.todos)) day.todos = [];
+                day.todos.forEach((todo, todoIdx) => {
+                    totalTodosCount++;
+                    const item = document.createElement('div');
+                    item.className = 'p-3 rounded-xl border border-moss-200 bg-moss-50/60 flex flex-col sm:flex-row sm:items-center gap-2.5 transition-all';
+                    item.innerHTML = `
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="px-2 py-1 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-black shrink-0">
+                                ${escapeHtml(day.day || `Day ${dayIdx + 1}`)}
+                            </span>
+                        </div>
+                        <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
+                            <input type="text" placeholder="待辦事項內容" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="task">
+                            <input type="text" placeholder="備註提醒 (選填)" value="${escapeHtml(todo.note || '')}" class="sm:w-56 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none shrink-0" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="note">
+                        </div>
+                        <div class="flex items-center justify-end shrink-0">
+                            <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shadow-2xs" data-action="del-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" title="刪除此待辦">
+                                <i class="ph ph-trash text-sm"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            });
+
+            if (totalTodosCount === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-xs text-moss-400 border border-dashed border-moss-200 rounded-xl bg-moss-50/50 flex flex-col items-center justify-center gap-2">
+                        <i class="ph ph-check-square-offset text-3xl text-moss-300"></i>
+                        <span>目前各日行程中暫無待辦事項</span>
+                        <button type="button" onclick="addGlobalTodo()" class="mt-1 px-3 py-1.5 rounded-lg bg-moss-400 text-white font-bold text-xs hover:bg-moss-500 transition-colors shadow-2xs">
+                            <i class="ph ph-plus"></i> 新增第一筆待辦
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function addGlobalTodo() {
+            if (!Array.isArray(appData.itinerary) || appData.itinerary.length === 0) return;
+            const targetDay = appData.itinerary[selectedDayIndex] || appData.itinerary[0];
+            if (!Array.isArray(targetDay.todos)) targetDay.todos = [];
+            targetDay.todos.push({ task: '', note: '' });
+            renderInfoTodos();
+            if (currentTab === 'itinerary') renderItineraryDay();
+            markDirty();
+            showToast(`已於 ${targetDay.day || '當日'} 新增待辦事項`);
+        }
+
+        function renderInfoHotels() {
+            const container = document.getElementById('info-hotels-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            appData.itinerary.forEach((day, idx) => {
+                const item = document.createElement('div');
+                item.className = 'p-3.5 rounded-xl border border-moss-200 bg-moss-50/60 space-y-3 transition-all';
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 min-w-0 border-b border-moss-200/60 pb-2">
+                        <span class="px-2 py-0.5 rounded-lg bg-moss-200 text-moss-600 font-mono text-xs font-black shrink-0">
+                            ${escapeHtml(day.day || `D${idx + 1}`)}
+                        </span>
+                        <span class="text-xs font-bold text-moss-500">
+                            ${escapeHtml(day.fullDate || '未定日期')}
+                        </span>
+                        ${day.city ? `<span class="text-[11px] px-2 py-0.5 rounded-md bg-moss-100 text-moss-500 border border-moss-200 shrink-0 font-medium">${escapeHtml(day.city)}</span>` : ''}
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                            <i class="ph ph-bed text-sm text-moss-400"></i>
+                            <span>飯店名稱 (當晚住宿)</span>
+                        </label>
+                        <input type="text" placeholder="例如：KALSEDON CAVE HOTEL (留空表示無住宿/夜泊)" value="${escapeHtml(day.lodging || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodging">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                        <div>
+                            <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                                <i class="ph ph-ticket text-sm text-moss-400"></i>
+                                <span>預約資料</span>
+                            </label>
+                            <textarea rows="3" placeholder="例如：訂房代號 #AG-882910&#10;含早餐、15:00 入住 (支援換行)" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingBooking">${escapeHtml(day.lodgingBooking || '')}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                                <i class="ph ph-map-pin text-sm text-moss-400"></i>
+                                <span>飯店資訊 (地址 / 電話)</span>
+                            </label>
+                            <textarea rows="3" placeholder="例如：地址：Nevşehir, Göreme&#10;電話：+90 384 271 2000 (支援換行)" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingInfo">${escapeHtml(day.lodgingInfo || '')}</textarea>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderInfoMemo() {
+            const textarea = document.getElementById('info-memo-textarea');
+            if (!textarea) return;
+            textarea.value = appData.settings.memo || '';
         }
 
         /* ------------------------------------------------------------- */
@@ -3232,6 +3594,8 @@
             document.getElementById('tab-nav-json').onclick = () => switchTab('json');
             const btnExpTab = document.getElementById('tab-nav-expenses');
             if (btnExpTab) btnExpTab.onclick = () => switchTab('expenses');
+            const btnInfoTab = document.getElementById('tab-nav-info');
+            if (btnInfoTab) btnInfoTab.onclick = () => switchTab('info');
             const backdropEl = document.getElementById('sidebar-backdrop');
             
             // 側邊欄收合與展開 (< 與 > 側拉頁籤)
@@ -3315,7 +3679,8 @@
                     spots: [],
                     specialNotes: [],
                     easterEggs: [],
-                    outfit: '', buy: '', eat: '', bonus: '', eatImage: '', buyImage: '', bonusImage: '', meals: '', lodging: '', tips: ''
+                    mealItems: [],
+                    outfit: '', buy: '', eat: '', bonus: '', eatImage: '', buyImage: '', bonusImage: '', meals: '', lodging: '', lodgingBooking: '', lodgingInfo: '', tips: ''
                 });
                 selectedDayIndex = appData.itinerary.length - 1;
                 renderSidebarDays();
@@ -3776,10 +4141,31 @@
                         markDirty();
                     }
                 }
+
+                // 當日餐飲內容編輯
+                if (target.dataset.action === 'edit-meal-item-text') {
+                    const idx = Number(target.dataset.idx);
+                    if (day.mealItems && day.mealItems[idx]) {
+                        day.mealItems[idx].text = target.value;
+                        syncMealItemsToString(day);
+                        markDirty();
+                    }
+                    return;
+                }
             };
             document.getElementById('panel-itinerary').addEventListener('input', handleItineraryInput);
             document.getElementById('panel-itinerary').addEventListener('change', handleItineraryInput);
             document.getElementById('panel-itinerary').addEventListener('focusout', handleItineraryInput);
+
+            // 新增餐別下拉選單開關
+            const btnToggleMeal = document.getElementById('btn-toggle-meal-picker');
+            if (btnToggleMeal) {
+                btnToggleMeal.onclick = (e) => {
+                    e.stopPropagation();
+                    const menu = document.getElementById('picker-meal-menu');
+                    if (menu) menu.classList.toggle('hidden');
+                };
+            }
 
             // 點擊事件監聽 (Delegation for Add/Del buttons & Icon Pickers)
             document.getElementById('panel-itinerary').addEventListener('click', (e) => {
@@ -3787,6 +4173,32 @@
                 if (!btn) return;
                 const action = btn.dataset.action;
                 const day = appData.itinerary[selectedDayIndex];
+
+                // 新增餐飲條目
+                if (action === 'add-meal-item') {
+                    e.stopPropagation();
+                    const tag = btn.dataset.mealTag;
+                    if (!Array.isArray(day.mealItems)) day.mealItems = [];
+                    day.mealItems.push({ tag, text: '' });
+                    syncMealItemsToString(day);
+                    renderDayMeals(day);
+                    document.getElementById('picker-meal-menu')?.classList.add('hidden');
+                    markDirty();
+                    return;
+                }
+
+                // 刪除餐飲條目
+                if (action === 'del-meal-item') {
+                    e.stopPropagation();
+                    const idx = Number(btn.dataset.idx);
+                    if (Array.isArray(day.mealItems)) {
+                        day.mealItems.splice(idx, 1);
+                        syncMealItemsToString(day);
+                        renderDayMeals(day);
+                        markDirty();
+                    }
+                    return;
+                }
 
                 // 切換圖示選盤彈窗
                 if (action === 'toggle-picker') {
@@ -4015,6 +4427,61 @@
                             renderExpensesPanel();
                             markDirty();
                         }
+                    }
+                });
+            }
+
+            // 資訊頁面事件監聽 (Info Panel Delegation: 待辦 / 飯店 / 備忘)
+            const panelInfo = document.getElementById('panel-info');
+            if (panelInfo) {
+                const handleInfoInput = (e) => {
+                    const target = e.target;
+                    if (target.id === 'info-memo-textarea') {
+                        appData.settings.memo = target.value;
+                        markDirty();
+                        return;
+                    }
+                    if (target.dataset.action === 'edit-info-todo') {
+                        const dayIdx = Number(target.dataset.dayIdx);
+                        const todoIdx = Number(target.dataset.todoIdx);
+                        const field = target.dataset.field;
+                        if (appData.itinerary[dayIdx]?.todos?.[todoIdx]) {
+                            appData.itinerary[dayIdx].todos[todoIdx][field] = target.value;
+                            markDirty();
+                        }
+                        return;
+                    }
+                    if (target.dataset.action === 'edit-info-hotel') {
+                        const dayIdx = Number(target.dataset.dayIdx);
+                        const field = target.dataset.field;
+                        if (appData.itinerary[dayIdx]) {
+                            appData.itinerary[dayIdx][field] = target.value;
+                            // 若當前在編輯當日行程，同步 lodging 欄位
+                            if (dayIdx === selectedDayIndex && field === 'lodging') {
+                                const lodgingInput = document.querySelector('[data-day-field="lodging"]');
+                                if (lodgingInput) lodgingInput.value = target.value;
+                            }
+                            markDirty();
+                        }
+                        return;
+                    }
+                };
+                panelInfo.addEventListener('input', handleInfoInput);
+                panelInfo.addEventListener('change', handleInfoInput);
+
+                panelInfo.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-action="del-info-todo"]');
+                    if (!btn) return;
+                    const dayIdx = Number(btn.dataset.dayIdx);
+                    const todoIdx = Number(btn.dataset.todoIdx);
+                    if (appData.itinerary[dayIdx]?.todos) {
+                        appData.itinerary[dayIdx].todos.splice(todoIdx, 1);
+                        renderInfoTodos();
+                        if (dayIdx === selectedDayIndex && currentTab === 'itinerary') {
+                            renderDayTodos(appData.itinerary[selectedDayIndex]);
+                        }
+                        markDirty();
+                        showToast('已刪除待辦事項');
                     }
                 });
             }

@@ -34,6 +34,7 @@
                         heading: 'var(--font-heading)',
                         body: 'var(--font-body)',
                         small: 'var(--font-small)',
+                        badge: 'var(--font-badge)',
                     },
                     colors: {
                         moss: {
@@ -71,6 +72,7 @@
             --font-heading: 22px;
             --font-body: 17px;
             --font-small: 14px;
+            --font-badge: 12px;
         }
 
         body {
@@ -85,6 +87,7 @@
         .text-heading { font-size: var(--font-heading) !important; line-height: 1.4 !important; }
         .text-body { font-size: var(--font-body) !important; line-height: 1.6 !important; }
         .text-small { font-size: var(--font-small) !important; line-height: 1.5 !important; }
+        .text-badge { font-size: var(--font-badge) !important; line-height: 1.25 !important; }
 
         /* 隱藏水平溢出的滑動軸 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -200,6 +203,9 @@
             <button onclick="switchMainTab('tab-itinerary')" id="btn-pc-tab-itinerary" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
                 <i class="ph ph-map-trifold text-xl"></i> 行程
             </button>
+            <button onclick="switchMainTab('tab-info')" id="btn-pc-tab-info" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
+                <i class="ph ph-info text-xl"></i> 資訊
+            </button>
             <button onclick="switchMainTab('tab-expenses')" id="btn-pc-tab-expenses" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
                 <i class="ph ph-coin text-xl"></i> 經費
             </button>
@@ -277,7 +283,54 @@
             </div>
         </main>
 
-        <!-- 3. 經費 (Expenses) -->
+        <!-- 3. 資訊 (Info: 飯店資訊 / 行程備忘 / 待辦清單) -->
+        <main id="tab-info" class="main-content-pane hidden space-y-6 animate-[rise_0.3s_ease-out]">
+            <!-- 資訊頁面頂部選單膠囊切換 -->
+            <div class="glass-panel rounded-2xl p-2.5 flex items-center justify-between gap-2 border border-white">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <button type="button" id="btn-front-info-hotels" onclick="switchFrontInfoSubtab('hotels')" class="front-info-subtab-btn px-4 py-2 rounded-xl text-body font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-2 shrink-0">
+                        <i class="ph ph-bed text-lg"></i>
+                        <span>飯店資訊</span>
+                    </button>
+                    <button type="button" id="btn-front-info-memo" onclick="switchFrontInfoSubtab('memo')" class="front-info-subtab-btn px-4 py-2 rounded-xl text-body font-bold transition-all text-moss-500 hover:bg-moss-200/50 flex items-center gap-2 shrink-0">
+                        <i class="ph ph-note-pencil text-lg"></i>
+                        <span>行程備忘</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 子面板 1: 飯店資訊 (Hotels) -->
+            <div id="front-info-hotels-section" class="space-y-4">
+                <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-heading font-black text-moss-500 flex items-center gap-2">
+                            <i class="ph ph-bed text-2xl text-moss-400"></i>
+                            <span>全行程下榻飯店與住宿憑證</span>
+                        </h3>
+                    </div>
+                    <div id="front-info-hotels-container" class="space-y-3">
+                        <!-- 由 JS 動態渲染各晚飯店資訊卡片 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 子面板 2: 行程備忘 (Memo) -->
+            <div id="front-info-memo-section" class="hidden space-y-4">
+                <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-heading font-black text-moss-500 flex items-center gap-2">
+                            <i class="ph ph-note-pencil text-2xl text-moss-400"></i>
+                            <span>行程備忘筆記</span>
+                        </h3>
+                    </div>
+                    <div id="front-info-memo-content" class="text-body font-medium text-moss-500 leading-relaxed whitespace-pre-line bg-moss-100/60 p-5 rounded-2xl border border-moss-200/80">
+                        <!-- 由 JS 動態帶入 settings.memo -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 4. 經費 (Expenses) -->
         <main id="tab-expenses" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
             <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm">
                 <h3 class="text-heading font-black text-moss-500 mb-6 flex items-center gap-2"><i class="ph ph-chart-pie-slice text-2xl text-moss-400"></i> 經費儀表板</h3>
@@ -332,7 +385,7 @@
 
     <!-- [手機端專屬] App 底部導航列 -->
     <div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-moss-100/95 backdrop-blur-lg border-t border-moss-300/40 pt-1 pb-2.5 mobile-bottom-bar">
-        <div class="flex justify-around items-center px-2">
+        <div class="flex justify-around items-center px-1">
             <button onclick="switchMainTab('tab-overview')" id="btn-mob-tab-overview" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs">
                 <i class="ph ph-compass text-xl"></i>
                 <span class="text-[11px] font-black leading-none tracking-tight">總覽</span>
@@ -340,6 +393,10 @@
             <button onclick="switchMainTab('tab-itinerary')" id="btn-mob-tab-itinerary" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
                 <i class="ph ph-map-trifold text-xl"></i>
                 <span class="text-[11px] font-black leading-none tracking-tight">行程</span>
+            </button>
+            <button onclick="switchMainTab('tab-info')" id="btn-mob-tab-info" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+                <i class="ph ph-info text-xl"></i>
+                <span class="text-[11px] font-black leading-none tracking-tight">資訊</span>
             </button>
             <button onclick="switchMainTab('tab-expenses')" id="btn-mob-tab-expenses" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
                 <i class="ph ph-coin text-xl"></i>
@@ -400,7 +457,7 @@
             const visibleTabs = window.currentSiteSettings?.visibleTabs;
             if (Array.isArray(visibleTabs) && visibleTabs.length > 0) {
                 const tabSet = new Set(visibleTabs);
-                ['overview', 'itinerary', 'expenses', 'todo'].forEach(id => {
+                ['overview', 'itinerary', 'info', 'expenses', 'todo'].forEach(id => {
                     if (!tabSet.has(id)) {
                         document.getElementById(`btn-pc-tab-${id}`)?.classList.add('hidden');
                         document.getElementById(`btn-mob-tab-${id}`)?.classList.add('hidden');
@@ -642,6 +699,144 @@
             });
         }
 
+        /* ================= 資訊頁面 (Info: 飯店資訊 / 行程備忘) ================= */
+        let currentFrontInfoSubtab = 'hotels';
+        function switchFrontInfoSubtab(subtab) {
+            currentFrontInfoSubtab = subtab;
+            const btnHotels = document.getElementById('btn-front-info-hotels');
+            const btnMemo = document.getElementById('btn-front-info-memo');
+            const secHotels = document.getElementById('front-info-hotels-section');
+            const secMemo = document.getElementById('front-info-memo-section');
+
+            const ACTIVE = 'front-info-subtab-btn px-4 py-2 rounded-xl text-body font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-2 shrink-0';
+            const INACTIVE = 'front-info-subtab-btn px-4 py-2 rounded-xl text-body font-bold transition-all text-moss-500 hover:bg-moss-200/50 flex items-center gap-2 shrink-0';
+
+            if (btnHotels) btnHotels.className = subtab === 'hotels' ? ACTIVE : INACTIVE;
+            if (btnMemo) btnMemo.className = subtab === 'memo' ? ACTIVE : INACTIVE;
+
+            if (secHotels) secHotels.classList.toggle('hidden', subtab !== 'hotels');
+            if (secMemo) secMemo.classList.toggle('hidden', subtab !== 'memo');
+        }
+
+        function toggleHotelDrawer(idx, type) {
+            const drawer = document.getElementById(`hotel-${type}-drawer-${idx}`);
+            const btn = document.getElementById(`btn-hotel-${type}-${idx}`);
+            const caret = document.getElementById(`caret-hotel-${type}-${idx}`);
+            if (!drawer) return;
+            const isHidden = drawer.classList.contains('hidden');
+            if (isHidden) {
+                drawer.classList.remove('hidden');
+                if (btn) {
+                    btn.classList.add('bg-moss-400', 'text-moss-100', 'border-moss-400');
+                    btn.classList.remove('bg-moss-100/70', 'text-moss-500', 'border-moss-200');
+                    const icon = btn.querySelector('.ph-ticket, .ph-map-pin');
+                    if (icon) {
+                        icon.classList.remove('text-moss-400');
+                        icon.classList.add('text-moss-100');
+                    }
+                }
+                if (caret) {
+                    caret.classList.add('rotate-180', 'text-moss-100');
+                    caret.classList.remove('text-moss-400');
+                }
+            } else {
+                drawer.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('bg-moss-400', 'text-moss-100', 'border-moss-400');
+                    btn.classList.add('bg-moss-100/70', 'text-moss-500', 'border-moss-200');
+                    const icon = btn.querySelector('.ph-ticket, .ph-map-pin');
+                    if (icon) {
+                        icon.classList.add('text-moss-400');
+                        icon.classList.remove('text-moss-100');
+                    }
+                }
+                if (caret) {
+                    caret.classList.remove('rotate-180', 'text-moss-100');
+                    caret.classList.add('text-moss-400');
+                }
+            }
+        }
+
+        function renderFrontInfo(settings, itineraryData) {
+            // 1. 渲染飯店
+            const hotelContainer = document.getElementById('front-info-hotels-container');
+            if (hotelContainer) {
+                if (!Array.isArray(itineraryData) || itineraryData.length === 0) {
+                    hotelContainer.innerHTML = '<p class="text-body text-moss-400 py-6 text-center">暫無行程住宿資料</p>';
+                } else {
+                    let hotelHtml = '';
+                    itineraryData.forEach((day, idx) => {
+                        const lodgingName = day.lodging ? String(day.lodging).trim() : '';
+                        const bookingInfo = day.lodgingBooking ? String(day.lodgingBooking).trim() : '';
+                        const lodgingInfo = day.lodgingInfo ? String(day.lodgingInfo).trim() : '';
+                        const dayTag = day.day || `Day ${idx + 1}`;
+                        const dateTag = day.fullDate || '';
+                        const cityTag = day.city || '';
+
+                        hotelHtml += `
+                            <div class="p-4 md:p-5 rounded-2xl border border-moss-200 bg-white/70 hover:bg-white transition-all shadow-2xs space-y-2.5">
+                                <div class="flex items-center gap-2 flex-wrap border-b border-moss-100 pb-2">
+                                    <span class="px-2.5 py-0.5 rounded-lg bg-moss-400 text-moss-100 font-mono text-small font-black">
+                                        ${escapeHtml(dayTag)}
+                                    </span>
+                                    ${dateTag ? `<span class="text-small font-bold text-moss-500">${escapeHtml(dateTag)}</span>` : ''}
+                                    ${cityTag ? `<span class="text-small px-2 py-0.5 rounded-md bg-moss-200/60 text-moss-500 border border-moss-300/40 font-medium">${escapeHtml(cityTag)}</span>` : ''}
+                                </div>
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-0.5">
+                                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                                        <i class="ph ph-buildings text-xl text-moss-400 shrink-0"></i>
+                                        <span class="text-body font-black text-moss-500 break-words">
+                                            ${escapeHtml(lodgingName || '夜泊機上 / 無下榻飯店')}
+                                        </span>
+                                    </div>
+                                    ${(bookingInfo || lodgingInfo) ? `
+                                        <div class="flex items-center gap-1.5 shrink-0 self-start sm:self-auto flex-wrap">
+                                            ${bookingInfo ? `
+                                                <button type="button" onclick="toggleHotelDrawer(${idx}, 'booking')" title="預約資料 (點擊展開/收合)" id="btn-hotel-booking-${idx}" class="hotel-action-btn flex items-center gap-1.5 px-2.5 py-1 rounded-xl border border-moss-200 bg-moss-100/70 hover:bg-moss-200 text-moss-500 text-small font-bold transition-all shadow-2xs cursor-pointer active:scale-95">
+                                                    <i class="ph ph-ticket text-base text-moss-400 transition-colors"></i>
+                                                    <span class="text-small">預約資料</span>
+                                                    <i class="ph ph-caret-down text-xs text-moss-400 transition-transform duration-200" id="caret-hotel-booking-${idx}"></i>
+                                                </button>
+                                            ` : ''}
+                                            ${(bookingInfo && lodgingInfo) ? `<span class="text-moss-300 select-none hidden sm:inline">|</span>` : ''}
+                                            ${lodgingInfo ? `
+                                                <button type="button" onclick="toggleHotelDrawer(${idx}, 'info')" title="飯店資訊 (點擊展開/收合)" id="btn-hotel-info-${idx}" class="hotel-action-btn flex items-center gap-1.5 px-2.5 py-1 rounded-xl border border-moss-200 bg-moss-100/70 hover:bg-moss-200 text-moss-500 text-small font-bold transition-all shadow-2xs cursor-pointer active:scale-95">
+                                                    <i class="ph ph-map-pin text-base text-moss-400 transition-colors"></i>
+                                                    <span class="text-small">飯店資訊</span>
+                                                    <i class="ph ph-caret-down text-xs text-moss-400 transition-transform duration-200" id="caret-hotel-info-${idx}"></i>
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                ${(bookingInfo || lodgingInfo) ? `
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                                        ${bookingInfo ? `
+                                            <div id="hotel-booking-drawer-${idx}" class="hidden p-3.5 rounded-xl bg-moss-100/80 border border-moss-200/90 text-small font-bold text-moss-500 whitespace-pre-line leading-relaxed animate-[rise_0.2s_ease-out] ${!lodgingInfo ? 'md:col-span-2' : ''}">${escapeHtml(bookingInfo.trim())}</div>
+                                        ` : ''}
+                                        ${lodgingInfo ? `
+                                            <div id="hotel-info-drawer-${idx}" class="hidden p-3.5 rounded-xl bg-moss-100/80 border border-moss-200/90 text-small font-bold text-moss-500 whitespace-pre-line leading-relaxed animate-[rise_0.2s_ease-out] ${!bookingInfo ? 'md:col-span-2' : ''}">${escapeHtml(lodgingInfo.trim())}</div>
+                                        ` : ''}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                    hotelContainer.innerHTML = hotelHtml;
+                }
+            }
+
+            // 2. 渲染備忘
+            const memoContainer = document.getElementById('front-info-memo-content');
+            if (memoContainer) {
+                if (settings?.memo && settings.memo.trim()) {
+                    memoContainer.textContent = settings.memo;
+                } else {
+                    memoContainer.innerHTML = '<span class="text-moss-400 italic">尚無行程備忘事項</span>';
+                }
+            }
+        }
+
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -781,21 +976,23 @@
             const headingSize = (isMobile ? typo.heading?.mobile : typo.heading?.desktop) || (isMobile ? 18 : 22);
             const bodySize = (isMobile ? typo.body?.mobile : typo.body?.desktop) || (isMobile ? 15 : 17);
             const smallSize = (isMobile ? typo.small?.mobile : typo.small?.desktop) || (isMobile ? 12 : 14);
+            const badgeSize = (isMobile ? typo.badge?.mobile : typo.badge?.desktop) || 12;
 
             root.style.setProperty('--font-hero', `${heroSize}px`);
             root.style.setProperty('--font-heading', `${headingSize}px`);
             root.style.setProperty('--font-body', `${bodySize}px`);
             root.style.setProperty('--font-small', `${smallSize}px`);
+            root.style.setProperty('--font-badge', `${badgeSize}px`);
         }
 
         /* 🧭 前台首頁開放頁籤過濾 (Visible Tabs) */
         function applyVisibleTabs(settings) {
             const tabs = Array.isArray(settings?.visibleTabs) && settings.visibleTabs.length 
                 ? settings.visibleTabs 
-                : ['itinerary', 'overview', 'expenses', 'todo'];
+                : ['overview', 'itinerary', 'info', 'expenses', 'todo'];
             const tabSet = new Set(tabs);
 
-            const tabIds = ['overview', 'itinerary', 'expenses', 'todo'];
+            const tabIds = ['overview', 'itinerary', 'info', 'expenses', 'todo'];
             tabIds.forEach(id => {
                 const isVis = tabSet.has(id);
                 const pcBtn = document.getElementById(`btn-pc-tab-${id}`);
@@ -804,8 +1001,8 @@
                 if (mobBtn) mobBtn.classList.toggle('hidden', !isVis);
             });
 
-            // 優先開啟 visibleTabs 中設定的第一個可用分頁 (例如 2610.json 的 "itinerary")
-            const initialTab = tabs.find(t => tabIds.includes(t)) || 'itinerary';
+            // 優先開啟 visibleTabs 中設定的第一個可用分頁
+            const initialTab = tabs.find(t => tabIds.includes(t)) || 'overview';
             switchMainTab(`tab-${initialTab}`);
         }
 
@@ -886,6 +1083,7 @@
                 renderNavigation(data.itinerary);
                 renderOverviewCities(data.settings, data.itinerary);
                 renderItinerary(data.itinerary, data.settings);
+                renderFrontInfo(data.settings, data.itinerary);
                 renderTodos(data.itinerary);
                 initTodos();
                 bindGlobalTodos();
@@ -1111,7 +1309,7 @@
 
                         <!-- 背面: 詳細說明面 (純粹深苔綠便籤，拉桿隱形，僅保留說明文字) -->
                         <div class="city-flip-card-back shadow-md border border-moss-400/30 bg-moss-500 text-moss-100 p-5 md:p-6 flex flex-col justify-start">
-                            <div class="text-sm md:text-base leading-relaxed text-moss-100/95 overflow-y-auto no-scrollbar whitespace-pre-line flex-1">
+                            <div class="text-body font-medium leading-relaxed text-moss-100/95 overflow-y-auto no-scrollbar whitespace-pre-line flex-1">
                                 ${escapeHtml(city.detail || city.desc || '暫無詳細說明')}
                             </div>
                         </div>
@@ -1181,6 +1379,45 @@
 
             pcNavContainer.innerHTML = pcHtml;
             mobileNavContainer.innerHTML = mobileHtml;
+        }
+
+        function parseDailyMeals(day) {
+            const list = [];
+            if (Array.isArray(day.mealItems) && day.mealItems.length > 0) {
+                day.mealItems.forEach(item => {
+                    const text = (item.text || '').trim();
+                    if (!text && !item.tag) return;
+                    let tagCode = 'MEAL';
+                    let label = item.tag || '餐飲';
+                    if (/早/.test(label)) { tagCode = 'BFAST'; label = '早餐'; }
+                    else if (/午/.test(label)) { tagCode = 'LUNCH'; label = '午餐'; }
+                    else if (/晚/.test(label)) { tagCode = 'DINNER'; label = '晚餐'; }
+                    else if (/點心|茶/.test(label)) { tagCode = 'SNACK'; label = '點心'; }
+                    else if (/宵夜/.test(label)) { tagCode = 'LATE'; label = '宵夜'; }
+                    list.push({ tagCode, label, text });
+                });
+            } else if (day.meals && String(day.meals).trim()) {
+                const parts = String(day.meals).split(/\s*[\/\n]\s*/).map(s => s.trim()).filter(Boolean);
+                parts.forEach(part => {
+                    const match = part.match(/^(早|午|晚|早餐|午餐|晚餐|點心|宵夜|下午茶|茶)[:：\s-]\s*(.*)$/);
+                    if (match) {
+                        let tagCode = 'MEAL';
+                        let label = match[1];
+                        if (/早/.test(label)) { tagCode = 'BFAST'; label = '早餐'; }
+                        else if (/午/.test(label)) { tagCode = 'LUNCH'; label = '午餐'; }
+                        else if (/晚/.test(label)) { tagCode = 'DINNER'; label = '晚餐'; }
+                        else if (/點心|茶/.test(label)) { tagCode = 'SNACK'; label = '點心'; }
+                        else if (/宵夜/.test(label)) { tagCode = 'LATE'; label = '宵夜'; }
+                        const cleanText = (match[2] || '').trim().replace(/^[-—:：]\s*/, '');
+                        list.push({ tagCode, label, text: cleanText });
+                    } else if (/飛機|機上/.test(part)) {
+                        list.push({ tagCode: 'FLIGHT', label: '機上', text: part });
+                    } else {
+                        list.push({ tagCode: 'MEAL', label: '餐飲', text: part });
+                    }
+                });
+            }
+            return list;
         }
 
         function renderItinerary(itineraryData, settings) {
@@ -1387,8 +1624,15 @@
                         <div class="mt-4 bg-white/70 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row gap-5 border border-moss-200 shadow-sm">
                             ${hasMeals ? `
                             <div class="flex-1 flex flex-col justify-start">
-                                <h5 class="text-small font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
-                                <p class="text-body text-moss-500 font-bold leading-relaxed">${escapeHtml(day.meals).replace(/ \/ /g, '<br>')}</p>
+                                <h5 class="text-small font-black text-moss-400 mb-2.5 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
+                                <div class="space-y-2">
+                                    ${parseDailyMeals(day).map(m => `
+                                        <div class="flex items-center gap-2 text-body font-bold text-moss-500">
+                                            <span class="px-2 py-0.5 rounded-md bg-moss-200/80 text-moss-600 font-mono text-badge font-black shrink-0 tracking-wider">${m.tagCode}</span>
+                                            <span>${escapeHtml(m.label)}${m.text ? ` - ${escapeHtml(m.text)}` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>` : ''}
                             
                             ${hasLodging ? `
@@ -1448,8 +1692,8 @@
                                 ${item.image ? `<img src="${escapeHtml(item.image)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">` : `<i class="ph ${itemIcon} text-[68px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>`}
                                 <div class="absolute inset-0 bg-gradient-to-t from-moss-500/85 via-moss-500/20 to-transparent"></div>
                                 <div class="absolute bottom-0 left-0 w-full p-3.5 md:p-4 flex flex-col justify-end text-moss-100 relative z-10">
-                                    <h4 class="font-black text-xs md:text-sm leading-snug drop-shadow-md whitespace-normal flex items-start gap-1.5">
-                                        <i class="ph ${itemIcon} text-moss-300 text-sm md:text-base shrink-0 mt-0.5"></i>
+                                    <h4 class="font-black text-small leading-snug drop-shadow-md whitespace-normal flex items-start gap-1.5">
+                                        <i class="ph ${itemIcon} text-moss-300 text-small shrink-0 mt-0.5"></i>
                                         <span>${escapeHtml(item.name)}</span>
                                     </h4>
                                 </div>

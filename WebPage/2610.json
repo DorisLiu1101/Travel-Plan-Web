@@ -9,7 +9,9 @@
     "visibleTabs": [
       "overview",
       "itinerary",
-      "expenses"
+      "info",
+      "expenses",
+      "todo"
     ],
     "theme": "moss",
     "customTheme": {
@@ -99,6 +101,7 @@
       "text": "行健",
       "link": "https://www.unotour.com.tw/03_category_info.asp?sn=51198"
     },
+    "memo": "1. 插座規格：土耳其電壓為 220V，插頭為歐洲雙圓孔規格，請備妥萬國轉接頭。\n2. 氣候與衣著：十月份早晚溫差顯著（約 10~25°C），清晨熱氣球行程偏涼，建議洋蔥式穿法並攜帶輕羽絨外套與防風外套。\n3. 清真寺參觀禮儀：進入清真寺女性需包覆頭巾（可自備美觀絲巾拍照），男女皆不可穿著無袖或露出膝蓋之短褲短裙。\n4. 貨幣與消費：主要使用新土耳其里拉 (TRY)，大部分市區店家、餐廳與超市均支援 Visa / Mastercard 感應信用卡，建議攜帶少量美金或歐元現金至當地換匯備用。",
     "typography": {
       "style": "modern",
       "hero": {
@@ -116,6 +119,10 @@
       "small": {
         "desktop": 15,
         "mobile": 15
+      },
+      "badge": {
+        "desktop": 12,
+        "mobile": 12
       }
     }
   },
@@ -143,6 +150,7 @@
       "tips": "",
       "meals": "飛機餐",
       "lodging": "機上過夜",
+      "lodgingBooking": "土航 TK025 經濟艙",
       "bonus": "",
       "eatImage": "",
       "buyImage": "",
@@ -197,6 +205,8 @@
       "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。",
       "meals": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐",
       "lodging": "HILTON GARDEN INN SAFRANBOLU",
+      "lodgingBooking": "團體預約代號 #HGI-9281\n房型：雙人豪華客房 (含早餐)",
+      "lodgingInfo": "地址：Yenimahalle, Sadri Artunç Cd. No:74, 78600 Safranbolu/Karabük\n電話：+90 370 712 11 30",
       "bonus": "",
       "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10",
       "buyImage": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg",
@@ -357,6 +367,8 @@
       "tips": "參觀地毯坊與珠寶店時微笑道別即可，殺價為當地樂趣；下午茶與冰淇淋為特別招待。",
       "meals": "午：土式佐傳統烤羊肉風味餐 / 晚：旅館自助式或套餐",
       "lodging": "KALSEDON CAVE HOTEL",
+      "lodgingBooking": "洞穴特色旅館預約 #KC-4491\n入住：15:00 / 退房：11:00 (含早晚餐)",
+      "lodgingInfo": "地址：Aydınlı Orta Mahalle, Çakmak Sk. No:5, 50180 Göreme/Nevşehir\n電話：+90 384 271 28 88",
       "todos": [],
       "flights": [],
       "bonus": "",
@@ -441,6 +453,8 @@
       "tips": "孔亞為宗教氣氛較濃厚的傳統聖城，參觀博物館相關園區請保持衣著端莊與輕聲細語。",
       "meals": "午：土式餐食佐 Pide 風味餐 / 晚：旅館自助式或套餐",
       "lodging": "DOUBLE TREE BY HILTON ANTALYA",
+      "lodgingBooking": "希爾頓連鎖預約 #DT-99210\n房型：海景雙人客房 (附設室內泳池)",
+      "lodgingInfo": "地址：Şirinyalı Mah. 1512 Sok. No:2, Muratpaşa, 07160 Antalya\n電話：+90 242 310 99 99",
       "todos": [],
       "flights": [],
       "bonus": "",
