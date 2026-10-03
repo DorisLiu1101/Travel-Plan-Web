@@ -149,7 +149,7 @@
         "icon": "ph-cloud-sun",
         "temp": "10-18°C"
       },
-      "image": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b07.jpg",
+      "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103741-3950.webp",
       "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
       "todos": [],
       "flights": [
@@ -161,7 +161,7 @@
           "name": "市長官邸",
           "description": "造訪典型鄂圖曼風格的三層木造大宅與典雅中庭，見證古城歲月流轉。",
           "mapQuery": "凱馬卡姆拉旅遊之家 土耳其",
-          "image": "https://www.unotour.com.tw/material/content/day/dya_4233_2_2-20190730-111424-3228.jpg",
+          "image": "",
           "note": "",
           "todos": []
         },
@@ -169,7 +169,7 @@
           "name": "鵝卵石古鎮",
           "description": "悠閒漫步沙夫蘭波爾起伏巷弄，尋訪古法手工銅製品與傳統糕點鋪。",
           "mapQuery": "鵝卵石古鎮 土耳其",
-          "image": "",
+          "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_1-20261002-171452-6530.webp",
           "note": "",
           "todos": []
         },
@@ -186,40 +186,35 @@
         "若遇市長官邸關閉，將改為參觀「洞穴人家房舍」替代。"
       ],
       "outfit": "早晚偏涼，山城鵝卵石路面多穿厚底防滑鞋",
-      "buy": "番紅花城手工紅銅器、傳統立體鄂圖曼軟糖、特色手工蕾絲織品。",
-      "eat": "傳統鄂圖曼式建築 Güveç 陶甕風味餐、土耳其紅茶。",
+      "buy": "番紅花城手工紅銅器、傳統立體鄂圖曼軟糖、特色手工蕾絲織品",
+      "eat": "土耳其紅茶",
       "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。",
       "meals": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐",
       "lodging": "HILTON GARDEN INN SAFRANBOLU",
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10",
+      "buyImage": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "傳統鄂圖曼式建築 Güveç 陶甕風味餐",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "土耳其紅茶。",
-          "image": ""
+          "text": "土耳其紅茶",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10"
         },
         {
           "tag": "buy",
           "text": "番紅花城手工紅銅器",
-          "image": ""
+          "image": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg"
         },
         {
           "tag": "buy",
           "text": "傳統立體鄂圖曼軟糖",
-          "image": ""
+          "image": "https://i.imgur.com/oZ717IK.jpg"
         },
         {
           "tag": "buy",
-          "text": "特色手工蕾絲織品。",
-          "image": ""
+          "text": "特色手工蕾絲織品",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/%C4%B0%C4%9Fne_Oyas%C4%B1.jpeg"
         }
       ]
     },
