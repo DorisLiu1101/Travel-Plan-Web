@@ -212,12 +212,13 @@
                 <!-- iframe 將於 JS 動態寫入並裁切表頭 -->
             </div>
 
-            <div class="mt-8">
+            <div id="overview-city-cards-section" class="mt-8">
                 <!-- 橫滑吸附容器 -->
                 <div id="overview-city-cards" class="flex gap-4 overflow-x-auto pb-6 custom-scrollbar snap-x snap-mandatory">
                     <!-- 動態生成城市卡片 -->
                 </div>
             </div>
+
         </main>
 
         <!-- 2. 行程 (Itinerary) -->
@@ -376,20 +377,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* ================= 彩蛋選單切換邏輯 ================= */
-        function switchEggTab(dayId, typeId) {
-            document.querySelectorAll(`.egg-content-${dayId}`).forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById(`egg-${typeId}-${dayId}`);
-            if (target) target.classList.remove('hidden');
-            
-            document.querySelectorAll(`.egg-tab-${dayId}`).forEach(el => {
-                el.className = `egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-small transition-all text-moss-500 hover:bg-moss-300/30 flex-1 md:flex-none text-center md:text-left`;
-            });
-            const activeBtn = document.getElementById(`btn-egg-${typeId}-${dayId}`);
-            if (activeBtn) {
-                activeBtn.className = `egg-tab-${dayId} px-4 py-2 rounded-xl font-bold text-small transition-all bg-moss-400 text-moss-100 shadow-sm flex-1 md:flex-none text-center md:text-left active`;
-            }
-        }
 
         /* ================= 彈窗與收合邏輯 ================= */
         const modal = document.getElementById('info-modal');
@@ -879,16 +866,61 @@
             }
         }
 
+        function calculateTripDays(settings, itineraryData) {
+            // 優先嘗試從 settings.dateText 解析起訖日 (支援 2026/10/8 ~ 2026/10/18 或 2026/10/8 - 10/18 或 2026-10-08 至 2026-10-18 等)
+            const dateText = String(settings?.dateText || '').trim();
+            if (dateText) {
+                // 找出所有連續日期結構 YYYY/MM/DD 或 MM/DD
+                const matches = dateText.match(/(\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2})|(\d{1,2}[\/\-\.]\d{1,2})/g);
+                if (matches && matches.length >= 2) {
+                    let startStr = matches[0].replace(/[\-\.]/g, '/');
+                    let endStr = matches[matches.length - 1].replace(/[\-\.]/g, '/');
+                    // 若結束日未帶年份，自動補上起始日的年份
+                    if (startStr.split('/').length === 3 && endStr.split('/').length === 2) {
+                        const startYear = startStr.split('/')[0];
+                        endStr = `${startYear}/${endStr}`;
+                    }
+                    const startDate = new Date(startStr);
+                    const endDate = new Date(endStr);
+                    if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+                        const diffTime = endDate.getTime() - startDate.getTime();
+                        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                        if (diffDays > 0) return diffDays;
+                    }
+                }
+            }
+
+            // 備援：從 itineraryData 第一天與最後一天的 fullDate 解析
+            if (Array.isArray(itineraryData) && itineraryData.length > 0) {
+                const firstDayStr = String(itineraryData[0]?.fullDate || '').match(/\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/)?.[0];
+                const lastDayStr = String(itineraryData[itineraryData.length - 1]?.fullDate || '').match(/\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}/)?.[0];
+                if (firstDayStr && lastDayStr) {
+                    const start = new Date(firstDayStr.replace(/[\-\.]/g, '/'));
+                    const end = new Date(lastDayStr.replace(/[\-\.]/g, '/'));
+                    if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+                        const diffDays = Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                        if (diffDays > 0) return diffDays;
+                    }
+                }
+                return itineraryData.length;
+            }
+
+            return '--';
+        }
+
         function renderHero(settings, itineraryData) {
             document.title = settings.pageTitle || '行程表';
             
+            const totalDays = calculateTripDays(settings, itineraryData);
+            const daysText = totalDays !== '--' ? `${totalDays} DAYS` : '-- DAYS';
+
             document.getElementById('ui-hero-date').textContent = settings.dateText || '--';
-            document.getElementById('ui-hero-days').textContent = (itineraryData ? itineraryData.length : '--') + ' DAYS';
+            document.getElementById('ui-hero-days').textContent = daysText;
             document.getElementById('ui-hero-title').textContent = settings.heroTitle || '未知旅程';
             document.getElementById('ui-subtitle').textContent = settings.subtitle || '';
             
             document.getElementById('ui-overview-date').textContent = settings.dateText || '--';
-            document.getElementById('ui-overview-days').textContent = (itineraryData ? itineraryData.length : '--') + ' DAYS';
+            document.getElementById('ui-overview-days').textContent = daysText;
             
             // 總覽地點文字：優先由 settings.cities 生成
             if (Array.isArray(settings.cities) && settings.cities.length > 0) {
@@ -897,6 +929,7 @@
                 const uniqueTitles = [...new Set(itineraryData.map(d => d.title.split(' ｜ ')[0]).filter(Boolean))];
                 document.getElementById('ui-overview-cities').textContent = uniqueTitles.slice(0, 4).join(', ') + (uniqueTitles.length > 4 ? '...' : '');
             }
+
             
             if (settings.heroImage) {
                 document.getElementById('hero').style.backgroundImage = `url('${settings.heroImage}')`;
@@ -990,6 +1023,7 @@
         /* 🏙️ 總覽城市亮點卡片 (Overview Cities) - 完整來自 2610.json settings.cities */
         function renderOverviewCities(settings, itineraryData) {
             const container = document.getElementById('overview-city-cards');
+            const section = document.getElementById('overview-city-cards-section');
             if (!container) return;
             
             let cityList = [];
@@ -1013,7 +1047,13 @@
                 });
             }
 
-            if (cityList.length === 0) return;
+            if (cityList.length === 0) {
+                if (section) section.classList.add('hidden');
+                container.innerHTML = '';
+                return;
+            }
+
+            if (section) section.classList.remove('hidden');
 
             let html = '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
             cityList.forEach(city => {
@@ -1033,6 +1073,7 @@
             html += '<div class="w-[calc(50%-5rem)] md:w-[calc(50%-6rem)] shrink-0 pointer-events-none"></div>';
             container.innerHTML = html;
         }
+
 
         function renderNavigation(itineraryData) {
             const pcNavContainer = document.getElementById('pc-nav-links');
@@ -1064,17 +1105,22 @@
             itineraryData.forEach((day, index) => {
                 const dayId = `day-${index}`;
                 
-                let weatherOutfitHtml = '<div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">';
-                if (day.weather) {
-                    weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon} text-lg"></i> ${day.weather.temp}</span>`;
+                let weatherOutfitHtml = '';
+                const hasWeather = !!(day.weather && (day.weather.icon || day.weather.temp));
+                const hasOutfit = !!(day.outfit && String(day.outfit).trim());
+                if (hasWeather || hasOutfit) {
+                    weatherOutfitHtml = '<div class="flex flex-wrap items-center gap-3 mb-5 text-small font-bold text-moss-500">';
+                    if (hasWeather) {
+                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ${day.weather.icon || 'ph-sun'} text-lg"></i> ${escapeHtml(day.weather.temp || '')}</span>`;
+                    }
+                    if (hasWeather && hasOutfit) {
+                        weatherOutfitHtml += `<span class="text-moss-300/60 font-black">|</span>`;
+                    }
+                    if (hasOutfit) {
+                        weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ph-t-shirt text-lg"></i> ${escapeHtml(day.outfit)}</span>`;
+                    }
+                    weatherOutfitHtml += '</div>';
                 }
-                if (day.weather && day.outfit) {
-                    weatherOutfitHtml += `<span class="text-moss-300/60 font-black">|</span>`;
-                }
-                if (day.outfit) {
-                    weatherOutfitHtml += `<span class="flex items-center gap-1.5"><i class="ph ph-t-shirt text-lg"></i> ${day.outfit}</span>`;
-                }
-                weatherOutfitHtml += '</div>';
 
                 let flightsHtml = '';
                 if (day.flights && day.flights.length > 0) {
@@ -1145,7 +1191,7 @@
                                     <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-moss-100 hover:bg-moss-400 text-moss-500 hover:text-moss-100 border border-moss-200 flex items-center justify-center transition-all shadow-sm" title="地圖導航 (${escapeHtml(spot.mapQuery)})">
                                         <i class="ph ph-map-pin text-sm"></i>
                                     </a>
-                                `;
+                                								`;
                             }
                             if (spot.note) {
                                 spotActionsHtml += `
@@ -1209,7 +1255,7 @@
                 }
 
                 let tipsHtml = '';
-                if (day.tips) {
+                if (day.tips && String(day.tips).trim()) {
                     tipsHtml = `
                         <div class="mt-6 mb-2 flex items-start gap-2.5 text-body text-moss-500 font-bold px-2 bg-moss-200/40 p-4 rounded-xl border border-moss-300/50 shadow-sm">
                             <i class="ph ph-lightbulb text-moss-500 text-lg font-bold shrink-0 mt-0.5"></i>
@@ -1219,17 +1265,19 @@
                 }
 
                 let summaryHtml = '';
-                if(day.meals || day.lodging) {
+                const hasMeals = !!(day.meals && String(day.meals).trim());
+                const hasLodging = !!(day.lodging && String(day.lodging).trim());
+                if (hasMeals || hasLodging) {
                     summaryHtml = `
                         <div class="mt-4 bg-white/70 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row gap-5 border border-moss-200 shadow-sm">
-                            ${day.meals ? `
+                            ${hasMeals ? `
                             <div class="flex-1 flex flex-col justify-start">
                                 <h5 class="text-small font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
                                 <p class="text-body text-moss-500 font-bold leading-relaxed">${escapeHtml(day.meals).replace(/ \/ /g, '<br>')}</p>
                             </div>` : ''}
                             
-                            ${day.lodging ? `
-                            <div class="flex-1 flex flex-col justify-start border-t md:border-t-0 md:border-l border-moss-200 pt-3 md:pt-0 md:pl-5">
+                            ${hasLodging ? `
+                            <div class="flex-1 flex flex-col justify-start ${hasMeals ? 'border-t md:border-t-0 md:border-l border-moss-200 pt-3 md:pt-0 md:pl-5' : ''}">
                                 <h5 class="text-small font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-bed text-sm"></i> Lodging / 住宿</h5>
                                 <p class="text-body text-moss-500 font-bold">${escapeHtml(day.lodging)}</p>
                             </div>` : ''}
@@ -1238,28 +1286,29 @@
                 }
 
                 let eggHtml = '';
-                let availableTypes = [];
+                const tagMeta = {
+                    eat:    { label: '美食', icon: 'ph-fork-knife' },
+                    buy:    { label: '土產', icon: 'ph-shopping-bag' },
+                    bonus:  { label: '體驗', icon: 'ph-sparkle' },
+                    spot:   { label: '私房', icon: 'ph-camera' },
+                    cafe:   { label: '咖啡', icon: 'ph-coffee' },
+                    ticket: { label: '活動', icon: 'ph-ticket' }
+                };
+
+                let allEggItems = [];
 
                 if (Array.isArray(day.easterEggs) && day.easterEggs.length > 0) {
-                    const tagMeta = {
-                        eat:    { label: '美食', icon: 'ph-fork-knife' },
-                        buy:    { label: '土產', icon: 'ph-shopping-bag' },
-                        bonus:  { label: '體驗', icon: 'ph-sparkle' },
-                        spot:   { label: '私房', icon: 'ph-camera' },
-                        cafe:   { label: '咖啡', icon: 'ph-coffee' },
-                        ticket: { label: '活動', icon: 'ph-ticket' }
-                    };
-                    const grouped = {};
                     day.easterEggs.forEach(e => {
-                        if (!e.text) return;
+                        if (!e.text || !String(e.text).trim()) return;
                         const t = e.tag || 'eat';
-                        if (!grouped[t]) grouped[t] = [];
-                        grouped[t].push({ name: e.text, image: e.image });
-                    });
-                    Object.keys(tagMeta).forEach(t => {
-                        if (grouped[t] && grouped[t].length > 0) {
-                            availableTypes.push({ id: t, label: tagMeta[t].label, icon: tagMeta[t].icon, items: grouped[t] });
-                        }
+                        const meta = tagMeta[t] || { label: '推薦', icon: 'ph-sparkle' };
+                        allEggItems.push({
+                            name: e.text,
+                            image: e.image || '',
+                            tag: t,
+                            tagLabel: meta.label,
+                            icon: meta.icon
+                        });
                     });
                 } else {
                     const parseItems = (str) => {
@@ -1270,69 +1319,47 @@
                     let buyItems = day.buy ? parseItems(day.buy) : [];
                     let bonusItems = day.bonus ? parseItems(day.bonus) : []; 
 
-                    if(eatItems.length > 0) availableTypes.push({ id: 'eat', label: '美食', icon: 'ph-fork-knife', items: eatItems.map((name, i) => ({ name, image: i === 0 ? (day.eatImage || '') : '' })) });
-                    if(buyItems.length > 0) availableTypes.push({ id: 'buy', label: '土產', icon: 'ph-shopping-bag', items: buyItems.map((name, i) => ({ name, image: i === 0 ? (day.buyImage || '') : '' })) });
-                    if(bonusItems.length > 0) availableTypes.push({ id: 'bonus', label: '體驗', icon: 'ph-sparkle', items: bonusItems.map((name, i) => ({ name, image: i === 0 ? (day.bonusImage || '') : '' })) });
+                    eatItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.eatImage || '') : '', tag: 'eat', tagLabel: '美食', icon: 'ph-fork-knife' }));
+                    buyItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.buyImage || '') : '', tag: 'buy', tagLabel: '土產', icon: 'ph-shopping-bag' }));
+                    bonusItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.bonusImage || '') : '', tag: 'bonus', tagLabel: '體驗', icon: 'ph-sparkle' }));
                 }
 
-                if (availableTypes.length > 0) {
-                    let tabsMenuHtml = '';
-                    let contentPanesHtml = '';
-                    let totalItemsCount = 0;
-
-                    availableTypes.forEach((typeObj, tIdx) => {
-                        totalItemsCount += typeObj.items.length;
-                        const isActive = tIdx === 0;
-                        const activeBtnClass = isActive ? 'bg-moss-400 text-moss-100 shadow-sm' : 'text-moss-500 hover:bg-moss-300/30';
-                        const displayClass = isActive ? '' : 'hidden';
-
-                        tabsMenuHtml += `
-                            <button id="btn-egg-${typeObj.id}-${dayId}" onclick="switchEggTab('${dayId}', '${typeObj.id}')" class="egg-tab-${dayId} px-3 py-2 rounded-xl font-bold text-small transition-all flex items-center justify-center md:justify-start gap-1.5 flex-1 md:flex-none text-center md:text-left ${activeBtnClass}">
-                                <i class="ph ${typeObj.icon || 'ph-sparkle'} text-sm"></i>
-                                <span>${typeObj.label}</span>
-                            </button>
-                        `;
-
-                        let defaultIcon = typeObj.icon || 'ph-sparkle';
-                        
-                        let cardsHtml = '<div class="w-2 md:w-6 shrink-0 pointer-events-none"></div>'; // spacer left
-                        cardsHtml += typeObj.items.map(item => `
-                            <div class="w-32 md:w-40 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[3/4] snap-center bg-moss-300/20 flex flex-col justify-end">
-                                ${item.image ? `<img src="${escapeHtml(item.image)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">` : `<i class="ph ${defaultIcon} text-[68px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>`}
-                                <div class="absolute inset-0 bg-gradient-to-t from-moss-500/80 via-moss-500/10 to-transparent"></div>
+                if (allEggItems.length > 0) {
+                    let cardsHtml = '<div class="w-1 md:w-2 shrink-0 pointer-events-none"></div>';
+                    allEggItems.forEach(item => {
+                        const itemIcon = item.icon || 'ph-sparkle';
+                        cardsHtml += `
+                            <div class="w-36 md:w-44 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[3/4] snap-center bg-moss-300/20 flex flex-col justify-end">
+                                ${item.image ? `<img src="${escapeHtml(item.image)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">` : `<i class="ph ${itemIcon} text-[68px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>`}
+                                <div class="absolute inset-0 bg-gradient-to-t from-moss-500/85 via-moss-500/20 to-transparent"></div>
                                 <div class="absolute bottom-0 left-0 w-full p-3.5 md:p-4 flex flex-col justify-end text-moss-100 relative z-10">
-                                    <h4 class="font-black text-xs leading-snug drop-shadow-md whitespace-normal">${escapeHtml(item.name)}</h4>
+                                    <h4 class="font-black text-xs md:text-sm leading-snug drop-shadow-md whitespace-normal flex items-start gap-1.5">
+                                        <i class="ph ${itemIcon} text-moss-300 text-sm md:text-base shrink-0 mt-0.5"></i>
+                                        <span>${escapeHtml(item.name)}</span>
+                                    </h4>
                                 </div>
-                            </div>
-                        `).join('');
-                        cardsHtml += '<div class="w-2 md:w-6 shrink-0 pointer-events-none"></div>'; // spacer right
-
-                        contentPanesHtml += `
-                            <div id="egg-${typeObj.id}-${dayId}" class="egg-content-${dayId} flex gap-4 overflow-x-auto custom-scrollbar snap-x snap-mandatory pb-6 pt-2 ${displayClass}">
-                                ${cardsHtml}
                             </div>
                         `;
                     });
+                    cardsHtml += '<div class="w-1 md:w-2 shrink-0 pointer-events-none"></div>';
 
                     eggHtml = `
                         <div class="mt-4">
                             <details class="group bg-moss-200/30 border border-moss-300/40 rounded-2xl p-4 md:p-5 transition-all duration-300">
                                 <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-500 text-body">
-                                    <span class="flex items-center gap-2"><i class="ph ph-gift text-xl text-moss-400"></i> 驚喜彩蛋 (${totalItemsCount})</span>
+                                    <span class="flex items-center gap-2"><i class="ph ph-gift text-xl text-moss-400"></i> 驚喜彩蛋 (${allEggItems.length})</span>
                                     <div class="w-8 h-8 rounded-full bg-moss-300 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform"><i class="ph ph-caret-down font-bold"></i></div>
                                 </summary>
-                                <div class="mt-5 flex flex-col md:flex-row gap-4 md:gap-6 items-start pt-4 border-t border-moss-300/30">
-                                    <div class="flex flex-row md:flex-col gap-1.5 w-full md:w-24 shrink-0 bg-white/40 p-1.5 rounded-xl border border-moss-200/50">
-                                        ${tabsMenuHtml}
-                                    </div>
-                                    <div class="flex-1 w-full min-w-0 overflow-hidden relative">
-                                        ${contentPanesHtml}
+                                <div class="mt-4 pt-3 border-t border-moss-300/30 overflow-hidden">
+                                    <div class="flex gap-3.5 md:gap-4 overflow-x-auto custom-scrollbar snap-x snap-mandatory pb-4 pt-1">
+                                        ${cardsHtml}
                                     </div>
                                 </div>
                             </details>
                         </div>
                     `;
                 }
+
 
                 html += `
                     <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
