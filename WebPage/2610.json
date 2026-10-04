@@ -147,18 +147,13 @@
         }
       ],
       "spots": [],
-      "specialNotes": [
-        {
-          "icon": "ph-t-shirt",
-          "text": "搭機舒適穿著"
-        }
-      ],
-      "outfit": "搭機舒適穿著",
+      "specialNotes": [],
+      "outfit": "",
       "buy": "",
       "eat": "",
       "tips": "",
-      "meals": "飛機餐",
-      "lodging": "機上過夜",
+      "meals": "",
+      "lodging": "",
       "lodgingBooking": "土航 TK025 經濟艙",
       "bonus": "",
       "eatImage": "",
@@ -166,12 +161,7 @@
       "bonusImage": "",
       "easterEggs": [],
       "city": "伊斯坦堡ISTANBUL",
-      "mealItems": [
-        {
-          "tag": "其他",
-          "text": "飛機餐"
-        }
-      ],
+      "mealItems": [],
       "lodgingInfo": ""
     },
     {
