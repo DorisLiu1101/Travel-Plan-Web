@@ -1,11 +1,12 @@
 {
   "settings": {
     "pageTitle": "成都.貴州.雲南 ( 2026/12/26 - 2027/01/07 )",
-    "heroTitle": "跨年逍遙遊13日",
+    "heroTitle": "跨年逍遙遊",
     "dateText": "2026/12/26(六) ~ 2027/1/7(四)",
     "subtitle": "自由行 / 成都、貴州、雲南 (昆明.大理.麗江) ",
+    "subtitleLink": "",
     "heroImage": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/looypopvm483kwmviwov/%E9%9B%B2%E5%8D%97%E6%98%86%E6%98%8E%E5%A4%A7%E7%90%86%E9%BA%97%E6%B1%9F%E9%A6%99%E6%A0%BC%E9%87%8C%E6%8B%898%E6%97%A5%E9%81%8A-Klook.jpg",
-    "mapEngine": "google",
+    "mapEngine": "amap",
     "visibleTabs": [
       "overview",
       "itinerary",
@@ -60,23 +61,46 @@
       "small": {
         "desktop": 15,
         "mobile": 15
+      },
+      "fontTitle": "vintage",
+      "fontBody": "standard",
+      "fontBadge": "ticket",
+      "badge": {
+        "desktop": 12,
+        "mobile": 12
       }
-    }
+    },
+    "emergency": "",
+    "memo": ""
   },
   "itinerary": [
     {
       "day": "Day 1",
-      "fullDate": "",
-      "title": "啟程首日",
+      "fullDate": "2026/12/26 (六)",
+      "title": "",
       "weather": {
-        "icon": "ph-sun",
-        "temp": ""
+        "icon": "ph-cloud",
+        "temp": "2-12°C"
       },
-      "image": "",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOIUGhNc4vNKwYXO9tuThawV3e0TZE_kyB3MsnvrFPHzuYFv-EM1nX9sbu&s=10",
       "mapImage": "",
       "todos": [],
-      "flights": [],
-      "spots": [],
+      "flights": [
+        {
+          "icon": "ph-airplane-tilt",
+          "text": "14:00 RMQ 台中國際機場 (✈️3小時30分)17:30 TFU 成都天府國際機場T1"
+        }
+      ],
+      "spots": [
+        {
+          "name": "",
+          "mapQuery": "",
+          "image": "",
+          "description": "",
+          "note": "",
+          "todos": []
+        }
+      ],
       "specialNotes": [],
       "easterEggs": [],
       "outfit": "",
@@ -87,8 +111,13 @@
       "buyImage": "",
       "bonusImage": "",
       "meals": "",
-      "lodging": "",
-      "tips": ""
+      "lodging": "威斯凱爾飯店",
+      "tips": "",
+      "city": "成都",
+      "mealItems": [],
+      "lodgingBooking": "",
+      "lodgingInfo": "",
+      "lodgingMap": ""
     }
   ]
 }
