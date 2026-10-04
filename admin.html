@@ -146,15 +146,15 @@
             </button>
         </div>
 
-        <!-- 頂部頁籤切換器 (2x2 四宮格：全站設置 ｜ 行程預覽 ｜ 經費預算 ｜ 資訊頁面) -->
+        <!-- 頂部頁籤切換器 (2x2 四宮格：全站設置 ｜ 行程總覽 ｜ 經費預算 ｜ 資訊頁面) -->
         <div class="p-3 grid grid-cols-2 gap-1.5 border-b border-moss-400/30">
             <button id="tab-nav-settings" class="nav-tab active flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all bg-moss-400 text-moss-100 shadow-sm" title="全站設置">
                 <i class="ph ph-sliders text-base"></i>
                 <span>全站設置</span>
             </button>
-            <button id="tab-nav-overview" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="行程預覽">
+            <button id="tab-nav-overview" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="行程總覽">
                 <i class="ph ph-compass text-base"></i>
-                <span>行程預覽</span>
+                <span>行程總覽</span>
             </button>
             <button id="tab-nav-expenses" class="nav-tab flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-moss-200 hover:bg-moss-400/30 hover:text-white" title="經費預算">
                 <i class="ph ph-currency-circle-dollar text-base"></i>
@@ -746,9 +746,14 @@
                                     <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                 </div>
 
-                                <div>
+                                <div class="space-y-1.5">
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">備用靜態地圖網址</label>
-                                    <input type="text" data-setting="overviewMap.image" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" data-setting="overviewMap.image" placeholder="https://..." class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                        <div id="preview-overview-map-image" class="w-16 h-9 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0 shadow-inner" title="靜態地圖圖片預覽">
+                                            <span class="text-[10px] text-moss-400">無縮圖</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -763,34 +768,7 @@
                         </div>
                     </details>
 
-                    <!-- 卡片 2: 旅程備註與參考說明 (Info / 說明) -->
-                    <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
-                        <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
-                            <div class="flex items-center gap-2.5 text-moss-500 font-black">
-                                <i class="ph ph-info text-xl text-moss-400"></i>
-                                <h3 class="text-base md:text-lg">旅程備註與參考說明</h3>
-                                <span class="ml-1 text-moss-300 hover:text-moss-500 transition-colors cursor-default" title="設定前台總覽資訊列第三列所顯示的說明文字或外部行程連結">
-                                    <i class="ph ph-question text-base"></i>
-                                </span>
-                            </div>
-                            <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
-                        </summary>
-
-                        <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">說明文字 (前台顯示文字)</label>
-                                    <input type="text" data-setting="info.text" placeholder="例如：行健、官方參考手冊 (留空則不顯示)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-moss-500 mb-1.5">參考連結網址 (選填，可點擊跳轉)</label>
-                                    <input type="text" data-setting="info.link" placeholder="https://... (留空則純文字顯示)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-
-                    <!-- 卡片 3: 主要城市巡禮卡片清單 -->
+                    <!-- 卡片 2: 主要城市巡禮卡片清單 -->
                     <details class="group bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm overflow-hidden transition-all" open>
                         <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none select-none hover:bg-moss-50/50 transition-colors">
                             <div class="flex items-center gap-2.5 text-moss-500 font-black">
@@ -838,6 +816,10 @@
                             <button type="button" id="btn-info-subtab-memo" onclick="switchInfoSubtab('memo')" class="info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5">
                                 <i class="ph ph-note-pencil text-sm"></i>
                                 <span>行程備忘</span>
+                            </button>
+                            <button type="button" id="btn-info-subtab-emergency" onclick="switchInfoSubtab('emergency')" class="info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5">
+                                <i class="ph ph-first-aid text-sm"></i>
+                                <span>急難救助</span>
                             </button>
                         </div>
                     </div>
@@ -892,6 +874,22 @@
                             </div>
                             <div>
                                 <textarea id="info-memo-textarea" rows="12" placeholder="在此輸入行程備忘事項、隨身筆記或重要提醒..." class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 子面板 4: 急難救助 (Emergency) -->
+                    <div id="info-subpanel-emergency" class="hidden space-y-4">
+                        <div class="bg-white/95 rounded-2xl border border-moss-200/90 shadow-sm p-5 md:p-6 space-y-4">
+                            <div class="border-b border-moss-100 pb-3">
+                                <h3 class="text-base font-black text-moss-500 flex items-center gap-2">
+                                    <i class="ph ph-first-aid text-lg text-moss-400"></i>
+                                    <span>急難救助與緊急聯絡</span>
+                                </h3>
+                                <p class="text-xs text-moss-400 mt-0.5">預填外交部海外專線、駐外辦事處電話、當地緊急報警求助與海外保單聯絡資訊（前台同步展示）</p>
+                            </div>
+                            <div>
+                                <textarea id="info-emergency-textarea" rows="12" placeholder="在此輸入外交部海外專線、當地報警急救 (112)、代表處急難電話與保單資訊..." class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
                             </div>
                         </div>
                     </div>
@@ -982,9 +980,19 @@
                             <p class="text-[11px] text-moss-400/80">可手動輸入字串，或使用日曆選取起迄日期自動換算格式。</p>
                         </div>
 
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題</label>
-                            <input type="text" data-setting="subtitle" placeholder="跟團-行健 · 11 天 · 2026 秋季" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                        <!-- 首頁副標題與參考連結網址 (拆分為左右二欄) -->
+                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題</label>
+                                <input type="text" data-setting="subtitle" placeholder="跟團-行健 · 11 天 · 2026 秋季" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-moss-500 mb-1.5 flex items-center justify-between">
+                                    <span>參考連結網址</span>
+                                    <span class="text-[10px] text-moss-400 font-normal">選填，前台顯示跳轉圖示</span>
+                                </label>
+                                <input type="text" data-setting="subtitleLink" placeholder="https://... (選填，可點擊另開新分頁)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                            </div>
                         </div>
 
                         <!-- 封面 Hero 圖片網址與即時縮圖 -->
@@ -1113,21 +1121,12 @@
                         <i class="ph ph-caret-down text-lg text-moss-400 group-open:rotate-180 transition-transform"></i>
                     </summary>
 
-                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-5">
-                    <div>
-                        <label class="block text-xs font-bold text-moss-500 mb-1.5">整體字體風格</label>
-                        <select data-setting="typography.style" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
-                            <option value="modern">現代簡約風 (思源黑體)</option>
-                            <option value="elegant">經典優雅風 (思源宋體 / Playfair)</option>
-                            <option value="journal">手寫溫度風 (克立手寫體)</option>
-                            <option value="reading">溫潤閱讀風 (霞鶩文楷)</option>
-                            <option value="playful">活潑圓潤風 (系統圓體)</option>
-                        </select>
-                    </div>
-
-                    <!-- 5 級字體大小微調 -->
-                    <div class="pt-3 border-t border-moss-100 space-y-2.5">
-                        <label class="block text-xs font-bold text-moss-500">字體尺寸 (電腦 / 手機 px)</label>
+                    <div class="p-5 md:p-7 pt-2 border-t border-moss-100 space-y-4">
+                    <!-- 5 級字體大小與風格微調 -->
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-moss-500">字體尺寸與風格 (電腦 / 手機 px / 風格配方)</label>
+                        </div>
                         <div class="overflow-x-auto rounded-xl border border-moss-200 bg-moss-50/50 p-3 no-scrollbar">
                             <div class="min-w-[520px] space-y-2.5 text-xs">
                                 <!-- 第 1 列：標題 -->
@@ -1165,7 +1164,79 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        <!-- 🔤 字體風格設定 (由上至下 3 列寬版排列，告別擁擠) -->
+                        <div class="pt-3 border-t border-moss-100 space-y-3">
+                            <div class="text-xs font-bold text-moss-500 flex items-center gap-1.5">
+                                <i class="ph ph-text-aa text-sm text-moss-400"></i>
+                                <span>字體風格設定 (大標題 / 內文 / 徽章)</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <!-- 列 1: 標題風格 (L1 / L2) -->
+                                <div class="p-3 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block text-xs font-bold text-moss-500">🏷️ 大標題風格</label>
+                                        <span class="text-[10px] font-mono text-moss-400">L1 / L2</span>
+                                    </div>
+                                    <select id="font-select-title" data-setting="typography.fontTitle" class="w-full h-9 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-600 font-bold focus:border-moss-400 outline-none">
+                                        <option value="modern">現代都會黑體 (Noto Sans TC)</option>
+                                        <option value="japanese">京都日系手感 (Klee One / Zen)</option>
+                                        <option value="fashion">歐美時尚襯線 (Bodoni / 宋體)</option>
+                                        <option value="vintage">復古美式粗體 (Alfa Slab / 粗黑)</option>
+                                        <option value="handwriting">童趣手繪筆記 (Patrick Hand)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 列 2: 內文風格 (L3 / L4) -->
+                                <div class="p-3 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block text-xs font-bold text-moss-500">📝 內文風格</label>
+                                        <span class="text-[10px] font-mono text-moss-400">L3 / L4</span>
+                                    </div>
+                                    <select id="font-select-body" data-setting="typography.fontBody" class="w-full h-9 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-600 font-bold focus:border-moss-400 outline-none">
+                                        <option value="standard">標準思源黑體 (Noto Sans TC)</option>
+                                        <option value="editorial">紙本雜誌宋體 (Noto Serif TC)</option>
+                                        <option value="tech">科技工整黑體 (Inter)</option>
+                                        <option value="rounded">溫潤親切圓體 (Zen Maru Gothic)</option>
+                                        <option value="reading">霞鶩人文文楷 (LXGW WenKai)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 列 3: 徽章風格 (L5) -->
+                                <div class="p-3 rounded-xl border border-moss-200 bg-moss-50/50 space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <label class="block text-xs font-bold text-moss-500">🔖 徽章風格</label>
+                                        <span class="text-[10px] font-mono text-moss-400">L5</span>
+                                    </div>
+                                    <select id="font-select-badge" data-setting="typography.fontBadge" class="w-full h-9 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-600 font-bold focus:border-moss-400 outline-none">
+                                        <option value="geometric">工整幾何 (DM Sans)</option>
+                                        <option value="ticket">復古票根 (Space Mono)</option>
+                                        <option value="futuristic">前衛太空 (Space Grotesk)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 智慧風格混搭一鍵配方 -->
+                            <div class="pt-2 border-t border-moss-200/60 flex flex-wrap items-center gap-2">
+                                <span class="text-[11px] font-bold text-moss-400 shrink-0 mr-1">智慧配方：</span>
+                                <button type="button" class="typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border transition-all bg-moss-400 text-white border-moss-400 shadow-2xs" data-recipe="modern">
+                                    現代極簡都會
+                                </button>
+                                <button type="button" class="typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-moss-200 bg-white hover:bg-moss-100 text-moss-600 transition-all shadow-2xs" data-recipe="kyoto">
+                                    京都日系漫步
+                                </button>
+                                <button type="button" class="typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-moss-200 bg-white hover:bg-moss-100 text-moss-600 transition-all shadow-2xs" data-recipe="fashion">
+                                    歐美時尚度假
+                                </button>
+                                <button type="button" class="typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-moss-200 bg-white hover:bg-moss-100 text-moss-600 transition-all shadow-2xs" data-recipe="vintage">
+                                    復古公路探險
+                                </button>
+                                <button type="button" class="typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-dashed border-moss-300 bg-transparent text-moss-400 hover:text-moss-600 transition-all shadow-2xs" data-recipe="custom">
+                                    ⚙️ 自訂混搭
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </details>
             </section>
@@ -1260,6 +1331,7 @@
                 heroTitle: "探索世界．旅程規劃",
                 dateText: "",
                 subtitle: "自由行 / 專屬攻略",
+                subtitleLink: "",
                 heroImage: "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
                 mapEngine: "google",
                 visibleTabs: ["itinerary", "overview", "todo"],
@@ -1296,12 +1368,16 @@
                 },
                 typography: {
                     style: "modern",
+                    fontTitle: "modern",
+                    fontBody: "standard",
+                    fontBadge: "geometric",
                     hero: { desktop: 38, mobile: 30 },
                     heading: { desktop: 22, mobile: 18 },
                     body: { desktop: 18, mobile: 18 },
                     small: { desktop: 15, mobile: 15 },
                     badge: { desktop: 12, mobile: 12 }
-                }
+                },
+                emergency: ""
             },
             itinerary: [
                 {
@@ -1326,6 +1402,7 @@
                     bonusImage: "",
                     meals: "",
                     lodging: "",
+                    lodgingMap: "",
                     tips: ""
                 }
             ]
@@ -1394,6 +1471,9 @@
             if (!appData.settings.customTheme) appData.settings.customTheme = Object.assign({}, DEFAULT_JSON.settings.customTheme);
             if (!appData.settings.typography) appData.settings.typography = Object.assign({}, DEFAULT_JSON.settings.typography);
             const defaultTypo = DEFAULT_JSON.settings.typography;
+            if (!appData.settings.typography.fontTitle) appData.settings.typography.fontTitle = defaultTypo.fontTitle || 'modern';
+            if (!appData.settings.typography.fontBody) appData.settings.typography.fontBody = defaultTypo.fontBody || 'standard';
+            if (!appData.settings.typography.fontBadge) appData.settings.typography.fontBadge = defaultTypo.fontBadge || 'geometric';
             if (!appData.settings.typography.hero) appData.settings.typography.hero = { ...defaultTypo.hero };
             if (!appData.settings.typography.heading) appData.settings.typography.heading = { ...defaultTypo.heading };
             if (!appData.settings.typography.body) appData.settings.typography.body = { ...defaultTypo.body };
@@ -1401,6 +1481,13 @@
             if (!appData.settings.typography.badge) appData.settings.typography.badge = { ...defaultTypo.badge };
             if (!Array.isArray(appData.settings.visibleTabs)) appData.settings.visibleTabs = ["itinerary", "overview"];
             if (typeof appData.settings.memo !== 'string') appData.settings.memo = '';
+            if (typeof appData.settings.emergency !== 'string') appData.settings.emergency = '';
+            if (typeof appData.settings.subtitle !== 'string') appData.settings.subtitle = '';
+            // 相容性遷移：若舊版 settings.info.link 存在且 settings.subtitleLink 為空，自動帶入
+            if (!appData.settings.subtitleLink && appData.settings.info?.link) {
+                appData.settings.subtitleLink = appData.settings.info.link;
+            }
+            if (typeof appData.settings.subtitleLink !== 'string') appData.settings.subtitleLink = '';
 
             // 規範化每天欄位
             appData.itinerary.forEach((day, idx) => {
@@ -1452,6 +1539,7 @@
                 if (typeof day.lodging !== 'string') day.lodging = '';
                 if (typeof day.lodgingBooking !== 'string') day.lodgingBooking = '';
                 if (typeof day.lodgingInfo !== 'string') day.lodgingInfo = '';
+                if (typeof day.lodgingMap !== 'string') day.lodgingMap = '';
                 if (typeof day.eatImage !== 'string') day.eatImage = '';
                 if (typeof day.buyImage !== 'string') day.buyImage = '';
                 if (typeof day.bonusImage !== 'string') day.bonusImage = '';
@@ -1849,6 +1937,72 @@
 
             // 配色同步
             syncThemeInputs();
+
+            // 字體智慧配方高亮同步
+            updateTypographyRecipeUI();
+        }
+
+        /* ------------------------------------------------------------- */
+        /* 🔤 字體風格與智慧配方控制器 (Typography System)                 */
+        /* ------------------------------------------------------------- */
+        const TYPO_RECIPES = {
+            modern:  { title: 'modern', body: 'standard', badge: 'geometric', label: '現代極簡都會' },
+            kyoto:   { title: 'japanese', body: 'editorial', badge: 'ticket', label: '京都日系漫步' },
+            fashion: { title: 'fashion', body: 'tech', badge: 'geometric', label: '歐美時尚度假' },
+            vintage: { title: 'vintage', body: 'standard', badge: 'ticket', label: '復古公路探險' }
+        };
+
+        function applyTypographyRecipe(recipeKey) {
+            const recipe = TYPO_RECIPES[recipeKey];
+            if (!recipe) return;
+
+            if (!appData.settings.typography) appData.settings.typography = {};
+            appData.settings.typography.fontTitle = recipe.title;
+            appData.settings.typography.fontBody = recipe.body;
+            appData.settings.typography.fontBadge = recipe.badge;
+
+            const selTitle = document.getElementById('font-select-title');
+            const selBody = document.getElementById('font-select-body');
+            const selBadge = document.getElementById('font-select-badge');
+            if (selTitle) selTitle.value = recipe.title;
+            if (selBody) selBody.value = recipe.body;
+            if (selBadge) selBadge.value = recipe.badge;
+
+            updateTypographyRecipeUI(recipeKey);
+            markDirty();
+            showToast(`已套用「${recipe.label}」字體配方`);
+        }
+
+        function updateTypographyRecipeUI(explicitKey = null) {
+            const typo = appData.settings.typography || {};
+            const curTitle = typo.fontTitle || 'modern';
+            const curBody = typo.fontBody || 'standard';
+            const curBadge = typo.fontBadge || 'geometric';
+
+            let matchedKey = explicitKey;
+            if (!matchedKey) {
+                for (const [key, r] of Object.entries(TYPO_RECIPES)) {
+                    if (r.title === curTitle && r.body === curBody && r.badge === curBadge) {
+                        matchedKey = key;
+                        break;
+                    }
+                }
+            }
+            if (!matchedKey) matchedKey = 'custom';
+
+            document.querySelectorAll('.typo-recipe-btn').forEach(btn => {
+                const k = btn.dataset.recipe;
+                const isSelected = k === matchedKey;
+                if (k === 'custom') {
+                    btn.className = isSelected
+                        ? 'typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border transition-all bg-amber-500 text-white border-amber-500 shadow-2xs'
+                        : 'typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-dashed border-moss-300 bg-transparent text-moss-400 hover:text-moss-600 transition-all shadow-2xs';
+                } else {
+                    btn.className = isSelected
+                        ? 'typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border transition-all bg-moss-400 text-white border-moss-400 shadow-2xs'
+                        : 'typo-recipe-btn px-2.5 py-1 rounded-lg text-xs font-bold border border-moss-200 bg-white hover:bg-moss-100 text-moss-600 transition-all shadow-2xs';
+                }
+            });
         }
 
         /* ------------------------------------------------------------- */
@@ -1864,6 +2018,7 @@
                     el.value = val;
                 });
             }
+            updateOverviewMapImagePreview(s.overviewMap?.image);
             renderOverviewCitiesSetting();
         }
 
@@ -2053,6 +2208,17 @@
                 previewEl.innerHTML = `<img src="${escapeHtml(url.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-xs text-red-400\\'>載入失敗</span>'">`;
             } else {
                 previewEl.innerHTML = `<span class="text-xs text-moss-400">無縮圖</span>`;
+            }
+        }
+
+        function updateOverviewMapImagePreview(url) {
+            const previewEl = document.getElementById('preview-overview-map-image');
+            if (!previewEl) return;
+            const clean = (url && typeof url === 'string') ? url.trim() : '';
+            if (clean && (/^https?:\/\//i.test(clean) || clean.startsWith('/') || clean.startsWith('./') || clean.startsWith('data:'))) {
+                previewEl.innerHTML = `<img src="${escapeHtml(clean)}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[10px] text-red-400\\'>錯誤</span>'">`;
+            } else {
+                previewEl.innerHTML = `<span class="text-[10px] text-moss-400">無縮圖</span>`;
             }
         }
 
@@ -2495,6 +2661,11 @@
                             ${egg.image && /^https?:\/\//i.test(egg.image.trim()) ? `<img src="${escapeHtml(egg.image.trim())}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[10px] text-moss-400">無圖</span>`}
                         </div>
                     </div>
+
+                    <!-- 第 3 列：翻面文字說明 (可換行) (向左縮進對齊輸入框) -->
+                    <div class="pl-8">
+                        <textarea rows="2" placeholder="翻面文字說明 (選填，可換行詳細介紹)..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-egg-detail" data-idx="${idx}">${escapeHtml(egg.detail || '')}</textarea>
+                    </div>
                 `;
                 container.appendChild(item);
             });
@@ -2588,10 +2759,12 @@
             const btnTodos = document.getElementById('btn-info-subtab-todos');
             const btnHotels = document.getElementById('btn-info-subtab-hotels');
             const btnMemo = document.getElementById('btn-info-subtab-memo');
+            const btnEmergency = document.getElementById('btn-info-subtab-emergency');
 
             const pnlTodos = document.getElementById('info-subpanel-todos');
             const pnlHotels = document.getElementById('info-subpanel-hotels');
             const pnlMemo = document.getElementById('info-subpanel-memo');
+            const pnlEmergency = document.getElementById('info-subpanel-emergency');
 
             const ACTIVE = 'info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-1.5';
             const INACTIVE = 'info-subtab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-moss-500 hover:bg-moss-100 flex items-center gap-1.5';
@@ -2599,14 +2772,17 @@
             if (btnTodos) btnTodos.className = subtab === 'todos' ? ACTIVE : INACTIVE;
             if (btnHotels) btnHotels.className = subtab === 'hotels' ? ACTIVE : INACTIVE;
             if (btnMemo) btnMemo.className = subtab === 'memo' ? ACTIVE : INACTIVE;
+            if (btnEmergency) btnEmergency.className = subtab === 'emergency' ? ACTIVE : INACTIVE;
 
             if (pnlTodos) pnlTodos.classList.toggle('hidden', subtab !== 'todos');
             if (pnlHotels) pnlHotels.classList.toggle('hidden', subtab !== 'hotels');
             if (pnlMemo) pnlMemo.classList.toggle('hidden', subtab !== 'memo');
+            if (pnlEmergency) pnlEmergency.classList.toggle('hidden', subtab !== 'emergency');
 
             if (subtab === 'todos') renderInfoTodos();
             else if (subtab === 'hotels') renderInfoHotels();
             else if (subtab === 'memo') renderInfoMemo();
+            else if (subtab === 'emergency') renderInfoEmergency();
         }
 
         function renderInfoPanel() {
@@ -2705,11 +2881,19 @@
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
-                                <i class="ph ph-map-pin text-sm text-moss-400"></i>
-                                <span>飯店資訊 (地址 / 電話)</span>
+                                <i class="ph ph-phone text-sm text-moss-400"></i>
+                                <span>聯絡資訊 (地址 / 電話)</span>
                             </label>
                             <textarea rows="3" placeholder="例如：地址：Nevşehir, Göreme&#10;電話：+90 384 271 2000 (支援換行)" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingInfo">${escapeHtml(day.lodgingInfo || '')}</textarea>
                         </div>
+                    </div>
+                    <div class="pt-1">
+                        <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
+                            <i class="ph ph-map-pin text-sm text-moss-400"></i>
+                            <span>飯店 Map 連結 / 地址查詢詞</span>
+                            <span class="text-[10px] text-moss-300 font-normal">可填寫 Google Maps 分享網址，或輸入地址/地名查詢詞（依設定地圖引擎自動導航）</span>
+                        </label>
+                        <input type="text" placeholder="例如：https://maps.app.goo.gl/... 或 Safranbolu Hilton" value="${escapeHtml(day.lodgingMap || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingMap">
                     </div>
                 `;
                 container.appendChild(item);
@@ -2720,6 +2904,12 @@
             const textarea = document.getElementById('info-memo-textarea');
             if (!textarea) return;
             textarea.value = appData.settings.memo || '';
+        }
+
+        function renderInfoEmergency() {
+            const textarea = document.getElementById('info-emergency-textarea');
+            if (!textarea) return;
+            textarea.value = appData.settings.emergency || '';
         }
 
         /* ------------------------------------------------------------- */
@@ -3886,6 +4076,8 @@
                     setObjectValue(appData.settings, settingKey, val);
                     if (settingKey === 'heroImage') updateHeroImagePreview(val);
                     if (settingKey === 'dateText') syncDateHelpersFromText(val);
+                    if (settingKey === 'overviewMap.image') updateOverviewMapImagePreview(val);
+                    if (settingKey.startsWith('typography.font')) updateTypographyRecipeUI();
                     markDirty();
                     return;
                 }
@@ -3911,6 +4103,18 @@
             };
             document.getElementById('panel-settings').addEventListener('input', handleSettingsChange);
             document.getElementById('panel-settings').addEventListener('change', handleSettingsChange);
+            document.getElementById('panel-settings').addEventListener('click', (e) => {
+                const recipeBtn = e.target.closest('.typo-recipe-btn');
+                if (recipeBtn) {
+                    const rKey = recipeBtn.dataset.recipe;
+                    if (rKey === 'custom') {
+                        updateTypographyRecipeUI('custom');
+                        showToast('已切換為自訂字體混搭模式');
+                    } else {
+                        applyTypographyRecipe(rKey);
+                    }
+                }
+            });
 
             // 行程總覽面板事件監聽 (Overview Panel Delegation)
             const panelOverview = document.getElementById('panel-overview');
@@ -4140,6 +4344,12 @@
                         syncEasterEggsToLegacyStrings(day);
                         markDirty();
                     }
+                } else if (target.dataset.action === 'edit-egg-detail') {
+                    const idx = Number(target.dataset.idx);
+                    if (day.easterEggs && day.easterEggs[idx]) {
+                        day.easterEggs[idx].detail = target.value;
+                        markDirty();
+                    }
                 }
 
                 // 當日餐飲內容編輯
@@ -4290,7 +4500,7 @@
                     e.stopPropagation();
                     const day = appData.itinerary[selectedDayIndex];
                     if (!Array.isArray(day.easterEggs)) day.easterEggs = [];
-                    day.easterEggs.push({ tag: 'eat', text: '', image: '' });
+                    day.easterEggs.push({ tag: 'eat', text: '', image: '', detail: '' });
                     btnAddEgg.closest('details')?.setAttribute('open', '');
                     renderEasterEggs(day);
                     markDirty();
@@ -4431,13 +4641,18 @@
                 });
             }
 
-            // 資訊頁面事件監聽 (Info Panel Delegation: 待辦 / 飯店 / 備忘)
+            // 資訊頁面事件監聽 (Info Panel Delegation: 待辦 / 飯店 / 備忘 / 急難救助)
             const panelInfo = document.getElementById('panel-info');
             if (panelInfo) {
                 const handleInfoInput = (e) => {
                     const target = e.target;
                     if (target.id === 'info-memo-textarea') {
                         appData.settings.memo = target.value;
+                        markDirty();
+                        return;
+                    }
+                    if (target.id === 'info-emergency-textarea') {
+                        appData.settings.emergency = target.value;
                         markDirty();
                         return;
                     }

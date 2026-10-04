@@ -26,14 +26,18 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['var(--font-sans)', '"Noto Sans TC"', 'sans-serif'],
-                        serif: ['var(--font-serif)', '"Playfair Display"', 'serif'],
+                        sans: ['var(--font-body)', '"Noto Sans TC"', 'sans-serif'],
+                        serif: ['var(--font-title)', '"Playfair Display"', 'serif'],
+                        title: ['var(--font-title)', 'serif'],
+                        body: ['var(--font-body)', 'sans-serif'],
+                        badge: ['var(--font-badge)', 'sans-serif'],
                     },
                     fontSize: {
                         hero: 'var(--font-hero)',
                         heading: 'var(--font-heading)',
                         body: 'var(--font-body)',
                         small: 'var(--font-small)',
+                        badge: 'var(--font-badge)',
                     },
                     colors: {
                         moss: {
@@ -64,27 +68,44 @@
             --color-primary-rgb: 111, 127, 90;
             --color-deep-rgb: 60, 71, 51;
 
-            --font-sans: "Noto Sans TC", sans-serif;
-            --font-serif: "Playfair Display", serif;
+            /* 🔤 三大字型風格變數 (大標題 / 內文 / 徽章) */
+            --font-title: "Noto Sans TC", sans-serif;
+            --font-body: "Noto Sans TC", sans-serif;
+            --font-badge: "DM Sans", "Noto Sans TC", sans-serif;
+
+            --font-sans: var(--font-body);
+            --font-serif: var(--font-title);
 
             --font-hero: 40px;
             --font-heading: 22px;
             --font-body: 17px;
             --font-small: 14px;
+            --font-badge: 12px;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        ::selection {
+            background-color: transparent;
+        }
+        ::-moz-selection {
+            background-color: transparent;
         }
 
         body {
             background-color: var(--color-bg);
             color: var(--color-deep);
-            font-family: var(--font-sans);
+            font-family: var(--font-body);
             scroll-behavior: smooth;
         }
 
         /* 響應式字級輔助類別 (由 typography 動態控制) */
-        .text-hero { font-size: var(--font-hero) !important; line-height: 1.25 !important; }
-        .text-heading { font-size: var(--font-heading) !important; line-height: 1.4 !important; }
-        .text-body { font-size: var(--font-body) !important; line-height: 1.6 !important; }
-        .text-small { font-size: var(--font-small) !important; line-height: 1.5 !important; }
+        .text-hero { font-size: var(--font-hero) !important; line-height: 1.25 !important; font-family: var(--font-title); }
+        .text-heading { font-size: var(--font-heading) !important; line-height: 1.4 !important; font-family: var(--font-title); }
+        .text-body { font-size: var(--font-body) !important; line-height: 1.6 !important; font-family: var(--font-body); }
+        .text-small { font-size: var(--font-small) !important; line-height: 1.5 !important; font-family: var(--font-body); }
+        .text-badge { font-size: var(--font-badge) !important; line-height: 1.25 !important; font-family: var(--font-badge); }
 
         /* 隱藏水平溢出的滑動軸 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -105,7 +126,7 @@
             opacity: 0.95;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--color-line);
             box-shadow: 0 4px 20px rgba(var(--color-deep-rgb), 0.05);
         }
         .sidebar-collapsed {
@@ -130,9 +151,9 @@
             color: var(--color-bg) !important;
         }
         .spot-card {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: var(--color-bg);
             border: 1px solid var(--color-line);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(var(--color-deep-rgb), 0.05);
             transition: all 0.3s ease;
         }
         .spot-card:hover {
@@ -171,9 +192,38 @@
         .city-flip-card-back {
             transform: rotateY(180deg);
         }
+
+        /* 🥚 彩蛋卡片 3D 翻轉效果 */
+        .egg-flip-card {
+            perspective: 1000px;
+        }
+        .egg-flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .egg-flip-card.is-flipped .egg-flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .egg-flip-card-front,
+        .egg-flip-card-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+        .egg-flip-card-back {
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
-<body class="antialiased relative selection:bg-moss-300 selection:text-moss-500">
+<body class="antialiased relative selection:bg-transparent">
 
     <!-- 頂部主視覺 (Hero) -->
     <header id="hero" class="relative w-full h-[40vh] md:h-[50vh] bg-cover bg-center transition-all duration-500 bg-moss-300">
@@ -194,11 +244,14 @@
     <!-- [PC 端專屬] 橫向主頁籤 (Sticky Navbar) -->
     <div class="hidden md:flex sticky top-0 z-40 bg-moss-100/90 backdrop-blur-lg border-b border-moss-300/30 w-full shadow-sm">
         <div class="max-w-7xl mx-auto px-12 flex items-center justify-start gap-6 overflow-x-auto no-scrollbar py-3">
-            <button onclick="switchMainTab('tab-overview')" id="btn-pc-tab-overview" class="main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active">
+            <button onclick="switchMainTab('tab-overview')" id="btn-pc-tab-overview" class="main-tab-btn-pc bg-moss-500 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active">
                 <i class="ph ph-compass text-xl"></i> 總覽
             </button>
             <button onclick="switchMainTab('tab-itinerary')" id="btn-pc-tab-itinerary" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
                 <i class="ph ph-map-trifold text-xl"></i> 行程
+            </button>
+            <button onclick="switchMainTab('tab-info')" id="btn-pc-tab-info" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
+                <i class="ph ph-info text-xl"></i> 資訊
             </button>
             <button onclick="switchMainTab('tab-expenses')" id="btn-pc-tab-expenses" class="main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0">
                 <i class="ph ph-coin text-xl"></i> 經費
@@ -215,37 +268,17 @@
         <!-- 1. 總覽 (Overview) -->
         <main id="tab-overview" class="main-content-pane block space-y-8 animate-[rise_0.3s_ease-out]">
             
-            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-start justify-start gap-5 md:gap-8 border border-white">
-                <div class="md:w-[35%] shrink-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Dates / 日期</p>
-                    <p id="ui-overview-date" class="text-body font-bold text-moss-500">--</p>
-                </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
-                <div class="md:w-[20%] shrink-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Duration / 天數</p>
-                    <p id="ui-overview-days" class="text-body font-bold text-moss-500">--</p>
-                </div>
-                <div class="hidden md:block w-px h-8 bg-moss-300/40 mt-1"></div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Cities / 地點</p>
-                    <p id="ui-overview-cities" class="text-body font-bold text-moss-500 leading-relaxed break-words">--</p>
-                </div>
-                <div id="ui-overview-info-col" class="hidden flex-1 min-w-0">
-                    <p id="ui-overview-info-title" class="text-small text-moss-400 font-black tracking-widest mb-1 uppercase">Info / 說明</p>
-                    <p class="text-body font-bold text-moss-500 leading-relaxed truncate"><a id="ui-overview-info-link" href="#" target="_blank" class="hover:text-moss-400 underline underline-offset-4 decoration-moss-300/50">--</a></p>
-                </div>
-            </div>
-
-            <!-- 總覽地圖區塊 -->
-            <div id="overview-map-container" class="w-full h-[450px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 bg-moss-200/50 relative hidden" style="position: relative !important; overflow: hidden !important;">
-                <!-- iframe 將於 JS 動態寫入並裁切表頭 -->
-            </div>
-
-            <div id="overview-city-cards-section" class="mt-8">
+            <!-- 城市卡片區塊 (置頂) -->
+            <div id="overview-city-cards-section" class="w-full">
                 <!-- 橫滑吸附容器 -->
-                <div id="overview-city-cards" class="flex gap-4 overflow-x-auto pb-6 custom-scrollbar snap-x snap-mandatory">
+                <div id="overview-city-cards" class="flex gap-4 overflow-x-auto pb-6 no-scrollbar snap-x snap-mandatory">
                     <!-- 動態生成城市卡片 -->
                 </div>
+            </div>
+
+            <!-- 總覽地圖區塊 (置於城市卡片下方) -->
+            <div id="overview-map-container" class="w-full rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 bg-moss-200/40 relative hidden" style="position: relative !important; overflow: hidden !important;">
+                <!-- iframe 或自適應圖片將於 JS 動態寫入 -->
             </div>
 
         </main>
@@ -272,21 +305,63 @@
             </div>
         </main>
 
-        <!-- 3. 經費 (Expenses) -->
+        <!-- 3. 資訊 (Info: 飯店資訊 / 行程備忘 / 急難救助) -->
+        <main id="tab-info" class="main-content-pane hidden space-y-6 animate-[rise_0.3s_ease-out]">
+            <!-- 資訊頁面頂部選單膠囊切換 -->
+            <div class="glass-panel rounded-full p-1.5 flex items-center justify-start gap-1 border border-moss-200 shadow-sm w-max max-w-full">
+                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+                    <button type="button" id="btn-front-info-hotels" onclick="switchFrontInfoSubtab('hotels')" class="front-info-subtab-btn px-5 py-2 rounded-full text-body font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-2 shrink-0 select-none">
+                        <i class="ph ph-bed text-lg"></i>
+                        <span>飯店資訊</span>
+                    </button>
+                    <button type="button" id="btn-front-info-memo" onclick="switchFrontInfoSubtab('memo')" class="front-info-subtab-btn px-5 py-2 rounded-full text-body font-bold transition-all text-moss-500 hover:bg-moss-200/50 flex items-center gap-2 shrink-0 select-none">
+                        <i class="ph ph-note-pencil text-lg"></i>
+                        <span>行程備忘</span>
+                    </button>
+                    <button type="button" id="btn-front-info-emergency" onclick="switchFrontInfoSubtab('emergency')" class="front-info-subtab-btn px-5 py-2 rounded-full text-body font-bold transition-all text-moss-500 hover:bg-moss-200/50 flex items-center gap-2 shrink-0 select-none">
+                        <i class="ph ph-first-aid text-lg"></i>
+                        <span>急難救助</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 子面板 1: 飯店資訊 (Hotels) -->
+            <div id="front-info-hotels-section">
+                <div id="front-info-hotels-container" class="space-y-3">
+                    <!-- 由 JS 動態渲染各晚飯店資訊卡片 -->
+                </div>
+            </div>
+
+            <!-- 子面板 2: 行程備忘 (Memo) -->
+            <div id="front-info-memo-section" class="hidden">
+                <div id="front-info-memo-content" class="text-body font-medium text-moss-500 leading-relaxed whitespace-pre-line bg-moss-100 p-6 md:p-8 rounded-2xl border border-moss-200 shadow-2xs">
+                    <!-- 由 JS 動態帶入 settings.memo -->
+                </div>
+            </div>
+
+            <!-- 子面板 3: 急難救助 (Emergency) -->
+            <div id="front-info-emergency-section" class="hidden">
+                <div id="front-info-emergency-content" class="text-body font-medium text-moss-500 leading-relaxed whitespace-pre-line bg-moss-100 p-6 md:p-8 rounded-2xl border border-moss-200 shadow-2xs">
+                    <!-- 由 JS 動態帶入 settings.emergency -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 4. 經費 (Expenses) -->
         <main id="tab-expenses" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
-            <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm">
+            <div class="bg-moss-100 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm">
                 <h3 class="text-heading font-black text-moss-500 mb-6 flex items-center gap-2"><i class="ph ph-chart-pie-slice text-2xl text-moss-400"></i> 經費儀表板</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-moss-100 p-4 rounded-xl border border-moss-200">
+                    <div class="bg-moss-200/40 p-4 rounded-xl border border-moss-200">
                         <p class="text-small text-moss-400 font-black tracking-widest mb-1.5 uppercase">每人預估團費</p>
                         <p id="ui-expense-fee" class="text-heading font-black text-moss-500 leading-none font-mono">--</p>
                         <p id="ui-expense-note" class="text-small font-bold text-moss-400 mt-2 hidden"></p>
                     </div>
-                    <div class="bg-moss-100 p-4 rounded-xl border border-moss-200">
+                    <div class="bg-moss-200/40 p-4 rounded-xl border border-moss-200">
                         <p class="text-small text-moss-400 font-black tracking-widest mb-1.5 uppercase">已記帳總支出</p>
                         <p id="ui-expense-spent" class="text-heading font-black text-moss-500 leading-none font-mono">--</p>
                     </div>
-                    <div class="bg-moss-100 p-4 rounded-xl border border-moss-200">
+                    <div class="bg-moss-200/40 p-4 rounded-xl border border-moss-200">
                         <p class="text-small text-moss-400 font-black tracking-widest mb-1.5 uppercase">預估剩餘額度</p>
                         <p id="ui-expense-remain" class="text-heading font-black text-moss-500 leading-none font-mono">--</p>
                     </div>
@@ -305,7 +380,7 @@
 
         <!-- 4. 待辦 (TODO) -->
         <main id="tab-todo" class="main-content-pane hidden space-y-8 animate-[rise_0.3s_ease-out]">
-            <div class="bg-white/80 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
+            <div class="bg-moss-100 rounded-2xl p-6 md:p-8 border border-moss-200 shadow-sm border-l-4 border-l-moss-400">
                 <div class="flex items-center gap-2 mb-8">
                     <h3 class="text-heading font-black text-moss-500 flex items-center gap-2"><i class="ph ph-check-square text-2xl text-moss-400"></i> 行程待辦事項</h3>
                     <div class="relative group cursor-pointer flex items-center justify-center">
@@ -327,7 +402,7 @@
 
     <!-- [手機端專屬] App 底部導航列 -->
     <div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-moss-100/95 backdrop-blur-lg border-t border-moss-300/40 pt-1 pb-2.5 mobile-bottom-bar">
-        <div class="flex justify-around items-center px-2">
+        <div class="flex justify-around items-center px-1">
             <button onclick="switchMainTab('tab-overview')" id="btn-mob-tab-overview" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs">
                 <i class="ph ph-compass text-xl"></i>
                 <span class="text-[11px] font-black leading-none tracking-tight">總覽</span>
@@ -335,6 +410,10 @@
             <button onclick="switchMainTab('tab-itinerary')" id="btn-mob-tab-itinerary" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
                 <i class="ph ph-map-trifold text-xl"></i>
                 <span class="text-[11px] font-black leading-none tracking-tight">行程</span>
+            </button>
+            <button onclick="switchMainTab('tab-info')" id="btn-mob-tab-info" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+                <i class="ph ph-info text-xl"></i>
+                <span class="text-[11px] font-black leading-none tracking-tight">資訊</span>
             </button>
             <button onclick="switchMainTab('tab-expenses')" id="btn-mob-tab-expenses" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
                 <i class="ph ph-coin text-xl"></i>
@@ -348,14 +427,14 @@
     </div>
 
     <!-- 彈窗 (Modal) -->
-    <dialog id="info-modal" class="bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-auto open:animate-[rise_0.3s_ease-out] border-4 border-white overflow-hidden relative">
+    <dialog id="info-modal" class="bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-auto open:animate-[rise_0.3s_ease-out] border-2 border-moss-200 overflow-hidden relative">
         <div class="absolute top-0 left-0 w-full h-24 bg-moss-300/20"></div>
-        <button onclick="closeModalByBtn()" class="absolute top-5 right-5 w-8 h-8 bg-white hover:bg-moss-400 hover:text-white rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
+        <button onclick="closeModalByBtn()" class="absolute top-5 right-5 w-8 h-8 bg-moss-100 hover:bg-moss-400 hover:text-moss-100 rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
             <i class="ph ph-x font-bold text-sm"></i>
         </button>
         <div class="p-8 relative z-10 pt-10">
             <div class="flex flex-col items-center text-center gap-4 mb-6 pb-6 border-b border-moss-300/40">
-                <div class="w-14 h-14 bg-white rounded-2xl shadow-sm border border-moss-200 flex items-center justify-center">
+                <div class="w-14 h-14 bg-moss-200/50 rounded-2xl shadow-sm border border-moss-200 flex items-center justify-center">
                     <i id="modal-icon" class="text-3xl text-moss-400"></i>
                 </div>
                 <h3 id="modal-title" class="text-heading font-black text-moss-500 tracking-wide"></h3>
@@ -376,7 +455,7 @@
                 const isActive = (btn.id === 'btn-pc-' + tabId);
                 const isHidden = btn.classList.contains('hidden');
                 btn.className = isActive
-                    ? "main-tab-btn-pc bg-moss-400 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active"
+                    ? "main-tab-btn-pc bg-moss-500 text-moss-100 shadow-md flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0 active"
                     : "main-tab-btn-pc bg-transparent text-moss-500 hover:bg-moss-200/60 flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-body transition-all shrink-0";
                 if (isHidden) btn.classList.add('hidden');
             });
@@ -395,7 +474,7 @@
             const visibleTabs = window.currentSiteSettings?.visibleTabs;
             if (Array.isArray(visibleTabs) && visibleTabs.length > 0) {
                 const tabSet = new Set(visibleTabs);
-                ['overview', 'itinerary', 'expenses', 'todo'].forEach(id => {
+                ['overview', 'itinerary', 'info', 'expenses', 'todo'].forEach(id => {
                     if (!tabSet.has(id)) {
                         document.getElementById(`btn-pc-tab-${id}`)?.classList.add('hidden');
                         document.getElementById(`btn-mob-tab-${id}`)?.classList.add('hidden');
@@ -447,6 +526,20 @@
             const noteBtn = e.target.closest('.btn-note');
             if (noteBtn) {
                 openModal(noteBtn.getAttribute('data-title') || '備註資訊', decodeURIComponent(noteBtn.getAttribute('data-content')));
+            }
+
+            // 彩蛋卡片 3D 翻轉切換 (單一翻開：翻開另一張時，原先那一張自動翻回)
+            const eggCard = e.target.closest('.egg-flip-card');
+            if (eggCard) {
+                const wasFlipped = eggCard.classList.contains('is-flipped');
+                document.querySelectorAll('.egg-flip-card.is-flipped').forEach(c => {
+                    if (c !== eggCard) c.classList.remove('is-flipped');
+                });
+                if (wasFlipped) {
+                    eggCard.classList.remove('is-flipped');
+                } else {
+                    eggCard.classList.add('is-flipped');
+                }
             }
         });
 
@@ -540,7 +633,7 @@
 
             let html = '';
             if (pendingCount > 0) {
-                html += `<div class="mb-6 bg-white/50 p-3 rounded-xl border border-moss-200/60">${pendingHtml}</div>`;
+                html += `<div class="mb-6 bg-moss-200/35 p-3 rounded-xl border border-moss-200/60">${pendingHtml}</div>`;
             } else if (completedCount === 0) {
                 html += `<p class="text-body text-moss-400 font-medium py-8 text-center bg-moss-100 rounded-xl border border-moss-200 border-dashed mb-6">目前沒有任何待辦事項</p>`;
             } else {
@@ -637,6 +730,167 @@
             });
         }
 
+        /* ================= 資訊頁面 (Info: 飯店資訊 / 行程備忘 / 急難救助) ================= */
+        let currentFrontInfoSubtab = 'hotels';
+        function switchFrontInfoSubtab(subtab) {
+            currentFrontInfoSubtab = subtab;
+            const btnHotels = document.getElementById('btn-front-info-hotels');
+            const btnMemo = document.getElementById('btn-front-info-memo');
+            const btnEmergency = document.getElementById('btn-front-info-emergency');
+            const secHotels = document.getElementById('front-info-hotels-section');
+            const secMemo = document.getElementById('front-info-memo-section');
+            const secEmergency = document.getElementById('front-info-emergency-section');
+
+            const ACTIVE = 'front-info-subtab-btn px-5 py-2 rounded-full text-body font-bold transition-all bg-moss-400 text-moss-100 shadow-sm flex items-center gap-2 shrink-0 select-none';
+            const INACTIVE = 'front-info-subtab-btn px-5 py-2 rounded-full text-body font-bold transition-all text-moss-500 hover:bg-moss-200/50 flex items-center gap-2 shrink-0 select-none';
+
+            if (btnHotels) btnHotels.className = subtab === 'hotels' ? ACTIVE : INACTIVE;
+            if (btnMemo) btnMemo.className = subtab === 'memo' ? ACTIVE : INACTIVE;
+            if (btnEmergency) btnEmergency.className = subtab === 'emergency' ? ACTIVE : INACTIVE;
+
+            if (secHotels) secHotels.classList.toggle('hidden', subtab !== 'hotels');
+            if (secMemo) secMemo.classList.toggle('hidden', subtab !== 'memo');
+            if (secEmergency) secEmergency.classList.toggle('hidden', subtab !== 'emergency');
+        }
+
+        function toggleHotelDrawer(idx, type) {
+            const drawer = document.getElementById(`hotel-${type}-drawer-${idx}`);
+            const btn = document.getElementById(`btn-hotel-${type}-${idx}`);
+            const caret = document.getElementById(`caret-hotel-${type}-${idx}`);
+            if (!drawer) return;
+            const isHidden = drawer.classList.contains('hidden');
+            if (isHidden) {
+                drawer.classList.remove('hidden');
+                if (btn) {
+                    btn.classList.add('border-moss-500', 'bg-moss-200/25');
+                    btn.classList.remove('border-moss-300/60');
+                }
+                if (caret) {
+                    caret.classList.add('rotate-180');
+                }
+            } else {
+                drawer.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('border-moss-500', 'bg-moss-200/25');
+                    btn.classList.add('border-moss-300/60');
+                }
+                if (caret) {
+                    caret.classList.remove('rotate-180');
+                }
+            }
+        }
+
+        function renderFrontInfo(settings, itineraryData) {
+            // 1. 渲染飯店
+            const hotelContainer = document.getElementById('front-info-hotels-container');
+            if (hotelContainer) {
+                if (!Array.isArray(itineraryData) || itineraryData.length === 0) {
+                    hotelContainer.innerHTML = '<p class="text-body text-moss-400 py-6 text-center">暫無行程住宿資料</p>';
+                } else {
+                    let hotelHtml = '';
+                    itineraryData.forEach((day, idx) => {
+                        const lodgingName = day.lodging ? String(day.lodging).trim() : '';
+                        const bookingInfo = day.lodgingBooking ? String(day.lodgingBooking).trim() : '';
+                        const lodgingInfo = day.lodgingInfo ? String(day.lodgingInfo).trim() : '';
+                        const lodgingMap = day.lodgingMap ? String(day.lodgingMap).trim() : '';
+                        const dayTag = day.day || `Day ${idx + 1}`;
+                        const dateTag = day.fullDate || '';
+                        const cityTag = day.city || '';
+
+                        let mapTargetUrl = '';
+                        if (lodgingMap) {
+                            if (/^https?:\/\//i.test(lodgingMap)) {
+                                mapTargetUrl = lodgingMap;
+                            } else {
+                                mapTargetUrl = getMapSearchUrl(lodgingMap, settings?.mapEngine);
+                            }
+                        }
+
+                        hotelHtml += `
+                            <div class="rounded-2xl border border-moss-200 bg-moss-100 overflow-hidden shadow-2xs select-none">
+                                <!-- 每日表頭列 (獨立底色，選中不高亮) -->
+                                <div class="px-4 py-2.5 bg-moss-200/50 border-b border-moss-200 flex items-center gap-2 flex-wrap select-none">
+                                    <span class="px-2.5 py-0.5 rounded-lg bg-moss-500 text-moss-100 font-mono text-small font-black">
+                                        ${escapeHtml(dayTag)}
+                                    </span>
+                                    ${dateTag ? `<span class="text-small font-bold text-moss-500">${escapeHtml(dateTag)}</span>` : ''}
+                                    ${cityTag ? `<span class="text-small px-2.5 py-0.5 rounded-lg bg-moss-500 text-moss-100 font-bold">${escapeHtml(cityTag)}</span>` : ''}
+                                </div>
+                                
+                                <!-- 飯店內容區 -->
+                                <div class="p-4 md:p-5 space-y-3">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-0.5">
+                                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                                            <i class="ph ph-buildings text-xl text-moss-400 shrink-0"></i>
+                                            <span class="text-body font-black text-moss-500 break-words select-text">
+                                                ${escapeHtml(lodgingName || '夜泊機上 / 無下榻飯店')}
+                                            </span>
+                                        </div>
+                                        ${(bookingInfo || lodgingInfo || mapTargetUrl) ? `
+                                            <div class="flex items-center gap-1.5 shrink-0 self-start sm:self-auto flex-wrap">
+                                                ${mapTargetUrl ? `
+                                                    <a href="${escapeHtml(mapTargetUrl)}" target="_blank" rel="noopener noreferrer" title="開啟飯店地圖導航" class="hotel-action-btn w-8 h-8 rounded-xl border border-moss-300/60 bg-transparent hover:bg-moss-200/40 text-moss-500 flex items-center justify-center transition-all cursor-pointer active:scale-95 group">
+                                                        <i class="ph ph-map-pin text-base text-moss-500 group-hover:text-moss-400 transition-colors"></i>
+                                                    </a>
+                                                ` : ''}
+                                                ${(mapTargetUrl && (bookingInfo || lodgingInfo)) ? `<span class="text-moss-300/60 select-none hidden sm:inline">|</span>` : ''}
+                                                ${bookingInfo ? `
+                                                    <button type="button" onclick="toggleHotelDrawer(${idx}, 'booking')" title="預約資料 (點擊展開/收合)" id="btn-hotel-booking-${idx}" class="hotel-action-btn flex items-center gap-1.5 px-2.5 py-1 rounded-xl border border-moss-300/60 bg-transparent hover:bg-moss-200/40 text-moss-500 text-small font-bold transition-all cursor-pointer active:scale-95 select-none">
+                                                        <i class="ph ph-ticket text-base text-moss-500 transition-colors"></i>
+                                                        <span class="text-small">預約資料</span>
+                                                        <i class="ph ph-caret-down text-xs text-moss-500 transition-transform duration-200" id="caret-hotel-booking-${idx}"></i>
+                                                    </button>
+                                                ` : ''}
+                                                ${(bookingInfo && lodgingInfo) ? `<span class="text-moss-300/60 select-none hidden sm:inline">|</span>` : ''}
+                                                ${lodgingInfo ? `
+                                                    <button type="button" onclick="toggleHotelDrawer(${idx}, 'info')" title="聯絡資訊 (點擊展開/收合)" id="btn-hotel-info-${idx}" class="hotel-action-btn flex items-center gap-1.5 px-2.5 py-1 rounded-xl border border-moss-300/60 bg-transparent hover:bg-moss-200/40 text-moss-500 text-small font-bold transition-all cursor-pointer active:scale-95 select-none">
+                                                        <i class="ph ph-phone text-base text-moss-500 transition-colors"></i>
+                                                        <span class="text-small">聯絡資訊</span>
+                                                        <i class="ph ph-caret-down text-xs text-moss-500 transition-transform duration-200" id="caret-hotel-info-${idx}"></i>
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    ${(bookingInfo || lodgingInfo) ? `
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                                            ${bookingInfo ? `
+                                                <div id="hotel-booking-drawer-${idx}" class="hidden p-3.5 rounded-xl bg-moss-300/15 border border-moss-300/35 text-small font-medium text-moss-500 whitespace-pre-line leading-relaxed break-all break-words overflow-hidden select-text animate-[rise_0.2s_ease-out] ${!lodgingInfo ? 'md:col-span-2' : ''}">${escapeHtml(bookingInfo.trim())}</div>
+                                            ` : ''}
+                                            ${lodgingInfo ? `
+                                                <div id="hotel-info-drawer-${idx}" class="hidden p-3.5 rounded-xl bg-moss-300/15 border border-moss-300/35 text-small font-medium text-moss-500 whitespace-pre-line leading-relaxed break-all break-words overflow-hidden select-text animate-[rise_0.2s_ease-out] ${!bookingInfo ? 'md:col-span-2' : ''}">${escapeHtml(lodgingInfo.trim())}</div>
+                                            ` : ''}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    hotelContainer.innerHTML = hotelHtml;
+                }
+            }
+
+            // 2. 渲染備忘
+            const memoContainer = document.getElementById('front-info-memo-content');
+            if (memoContainer) {
+                if (settings?.memo && settings.memo.trim()) {
+                    memoContainer.textContent = settings.memo;
+                } else {
+                    memoContainer.innerHTML = '<span class="text-moss-400 italic">尚無行程備忘事項</span>';
+                }
+            }
+
+            // 3. 渲染急難救助
+            const emergencyContainer = document.getElementById('front-info-emergency-content');
+            if (emergencyContainer) {
+                if (settings?.emergency && settings.emergency.trim()) {
+                    emergencyContainer.textContent = settings.emergency;
+                } else {
+                    emergencyContainer.innerHTML = '<span class="text-moss-400 italic">尚無海外急難救助資訊</span>';
+                }
+            }
+        }
+
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -728,69 +982,152 @@
             metaTheme.content = deep;
         }
 
-        /* 🔤 動態字型與排版引擎 (Typography Engine) */
+        /* 🔤 動態字型與排版引擎 (Typography Engine: 標題、內文、徽章三域獨立) */
+        const FONT_TITLE_MAP = {
+            modern: {
+                family: '"Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif',
+                google: null
+            },
+            japanese: {
+                family: '"Klee One", "Zen Antique", "Noto Serif TC", "PingFang TC", "Microsoft JhengHei", serif',
+                google: 'family=Klee+One:wght@400;600&family=Zen+Antique'
+            },
+            fashion: {
+                family: '"Bodoni Moda", "Noto Serif TC", "Playfair Display", Didot, Georgia, "Songti TC", serif',
+                google: 'family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Noto+Serif+TC:wght@600;900'
+            },
+            vintage: {
+                family: '"Alfa Slab One", "Noto Sans TC", Impact, "Arial Black", "Microsoft JhengHei", sans-serif',
+                google: 'family=Alfa+Slab+One'
+            },
+            handwriting: {
+                family: '"Patrick Hand", "Caveat", "Noto Sans TC", "Microsoft JhengHei", cursive, sans-serif',
+                google: 'family=Patrick+Hand&family=Caveat:wght@600;700'
+            }
+        };
+
+        const FONT_BODY_MAP = {
+            standard: {
+                family: '"Noto Sans TC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif',
+                google: null
+            },
+            editorial: {
+                family: '"Noto Serif TC", "Lora", Georgia, "Songti TC", "Microsoft JhengHei", serif',
+                google: 'family=Noto+Serif+TC:wght@400;500;700&family=Lora:ital,wght@0,400..700;1,400..700'
+            },
+            tech: {
+                family: '"Inter", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif',
+                google: 'family=Inter:wght@400;500;600;700'
+            },
+            rounded: {
+                family: '"Zen Maru Gothic", "Quicksand", "Microsoft JhengHei", sans-serif',
+                google: 'family=Zen+Maru+Gothic:wght@400;500;700&family=Quicksand:wght@500;700'
+            },
+            reading: {
+                family: '"LXGW WenKai TC", "Noto Sans TC", "Microsoft JhengHei", serif, sans-serif',
+                google: 'family=LXGW+WenKai+TC:wght@400;700'
+            }
+        };
+
+        const FONT_BADGE_MAP = {
+            geometric: {
+                family: '"DM Sans", -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Segoe UI", sans-serif',
+                google: 'family=DM+Sans:ital,opsz,wght@0,9..40,400..800;1,9..40,400..800'
+            },
+            ticket: {
+                family: '"Space Mono", "JetBrains Mono", "Courier New", Consolas, "Noto Sans TC", monospace',
+                google: 'family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700'
+            },
+            futuristic: {
+                family: '"Space Grotesk", "Plus Jakarta Sans", "Noto Sans TC", sans-serif',
+                google: 'family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@600;800'
+            }
+        };
+
         function applyTypography(settings) {
             const typo = settings?.typography || {};
             const isMobile = window.innerWidth < 768;
 
-            const fontStyle = typo.style || 'modern';
-            let fontCss = '"Noto Sans TC", sans-serif';
-            let serifCss = '"Playfair Display", serif';
-            let fontUrl = '';
+            // 1. 解析標題、內文、徽章三域字體代號 (相容舊版 typo.style)
+            let titleKey = typo.fontTitle;
+            let bodyKey = typo.fontBody;
+            let badgeKey = typo.fontBadge;
 
-            if (fontStyle === 'elegant') {
-                fontUrl = 'https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Playfair+Display:wght@600;700;900&display=swap';
-                fontCss = '"Noto Serif TC", serif';
-                serifCss = '"Playfair Display", "Noto Serif TC", serif';
-            } else if (fontStyle === 'reading') {
-                fontUrl = 'https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap';
-                fontCss = '"LXGW WenKai TC", "Noto Sans TC", sans-serif';
-                serifCss = '"LXGW WenKai TC", serif';
-            } else if (fontStyle === 'journal') {
-                fontUrl = 'https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Caveat:wght@600;700&display=swap';
-                fontCss = '"Klee One", "Noto Sans TC", sans-serif';
-                serifCss = '"Caveat", "Klee One", cursive';
-            } else if (fontStyle === 'playful') {
-                fontUrl = 'https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap';
-                fontCss = '"Zen Maru Gothic", sans-serif';
-                serifCss = '"Zen Maru Gothic", sans-serif';
-            } else {
-                fontUrl = 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Playfair+Display:wght@600;700;900&display=swap';
-                fontCss = '"Noto Sans TC", sans-serif';
-                serifCss = '"Playfair Display", serif';
+            if (!titleKey || !bodyKey || !badgeKey) {
+                const legacy = typo.style || 'modern';
+                if (legacy === 'elegant') {
+                    titleKey = titleKey || 'fashion';
+                    bodyKey = bodyKey || 'editorial';
+                    badgeKey = badgeKey || 'geometric';
+                } else if (legacy === 'journal') {
+                    titleKey = titleKey || 'japanese';
+                    bodyKey = bodyKey || 'rounded';
+                    badgeKey = badgeKey || 'ticket';
+                } else if (legacy === 'reading') {
+                    titleKey = titleKey || 'japanese';
+                    bodyKey = bodyKey || 'reading';
+                    badgeKey = badgeKey || 'geometric';
+                } else if (legacy === 'playful') {
+                    titleKey = titleKey || 'handwriting';
+                    bodyKey = bodyKey || 'rounded';
+                    badgeKey = badgeKey || 'geometric';
+                } else {
+                    titleKey = titleKey || 'modern';
+                    bodyKey = bodyKey || 'standard';
+                    badgeKey = badgeKey || 'geometric';
+                }
             }
 
-            if (fontUrl && !document.getElementById('dynamic-font-link')) {
-                const link = document.createElement('link');
-                link.id = 'dynamic-font-link';
-                link.rel = 'stylesheet';
-                link.href = fontUrl;
-                document.head.appendChild(link);
+            const titleConfig = FONT_TITLE_MAP[titleKey] || FONT_TITLE_MAP.modern;
+            const bodyConfig = FONT_BODY_MAP[bodyKey] || FONT_BODY_MAP.standard;
+            const badgeConfig = FONT_BADGE_MAP[badgeKey] || FONT_BADGE_MAP.geometric;
+
+            // 2. 動態引入 Google Fonts
+            const googleQueries = [titleConfig.google, bodyConfig.google, badgeConfig.google].filter(Boolean);
+            if (googleQueries.length > 0) {
+                const fontUrl = `https://fonts.googleapis.com/css2?${googleQueries.join('&')}&display=swap`;
+                let link = document.getElementById('dynamic-font-link');
+                if (!link) {
+                    link = document.createElement('link');
+                    link.id = 'dynamic-font-link';
+                    link.rel = 'stylesheet';
+                    document.head.appendChild(link);
+                }
+                if (link.href !== fontUrl) {
+                    link.href = fontUrl;
+                }
             }
 
+            // 3. 設定 CSS 變數
             const root = document.documentElement;
-            root.style.setProperty('--font-sans', fontCss);
-            root.style.setProperty('--font-serif', serifCss);
+            root.style.setProperty('--font-title', titleConfig.family);
+            root.style.setProperty('--font-body', bodyConfig.family);
+            root.style.setProperty('--font-badge', badgeConfig.family);
+            root.style.setProperty('--font-sans', bodyConfig.family);
+            root.style.setProperty('--font-serif', titleConfig.family);
 
+            // 4. 設定字級
             const heroSize = (isMobile ? typo.hero?.mobile : typo.hero?.desktop) || (isMobile ? 30 : 40);
             const headingSize = (isMobile ? typo.heading?.mobile : typo.heading?.desktop) || (isMobile ? 18 : 22);
             const bodySize = (isMobile ? typo.body?.mobile : typo.body?.desktop) || (isMobile ? 15 : 17);
             const smallSize = (isMobile ? typo.small?.mobile : typo.small?.desktop) || (isMobile ? 12 : 14);
+            const badgeSize = (isMobile ? typo.badge?.mobile : typo.badge?.desktop) || 12;
 
             root.style.setProperty('--font-hero', `${heroSize}px`);
             root.style.setProperty('--font-heading', `${headingSize}px`);
             root.style.setProperty('--font-body', `${bodySize}px`);
             root.style.setProperty('--font-small', `${smallSize}px`);
+            root.style.setProperty('--font-badge', `${badgeSize}px`);
         }
 
         /* 🧭 前台首頁開放頁籤過濾 (Visible Tabs) */
         function applyVisibleTabs(settings) {
             const tabs = Array.isArray(settings?.visibleTabs) && settings.visibleTabs.length 
                 ? settings.visibleTabs 
-                : ['itinerary', 'overview', 'expenses', 'todo'];
+                : ['overview', 'itinerary', 'info', 'expenses', 'todo'];
             const tabSet = new Set(tabs);
 
-            const tabIds = ['overview', 'itinerary', 'expenses', 'todo'];
+            const tabIds = ['overview', 'itinerary', 'info', 'expenses', 'todo'];
             tabIds.forEach(id => {
                 const isVis = tabSet.has(id);
                 const pcBtn = document.getElementById(`btn-pc-tab-${id}`);
@@ -799,8 +1136,8 @@
                 if (mobBtn) mobBtn.classList.toggle('hidden', !isVis);
             });
 
-            // 優先開啟 visibleTabs 中設定的第一個可用分頁 (例如 2610.json 的 "itinerary")
-            const initialTab = tabs.find(t => tabIds.includes(t)) || 'itinerary';
+            // 優先開啟 visibleTabs 中設定的第一個可用分頁
+            const initialTab = tabs.find(t => tabIds.includes(t)) || 'overview';
             switchMainTab(`tab-${initialTab}`);
         }
 
@@ -837,6 +1174,7 @@
                 heroTitle: "尚未載入行程資料",
                 dateText: "--",
                 subtitle: "請確認同目錄下是否存在對應的 .json 檔案",
+                subtitleLink: "",
                 heroImage: "",
                 visibleTabs: ["itinerary", "overview"]
             },
@@ -881,6 +1219,7 @@
                 renderNavigation(data.itinerary);
                 renderOverviewCities(data.settings, data.itinerary);
                 renderItinerary(data.itinerary, data.settings);
+                renderFrontInfo(data.settings, data.itinerary);
                 renderTodos(data.itinerary);
                 initTodos();
                 bindGlobalTodos();
@@ -943,65 +1282,95 @@
             const totalDays = calculateTripDays(settings, itineraryData);
             const daysText = totalDays !== '--' ? `${totalDays} DAYS` : '-- DAYS';
 
-            document.getElementById('ui-hero-date').textContent = settings.dateText || '--';
-            document.getElementById('ui-hero-days').textContent = daysText;
-            document.getElementById('ui-hero-title').textContent = settings.heroTitle || '未知旅程';
-            document.getElementById('ui-subtitle').textContent = settings.subtitle || '';
+            const heroDate = document.getElementById('ui-hero-date');
+            if (heroDate) heroDate.textContent = settings.dateText || '--';
+            const heroDays = document.getElementById('ui-hero-days');
+            if (heroDays) heroDays.textContent = daysText;
+            const heroTitle = document.getElementById('ui-hero-title');
+            if (heroTitle) heroTitle.textContent = settings.heroTitle || '未知旅程';
+            const heroSub = document.getElementById('ui-subtitle');
+            if (heroSub) {
+                const subText = settings.subtitle ? String(settings.subtitle).trim() : '';
+                const subLink = (settings.subtitleLink || settings.info?.link) ? String(settings.subtitleLink || settings.info?.link).trim() : '';
+                if (subLink) {
+                    heroSub.innerHTML = `
+                        <span>${escapeHtml(subText)}</span>
+                        <a href="${escapeHtml(subLink)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-moss-100/25 hover:bg-moss-100/40 text-moss-100 backdrop-blur-xs transition-all shadow-2xs hover:scale-110 ml-0.5" title="開啟外部參考連結 (另開新頁)">
+                            <i class="ph ph-arrow-square-out text-sm"></i>
+                        </a>
+                    `;
+                } else {
+                    heroSub.textContent = subText;
+                }
+            }
             
-            document.getElementById('ui-overview-date').textContent = settings.dateText || '--';
-            document.getElementById('ui-overview-days').textContent = daysText;
+            const ovDate = document.getElementById('ui-overview-date');
+            if (ovDate) ovDate.textContent = settings.dateText || '--';
+            const ovDays = document.getElementById('ui-overview-days');
+            if (ovDays) ovDays.textContent = daysText;
             
             // 總覽地點文字：優先由 settings.cities 生成
-            if (Array.isArray(settings.cities) && settings.cities.length > 0) {
-                document.getElementById('ui-overview-cities').textContent = settings.cities.map(c => c.name).join(' · ');
-            } else if (itineraryData && itineraryData.length > 0) {
-                const uniqueTitles = [...new Set(itineraryData.map(d => d.title.split(' ｜ ')[0]).filter(Boolean))];
-                document.getElementById('ui-overview-cities').textContent = uniqueTitles.slice(0, 4).join(', ') + (uniqueTitles.length > 4 ? '...' : '');
-            }
-
-            
-            if (settings.heroImage) {
-                document.getElementById('hero').style.backgroundImage = `url('${settings.heroImage}')`;
-            }
-
-            if (settings.info) {
-                const infoCol = document.getElementById('ui-overview-info-col');
-                const infoTitle = document.getElementById('ui-overview-info-title');
-                const infoLink = document.getElementById('ui-overview-info-link');
-                
-                infoTitle.textContent = settings.info.title || 'Info / 說明';
-                infoLink.textContent = settings.info.text || '--';
-                if (settings.info.link) {
-                    infoLink.href = settings.info.link;
-                    infoLink.classList.add('underline');
-                } else {
-                    infoLink.removeAttribute('href');
-                    infoLink.classList.remove('underline');
+            const ovCities = document.getElementById('ui-overview-cities');
+            if (ovCities) {
+                if (Array.isArray(settings.cities) && settings.cities.length > 0) {
+                    ovCities.textContent = settings.cities.map(c => c.name).join(' · ');
+                } else if (itineraryData && itineraryData.length > 0) {
+                    const uniqueTitles = [...new Set(itineraryData.map(d => d.title.split(' ｜ ')[0]).filter(Boolean))];
+                    ovCities.textContent = uniqueTitles.slice(0, 4).join(', ') + (uniqueTitles.length > 4 ? '...' : '');
                 }
-                infoCol.classList.remove('hidden');
+            }
+            
+            const heroEl = document.getElementById('hero');
+            if (heroEl && settings.heroImage) {
+                heroEl.style.backgroundImage = `url('${settings.heroImage}')`;
+            }
+
+            const infoRow = document.getElementById('ui-overview-info-row');
+            const infoLink = document.getElementById('ui-overview-info-link');
+            if (infoRow && infoLink) {
+                if (settings.info && settings.info.text && String(settings.info.text).trim()) {
+                    infoLink.textContent = String(settings.info.text).trim();
+                    if (settings.info.link && String(settings.info.link).trim()) {
+                        infoLink.href = String(settings.info.link).trim();
+                        infoLink.classList.add('underline');
+                    } else {
+                        infoLink.removeAttribute('href');
+                        infoLink.classList.remove('underline');
+                    }
+                    infoRow.classList.remove('hidden');
+                } else {
+                    infoRow.classList.add('hidden');
+                }
             }
 
             if (settings.overviewMap && (settings.overviewMap.iframeUrl || settings.overviewMap.image)) {
                 const mapContainer = document.getElementById('overview-map-container');
-                mapContainer.style.position = 'relative';
-                mapContainer.style.overflow = 'hidden';
-                if (settings.overviewMap.iframeUrl) {
-                    mapContainer.innerHTML = `<iframe src="${settings.overviewMap.iframeUrl}" style="position:absolute; top:-75px; left:0; width:100%; height:calc(100% + 75px); border:none;" loading="lazy"></iframe>`;
-                } else if (settings.overviewMap.image) {
-                    mapContainer.innerHTML = `<img src="${settings.overviewMap.image}" class="w-full h-full object-cover">`;
+                if (mapContainer) {
+                    mapContainer.style.position = 'relative';
+                    mapContainer.style.overflow = 'hidden';
+                    if (settings.overviewMap.iframeUrl) {
+                        mapContainer.className = 'w-full h-[450px] md:h-[500px] rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 bg-moss-200/50 relative';
+                        mapContainer.innerHTML = `<iframe src="${settings.overviewMap.iframeUrl}" style="position:absolute; top:-75px; left:0; width:100%; height:calc(100% + 75px); border:none;" loading="lazy"></iframe>`;
+                    } else if (settings.overviewMap.image) {
+                        mapContainer.className = 'w-full rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 bg-moss-200/30 relative flex items-center justify-center';
+                        mapContainer.innerHTML = `<img src="${settings.overviewMap.image}" class="w-full h-auto max-h-[85vh] object-contain block mx-auto transition-transform" alt="全行程路線地圖" loading="lazy">`;
+                    }
+                    mapContainer.classList.remove('hidden');
                 }
-                mapContainer.classList.remove('hidden');
             }
 
             if (settings.expenses) {
                 const currency = settings.expenses.currency || 'TW$';
                 const tourFee = Number(settings.expenses.tourFee) || 0;
-                document.getElementById('ui-expense-fee').textContent = `${currency} ${tourFee.toLocaleString()}`;
+                const feeEl = document.getElementById('ui-expense-fee');
+                if (feeEl) feeEl.textContent = `${currency} ${tourFee.toLocaleString()}`;
 
                 if (settings.expenses.note) {
                     const noteEl = document.getElementById('ui-expense-note');
-                    noteEl.textContent = settings.expenses.note;
-                    noteEl.classList.remove('hidden');
+                    if (noteEl) {
+                        noteEl.textContent = settings.expenses.note;
+                        noteEl.classList.remove('hidden');
+                    }
                 }
 
                 // 記帳明細與總結算
@@ -1028,9 +1397,9 @@
                             const amt = Number(r.amount) || 0;
                             const catLabel = ({ meal: '餐飲', transport: '交通', ticket: '門票', shopping: '購物', hotel: '住宿' })[r.category] || (r.category || '其它');
                             rows += `
-                                <div class="flex items-center justify-between p-3 rounded-xl bg-white/90 border border-moss-200 text-body">
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-moss-200/35 border border-moss-200 text-body">
                                     <div class="flex items-center gap-2.5 min-w-0">
-                                        <span class="px-2 py-0.5 rounded-md bg-moss-100 text-moss-500 font-bold text-small shrink-0">${escapeHtml(r.dayTag || '全期')}</span>
+                                        <span class="px-2 py-0.5 rounded-md bg-moss-500 text-moss-100 font-bold text-small shrink-0">${escapeHtml(r.dayTag || '全期')}</span>
                                         <span class="px-2 py-0.5 rounded-md bg-moss-200/60 text-moss-500 font-bold text-small shrink-0">${catLabel}</span>
                                         <span class="font-bold text-moss-500 truncate">${escapeHtml(r.title || '開銷項目')}</span>
                                         ${r.note ? `<span class="text-small text-moss-400 hidden sm:inline truncate">(${escapeHtml(r.note)})</span>` : ''}
@@ -1085,11 +1454,12 @@
 
             if (section) section.classList.remove('hidden');
 
-            let html = '<div class="w-[calc(50%-6.5rem)] md:w-[calc(50%-8rem)] shrink-0 pointer-events-none"></div>';
+            let html = '<div class="w-[calc(50%-8rem)] md:w-[calc(50%-9rem)] shrink-0 pointer-events-none"></div>';
             cityList.forEach(city => {
                 const imgUrl = city.image || 'https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=800';
+                const cleanDetail = (city.detail ? String(city.detail).trim() : '') || '暫無詳細說明';
                 html += `
-                <div class="city-flip-card w-52 md:w-64 shrink-0 aspect-[4/5] snap-center cursor-pointer select-none" data-action="flip-city-card">
+                <div class="city-flip-card w-64 md:w-72 shrink-0 aspect-[4/5] snap-center cursor-pointer select-none" data-action="flip-city-card">
                     <div class="city-flip-card-inner">
                         <!-- 正面: 圖片面 (僅顯示上排城市名稱、下排簡介) -->
                         <div class="city-flip-card-front shadow-sm border border-moss-200 bg-moss-200/50 group">
@@ -1101,17 +1471,18 @@
                             </div>
                         </div>
 
-                        <!-- 背面: 詳細說明面 (純粹深苔綠便籤，拉桿隱形，僅保留說明文字) -->
+                        <!-- 背面: 詳細說明面 (頂部顯示城市名稱，下方承接詳細介紹，不帶簡短副標) -->
                         <div class="city-flip-card-back shadow-md border border-moss-400/30 bg-moss-500 text-moss-100 p-5 md:p-6 flex flex-col justify-start">
-                            <div class="text-sm md:text-base leading-relaxed text-moss-100/95 overflow-y-auto no-scrollbar whitespace-pre-line flex-1">
-                                ${escapeHtml(city.detail || city.desc || '暫無詳細說明')}
+                            <div class="border-b border-moss-400/50 pb-2 mb-3 shrink-0">
+                                <h4 class="font-black text-heading text-moss-100 truncate">${escapeHtml(city.name || '城市')}</h4>
                             </div>
+                            <div class="text-body font-medium leading-relaxed text-moss-100/95 overflow-y-auto no-scrollbar whitespace-pre-line flex-1 text-left">${escapeHtml(cleanDetail)}</div>
                         </div>
                     </div>
                 </div>
                 `;
             });
-            html += '<div class="w-[calc(50%-6.5rem)] md:w-[calc(50%-8rem)] shrink-0 pointer-events-none"></div>';
+            html += '<div class="w-[calc(50%-8rem)] md:w-[calc(50%-9rem)] shrink-0 pointer-events-none"></div>';
             container.innerHTML = html;
 
             // 翻牌互動：點擊卡片翻面
@@ -1173,6 +1544,45 @@
 
             pcNavContainer.innerHTML = pcHtml;
             mobileNavContainer.innerHTML = mobileHtml;
+        }
+
+        function parseDailyMeals(day) {
+            const list = [];
+            if (Array.isArray(day.mealItems) && day.mealItems.length > 0) {
+                day.mealItems.forEach(item => {
+                    const text = (item.text || '').trim();
+                    if (!text && !item.tag) return;
+                    let tagCode = 'MEAL';
+                    let label = item.tag || '餐飲';
+                    if (/早/.test(label)) { tagCode = 'BFAST'; label = '早餐'; }
+                    else if (/午/.test(label)) { tagCode = 'LUNCH'; label = '午餐'; }
+                    else if (/晚/.test(label)) { tagCode = 'DINNER'; label = '晚餐'; }
+                    else if (/點心|茶/.test(label)) { tagCode = 'SNACK'; label = '點心'; }
+                    else if (/宵夜/.test(label)) { tagCode = 'LATE'; label = '宵夜'; }
+                    list.push({ tagCode, label, text });
+                });
+            } else if (day.meals && String(day.meals).trim()) {
+                const parts = String(day.meals).split(/\s*[\/\n]\s*/).map(s => s.trim()).filter(Boolean);
+                parts.forEach(part => {
+                    const match = part.match(/^(早|午|晚|早餐|午餐|晚餐|點心|宵夜|下午茶|茶)[:：\s-]\s*(.*)$/);
+                    if (match) {
+                        let tagCode = 'MEAL';
+                        let label = match[1];
+                        if (/早/.test(label)) { tagCode = 'BFAST'; label = '早餐'; }
+                        else if (/午/.test(label)) { tagCode = 'LUNCH'; label = '午餐'; }
+                        else if (/晚/.test(label)) { tagCode = 'DINNER'; label = '晚餐'; }
+                        else if (/點心|茶/.test(label)) { tagCode = 'SNACK'; label = '點心'; }
+                        else if (/宵夜/.test(label)) { tagCode = 'LATE'; label = '宵夜'; }
+                        const cleanText = (match[2] || '').trim().replace(/^[-—:：]\s*/, '');
+                        list.push({ tagCode, label, text: cleanText });
+                    } else if (/飛機|機上/.test(part)) {
+                        list.push({ tagCode: 'FLIGHT', label: '機上', text: part });
+                    } else {
+                        list.push({ tagCode: 'MEAL', label: '餐飲', text: part });
+                    }
+                });
+            }
+            return list;
         }
 
         function renderItinerary(itineraryData, settings) {
@@ -1270,14 +1680,14 @@
                             spotActionsHtml = `<div class="flex items-center gap-2 mt-4 pt-4 border-t border-moss-300/30">`;
                             if (mapSearchUrl) {
                                 spotActionsHtml += `
-                                    <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-moss-100 hover:bg-moss-400 text-moss-500 hover:text-moss-100 border border-moss-200 flex items-center justify-center transition-all shadow-sm" title="地圖導航 (${escapeHtml(spot.mapQuery)})">
+                                    <a href="${mapSearchUrl}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-transparent hover:bg-moss-200/40 text-moss-500 border border-moss-300/60 flex items-center justify-center transition-all active:scale-95" title="地圖導航 (${escapeHtml(spot.mapQuery)})">
                                         <i class="ph ph-map-pin text-sm"></i>
                                     </a>
-                                								`;
+                                `;
                             }
                             if (spot.note) {
                                 spotActionsHtml += `
-                                    <button class="btn-note w-8 h-8 rounded-full bg-moss-400 text-moss-100 hover:bg-moss-500 flex items-center justify-center transition-all shadow-sm font-bold" title="景點詳細備註" data-title="${escapeHtml(spot.name)}" data-content="${encodeURIComponent(spot.note)}">
+                                    <button class="btn-note w-8 h-8 rounded-full bg-transparent hover:bg-moss-200/40 text-moss-500 border border-moss-300/60 flex items-center justify-center transition-all font-bold active:scale-95" title="景點詳細備註" data-title="${escapeHtml(spot.name)}" data-content="${encodeURIComponent(spot.note)}">
                                         <i class="ph ph-info text-sm"></i>
                                     </button>
                                 `;
@@ -1376,11 +1786,18 @@
                 const hasLodging = !!(day.lodging && String(day.lodging).trim());
                 if (hasMeals || hasLodging) {
                     summaryHtml = `
-                        <div class="mt-4 bg-white/70 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row gap-5 border border-moss-200 shadow-sm">
+                        <div class="mt-4 bg-moss-100 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row gap-5 border border-moss-200 shadow-sm">
                             ${hasMeals ? `
                             <div class="flex-1 flex flex-col justify-start">
-                                <h5 class="text-small font-black text-moss-400 mb-1 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
-                                <p class="text-body text-moss-500 font-bold leading-relaxed">${escapeHtml(day.meals).replace(/ \/ /g, '<br>')}</p>
+                                <h5 class="text-small font-black text-moss-400 mb-2.5 tracking-widest flex items-center gap-1.5 uppercase"><i class="ph ph-fork-knife text-sm"></i> Meals / 餐飲</h5>
+                                <div class="space-y-2">
+                                    ${parseDailyMeals(day).map(m => `
+                                        <div class="flex items-center gap-2 text-body font-bold text-moss-500">
+                                            <span class="px-2 py-0.5 rounded-md bg-moss-500 text-moss-100 font-mono text-badge font-black shrink-0 tracking-wider">${m.tagCode}</span>
+                                            <span>${escapeHtml(m.label)}${m.text ? ` - ${escapeHtml(m.text)}` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>` : ''}
                             
                             ${hasLodging ? `
@@ -1412,6 +1829,7 @@
                         allEggItems.push({
                             name: e.text,
                             image: e.image || '',
+                            detail: e.detail || '',
                             tag: t,
                             tagLabel: meta.label,
                             icon: meta.icon
@@ -1426,24 +1844,46 @@
                     let buyItems = day.buy ? parseItems(day.buy) : [];
                     let bonusItems = day.bonus ? parseItems(day.bonus) : []; 
 
-                    eatItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.eatImage || '') : '', tag: 'eat', tagLabel: '美食', icon: 'ph-fork-knife' }));
-                    buyItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.buyImage || '') : '', tag: 'buy', tagLabel: '土產', icon: 'ph-shopping-bag' }));
-                    bonusItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.bonusImage || '') : '', tag: 'bonus', tagLabel: '體驗', icon: 'ph-sparkle' }));
+                    eatItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.eatImage || '') : '', detail: '', tag: 'eat', tagLabel: '美食', icon: 'ph-fork-knife' }));
+                    buyItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.buyImage || '') : '', detail: '', tag: 'buy', tagLabel: '土產', icon: 'ph-shopping-bag' }));
+                    bonusItems.forEach((name, i) => allEggItems.push({ name, image: i === 0 ? (day.bonusImage || '') : '', detail: '', tag: 'bonus', tagLabel: '體驗', icon: 'ph-sparkle' }));
                 }
 
                 if (allEggItems.length > 0) {
                     let cardsHtml = '<div class="w-1 md:w-2 shrink-0 pointer-events-none"></div>';
                     allEggItems.forEach(item => {
                         const itemIcon = item.icon || 'ph-sparkle';
+                        const cleanEggDetail = item.detail ? String(item.detail).trim() : '';
                         cardsHtml += `
-                            <div class="w-36 md:w-44 shrink-0 rounded-[2rem] overflow-hidden shadow-sm border border-moss-200 group cursor-pointer relative aspect-[3/4] snap-center bg-moss-300/20 flex flex-col justify-end">
-                                ${item.image ? `<img src="${escapeHtml(item.image)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">` : `<i class="ph ${itemIcon} text-[68px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>`}
-                                <div class="absolute inset-0 bg-gradient-to-t from-moss-500/85 via-moss-500/20 to-transparent"></div>
-                                <div class="absolute bottom-0 left-0 w-full p-3.5 md:p-4 flex flex-col justify-end text-moss-100 relative z-10">
-                                    <h4 class="font-black text-xs md:text-sm leading-snug drop-shadow-md whitespace-normal flex items-start gap-1.5">
-                                        <i class="ph ${itemIcon} text-moss-300 text-sm md:text-base shrink-0 mt-0.5"></i>
-                                        <span>${escapeHtml(item.name)}</span>
-                                    </h4>
+                            <div class="egg-flip-card w-52 md:w-64 shrink-0 rounded-[1.5rem] relative aspect-[4/5] snap-center select-none cursor-pointer" data-action="flip-egg-card">
+                                <div class="egg-flip-card-inner">
+                                    <!-- 正面: 圖片/圖示面 (左上角圖示徽章，文字貼齊卡片寬度) -->
+                                    <div class="egg-flip-card-front shadow-sm border border-moss-200 bg-moss-300/20 group overflow-hidden">
+                                        ${item.image ? `<img src="${escapeHtml(item.image)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">` : `<i class="ph ${itemIcon} text-[68px] text-moss-400/20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></i>`}
+                                        <div class="absolute inset-0 bg-gradient-to-t from-moss-500/90 via-moss-500/25 to-transparent"></div>
+                                        
+                                        <!-- 左上角圖示小徽章 -->
+                                        <div class="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-moss-500/80 backdrop-blur-xs text-moss-100 flex items-center justify-center text-sm shadow-sm z-10 border border-moss-300/30">
+                                            <i class="ph ${itemIcon}"></i>
+                                        </div>
+
+                                        <!-- 底部文字區塊 (左右貼齊卡片寬度) -->
+                                        <div class="absolute bottom-0 left-0 w-full p-2.5 md:p-3 flex flex-col justify-end text-moss-100 z-10">
+                                            <h4 class="font-black text-small leading-snug drop-shadow-md whitespace-normal text-left break-words w-full">
+                                                ${escapeHtml(item.name)}
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- 背面: 詳細說明面 (點擊翻轉顯示文字說明) -->
+                                    <div class="egg-flip-card-back shadow-md border border-moss-400/40 bg-moss-500 text-moss-100 p-3.5 flex flex-col justify-start">
+                                        <div class="text-badge font-black text-moss-300 uppercase tracking-widest mb-1.5 flex items-center gap-1 border-b border-moss-400/40 pb-1 shrink-0">
+                                            <i class="ph ${itemIcon}"></i>
+                                            <span>${escapeHtml(item.tagLabel)}</span>
+                                        </div>
+                                        <div class="text-small font-bold text-moss-100 mb-1.5 line-clamp-2 shrink-0">${escapeHtml(item.name)}</div>
+                                        ${cleanEggDetail ? `<div class="text-badge font-medium leading-relaxed text-moss-100/90 overflow-y-auto no-scrollbar whitespace-pre-line flex-1 text-left">${escapeHtml(cleanEggDetail)}</div>` : ''}
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -1451,14 +1891,19 @@
                     cardsHtml += '<div class="w-1 md:w-2 shrink-0 pointer-events-none"></div>';
 
                     eggHtml = `
-                        <div class="mt-4">
-                            <details class="group bg-moss-200/30 border border-moss-300/40 rounded-2xl p-4 md:p-5 transition-all duration-300">
-                                <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-500 text-body">
-                                    <span class="flex items-center gap-2"><i class="ph ph-gift text-xl text-moss-400"></i> 驚喜彩蛋 (${allEggItems.length})</span>
-                                    <div class="w-8 h-8 rounded-full bg-moss-300 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform"><i class="ph ph-caret-down font-bold"></i></div>
+                        <div class="mt-6">
+                            <details class="group transition-all duration-300">
+                                <summary class="flex justify-between items-center cursor-pointer list-none font-black text-moss-500 text-body select-none pb-2">
+                                    <span class="flex items-center gap-2">
+                                        <i class="ph ph-gift text-xl text-moss-400"></i>
+                                        <span>驚喜彩蛋 (${allEggItems.length})</span>
+                                    </span>
+                                    <div class="w-6 h-6 flex items-center justify-center text-moss-500 group-open:rotate-180 transition-transform text-base">
+                                        <i class="ph ph-caret-down font-bold"></i>
+                                    </div>
                                 </summary>
-                                <div class="mt-4 pt-3 border-t border-moss-300/30 overflow-hidden">
-                                    <div class="flex gap-3.5 md:gap-4 overflow-x-auto custom-scrollbar snap-x snap-mandatory pb-4 pt-1">
+                                <div class="pt-2 overflow-hidden">
+                                    <div class="flex gap-3.5 md:gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 pt-1">
                                         ${cardsHtml}
                                     </div>
                                 </div>
@@ -1471,11 +1916,22 @@
                 html += `
                     <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
                         <div class="mb-5">
-                            <span class="inline-block bg-moss-400 text-moss-100 px-3 py-1 rounded-full font-black text-small tracking-widest mb-2 shadow-sm uppercase">${day.fullDate} &middot; ${day.day}</span>
+                            <div class="flex items-center flex-wrap gap-2.5 mb-2">
+                                <span class="inline-flex items-center gap-1.5 bg-moss-500 text-moss-100 px-3.5 py-1 rounded-full font-black text-small tracking-wider shadow-sm uppercase font-mono">
+                                    ${day.fullDate ? `<span>${escapeHtml(day.fullDate)}</span>` : ''}
+                                    ${(day.fullDate && day.day) ? `<span class="opacity-70">&middot;</span>` : ''}
+                                    ${day.day ? `<span>${escapeHtml(day.day)}</span>` : ''}
+                                </span>
+                                ${hasWeather ? `
+                                    <span class="inline-flex items-center gap-1.5 text-moss-500 font-bold text-small">
+                                        <i class="ph ${day.weather.icon || 'ph-sun'} text-base text-moss-400"></i>
+                                        <span>${escapeHtml(day.weather.temp || '')}</span>
+                                    </span>
+                                ` : ''}
+                            </div>
                             <h2 class="text-heading font-serif font-black text-moss-500 leading-tight">${day.title}</h2>
                         </div>
                         
-                        ${weatherOutfitHtml}
                         ${specialNotesHtml}
                         ${dailyTodoHtml}
                         ${flightsHtml}

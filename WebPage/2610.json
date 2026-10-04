@@ -1,9 +1,10 @@
 {
   "settings": {
     "pageTitle": "土耳其傳奇 11 日",
-    "heroTitle": "星月傳奇．土耳其11日",
+    "heroTitle": "奇幻國度．星月土耳其",
     "dateText": "2026/10/8(四) ~ 2026/10/18(日)",
     "subtitle": "跟團-行健",
+    "subtitleLink": "https://www.unotour.com.tw/03_category_info.asp?sn=51198",
     "heroImage": "https://images.unsplash.com/photo-1549740425-5e9ed4d8cd34?q=80&w=1800&auto=format&fit=crop",
     "mapEngine": "google",
     "visibleTabs": [
@@ -27,8 +28,8 @@
       "bg": "#FAF6EA"
     },
     "overviewMap": {
-      "image": "",
-      "iframeUrl": "https://www.google.com/maps/d/embed?mid=1AKPm6i_BLlMD3cy0YLVSWmuNVfNCdLY&ehbc=2E312F"
+      "image": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
+      "iframeUrl": ""
     },
     "cities": [
       {
@@ -63,14 +64,14 @@
         "name": "巴穆卡麗 (棉花堡)",
         "tag": "Day 7",
         "desc": "純白溫泉石灰棚．希拉波利斯",
-        "image": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=800&auto=format&fit=crop",
+        "image": "https://www.sundaytour.com.tw/upfiles/chinese/attractions/tw_attractions_caty01575017043.jpg",
         "detail": "大自然雪白階梯狀石灰棚溫泉，被譽為宛如雲朵落入人間的棉花城堡；山頂緊鄰希拉波利斯古羅馬溫泉遺址，赤足涉水踏在溫暖泉水中別有一番詩意。"
       },
       {
         "name": "艾菲索斯",
         "tag": "Day 8",
         "desc": "世界七大奇蹟．羅馬古城",
-        "image": "https://images.unsplash.com/photo-1565011523534-747a8601f10a?q=80&w=800&auto=format&fit=crop",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhGL6tA5G2BU4wZQfRf1Y9hXXIgsNjms7VaINdYiyHCndWc2ArvqHYREs&s=10",
         "detail": "地中海東部保存最完整的古羅馬大城，漫步於光滑的大理石街道，仰望宏偉震撼的塞爾蘇斯圖書館立面與能容納兩萬五千人的古羅馬露天大劇場。"
       },
       {
@@ -95,12 +96,12 @@
       "records": []
     },
     "info": {
-      "title": "說明",
+      "title": "跟團",
       "text": "行健",
       "link": "https://www.unotour.com.tw/03_category_info.asp?sn=51198"
     },
     "typography": {
-      "style": "reading",
+      "style": "modern",
       "hero": {
         "desktop": 38,
         "mobile": 30
@@ -120,8 +121,12 @@
       "badge": {
         "desktop": 12,
         "mobile": 12
-      }
+      },
+      "fontTitle": "modern",
+      "fontBody": "standard",
+      "fontBadge": "geometric"
     },
+    "emergency": "1. 外交部緊急聯絡中心 (24小時急難救助專線)：+886-800-085-095\n2. 駐安卡拉台北經濟文化代表處：+90-532-322-1234 (急難救助專用)\n3. 土耳其境內緊急通報通用號碼：112 (警察 / 救護 / 消防通用)\n\n駐安卡拉台北經濟文化代表團∕駐土耳其代表處\nTaipei Economic and Cultural Mission in Ankara\nResit Galip Cad. Rabat Sok. No. 16 G.O.P. 06700 Ankara Türkiye\n境外直撥電話：(+90-312) 4367255 / (+90-312) 4367256\n土國境內直撥：(0312) 4367255 / (0312) 4367256\n境外傳真：(+90-312) 447 8465 / 境內傳真：(0312) 447 8465\n緊急聯絡電話(非急難重大事件請勿撥打)\t行動電話：(+90) 532- 322-7162\n土國境內直撥：0532-322-7162\n\n電子郵件\ttur@mofa.gov.tw\n服務時間\t週一~週五：09：00~17：00\nhttps://www.roc-taiwan.org/tr/\n\n領務收領件時間\n週一~週五：09：00~12：00\n領務申辦時間\t週一至週五：09：00~12：00\n領務轄區\t土耳其全境，兼理北賽普勒斯、哈薩克、烏茲別克、土庫曼、吉爾吉斯、塔吉克、喬治亞。\n與我國時差\t較台灣慢5小時",
     "memo": "1. 插座規格：土耳其電壓為 220V，插頭為歐洲雙圓孔規格，請備妥萬國轉接頭。\n2. 氣候與衣著：十月份早晚溫差顯著（約 10~25°C），清晨熱氣球行程偏涼，建議洋蔥式穿法並攜帶輕羽絨外套與防風外套。\n3. 清真寺參觀禮儀：進入清真寺女性需包覆頭巾（可自備美觀絲巾拍照），男女皆不可穿著無袖或露出膝蓋之短褲短裙。\n4. 貨幣與消費：主要使用新土耳其里拉 (TRY)，大部分市區店家、餐廳與超市均支援 Visa / Mastercard 感應信用卡，建議攜帶少量美金或歐元現金至當地換匯備用。"
   },
   "itinerary": [
@@ -162,7 +167,8 @@
       "easterEggs": [],
       "city": "伊斯坦堡ISTANBUL",
       "mealItems": [],
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": ""
     },
     {
       "day": "Day 2",
@@ -219,7 +225,8 @@
       "meals": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐",
       "lodging": "HILTON GARDEN INN SAFRANBOLU",
       "lodgingBooking": "",
-      "lodgingInfo": "地址：Yenimahalle, Sadri Artunç Cd. No:74, 78600 Safranbolu/Karabük\n電話：+90 370 712 11 30\n\nhttps://maps.app.goo.gl/4RBc9SQKqv8ab3FB9?g_st=ac",
+      "lodgingInfo": "地址：Yenimahalle, Sadri Artunç Cd. No:74, 78600 Safranbolu/Karabük\n電話：+90 370 712 11 30",
+      "lodgingMap": "https://maps.app.goo.gl/4RBc9SQKqv8ab3FB9?g_st=ac",
       "bonus": "",
       "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10",
       "buyImage": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg",
@@ -228,22 +235,26 @@
         {
           "tag": "eat",
           "text": "土耳其紅茶",
-          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10"
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10",
+          "detail": "使用雙層鬱金香杯盛裝的濃郁紅茶，搭配兩顆方糖。在番紅花城鵝卵石街道旁的小茶館品嚐，感受最道地的悠閒午後時光。"
         },
         {
           "tag": "buy",
           "text": "番紅花城手工紅銅器",
-          "image": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg"
+          "image": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg",
+          "detail": "歷史悠久的鐵匠街匠人純手工捶打敲製，包含土耳其咖啡壺 (Cezve)、銅茶盤與雕花果盤，兼具實用與藝術收藏價值。"
         },
         {
           "tag": "buy",
           "text": "傳統立體鄂圖曼軟糖",
-          "image": "https://i.imgur.com/oZ717IK.jpg"
+          "image": "https://i.imgur.com/oZ717IK.jpg",
+          "detail": "天然番紅花與石榴風味手工軟糖，外層裹上細白糖粉或開心果碎，甜而不膩，是世界遺產小鎮的代表土產。"
         },
         {
           "tag": "buy",
           "text": "特色手工蕾絲織品",
-          "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/%C4%B0%C4%9Fne_Oyas%C4%B1.jpeg"
+          "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/%C4%B0%C4%9Fne_Oyas%C4%B1.jpeg",
+          "detail": "安納托利亞傳統針織蕾絲 (Oya)，圖樣纖細精美，常用於絲巾飾邊與桌巾，展現土耳其婦女精湛的手工藝傳承。"
         }
       ],
       "city": "安卡拉ANKARA",
@@ -305,36 +316,33 @@
         }
       ],
       "outfit": "高原日夜溫差極大，夜間外出看秀請務必穿著保暖針織衫或輕羽絨外套。",
-      "buy": "安卡拉當地特色天然果乾、卡巴德基亞熱氣球造型紀念小品。",
-      "eat": "土耳其傳統香料烤雞翅、道地 Raki（獅子奶酒）。",
+      "buy": "安卡拉天然果乾、卡巴德基亞熱氣球造型紀念小品",
+      "eat": "Raki（獅子奶酒）",
       "tips": "獅子奶酒酒精濃度高且後勁強，建議酌量飲用；岩穴旅館每間格局略有大小差異。",
       "meals": "午：香料烤翅風味餐 / 晚：旅館自助式或套餐",
       "lodging": "KALSEDON CAVE HOTEL",
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://live.staticflickr.com/3954/15706297251_6a298dfc13_c.jpg",
+      "buyImage": "https://pimg.1px.tw/camille1240/49156cbcb8bbf.jpg",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "土耳其傳統香料烤雞翅",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "道地 Raki（獅子奶酒）。",
-          "image": ""
+          "text": "Raki（獅子奶酒）",
+          "image": "https://live.staticflickr.com/3954/15706297251_6a298dfc13_c.jpg",
+          "detail": "Rakı（拉克酒）是土耳其的國家級傳統烈酒，因其特殊的飲用儀式和強烈後勁，在當地被賦予了 「獅子奶」（Aslan Sütü） 的霸氣稱號。這款酒通常由葡萄或葡萄乾經兩次蒸餾而成，並在過程中加入茴香籽（Aniseed）調味，酒精濃度普遍高達 40% 至 50%。\n\n🥛 為什麼叫「獅子奶」？\nRakı 倒出來時原本是完全透明無色的。當你依循傳統加入冷水稀釋時，酒中的茴香精油（茴香腦 anethole）無法溶解於水，便會產生乳化作用（烏佐效應），瞬間神奇地轉變為不透明的乳白色。由於土耳其俚語常以「獅子」來形容強壯勇敢的男子，因此這杯變白、帶有強烈後勁的酒，就被戲稱為「給強者喝的牛奶」。"
         },
         {
           "tag": "buy",
-          "text": "安卡拉當地特色天然果乾",
-          "image": ""
+          "text": "安卡拉天然果乾",
+          "image": "https://pimg.1px.tw/camille1240/49156cbcb8bbf.jpg",
+          "detail": "安卡拉作為土耳其的首都，其傳統市場與香料店（如著名的安卡拉城堡周邊老街與市集）聚集了來自全土耳其最核心、產量世界第一的頂級天然果乾。這些果乾通常主打日曬、無添加糖與防腐劑，保留水果最天然的濃郁風味。\n1. 土耳其無花果乾 (Dried Figs) \n2.杏桃乾 / 杏桃乾 (Dried Apricots)\n3. 白桑椹乾 (Dried White Mulberries)\n4. 日曬番茄乾 (Dried Tomatoes)"
         },
         {
           "tag": "buy",
-          "text": "卡巴德基亞熱氣球造型紀念小品。",
-          "image": ""
+          "text": "卡巴德基亞熱氣球造型紀念小品",
+          "image": "https://thumbs.dreamstime.com/b/%E5%9C%9F%E8%80%B3%E5%85%B6%E5%8D%A1%E5%B8%95%E5%A4%9A%E8%A5%BF%E4%BA%9A%E7%9A%84%E7%BA%AA%E5%BF%B5%E5%93%81-%E8%A1%97%E5%A4%B4%E5%B0%8F%E5%B0%8F%E5%8F%AF%E7%88%B1%E7%9A%84%E5%BD%A9%E8%89%B2%E7%83%AD%E6%B0%94%E7%90%83-160307724.jpg"
         }
       ],
       "city": "番紅花城SAFRANBOLU",
@@ -349,7 +357,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": "Cumhuriyet, Çat Köyü İç Yolu, 50000 Çat/Nevşehir Merkez/Nevşehir, 土耳其"
+      "lodgingInfo": "Cumhuriyet, Çat Köyü İç Yolu, 50000 Çat/Nevşehir Merkez/Nevşehir, 土耳其",
+      "lodgingMap": "https://maps.app.goo.gl/sJczpA6CEC26mNSx8"
     },
     {
       "day": "Day 4",
@@ -409,49 +418,43 @@
         }
       ],
       "outfit": "清晨若搭乘熱氣球氣溫逼近零度，需備毛帽與防風手套；白天洋蔥式穿搭。",
-      "buy": "綠松石純銀飾品、游牧民族手工幾何圖騰地毯、惡魔之眼掛飾",
-      "eat": "道地土耳其冰淇淋、土式鄉村下午茶、肥美多汁傳統烤羊肉",
+      "buy": "綠松石純銀飾品、手工幾何圖騰地毯、惡魔之眼掛飾",
+      "eat": "土耳其冰淇淋",
       "tips": "參觀地毯坊與珠寶店時微笑道別即可，殺價為當地樂趣；下午茶與冰淇淋為特別招待。",
       "meals": "午：土式佐傳統烤羊肉風味餐 / 晚：旅館自助式或套餐",
       "lodging": "KALSEDON CAVE HOTEL",
-      "lodgingBooking": "洞穴特色旅館預約 #KC-4491\n入住：15:00 / 退房：11:00 (含早晚餐)",
-      "lodgingInfo": "地址：Aydınlı Orta Mahalle, Çakmak Sk. No:5, 50180 Göreme/Nevşehir\n電話：+90 384 271 28 88",
+      "lodgingBooking": "",
+      "lodgingInfo": "",
       "todos": [],
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF06plm7tf2a4tNVjjeOARqY77NzdOPlf6C6vt2oeRpuYJvQu5TT_P_-E&s=10",
+      "buyImage": "https://c.p02.c4a.im/user/2808758/exhibits/5901281/1_5ef9d818f31477516bf8f52e2477274c?d=500x500",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "道地土耳其冰淇淋",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "土式鄉村下午茶",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "肥美多汁傳統烤羊肉",
-          "image": ""
+          "text": "土耳其冰淇淋",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF06plm7tf2a4tNVjjeOARqY77NzdOPlf6C6vt2oeRpuYJvQu5TT_P_-E&s=10",
+          "detail": "冬督爾瑪，即土耳其冰淇淋，是土耳其的一種冰淇淋，成分通常包括羊奶、糖、蘭莖粉和洋乳香。據說發源自卡赫拉曼馬拉什。在土耳其國外常被稱為Dondurma。 冬督爾瑪與其它冰淇淋的差別在於質感及較不易融化。蘭莖粉增加冬督爾瑪的黏稠度，使它被拉長時較不易斷開。"
         },
         {
           "tag": "buy",
           "text": "綠松石純銀飾品",
-          "image": ""
+          "image": "https://c.p02.c4a.im/user/2808758/exhibits/5901281/1_5ef9d818f31477516bf8f52e2477274c?d=500x500",
+          "detail": "綠松石（土耳其石）\n被視為12月的誕生石，象徵幸運、成功與療癒能量。"
         },
         {
           "tag": "buy",
-          "text": "游牧民族手工幾何圖騰地毯",
-          "image": ""
+          "text": "手工幾何圖騰地毯",
+          "image": "https://ak-d.tripcdn.com/images/1mi6h224x90n33d0j17E9.jpg?proc=resize%2Fm_z%2Cw_375%2Ch_0%3Bformat%2Ff_webp%2C9C2E",
+          "detail": "土耳其手工幾何圖騰地毯以傳統雙結織法（Ghiordes knot）與豐富的遊牧民族幾何圖騰聞名，兼具藝術美感與實用耐磨性"
         },
         {
           "tag": "buy",
           "text": "惡魔之眼掛飾",
-          "image": ""
+          "image": "https://down-tw.img.susercontent.com/file/c991db925df36c1fd28e69d1d5fd408c",
+          "detail": "土耳其惡魔之眼掛飾（又稱藍眼睛或邪眼，Nazar Boncuğu）是土耳其傳統用來抵擋嫉妒與厄運的知名護身符。\n• 傳說嫉妒的眼神會帶來詛咒與厄運。\n• 古人製造藍眼睛以毒攻毒，用來反射惡意。\n• 若掛飾自然碎裂，代表它幫主人擋下災厄，此時應更換新掛飾。"
         }
       ],
       "city": "卡巴德基亞CAPPADOCIA",
@@ -464,7 +467,8 @@
           "tag": "晚餐",
           "text": "旅館自助式或套餐"
         }
-      ]
+      ],
+      "lodgingMap": "https://maps.app.goo.gl/sJczpA6CEC26mNSx8"
     },
     {
       "day": "Day 5",
@@ -512,44 +516,37 @@
         }
       ],
       "outfit": "由高原一路下行至地中海沿岸，午後明顯轉暖，可換穿透氣輕薄的長袖衫。",
-      "buy": "孔亞旋轉舞者白衣陶瓷娃娃、安那托利亞天然草本茶、梅烏拉那紀念書籤。",
-      "eat": "土耳其特色長條披薩（Pide）、地中海風味橄欖冷盤。",
+      "buy": "孔亞旋轉舞者白衣陶瓷娃娃、安那托利亞天然草本茶",
+      "eat": "土耳其特色長條披薩（Pide）",
       "tips": "孔亞為宗教氣氛較濃厚的傳統聖城，參觀博物館相關園區請保持衣著端莊與輕聲細語。",
       "meals": "午：土式餐食佐 Pide 風味餐 / 晚：旅館自助式或套餐",
       "lodging": "DOUBLE TREE BY HILTON ANTALYA",
-      "lodgingBooking": "希爾頓連鎖預約 #DT-99210\n房型：海景雙人客房 (附設室內泳池)",
-      "lodgingInfo": "地址：Şirinyalı Mah. 1512 Sok. No:2, Muratpaşa, 07160 Antalya\n電話：+90 242 310 99 99",
+      "lodgingBooking": "",
+      "lodgingInfo": "",
       "todos": [],
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://i0.wp.com/turkishkitchen.com.tw/wp-content/uploads/AdobeStock_462514062.jpeg?resize=1004%2C1504&ssl=1",
+      "buyImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx67YGtvBqAz-P0CNEcaTyPORixuVuTnO7b8NuXt7vtlYN-VLkqgptBceE&s=10",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
           "text": "土耳其特色長條披薩（Pide）",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "地中海風味橄欖冷盤。",
-          "image": ""
+          "image": "https://i0.wp.com/turkishkitchen.com.tw/wp-content/uploads/AdobeStock_462514062.jpeg?resize=1004%2C1504&ssl=1",
+          "detail": "土耳其特色長條披薩（Pide）是一種流傳數百年的傳統烤餅，外型像一艘兩端收尖的小船。\nPide 的特色與口感\n• 外型設計：麵團桿平拉長成橢圓形，鋪滿餡料後將邊緣向上捲起，形成獨特的船型。\n• 餅皮口感：外皮經過高溫烘烤後酥脆焦香，內部軟嫩，有時揉麵會加入優格增加柔軟度。\n• 常見口味：\n\t• 碎肉餡（Kıymalı）：加入羊肉或牛肉末與番茄、洋蔥及香料。\n\t• 起司與蛋（Kaşarlı）：鋪上濃郁起司，部分店家還會在出爐前打上一顆生蛋。\n\t• 菠菜或蔬菜（Ispanaklı）：搭配蔬菜與羊奶起司。"
         },
         {
           "tag": "buy",
           "text": "孔亞旋轉舞者白衣陶瓷娃娃",
-          "image": ""
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx67YGtvBqAz-P0CNEcaTyPORixuVuTnO7b8NuXt7vtlYN-VLkqgptBceE&s=10",
+          "detail": "孔亞旋轉舞者白衣陶瓷娃娃是土耳其最具代表性的經典宗教文化紀念品之一。\n這類娃娃的設計靈感源自伊斯蘭教蘇菲教派（Sufism）的精神修煉儀式「旋轉舞（Sema）」，而土耳其的古老城市孔亞（Konya）正是這項靈性儀式的起源地。\n娃娃的獨特外觀並非單純的舞蹈服飾，而是富含深刻的宗教與哲學象徵：\n• 白色衣裙（白袍）： 代表「墓穴」或「裹屍布」，象徵修行者脫去今生現世的負擔與世俗自我，迎接超脫後的來世與純潔的靈魂。\n• 土色高帽（Sikke）： 娃娃頭上戴的長形高帽象徵「墓碑」，意在時時刻刻提醒人們拋開小我。\n• 獨特的意旋轉姿態： 精緻的陶瓷娃娃通常會還原舞者「右手朝天、左手向地」的經典動作。右手朝天代表接受真主阿拉的恩賜與能量；左手掌心向下，則代表將這份神聖的愛與能量廣傳於世間、回饋給人間。"
         },
         {
           "tag": "buy",
           "text": "安那托利亞天然草本茶",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "梅烏拉那紀念書籤。",
-          "image": ""
+          "image": "https://carolblog.tw/wp-content/uploads/2025/02/%E5%9C%9F%E8%80%B3%E5%85%B6%E4%BC%B4%E6%89%8B%E7%A6%AE_6.jpg",
+          "detail": "土耳其天然草本茶與水果茶是極佳的伴手禮，其中以國民品牌 Doğadan 的茶包和 HazerBaba 的水果茶最受歡迎。"
         }
       ],
       "city": "孔亞KONYA",
@@ -562,7 +559,8 @@
           "tag": "晚餐",
           "text": "旅館自助式或套餐"
         }
-      ]
+      ],
+      "lodgingMap": "https://maps.app.goo.gl/RDZVhgg125ttynLF6"
     },
     {
       "day": "Day 6",
@@ -610,42 +608,40 @@
         }
       ],
       "outfit": "地中海陽光熱情，海風稍大，備妥墨鏡、寬沿遮陽帽與高係數防曬乳。",
-      "buy": "地中海產天然純橄欖油護手霜、土耳其藍手工彩瓷盤、天然頂級無花果乾。",
-      "eat": "地中海特色餐廳鮮魚風味餐、土耳其街頭現榨石榴汁。",
+      "buy": "地中海產天然純橄欖油護手霜、土耳其藍手工彩瓷盤、天然頂級無花果乾",
+      "eat": "土耳其街頭現榨石榴汁",
       "tips": "出海行程容易暈船者，請出發前30分鐘服用暈船藥；飯店溫泉區地板濕滑請小心行走。",
       "meals": "午：土耳其鮮魚風味餐 / 晚：旅館自助式或套餐",
       "lodging": "COLOSSAE TERMAL HOTEL",
       "todos": [],
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://thumbs.dreamstime.com/b/%E5%9C%9F%E8%80%B3%E5%85%B6%E7%9F%B3-%E6%B1%81-36914180.jpg",
+      "buyImage": "https://pic.vcp.tw/upload/dynamo/product/pic_list_out_1177_1749547523.jpg?1749547525",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "地中海特色餐廳鮮魚風味餐",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "土耳其街頭現榨石榴汁。",
-          "image": ""
+          "text": "土耳其街頭現榨石榴汁",
+          "image": "https://thumbs.dreamstime.com/b/%E5%9C%9F%E8%80%B3%E5%85%B6%E7%9F%B3-%E6%B1%81-36914180.jpg",
+          "detail": "土耳其街頭現榨紅石榴汁（Nar Suyu）是當地最具代表性的經典街頭飲品之一"
         },
         {
           "tag": "buy",
           "text": "地中海產天然純橄欖油護手霜",
-          "image": ""
+          "image": "https://pic.vcp.tw/upload/dynamo/product/pic_list_out_1177_1749547523.jpg?1749547525",
+          "detail": "土耳其地中海產天然純橄欖油護手霜最知名的代表品牌為 Dalan D'Olive，其產品採用地中海天然橄欖油製成，具備良好的保濕與滋潤效果"
         },
         {
           "tag": "buy",
           "text": "土耳其藍手工彩瓷盤",
-          "image": ""
+          "image": "https://media.etmall.com.tw/nximg/00100002371/100002371624/100002371624-4_xxl.jpg?t=22245115922"
         },
         {
           "tag": "buy",
-          "text": "天然頂級無花果乾。",
-          "image": ""
+          "text": "天然頂級無花果乾",
+          "image": "https://img.yec.tw/cl/api/res/1.2/7dNEg4RWsjlKBPyE8e_CTg--/YXBwaWQ9eXR3bWFsbDtoPTYwMDtxPTEwMDt3PTYwMA--/https://img.yec.tw/fy/ebb9/item/p0433263552797-item-8d74xf4x0508x0500-m.jpg",
+          "detail": "土耳其無花果乾富含天然果蜜與膳食纖維，口感軟Q且不加糖，是熱門的健康零食。"
         }
       ],
       "city": "安塔麗亞ANTALYA",
@@ -660,7 +656,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": "https://maps.app.goo.gl/95N9egiPb2WE9tR37"
     },
     {
       "day": "Day 7",
@@ -716,42 +713,41 @@
         }
       ],
       "outfit": "棉堡整片潔白極度易反射光線，穿著飽和鮮豔色系（如紅、寶藍）拍照最亮眼。",
-      "buy": "棉堡限定天然溫泉泥面膜、愛琴海頂級精油香皂、天然無花果夾心巧克力。",
-      "eat": "愛琴海沿岸特色炭烤肉串（Kebab）、土耳其國民酸奶（Ayran）。",
+      "buy": "棉堡限定天然溫泉泥面膜、愛琴海頂級精油香皂、天然無花果夾心巧克力",
+      "eat": "土耳其國民酸奶（Ayran）",
       "tips": "赤腳踩在結晶岩面上略帶刺痛感，行走務必踏穩；古溫泉游泳戲水需現地自費買門票。",
       "meals": "午：土耳其式餐食 / 晚：旅館自助式或套餐",
       "lodging": "CHARISMA DE LUXE HOTEL",
       "todos": [],
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://cdn-crossing.cw.com.tw/ckeditor/202011/ckeditor-5faa5a59066f5.jpg",
+      "buyImage": "https://cdn2.ettoday.net/images/3362/d3362832.jpg",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "愛琴海沿岸特色炭烤肉串（Kebab）",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "土耳其國民酸奶（Ayran）。",
-          "image": ""
+          "text": "土耳其國民酸奶（Ayran）",
+          "image": "https://cdn-crossing.cw.com.tw/ckeditor/202011/ckeditor-5faa5a59066f5.jpg",
+          "detail": "土耳其國民酸奶（Ayran，又稱鹹優格或愛蘭）是一種由原味優格、水和鹽混合高速攪拌至起泡沫的傳統鹹味冷飲。"
         },
         {
           "tag": "buy",
           "text": "棉堡限定天然溫泉泥面膜",
-          "image": ""
+          "image": "https://cdn2.ettoday.net/images/3362/d3362832.jpg",
+          "detail": "爛泥扶不上牆，但能敷上臉!!!\n土耳其棉堡（Pamukkale）以雪白的碳酸鈣梯田溫泉聞名，當地周邊的溫泉飯店和水療中心（如著名的紅水溫泉區 Karahayıt）經常會提供富含礦物質的天然溫泉泥（Thermal Mud）供旅客敷臉或泡泥浴，具有緊緻毛孔和深層清潔的功效。"
         },
         {
           "tag": "buy",
           "text": "愛琴海頂級精油香皂",
-          "image": ""
+          "image": "https://img.yec.tw/cl/api/res/1.2/wwJspSroZaSOAdNnO5Iykg--/YXBwaWQ9eXR3bWFsbDtoPTYwMDtxPTEwMDt3PTYwMA--/https://img.yec.tw/fy/bea2/item/p0704262383351-item-441bxf4x0600x0600-m.jpg",
+          "detail": "土耳其愛琴海頂級精油香皂以當地產區（如埃德雷米特 Edremit）的特級初榨橄欖油為基底，結合古法製皂工藝，能提供極佳的潤澤與溫和洗淨效果。"
         },
         {
           "tag": "buy",
-          "text": "天然無花果夾心巧克力。",
-          "image": ""
+          "text": "天然無花果夾心巧克力",
+          "image": "https://cdn.shopify.com/s/files/1/0603/2025/2142/files/k_2Farchive_2Fa196e8ec8828eebc68ea14f67497e94cd1c5d9fe.jpg?v=1746704638",
+          "detail": "土耳其無花果夾心/包覆巧克力常見知名品牌包含土耳其老牌 Elit 巧克力 與 TARIS（百年國營無花果權威） 等"
         }
       ],
       "mapImage": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
@@ -767,7 +763,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": "https://maps.app.goo.gl/cDNYuzKhVd1yKPvx6"
     },
     {
       "day": "Day 8",
@@ -821,41 +818,28 @@
         }
       ],
       "outfit": "以弗所古城缺乏樹蔭遮蔽極曬；晚間飛抵伊斯坦堡氣溫轉涼，隨身包需備外套。",
-      "buy": "席林杰限定特色水果酒（黑莓/石榴）、頂級輕柔小羊皮衣、聖經以弗所主題書冊。",
-      "eat": "席林杰山城著名水果酒佐餐、道地土耳其旋轉烤肉沙威瑪（Döner）。",
+      "buy": "席林杰限定特色水果酒（黑莓/石榴）",
+      "eat": "旋轉烤肉沙威瑪（Döner）",
       "tips": "以弗所大理石地面經千年踩踏極為光滑，易滑倒請小心；皮衣坊無購買意願微笑道別即可。",
       "meals": "午：席林杰水果酒風味餐 / 晚：發放餐費美金20元自理",
       "lodging": "LIONEL HOTEL ISTANBUL",
       "todos": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSJhm3IxEFJbxz7rBB-7QIhUABHGfw2ocRmMAaxVx2VC85uFtUzgnXZx4&s=10",
+      "buyImage": "https://evatravel.tw/wp-content/uploads/2025/10/sirince-turkey-03.jpg",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "席林杰山城著名水果酒佐餐",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "道地土耳其旋轉烤肉沙威瑪（Döner）。",
-          "image": ""
+          "text": "旋轉烤肉沙威瑪（Döner）",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSJhm3IxEFJbxz7rBB-7QIhUABHGfw2ocRmMAaxVx2VC85uFtUzgnXZx4&s=10",
+          "detail": "土耳其旋轉烤肉（Döner Kebab）源自鄂圖曼帝國，是風靡全球的國民美食，在台灣則常被稱為「沙威瑪」。\nDöner 在土耳其語中意指「旋轉」。廚師將醃製好的肉品（羊肉、牛肉或雞肉）層層堆疊成巨大的直立肉柱，在垂直烤爐前緩慢旋轉烘烤。"
         },
         {
           "tag": "buy",
           "text": "席林杰限定特色水果酒（黑莓/石榴）",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "頂級輕柔小羊皮衣",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "聖經以弗所主題書冊。",
-          "image": ""
+          "image": "https://evatravel.tw/wp-content/uploads/2025/10/sirince-turkey-03.jpg",
+          "detail": "土耳其席林傑（Şirince）山城以手工釀造的特色水果酒聞名，提供多達十幾種豐富口味供遊客免費試喝。"
         }
       ],
       "city": "艾菲索斯EPHESUS",
@@ -870,7 +854,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": "https://maps.app.goo.gl/HrZCAFqk1yzeTqUq8"
     },
     {
       "day": "Day 9",
@@ -934,42 +919,29 @@
         }
       ],
       "outfit": "清真寺規定「女性需戴頭巾、男女皆嚴禁短褲/無袖/透視裝」，入內需脫鞋。",
-      "buy": "經典現磨 Mehmet Efendi 土耳其咖啡粉、天然中東綜合香料組、道地頂級番紅花乾",
-      "eat": "宮廷風格米其林推薦餐廳料理、傳統開心果層酥甜點(Baklava)",
+      "buy": "經典現磨 Mehmet Efendi 土耳其咖啡粉",
+      "eat": "傳統開心果層酥甜點(Baklava)",
       "tips": "地下水庫內部燈光較暗且濕滑；香料市集人潮擁擠，包包建議往前背以防扒手。",
       "meals": "午：宮廷風米其林推薦料理 / 晚：中式合菜7菜1湯含水果",
       "lodging": "LIONEL HOTEL ISTANBUL",
       "todos": [],
       "flights": [],
       "bonus": "",
-      "eatImage": "",
-      "buyImage": "",
+      "eatImage": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/11/20/draft/27383043.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
+      "buyImage": "https://g-search3.alicdn.com/img/bao/uploaded/i4/i3/17445428/O1CN01vbxFZz1py4sJygg4h_!!17445428.jpg_360x360q90.jpg_.webp",
       "bonusImage": "",
       "easterEggs": [
         {
           "tag": "eat",
-          "text": "宮廷風格米其林推薦餐廳料理",
-          "image": ""
-        },
-        {
-          "tag": "eat",
           "text": "傳統開心果層酥甜點(Baklava)",
-          "image": ""
+          "image": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2023/11/20/draft/27383043.jpg&x=0&y=0&sw=0&sh=0&exp=3600",
+          "detail": "土耳其傳統開心果層酥甜點（Baklava，又稱果仁蜜餅）是享譽世界的鄂圖曼宮廷經典甜點"
         },
         {
           "tag": "buy",
           "text": "經典現磨 Mehmet Efendi 土耳其咖啡粉",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "天然中東綜合香料組",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "道地頂級番紅花乾",
-          "image": ""
+          "image": "https://g-search3.alicdn.com/img/bao/uploaded/i4/i3/17445428/O1CN01vbxFZz1py4sJygg4h_!!17445428.jpg_360x360q90.jpg_.webp",
+          "detail": "Kurukahveci Mehmet Efendi（台灣常譯為美美先生）是土耳其歷史最悠久且最著名的經典咖啡品牌，創立於 [1871年]，為土耳其家喻戶曉的國民品牌。\n• 100% 阿拉比卡豆：選用精緻的 [100% 阿拉比卡咖啡豆] ，經專業烘焙。\n• 極細研磨：研磨至如麵粉般的超細緻粉末，不使用濾紙過濾，透過傳統土耳其咖啡壺（Cezve）小火慢煮，能萃取出濃郁香氣與綿密泡沫（Köpük）。"
         }
       ],
       "city": "伊斯坦堡ISTANBUL",
@@ -984,7 +956,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": "https://maps.app.goo.gl/HrZCAFqk1yzeTqUq8"
     },
     {
       "day": "Day 10-11",
@@ -1046,41 +1019,22 @@
         }
       ],
       "outfit": "海峽遊船甲板風勢強勁需穿防風連帽衣；晚間準備登機，建議換穿寬鬆舒適褲裝。",
-      "buy": "手工細膩彩釉陶瓷隔熱墊、海泡石手工雕刻煙斗、鄂圖曼復古彩色琉璃吊燈。",
-      "eat": "網紅人氣美式料理、馬爾馬拉海鮮鮮魚風味餐",
+      "buy": "彩釉陶瓷隔熱墊",
+      "eat": "",
       "tips": "大市集開價通常偏高，對半砍價再往上添是基本心法；今日市區行程結束後直奔機場。",
       "meals": "午：網紅美式餐廳 / 晚：馬爾馬拉鮮魚餐",
-      "lodging": "夜宿機上",
+      "lodging": "",
       "todos": [],
       "bonus": "",
       "eatImage": "",
-      "buyImage": "",
+      "buyImage": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/3050/376bceddd0738578aebc1bf8ccf8c6042f655c21d36bf8cff0081db55d46.png",
       "bonusImage": "",
       "easterEggs": [
         {
-          "tag": "eat",
-          "text": "網紅人氣美式料理",
-          "image": ""
-        },
-        {
-          "tag": "eat",
-          "text": "馬爾馬拉海鮮鮮魚風味餐",
-          "image": ""
-        },
-        {
           "tag": "buy",
-          "text": "手工細膩彩釉陶瓷隔熱墊",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "海泡石手工雕刻煙斗",
-          "image": ""
-        },
-        {
-          "tag": "buy",
-          "text": "鄂圖曼復古彩色琉璃吊燈。",
-          "image": ""
+          "text": "彩釉陶瓷隔熱墊",
+          "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/3050/376bceddd0738578aebc1bf8ccf8c6042f655c21d36bf8cff0081db55d46.png",
+          "detail": "土耳其彩釉陶瓷隔熱墊是以16世紀鄂圖曼土耳其傳統藝術風格（如伊茲尼克 Iznik 風格）打造的民族風情居家選物"
         }
       ],
       "city": "伊斯坦堡ISTANBUL",
@@ -1095,7 +1049,8 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "",
+      "lodgingMap": ""
     }
   ]
 }
