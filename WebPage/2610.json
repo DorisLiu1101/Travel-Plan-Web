@@ -122,9 +122,9 @@
         "desktop": 12,
         "mobile": 12
       },
-      "fontTitle": "modern",
+      "fontTitle": "vintage",
       "fontBody": "standard",
-      "fontBadge": "geometric"
+      "fontBadge": "ticket"
     },
     "emergency": "1. 外交部緊急聯絡中心 (24小時急難救助專線)：+886-800-085-095\n2. 駐安卡拉台北經濟文化代表處：+90-532-322-1234 (急難救助專用)\n3. 土耳其境內緊急通報通用號碼：112 (警察 / 救護 / 消防通用)\n\n駐安卡拉台北經濟文化代表團∕駐土耳其代表處\nTaipei Economic and Cultural Mission in Ankara\nResit Galip Cad. Rabat Sok. No. 16 G.O.P. 06700 Ankara Türkiye\n境外直撥電話：(+90-312) 4367255 / (+90-312) 4367256\n土國境內直撥：(0312) 4367255 / (0312) 4367256\n境外傳真：(+90-312) 447 8465 / 境內傳真：(0312) 447 8465\n緊急聯絡電話(非急難重大事件請勿撥打)\t行動電話：(+90) 532- 322-7162\n土國境內直撥：0532-322-7162\n\n電子郵件\ttur@mofa.gov.tw\n服務時間\t週一~週五：09：00~17：00\nhttps://www.roc-taiwan.org/tr/\n\n領務收領件時間\n週一~週五：09：00~12：00\n領務申辦時間\t週一至週五：09：00~12：00\n領務轄區\t土耳其全境，兼理北賽普勒斯、哈薩克、烏茲別克、土庫曼、吉爾吉斯、塔吉克、喬治亞。\n與我國時差\t較台灣慢5小時",
     "memo": "1. 插座規格：土耳其電壓為 220V，插頭為歐洲雙圓孔規格，請備妥萬國轉接頭。\n2. 氣候與衣著：十月份早晚溫差顯著（約 10~25°C），清晨熱氣球行程偏涼，建議洋蔥式穿法並攜帶輕羽絨外套與防風外套。\n3. 清真寺參觀禮儀：進入清真寺女性需包覆頭巾（可自備美觀絲巾拍照），男女皆不可穿著無袖或露出膝蓋之短褲短裙。\n4. 貨幣與消費：主要使用新土耳其里拉 (TRY)，大部分市區店家、餐廳與超市均支援 Visa / Mastercard 感應信用卡，建議攜帶少量美金或歐元現金至當地換匯備用。"
@@ -667,7 +667,7 @@
         "icon": "ph-sun",
         "temp": "14-25°C"
       },
-      "image": "https://images.unsplash.com/photo-1602714271890-4a8f15d2aef7?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
       "spots": [
         {
           "name": "巴穆卡麗棉堡",
@@ -750,7 +750,7 @@
           "detail": "土耳其無花果夾心/包覆巧克力常見知名品牌包含土耳其老牌 Elit 巧克力 與 TARIS（百年國營無花果權威） 等"
         }
       ],
-      "mapImage": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
+      "mapImage": "",
       "city": "巴穆卡麗PAMUKKALE",
       "mealItems": [
         {
