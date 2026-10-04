@@ -11,20 +11,20 @@
       "itinerary",
       "info"
     ],
-    "theme": "mountain",
+    "theme": "autumn",
     "customTheme": {
-      "primary": "#4A6572",
-      "deep": "#2D3E50",
-      "accent": "#6B8E9E",
-      "line": "#9BB5C2",
-      "bg": "#F0F4F7"
+      "primary": "#AF7E22",
+      "deep": "#212410",
+      "accent": "#D9AF29",
+      "line": "#725B15",
+      "bg": "#FAF6EA"
     },
     "themeColors": {
-      "primary": "#4A6572",
-      "deep": "#2D3E50",
-      "accent": "#6B8E9E",
-      "line": "#9BB5C2",
-      "bg": "#F0F4F7"
+      "primary": "#AF7E22",
+      "deep": "#212410",
+      "accent": "#D9AF29",
+      "line": "#725B15",
+      "bg": "#FAF6EA"
     },
     "overviewMap": {
       "image": "",
@@ -100,7 +100,7 @@
       "link": "https://www.unotour.com.tw/03_category_info.asp?sn=51198"
     },
     "typography": {
-      "style": "journal",
+      "style": "reading",
       "hero": {
         "desktop": 38,
         "mobile": 30
@@ -154,7 +154,7 @@
       "tips": "",
       "meals": "",
       "lodging": "",
-      "lodgingBooking": "土航 TK025 經濟艙",
+      "lodgingBooking": "",
       "bonus": "",
       "eatImage": "",
       "buyImage": "",
@@ -218,8 +218,8 @@
       "tips": "古城石板路略滑，拉行李箱時請留意滾輪；今日長程巴士供應免費 Wi-Fi。",
       "meals": "午：鄂圖曼 Güveç 風味餐 / 晚：旅館土式套餐",
       "lodging": "HILTON GARDEN INN SAFRANBOLU",
-      "lodgingBooking": "團體預約代號 #HGI-9281\n房型：雙人豪華客房 (含早餐)",
-      "lodgingInfo": "地址：Yenimahalle, Sadri Artunç Cd. No:74, 78600 Safranbolu/Karabük\n電話：+90 370 712 11 30",
+      "lodgingBooking": "",
+      "lodgingInfo": "地址：Yenimahalle, Sadri Artunç Cd. No:74, 78600 Safranbolu/Karabük\n電話：+90 370 712 11 30\n\nhttps://maps.app.goo.gl/4RBc9SQKqv8ab3FB9?g_st=ac",
       "bonus": "",
       "eatImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsIMZKsj1C8_3KQ0DrNx8X5GnYd9ugOX0N2fQ2ELco6-SXt-YBXHzxYAT9&s=10",
       "buyImage": "https://g.udn.com.tw/upfiles/B_SI/sindy814/PSN_PHOTO/662/f_19270662_1.jpg",
@@ -267,12 +267,7 @@
         "temp": "8-19°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103915-1290.webp",
-      "todos": [
-        {
-          "task": "飯店待訂",
-          "note": ""
-        }
-      ],
+      "todos": [],
       "spots": [
         {
           "name": "阿塔圖爾克紀念館",
@@ -354,7 +349,7 @@
         }
       ],
       "lodgingBooking": "",
-      "lodgingInfo": ""
+      "lodgingInfo": "Cumhuriyet, Çat Köyü İç Yolu, 50000 Çat/Nevşehir Merkez/Nevşehir, 土耳其"
     },
     {
       "day": "Day 4",
