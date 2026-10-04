@@ -1603,16 +1603,12 @@
                 }
 
                 let flightsHtml = '';
-                if (day.flights && day.flights.length > 0) {
-                    flightsHtml = `
-                        <div class="mb-6 bg-moss-500 border border-moss-400 rounded-2xl p-5 shadow-sm relative overflow-hidden">
-                            <div class="flex items-center gap-2 mb-4 border-b border-moss-400/50 pb-2">
-                                <i class="ph ph-compass text-moss-100 text-xl"></i>
-                                <span class="text-small text-moss-300 font-black tracking-widest uppercase">Transportation 交通資訊</span>
-                            </div>
-                            <div class="space-y-2 relative z-10">
-                    `;
-                    day.flights.forEach(flight => {
+                const flightsList = Array.isArray(day.flights) 
+                    ? day.flights 
+                    : (day.flights && typeof day.flights === 'string' && day.flights.trim() ? [day.flights.trim()] : []);
+                if (flightsList.length > 0) {
+                    flightsHtml = `<div class="mb-6 space-y-2.5">`;
+                    flightsList.forEach(flight => {
                         let flightText = '';
                         let flightIcon = 'ph-airplane-tilt';
                         if (typeof flight === 'string') {
@@ -1626,14 +1622,17 @@
                             flightText = flight.text || `${flight.number || flight.title || ''} ${flight.description || flight.detail || ''}`.trim();
                             flightIcon = flight.icon || 'ph-airplane-tilt';
                         }
+                        if (!flightText) return;
                         flightsHtml += `
-                            <div class="bg-moss-400/30 rounded-lg px-4 py-2.5 text-body text-moss-100 font-medium tracking-wide border border-moss-400/50 flex items-start gap-2.5">
-                                <i class="ph ${flightIcon} text-moss-300 mt-1 text-lg shrink-0"></i>
-                                <span class="leading-relaxed">${flightText}</span>
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 rounded-full bg-moss-500 text-moss-100 flex items-center justify-center shrink-0 shadow-2xs mt-1">
+                                    <i class="ph ${flightIcon} text-lg"></i>
+                                </div>
+                                <div class="flex-1 min-w-0 p-3.5 md:p-4 rounded-2xl bg-moss-200 border border-moss-300/40 text-small font-bold text-moss-100 leading-relaxed whitespace-pre-line break-words select-text shadow-2xs">${escapeHtml(flightText.trim())}</div>
                             </div>
                         `;
                     });
-                    flightsHtml += `</div></div>`;
+                    flightsHtml += `</div>`;
                 }
 
                 let dailyTodoHtml = '';

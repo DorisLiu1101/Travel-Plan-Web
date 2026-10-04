@@ -1625,7 +1625,9 @@
                         if (!flightText) return;
                         flightsHtml += `
                             <div class="flex items-start gap-3">
-                                <i class="ph ${flightIcon} text-2xl text-moss-500 shrink-0 mt-2.5"></i>
+                                <div class="w-9 h-9 rounded-full bg-moss-500 text-moss-100 flex items-center justify-center shrink-0 shadow-2xs mt-1">
+                                    <i class="ph ${flightIcon} text-lg"></i>
+                                </div>
                                 <div class="flex-1 min-w-0 p-3.5 md:p-4 rounded-2xl bg-moss-200 border border-moss-300/40 text-small font-bold text-moss-100 leading-relaxed whitespace-pre-line break-words select-text shadow-2xs">${escapeHtml(flightText.trim())}</div>
                             </div>
                         `;
