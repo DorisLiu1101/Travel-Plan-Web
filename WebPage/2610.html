@@ -163,6 +163,13 @@
         .mobile-bottom-bar {
             box-shadow: 0 -4px 20px rgba(var(--color-deep-rgb), 0.08);
         }
+        .main-tab-btn-mob i {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center center;
+        }
+        .main-tab-btn-mob.active i {
+            transform: scale(1.1);
+        }
 
         /* 🏙️ 城市卡片 3D 翻轉效果 */
         .city-flip-card {
@@ -403,25 +410,25 @@
     <!-- [手機端專屬] App 底部導航列 -->
     <div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-moss-100/95 backdrop-blur-lg border-t border-moss-300/40 pt-1 pb-2.5 mobile-bottom-bar">
         <div class="flex justify-around items-center px-1">
-            <button onclick="switchMainTab('tab-overview')" id="btn-mob-tab-overview" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs">
+            <button onclick="switchMainTab('tab-overview')" id="btn-mob-tab-overview" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-colors duration-200 active">
                 <i class="ph ph-compass text-xl"></i>
                 <span class="text-[11px] font-black leading-none tracking-tight">總覽</span>
             </button>
-            <button onclick="switchMainTab('tab-itinerary')" id="btn-mob-tab-itinerary" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+            <button onclick="switchMainTab('tab-itinerary')" id="btn-mob-tab-itinerary" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400 hover:text-moss-500 transition-colors duration-200">
                 <i class="ph ph-map-trifold text-xl"></i>
-                <span class="text-[11px] font-black leading-none tracking-tight">行程</span>
+                <span class="text-[11px] font-bold leading-none tracking-tight">行程</span>
             </button>
-            <button onclick="switchMainTab('tab-info')" id="btn-mob-tab-info" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+            <button onclick="switchMainTab('tab-info')" id="btn-mob-tab-info" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400 hover:text-moss-500 transition-colors duration-200">
                 <i class="ph ph-info text-xl"></i>
-                <span class="text-[11px] font-black leading-none tracking-tight">資訊</span>
+                <span class="text-[11px] font-bold leading-none tracking-tight">資訊</span>
             </button>
-            <button onclick="switchMainTab('tab-expenses')" id="btn-mob-tab-expenses" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+            <button onclick="switchMainTab('tab-expenses')" id="btn-mob-tab-expenses" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400 hover:text-moss-500 transition-colors duration-200">
                 <i class="ph ph-coin text-xl"></i>
-                <span class="text-[11px] font-black leading-none tracking-tight">經費</span>
+                <span class="text-[11px] font-bold leading-none tracking-tight">經費</span>
             </button>
-            <button onclick="switchMainTab('tab-todo')" id="btn-mob-tab-todo" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200">
+            <button onclick="switchMainTab('tab-todo')" id="btn-mob-tab-todo" class="main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400 hover:text-moss-500 transition-colors duration-200">
                 <i class="ph ph-check-square text-xl"></i>
-                <span class="text-[11px] font-black leading-none tracking-tight">待辦</span>
+                <span class="text-[11px] font-bold leading-none tracking-tight">待辦</span>
             </button>
         </div>
     </div>
@@ -460,13 +467,13 @@
                 if (isHidden) btn.classList.add('hidden');
             });
 
-            // 手機底部樣式切換 (保留 hidden 狀態，加強未選與點選的對比度，縮小文字間隔)
+            // 手機底部樣式切換 (未選中: text-moss-400, 選中: text-moss-500，搭配 CSS 僅圖示放大 10%)
             document.querySelectorAll('.main-tab-btn-mob').forEach(btn => {
                 const isActive = (btn.id === 'btn-mob-' + tabId);
                 const isHidden = btn.classList.contains('hidden');
                 btn.className = isActive
-                    ? "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-all duration-200 active scale-105 drop-shadow-xs"
-                    : "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400/60 hover:text-moss-400 transition-all duration-200";
+                    ? "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-500 transition-colors duration-200 active"
+                    : "main-tab-btn-mob flex flex-col items-center justify-center gap-0.5 py-1 w-14 text-moss-400 hover:text-moss-500 transition-colors duration-200";
                 if (isHidden) btn.classList.add('hidden');
             });
 
@@ -1915,15 +1922,15 @@
                 html += `
                     <section id="${dayId}" class="scroll-mt-32 md:scroll-mt-24">
                         <div class="mb-5">
-                            <div class="flex items-center flex-wrap gap-2.5 mb-2">
-                                <span class="inline-flex items-center gap-1.5 bg-moss-500 text-moss-100 px-3.5 py-1 rounded-full font-black text-small tracking-wider shadow-sm uppercase font-mono">
+                            <div class="flex items-center flex-wrap gap-3 mb-2.5">
+                                <span class="inline-flex items-center gap-2 bg-moss-500 text-moss-100 px-4 py-1 rounded-full font-black text-body tracking-wider shadow-sm uppercase font-mono">
                                     ${day.fullDate ? `<span>${escapeHtml(day.fullDate)}</span>` : ''}
                                     ${(day.fullDate && day.day) ? `<span class="opacity-70">&middot;</span>` : ''}
                                     ${day.day ? `<span>${escapeHtml(day.day)}</span>` : ''}
                                 </span>
                                 ${hasWeather ? `
-                                    <span class="inline-flex items-center gap-1.5 text-moss-500 font-bold text-small">
-                                        <i class="ph ${day.weather.icon || 'ph-sun'} text-base text-moss-400"></i>
+                                    <span class="inline-flex items-center gap-2 text-moss-500 font-bold text-body">
+                                        <i class="ph ${day.weather.icon || 'ph-sun'} text-lg text-moss-400"></i>
                                         <span>${escapeHtml(day.weather.temp || '')}</span>
                                     </span>
                                 ` : ''}
