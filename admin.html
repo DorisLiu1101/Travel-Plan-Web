@@ -309,12 +309,12 @@
                                         <span>天數代號</span>
                                         <span class="text-[10px] text-moss-300 font-normal">輸入 1 自動轉換為 D1</span>
                                     </label>
-                                    <input type="text" data-day-field="day" placeholder="例如：D1" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none">
+                                    <input type="text" data-day-field="day" placeholder="" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">當日日期</label>
                                     <div class="flex gap-2">
-                                        <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="例如：2026/10/8 (四)" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                        <input id="input-day-fulldate" type="text" data-day-field="fullDate" placeholder="YYYY/MM/DD (週)" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
                                         <input id="day-date-picker-helper" type="date" class="h-9 px-2 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 outline-none shrink-0" title="開啟日曆選擇">
                                     </div>
                                 </div>
@@ -326,13 +326,13 @@
                                     <i class="ph ph-map-pin text-moss-400"></i>
                                     <span>所在城市 (City)</span>
                                 </label>
-                                <input type="text" data-day-field="city" placeholder="例如：伊斯坦堡 或 Istanbul" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                <input type="text" data-day-field="city" placeholder="" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                             </div>
 
                             <!-- 第 3 列：當日大標題 -->
                             <div>
                                 <label class="block text-xs font-bold text-moss-500 mb-1.5">當日標題</label>
-                                <input type="text" data-day-field="title" placeholder="例如：啟程星月國度 ｜ 漫步番紅花城" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
+                                <input type="text" data-day-field="title" placeholder="" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold">
                             </div>
 
                             <!-- 第 4 列：天氣與氣溫 (含單日智慧查詢) -->
@@ -357,7 +357,7 @@
                                         <option value="ph-lightning">⛈️ 雷雨</option>
                                         <option value="ph-wind">💨 強風</option>
                                     </select>
-                                    <input type="text" data-day-field="weather.temp" placeholder="例如：10-18°C" class="flex-1 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
+                                    <input type="text" data-day-field="weather.temp" placeholder="" class="flex-1 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono">
                                 </div>
                             </div>
 
@@ -470,7 +470,7 @@
                                     <i class="ph ph-bed text-sm text-moss-400"></i>
                                     <span>當晚住宿安排</span>
                                 </label>
-                                <input type="text" data-day-field="lodging" placeholder="例如：LIONEL HOTEL ISTANBUL (留空表示無住宿/夜泊)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none transition-all">
+                                <input type="text" data-day-field="lodging" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none transition-all">
                             </div>
 
                             <!-- 2. 當日餐飲安排 (動態按 + 加入餐別標籤) -->
@@ -572,7 +572,7 @@
                                     <i class="ph ph-lightbulb text-sm text-amber-accent"></i>
                                     <span>貼心叮嚀</span>
                                 </label>
-                                <textarea data-day-field="tips" rows="3" placeholder="內部燈光較暗且濕滑；隨身包包往前背、注意集合時間..." class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans"></textarea>
+                                <textarea data-day-field="tips" rows="3" placeholder="" class="w-full p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans"></textarea>
                             </div>
                         </div>
                     </details>
@@ -638,25 +638,25 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">預估團費</label>
-                                    <input type="number" data-setting="expenses.tourFee" placeholder="100000" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
+                                    <input type="number" data-setting="expenses.tourFee" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">幣別符號</label>
-                                    <input type="text" data-setting="expenses.currency" placeholder="TW$" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
+                                    <input type="text" data-setting="expenses.currency" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all font-mono">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-moss-500 mb-1.5">費用備註</label>
-                                    <input type="text" data-setting="expenses.note" placeholder="含早鳥折扣 $5,900" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                    <input type="text" data-setting="expenses.note" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                 </div>
 
                                 <div class="md:col-span-3 pt-2 border-t border-moss-100/70 grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label class="block text-xs font-bold text-moss-500 mb-1.5">說明標題</label>
-                                        <input type="text" data-setting="info.title" placeholder="說明 / 行程總表" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                        <input type="text" data-setting="info.title" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-moss-500 mb-1.5">說明文字</label>
-                                        <input type="text" data-setting="info.text" placeholder="行健旅遊官網" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                        <input type="text" data-setting="info.text" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-moss-500 mb-1.5">外部連結網址</label>
@@ -743,7 +743,7 @@
                                         Google 地圖嵌入網址 
                                         <span class="text-amber-accent font-normal text-[11px] ml-1">★ 支援直接貼入 &lt;iframe src="..."&gt;，系統將自動萃取乾淨網址</span>
                                     </label>
-                                    <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://www.google.com/maps/d/embed?mid=..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
+                                    <input id="input-map-iframe" type="text" data-setting="overviewMap.iframeUrl" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 focus:ring-2 focus:ring-moss-300/30 outline-none transition-all">
                                 </div>
 
                                 <div class="space-y-1.5">
@@ -873,7 +873,7 @@
                                 <p class="text-xs text-moss-400 mt-0.5">隨手紀錄行李打包、重要電話、退稅提醒或自訂旅遊筆記（前台同步展示）</p>
                             </div>
                             <div>
-                                <textarea id="info-memo-textarea" rows="12" placeholder="在此輸入行程備忘事項、隨身筆記或重要提醒..." class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
+                                <textarea id="info-memo-textarea" rows="12" placeholder="" class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
                             </div>
                         </div>
                     </div>
@@ -889,7 +889,7 @@
                                 <p class="text-xs text-moss-400 mt-0.5">預填外交部海外專線、駐外辦事處電話、當地緊急報警求助與海外保單聯絡資訊（前台同步展示）</p>
                             </div>
                             <div>
-                                <textarea id="info-emergency-textarea" rows="12" placeholder="在此輸入外交部海外專線、當地報警急救 (112)、代表處急難電話與保單資訊..." class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
+                                <textarea id="info-emergency-textarea" rows="12" placeholder="" class="w-full p-4 rounded-xl border border-moss-200 bg-moss-50/50 focus:bg-white text-xs md:text-sm text-moss-500 focus:border-moss-400 outline-none leading-relaxed resize-y font-sans"></textarea>
                             </div>
                         </div>
                     </div>
@@ -929,7 +929,7 @@
                         <!-- 雲端線上載入 (fetch) -->
                         <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-moss-200 shadow-sm">
                             <i class="ph ph-cloud-arrow-down text-base text-moss-400 ml-1"></i>
-                            <input id="input-online-name" type="text" placeholder="檔名 (如 2610)" class="w-24 px-2 py-1 text-xs bg-moss-50/50 rounded-lg border border-transparent focus:border-moss-400 text-moss-500 outline-none font-mono">
+                            <input id="input-online-name" type="text" placeholder="檔名代號" class="w-24 px-2 py-1 text-xs bg-moss-50/50 rounded-lg border border-transparent focus:border-moss-400 text-moss-500 outline-none font-mono">
                             <button id="btn-load-online" type="button" class="w-7 h-7 rounded-lg bg-moss-400 hover:bg-moss-500 text-white flex items-center justify-center transition-colors" title="從線上載入 (fetch)">
                                 <i class="ph ph-arrow-right text-xs"></i>
                             </button>
@@ -955,18 +955,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-moss-500 mb-1.5">網頁分頁標題</label>
-                            <input type="text" data-setting="pageTitle" placeholder="土耳其傳奇 11 日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            <input type="text" data-setting="pageTitle" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold text-moss-500 mb-1.5">行程大標題</label>
-                            <input type="text" data-setting="heroTitle" placeholder="星月傳奇．土耳其11日" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                            <input type="text" data-setting="heroTitle" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                         </div>
 
                         <!-- 日期文字與連動日期選擇器 (響應式防破版排版) -->
                         <div class="md:col-span-2 space-y-2">
                             <label class="block text-xs font-bold text-moss-500">行程日期</label>
-                            <input id="input-date-text" type="text" data-setting="dateText" placeholder="2026/10/8(四) ~ 2026/10/18(日)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono min-w-0">
+                            <input id="input-date-text" type="text" data-setting="dateText" placeholder="YYYY/MM/DD(週) ~ YYYY/MM/DD(週)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-mono min-w-0">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-moss-50 p-2.5 rounded-xl border border-moss-200 text-xs">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <span class="text-moss-400 text-xs font-bold shrink-0">起</span>
@@ -984,14 +984,14 @@
                         <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁副標題</label>
-                                <input type="text" data-setting="subtitle" placeholder="跟團-行健 · 11 天 · 2026 秋季" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
+                                <input type="text" data-setting="subtitle" placeholder="" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-moss-500 mb-1.5 flex items-center justify-between">
                                     <span>參考連結網址</span>
                                     <span class="text-[10px] text-moss-400 font-normal">選填，前台顯示跳轉圖示</span>
                                 </label>
-                                <input type="text" data-setting="subtitleLink" placeholder="https://... (選填，可點擊另開新分頁)" class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
+                                <input type="text" data-setting="subtitleLink" placeholder="https://..." class="w-full h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none">
                             </div>
                         </div>
 
@@ -999,7 +999,7 @@
                         <div class="md:col-span-2">
                             <label class="block text-xs font-bold text-moss-500 mb-1.5">首頁封面大圖網址</label>
                             <div class="flex flex-col sm:flex-row gap-3 items-stretch">
-                                <textarea data-setting="heroImage" rows="2" placeholder="https://images.unsplash.com/..." class="flex-1 p-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none resize-none min-w-0"></textarea>
+                                <textarea data-setting="heroImage" rows="2" placeholder="https://..." class="flex-1 p-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none resize-none min-w-0"></textarea>
                                 <div id="preview-hero-image" class="w-full sm:w-36 h-20 rounded-xl bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
                                     <span class="text-xs text-moss-400">無縮圖</span>
                                 </div>
@@ -2169,10 +2169,10 @@
                         <div class="flex items-center gap-2">
                             <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
                             <div class="flex-1 min-w-0">
-                                <input type="text" placeholder="城市名稱 (如：番紅花城)" value="${escapeHtml(city.name || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="name">
+                                <input type="text" placeholder="城市名稱" value="${escapeHtml(city.name || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="name">
                             </div>
                             <div class="w-24 sm:w-28 shrink-0">
-                                <input type="text" placeholder="天數 (如：Day 1-2)" value="${escapeHtml(city.tag || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="tag">
+                                <input type="text" placeholder="天數標籤" value="${escapeHtml(city.tag || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="tag">
                             </div>
                             <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-city" data-city-idx="${idx}" title="刪除此城市">
                                 <i class="ph ph-trash text-sm"></i>
@@ -2181,17 +2181,17 @@
 
                         <!-- 第二列：正面簡介 -->
                         <div class="pl-8">
-                            <input type="text" placeholder="正面簡介 (卡片正面文字，如：世界遺產．鄂圖曼山城)" value="${escapeHtml(city.desc || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="desc">
+                            <input type="text" placeholder="正面簡介" value="${escapeHtml(city.desc || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="desc">
                         </div>
 
                         <!-- 第三列：翻面詳細說明 -->
                         <div class="pl-8">
-                            <textarea rows="2" placeholder="翻面詳細說明 (點擊卡片翻面後顯示之特色介紹、歷史典故或旅遊備註...)" class="w-full p-2 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-y leading-relaxed" data-action="edit-city-field" data-city-idx="${idx}" data-field="detail">${escapeHtml(city.detail || '')}</textarea>
+                            <textarea rows="2" placeholder="詳細說明" class="w-full p-2 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-y leading-relaxed" data-action="edit-city-field" data-city-idx="${idx}" data-field="detail">${escapeHtml(city.detail || '')}</textarea>
                         </div>
 
                         <!-- 第四列：照片網址與縮圖預覽 -->
                         <div class="pl-8 flex items-center gap-2">
-                            <input type="text" placeholder="代表照片網址 (https://...)" value="${escapeHtml(city.image || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="image">
+                            <input type="text" placeholder="https://..." value="${escapeHtml(city.image || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-city-field" data-city-idx="${idx}" data-field="image">
                             <div class="preview-city-img w-12 h-8 rounded-lg bg-moss-100 border border-moss-200 overflow-hidden flex items-center justify-center shrink-0">
                                 ${hasImg ? `<img src="${escapeHtml(city.image.trim())}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\\'text-[9px] text-red-400\\'>錯誤</span>'">` : `<span class="text-[9px] text-moss-400">無圖</span>`}
                             </div>
@@ -2345,7 +2345,7 @@
                 item.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
                 item.innerHTML = `
                     <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                    <input type="text" placeholder="待辦任務 (例如：待訂飯店)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold" data-action="edit-day-todo-task" data-idx="${idx}">
+                    <input type="text" placeholder="待辦任務" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none font-bold" data-action="edit-day-todo-task" data-idx="${idx}">
                     <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none" data-action="edit-day-todo-note" data-idx="${idx}">
                     <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-day-todo" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
@@ -2370,10 +2370,10 @@
                 const currentText = flightObj.text || '';
 
                 const el = document.createElement('div');
-                el.className = 'flex items-center gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
+                el.className = 'flex items-start gap-2 p-2.5 rounded-xl border border-moss-200 bg-moss-50/60';
                 
                 el.innerHTML = `
-                    <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+                    <span class="w-6 h-6 rounded-lg bg-moss-200 text-moss-500 font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-1.5">${idx + 1}</span>
                     <div class="relative shrink-0 icon-picker-box">
                         <button type="button" class="w-9 h-9 rounded-xl border border-moss-200 bg-white hover:bg-moss-100 text-moss-500 flex items-center justify-center shadow-sm transition-all focus:ring-2 focus:ring-moss-300" data-action="toggle-picker" data-picker-id="picker-flight-${idx}" title="切換圖示">
                             <i class="ph ${currentIcon} text-lg"></i>
@@ -2386,8 +2386,8 @@
                             `).join('')}
                         </div>
                     </div>
-                    <input type="text" placeholder="交通描述 (例如：土耳其航空 TK025 ｜ 台北 21:50 － 伊斯坦堡 05:10 或 高鐵 08:30)" value="${escapeHtml(currentText)}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-flight-text" data-idx="${idx}">
-                    <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-flight" data-idx="${idx}" title="刪除此項">
+                    <textarea rows="2" placeholder="交通描述（支援 Enter 換行）" class="flex-1 min-w-0 p-2 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-y leading-relaxed font-sans" data-action="edit-flight-text" data-idx="${idx}">${escapeHtml(currentText)}</textarea>
+                    <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm mt-0.5" data-action="del-flight" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
                     </button>
                 `;
@@ -2426,7 +2426,7 @@
                             `).join('')}
                         </div>
                     </div>
-                    <input type="text" placeholder="提醒內容 (例如：早晚偏涼，山城鵝卵石路面多穿厚底防滑鞋)" value="${escapeHtml(currentText)}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-special-note-text" data-idx="${idx}">
+                    <input type="text" placeholder="" value="${escapeHtml(currentText)}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-special-note-text" data-idx="${idx}">
                     <button type="button" class="w-8 h-8 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-special-note" data-idx="${idx}" title="刪除此項">
                         <i class="ph ph-trash text-base"></i>
                     </button>
@@ -2478,7 +2478,7 @@
                             <span class="w-6 h-6 rounded-lg bg-moss-400 text-white font-mono text-xs flex items-center justify-center shrink-0 font-bold">
                                 ${String(spotIdx + 1).padStart(2, '0')}
                             </span>
-                            <input type="text" placeholder="輸入景點名稱 (例如：市長官邸)" value="${escapeHtml(spot.name || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
+                            <input type="text" placeholder="景點名稱" value="${escapeHtml(spot.name || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="name" data-spot-idx="${spotIdx}">
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
                             <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-spot" data-spot-idx="${spotIdx}" title="刪除此景點">
@@ -2495,7 +2495,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                             <div>
                                 <label class="block text-xs font-bold text-moss-500 mb-1">Google 地圖搜尋關鍵字</label>
-                                <input type="text" placeholder="例如：凱馬卡姆拉旅遊之家 土耳其" value="${escapeHtml(spot.mapQuery || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
+                                <input type="text" placeholder="" value="${escapeHtml(spot.mapQuery || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-spot-field" data-field="mapQuery" data-spot-idx="${spotIdx}">
                             </div>
 
                             <div>
@@ -2510,7 +2510,7 @@
 
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-bold text-moss-500 mb-1">景點介紹</label>
-                                <textarea rows="2" placeholder="造訪典型鄂圖曼風格木造大宅與典雅中庭..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
+                                <textarea rows="2" placeholder="" class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="description" data-spot-idx="${spotIdx}">${escapeHtml(spot.description || '')}</textarea>
                             </div>
 
                             <!-- 景點專屬備註 (彈窗內容) -->
@@ -2521,7 +2521,7 @@
                                         <i class="ph ph-info text-sm text-amber-accent"></i>
                                     </span>
                                 </label>
-                                <textarea rows="2" placeholder="門票需知、歷史淵源、參觀注意事項..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
+                                <textarea rows="2" placeholder="" class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-spot-field" data-field="note" data-spot-idx="${spotIdx}">${escapeHtml(spot.note || '')}</textarea>
                             </div>
                         </div>
 
@@ -2540,8 +2540,8 @@
                                 ${(spot.todos || []).map((todo, tIdx) => `
                                     <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-moss-200">
                                         <span class="text-xs text-moss-400 font-mono font-bold w-6 text-center shrink-0">T${tIdx + 1}</span>
-                                        <input type="text" placeholder="任務 (如：預約門票)" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
-                                        <input type="text" placeholder="備註" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                        <input type="text" placeholder="任務" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs font-bold text-moss-500 outline-none focus:border-moss-400" data-action="edit-spot-todo-task" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
+                                        <input type="text" placeholder="" value="${escapeHtml(todo.note || '')}" class="w-20 sm:w-32 shrink-0 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 text-xs text-moss-400 outline-none focus:border-moss-400" data-action="edit-spot-todo-note" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}">
                                         <button type="button" class="w-8 h-8 rounded-lg text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0" data-action="del-spot-todo" data-spot-idx="${spotIdx}" data-todo-idx="${tIdx}" title="刪除任務">
                                             <i class="ph ph-trash text-sm"></i>
                                         </button>
@@ -2560,7 +2560,8 @@
                 }
                 const delBtn = card.querySelector('[data-action="del-spot"]');
                 if (delBtn) {
-                    delBtn.addEventListener('click', (e) => e.stopPropagation());
+                    // 僅阻止 details 收合，保留事件冒泡讓外層刪除邏輯接收
+                    delBtn.addEventListener('click', (e) => e.preventDefault());
                 }
 
                 // 監聽自身展開/收合狀態以在 re-render 時維持
@@ -2648,7 +2649,7 @@
                             <option value="cafe" ${currentTag === 'cafe' ? 'selected' : ''}>咖啡茶歇</option>
                             <option value="ticket" ${currentTag === 'ticket' ? 'selected' : ''}>活動票券</option>
                         </select>
-                        <input type="text" placeholder="名稱與特色描述 (例如：傳統鄂圖曼式建築 Güveç 陶甕風味餐)" value="${escapeHtml(egg.text || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
+                        <input type="text" placeholder="" value="${escapeHtml(egg.text || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-text" data-idx="${idx}">
                         <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-egg" data-idx="${idx}" title="刪除此項">
                             <i class="ph ph-trash text-base"></i>
                         </button>
@@ -2656,7 +2657,7 @@
 
                     <!-- 第 2 列：圖片網址 + 縮圖預覽 (向左縮進對齊輸入框) -->
                     <div class="flex items-center gap-2 pl-8">
-                        <input type="text" placeholder="圖片網址 (https://...)" value="${escapeHtml(egg.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-image" data-idx="${idx}">
+                        <input type="text" placeholder="https://..." value="${escapeHtml(egg.image || '')}" class="flex-1 min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-egg-image" data-idx="${idx}">
                         <div class="w-16 h-9 rounded-xl bg-white border border-moss-200 overflow-hidden flex items-center justify-center shrink-0 shadow-inner">
                             ${egg.image && /^https?:\/\//i.test(egg.image.trim()) ? `<img src="${escapeHtml(egg.image.trim())}" class="w-full h-full object-cover" onerror="this.remove()">` : `<span class="text-[10px] text-moss-400">無圖</span>`}
                         </div>
@@ -2664,7 +2665,7 @@
 
                     <!-- 第 3 列：翻面文字說明 (可換行) (向左縮進對齊輸入框) -->
                     <div class="pl-8">
-                        <textarea rows="2" placeholder="翻面文字說明 (選填，可換行詳細介紹)..." class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-egg-detail" data-idx="${idx}">${escapeHtml(egg.detail || '')}</textarea>
+                        <textarea rows="2" placeholder="" class="w-full min-w-0 p-2.5 rounded-xl border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed" data-action="edit-egg-detail" data-idx="${idx}">${escapeHtml(egg.detail || '')}</textarea>
                     </div>
                 `;
                 container.appendChild(item);
@@ -2740,7 +2741,7 @@
                     <span class="px-2.5 py-1 rounded-lg bg-moss-200 text-moss-600 font-bold text-xs shrink-0 select-none">
                         ${escapeHtml(item.tag || '餐飲')}
                     </span>
-                    <input type="text" value="${escapeHtml(item.text || '')}" placeholder="請輸入餐飲內容 (如：宮廷風米其林推薦)" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-meal-item-text" data-idx="${idx}">
+                    <input type="text" value="${escapeHtml(item.text || '')}" placeholder="" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none" data-action="edit-meal-item-text" data-idx="${idx}">
                     <button type="button" class="w-7 h-7 rounded-lg text-moss-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-colors shrink-0 shadow-2xs" data-action="del-meal-item" data-idx="${idx}" title="刪除此餐別">
                         <i class="ph ph-trash text-sm"></i>
                     </button>
@@ -2809,8 +2810,8 @@
                             </span>
                         </div>
                         <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2">
-                            <input type="text" placeholder="待辦事項內容" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="task">
-                            <input type="text" placeholder="備註提醒 (選填)" value="${escapeHtml(todo.note || '')}" class="sm:w-56 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none shrink-0" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="note">
+                            <input type="text" placeholder="待辦事項" value="${escapeHtml(todo.task || '')}" class="flex-1 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="task">
+                            <input type="text" placeholder="" value="${escapeHtml(todo.note || '')}" class="sm:w-56 min-w-0 h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-400 focus:border-moss-400 outline-none shrink-0" data-action="edit-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" data-field="note">
                         </div>
                         <div class="flex items-center justify-end shrink-0">
                             <button type="button" class="w-8 h-8 rounded-lg border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shadow-2xs" data-action="del-info-todo" data-day-idx="${dayIdx}" data-todo-idx="${todoIdx}" title="刪除此待辦">
@@ -2869,7 +2870,7 @@
                             <i class="ph ph-bed text-sm text-moss-400"></i>
                             <span>飯店名稱 (當晚住宿)</span>
                         </label>
-                        <input type="text" placeholder="例如：KALSEDON CAVE HOTEL (留空表示無住宿/夜泊)" value="${escapeHtml(day.lodging || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodging">
+                        <input type="text" placeholder="" value="${escapeHtml(day.lodging || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodging">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                         <div>
@@ -2877,14 +2878,14 @@
                                 <i class="ph ph-ticket text-sm text-moss-400"></i>
                                 <span>預約資料</span>
                             </label>
-                            <textarea rows="3" placeholder="例如：訂房代號 #AG-882910&#10;含早餐、15:00 入住 (支援換行)" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingBooking">${escapeHtml(day.lodgingBooking || '')}</textarea>
+                            <textarea rows="3" placeholder="" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingBooking">${escapeHtml(day.lodgingBooking || '')}</textarea>
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-moss-500 mb-1 flex items-center gap-1.5">
                                 <i class="ph ph-phone text-sm text-moss-400"></i>
                                 <span>聯絡資訊 (地址 / 電話)</span>
                             </label>
-                            <textarea rows="3" placeholder="例如：地址：Nevşehir, Göreme&#10;電話：+90 384 271 2000 (支援換行)" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingInfo">${escapeHtml(day.lodgingInfo || '')}</textarea>
+                            <textarea rows="3" placeholder="" class="w-full p-2.5 rounded-lg border border-moss-200 bg-white text-xs text-moss-500 focus:border-moss-400 outline-none resize-none leading-relaxed font-sans" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingInfo">${escapeHtml(day.lodgingInfo || '')}</textarea>
                         </div>
                     </div>
                     <div class="pt-1">
@@ -2893,7 +2894,7 @@
                             <span>飯店 Map 連結 / 地址查詢詞</span>
                             <span class="text-[10px] text-moss-300 font-normal">可填寫 Google Maps 分享網址，或輸入地址/地名查詢詞（依設定地圖引擎自動導航）</span>
                         </label>
-                        <input type="text" placeholder="例如：https://maps.app.goo.gl/... 或 Safranbolu Hilton" value="${escapeHtml(day.lodgingMap || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingMap">
+                        <input type="text" placeholder="https://..." value="${escapeHtml(day.lodgingMap || '')}" class="w-full h-8 px-2.5 rounded-lg border border-moss-200 bg-white text-xs font-mono text-moss-500 focus:border-moss-400 outline-none" data-action="edit-info-hotel" data-day-idx="${idx}" data-field="lodgingMap">
                     </div>
                 `;
                 container.appendChild(item);
@@ -2996,7 +2997,7 @@
                         <div class="col-span-1 flex items-end gap-1.5">
                             <div class="flex-1 min-w-0">
                                 <label class="block text-xs font-bold text-moss-500 mb-1">金額 (${currency})</label>
-                                <input type="number" placeholder="0" value="${rec.amount ?? ''}" class="w-full min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="amount" data-idx="${idx}">
+                                <input type="number" placeholder="" value="${rec.amount ?? ''}" class="w-full min-w-0 h-9 px-2.5 rounded-xl border border-moss-200 bg-white text-xs font-mono font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="amount" data-idx="${idx}">
                             </div>
                             <button type="button" class="w-9 h-9 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 flex items-center justify-center transition-colors shrink-0 shadow-sm" data-action="del-expense-record" data-idx="${idx}" title="刪除此筆">
                                 <i class="ph ph-trash text-base"></i>
@@ -3004,7 +3005,7 @@
                         </div>
                         <div class="col-span-2 sm:col-span-2">
                             <label class="block text-xs font-bold text-moss-500 mb-1">支出項目</label>
-                            <input type="text" placeholder="例如：地下水宮殿門票" value="${escapeHtml(rec.title || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="title" data-idx="${idx}">
+                            <input type="text" placeholder="" value="${escapeHtml(rec.title || '')}" class="w-full min-w-0 h-9 px-3 rounded-xl border border-moss-200 bg-white text-xs font-bold text-moss-500 focus:border-moss-400 outline-none" data-action="edit-expense-field" data-field="title" data-idx="${idx}">
                         </div>
                     </div>
                 `;

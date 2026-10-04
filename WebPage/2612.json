@@ -10,23 +10,24 @@
     "visibleTabs": [
       "overview",
       "itinerary",
+      "info",
       "expenses",
       "todo"
     ],
-    "theme": "moss",
+    "theme": "mountain",
     "customTheme": {
-      "primary": "#6F7F5A",
-      "deep": "#3C4733",
-      "accent": "#A9B482",
-      "line": "#D8D2A7",
-      "bg": "#F4EFD9"
+      "primary": "#4A6572",
+      "deep": "#2D3E50",
+      "accent": "#6B8E9E",
+      "line": "#9BB5C2",
+      "bg": "#F0F4F7"
     },
     "themeColors": {
-      "primary": "#6F7F5A",
-      "deep": "#3C4733",
-      "accent": "#A9B482",
-      "line": "#D8D2A7",
-      "bg": "#F4EFD9"
+      "primary": "#4A6572",
+      "deep": "#2D3E50",
+      "accent": "#6B8E9E",
+      "line": "#9BB5C2",
+      "bg": "#F0F4F7"
     },
     "overviewMap": {
       "image": "",
@@ -62,8 +63,8 @@
         "desktop": 15,
         "mobile": 15
       },
-      "fontTitle": "vintage",
-      "fontBody": "standard",
+      "fontTitle": "japanese",
+      "fontBody": "editorial",
       "fontBadge": "ticket",
       "badge": {
         "desktop": 12,
@@ -75,9 +76,9 @@
   },
   "itinerary": [
     {
-      "day": "Day 1",
+      "day": "D1",
       "fullDate": "2026/12/26 (六)",
-      "title": "",
+      "title": "成都D1",
       "weather": {
         "icon": "ph-cloud",
         "temp": "2-12°C"
@@ -88,19 +89,10 @@
       "flights": [
         {
           "icon": "ph-airplane-tilt",
-          "text": "14:00 RMQ 台中國際機場 (✈️3小時30分)17:30 TFU 成都天府國際機場T1"
+          "text": "14:00 RMQ 台中國際機場\n     ✈️3小時30分\n17:30 TFU 成都天府國際機場T1"
         }
       ],
-      "spots": [
-        {
-          "name": "",
-          "mapQuery": "",
-          "image": "",
-          "description": "",
-          "note": "",
-          "todos": []
-        }
-      ],
+      "spots": [],
       "specialNotes": [],
       "easterEggs": [],
       "outfit": "",
@@ -111,12 +103,101 @@
       "buyImage": "",
       "bonusImage": "",
       "meals": "",
-      "lodging": "威斯凱爾飯店",
+      "lodging": "成都桐梓林火車南站亞朵飯店",
       "tips": "",
       "city": "成都",
       "mealItems": [],
       "lodgingBooking": "",
       "lodgingInfo": "",
+      "lodgingMap": ""
+    },
+    {
+      "day": "D2",
+      "city": "成都",
+      "fullDate": "2026/12/27 (日)",
+      "title": "成都D2",
+      "weather": {
+        "icon": "ph-cloud",
+        "temp": "17-23°C"
+      },
+      "image": "",
+      "mapImage": "",
+      "todos": [],
+      "flights": [],
+      "spots": [
+        {
+          "name": "杜甫草堂",
+          "mapQuery": "杜甫草堂",
+          "image": "https://orstyle.net/wp-content/uploads/2026/03/b0391-1.jpg",
+          "description": "",
+          "note": "",
+          "todos": []
+        },
+        {
+          "name": "武候祠博物館",
+          "mapQuery": "武候祠博物館",
+          "image": "https://ak-d.tripcdn.com/images/0103n12000f6trha712AE_W_960_0_R5_Q50.webp?proc=source/trip",
+          "description": "",
+          "note": "",
+          "todos": []
+        },
+        {
+          "name": "錦里古街",
+          "mapQuery": "錦里古街",
+          "image": "https://ak-d.tripcdn.com/images/0105y1200086whywyF282_W_1200_0_R5_Q60.webp?proc=source/trip&proc=source/trip",
+          "description": "",
+          "note": "",
+          "todos": []
+        },
+        {
+          "name": "蜀風雅韻",
+          "mapQuery": "蜀風雅韻",
+          "image": "https://ak-d.tripcdn.com/images/1lo1k12000rgjuktp13C7_C_1200_800_R5_Q60.webp?proc=source/trip&proc=source/trip",
+          "description": "",
+          "note": "",
+          "todos": []
+        }
+      ],
+      "specialNotes": [],
+      "easterEggs": [
+        {
+          "tag": "bonus",
+          "text": "匠心益采耳足疗(武侯祠店)",
+          "image": "",
+          "detail": ""
+        },
+        {
+          "tag": "bonus",
+          "text": "郑远元专业修脚房(武侯祠大街锦里店)",
+          "image": "",
+          "detail": ""
+        },
+        {
+          "tag": "bonus",
+          "text": "川耳轩采耳足浴(泰达·锦和名邸店)",
+          "image": "https://aos-comment.amap.com/B0J3NDX8AS/comment/20260324-6404e068b15349e35df01fc0-5wxOENFyIWE8572ZSDW59k.jpg",
+          "detail": ""
+        },
+        {
+          "tag": "bonus",
+          "text": "蓉府金足印象(武侯祠店)",
+          "image": "https://aos-comment.amap.com/B0FFJ1V3OH/comment/4D2EB791_C354_4085_A7E8_2FED8B5C94BC_L0_001_1290_93_1768472222256_50997217.jpg",
+          "detail": "稍遠 (較高級) 還可以邊吃邊按"
+        }
+      ],
+      "mealItems": [],
+      "outfit": "",
+      "buy": "",
+      "eat": "",
+      "bonus": "匠心益采耳足疗(武侯祠店)、郑远元专业修脚房(武侯祠大街锦里店)、川耳轩采耳足浴(泰达·锦和名邸店)、蓉府金足印象(武侯祠店)",
+      "eatImage": "",
+      "buyImage": "",
+      "bonusImage": "https://aos-comment.amap.com/B0J3NDX8AS/comment/20260324-6404e068b15349e35df01fc0-5wxOENFyIWE8572ZSDW59k.jpg",
+      "meals": "",
+      "lodging": "成都桐梓林火車南站亞朵飯店",
+      "lodgingBooking": "",
+      "lodgingInfo": "",
+      "tips": "",
       "lodgingMap": ""
     }
   ]
