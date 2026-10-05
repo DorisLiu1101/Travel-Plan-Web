@@ -85,7 +85,12 @@
       },
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOIUGhNc4vNKwYXO9tuThawV3e0TZE_kyB3MsnvrFPHzuYFv-EM1nX9sbu&s=10",
       "mapImage": "",
-      "todos": [],
+      "todos": [
+        {
+          "task": "訂飯店",
+          "note": "5s"
+        }
+      ],
       "flights": [
         {
           "icon": "ph-airplane-tilt",
