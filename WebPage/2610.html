@@ -433,20 +433,30 @@
         </div>
     </div>
 
-    <!-- 彈窗 (Modal) -->
-    <dialog id="info-modal" class="bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-auto open:animate-[rise_0.3s_ease-out] border-2 border-moss-200 overflow-hidden relative">
-        <div class="absolute top-0 left-0 w-full h-24 bg-moss-200"></div>
-        <button onclick="closeModalByBtn()" class="absolute top-5 right-5 w-8 h-8 bg-moss-100 hover:bg-moss-400 hover:text-moss-100 rounded-full flex items-center justify-center text-moss-400 transition-colors z-20 shadow-sm border border-moss-200">
+    <!-- 彈窗 (Modal - 固定於當前螢幕視野正中央) -->
+    <dialog id="info-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-moss-100 rounded-[2rem] shadow-2xl p-0 w-[90%] max-w-md m-0 open:animate-[rise_0.3s_ease-out] border-2 border-moss-200 overflow-hidden">
+        <!-- 頂部景點照片 (導覽模式啟用) -->
+        <div id="modal-header-image-container" class="hidden w-full h-48 sm:h-52 relative overflow-hidden bg-moss-200 shrink-0">
+            <img id="modal-header-image" src="" alt="景點導覽" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-moss-500/80 via-moss-500/20 to-transparent"></div>
+        </div>
+        <!-- 頂部色塊裝飾條 (備註模式啟用) -->
+        <div id="modal-header-decor" class="absolute top-0 left-0 w-full h-24 bg-moss-200"></div>
+
+        <!-- 關閉按鈕 (永遠置頂並清晰可見) -->
+        <button onclick="closeModalByBtn()" type="button" class="absolute top-4 right-4 w-8 h-8 bg-moss-100/90 hover:bg-moss-400 hover:text-moss-100 rounded-full flex items-center justify-center text-moss-500 transition-all z-30 shadow-md border border-moss-200 backdrop-blur-xs active:scale-95" title="關閉視窗 (✕)">
             <i class="ph ph-x font-bold text-sm"></i>
         </button>
-        <div class="p-8 relative z-10 pt-10">
-            <div class="flex flex-col items-center text-center gap-4 mb-6 pb-6 border-b border-moss-300/40">
-                <div class="w-14 h-14 bg-moss-200/50 rounded-2xl shadow-sm border border-moss-200 flex items-center justify-center">
-                    <i id="modal-icon" class="text-3xl text-moss-400"></i>
+
+        <!-- 彈窗內容本體 (支援內部捲動，避免過長溢出) -->
+        <div id="modal-body-container" class="p-6 md:p-8 relative z-10 pt-8 max-h-[70vh] overflow-y-auto no-scrollbar">
+            <div id="modal-header-meta" class="flex flex-col items-center text-center gap-3 mb-5 pb-5 border-b border-moss-300/40">
+                <div id="modal-icon-box" class="w-12 h-12 bg-moss-200/50 rounded-2xl shadow-sm border border-moss-200 flex items-center justify-center shrink-0">
+                    <i id="modal-icon" class="text-2xl text-moss-400"></i>
                 </div>
-                <h3 id="modal-title" class="text-heading font-black text-moss-500 tracking-wide"></h3>
+                <h3 id="modal-title" class="text-heading font-black text-moss-500 tracking-wide break-words"></h3>
             </div>
-            <p id="modal-content" class="text-moss-500 font-medium leading-relaxed text-body whitespace-pre-line text-center"></p>
+            <div id="modal-content" class="text-moss-500 font-medium leading-relaxed text-body whitespace-pre-line text-left"></div>
         </div>
     </dialog>
 
@@ -495,44 +505,134 @@
 
         /* ================= 彈窗與收合邏輯 ================= */
         const modal = document.getElementById('info-modal');
+        let savedModalScrollY = 0;
 
-        function openModal(title, content) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-icon').className = 'text-3xl text-moss-400 ph ph-info';
-            document.getElementById('modal-content').innerHTML = content;
-            modal.showModal();
-            // 推入瀏覽器歷史狀態，阻斷上一頁直接跳出
-            history.pushState({ modalOpen: true }, "");
+        // 避免瀏覽器在 history.back() 時重設視窗捲動位置
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
         }
 
-        // 綁定 X 按鈕
-        function closeModalByBtn() {
-            if(history.state && history.state.modalOpen) {
-                history.back(); // 會觸發 popstate 事件來關閉
-            } else {
-                modal.close();
+        // 開啟彈窗基礎控制 (鎖定閱讀位置，防止拉扯回頁頂)
+        function launchModal() {
+            savedModalScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+            modal.showModal();
+            // 即時校正，確保不論瀏覽器是否搶焦，畫面 100% 釘在原位
+            window.scrollTo({ top: savedModalScrollY, behavior: 'instant' });
+            
+            // 推入歷史記錄以支援手機「上一頁」僅關閉彈窗
+            if (!history.state || !history.state.modalOpen) {
+                history.pushState({ modalOpen: true }, "");
             }
         }
 
-        // 監聽網頁上一頁事件 (或是透過 history.back() 觸發)
-        window.addEventListener('popstate', (e) => {
+        // 1. 一般備註彈窗 (Note)
+        function openModal(title, content) {
+            const imgBox = document.getElementById('modal-header-image-container');
+            const decor = document.getElementById('modal-header-decor');
+            const iconBox = document.getElementById('modal-icon-box');
+            const icon = document.getElementById('modal-icon');
+
+            if (imgBox) imgBox.classList.add('hidden');
+            if (decor) decor.classList.remove('hidden');
+            if (iconBox) iconBox.classList.remove('hidden');
+            if (icon) icon.className = 'text-2xl text-moss-400 ph ph-info';
+
+            document.getElementById('modal-title').textContent = title || '詳細備註';
+            const contentEl = document.getElementById('modal-content');
+            contentEl.className = 'text-moss-500 font-medium leading-relaxed text-body whitespace-pre-line text-center';
+            contentEl.innerHTML = content;
+
+            launchModal();
+        }
+
+        // 2. 景點導覽雜誌風卡片彈窗 (Guide)
+        function openGuideModal(title, imageUrl, content) {
+            const imgBox = document.getElementById('modal-header-image-container');
+            const img = document.getElementById('modal-header-image');
+            const decor = document.getElementById('modal-header-decor');
+            const iconBox = document.getElementById('modal-icon-box');
+            const icon = document.getElementById('modal-icon');
+
+            if (imageUrl && String(imageUrl).trim()) {
+                if (imgBox) imgBox.classList.remove('hidden');
+                if (img) img.src = String(imageUrl).trim();
+                if (decor) decor.classList.add('hidden');
+                if (iconBox) iconBox.classList.add('hidden');
+            } else {
+                if (imgBox) imgBox.classList.add('hidden');
+                if (decor) decor.classList.remove('hidden');
+                if (iconBox) iconBox.classList.remove('hidden');
+                if (icon) icon.className = 'text-2xl text-moss-400 ph ph-book-open';
+            }
+
+            document.getElementById('modal-title').textContent = title || '景點導覽';
+            const contentEl = document.getElementById('modal-content');
+            contentEl.className = 'text-moss-500 font-medium leading-relaxed text-body whitespace-pre-line text-left';
+            contentEl.innerHTML = content;
+
+            launchModal();
+        }
+
+        // 關閉彈窗 (✕ 按鈕、點擊背景、或 ESC 觸發)
+        function closeModalByBtn() {
+            if (history.state && history.state.modalOpen) {
+                history.back(); // 觸發 popstate 事件來關閉
+            } else {
+                doCloseModal();
+            }
+        }
+
+        function doCloseModal() {
             if (modal.hasAttribute('open')) {
                 modal.close();
+            }
+            // 關閉後確保回到剛才的閱讀位置
+            window.scrollTo({ top: savedModalScrollY, behavior: 'instant' });
+        }
+
+        // 監聽網頁上一頁事件 (或透過 history.back() 觸發)
+        window.addEventListener('popstate', (e) => {
+            if (modal.hasAttribute('open')) {
+                doCloseModal();
             }
         });
 
         // 監聽原生 ESC 取消事件
         modal.addEventListener('cancel', (e) => {
-            if(history.state && history.state.modalOpen) {
-                history.back();
+            e.preventDefault();
+            closeModalByBtn();
+        });
+
+        // 點擊彈窗外部半透明背景 (Backdrop) 直接關閉
+        modal.addEventListener('click', (e) => {
+            const rect = modal.getBoundingClientRect();
+            const isInDialog = (
+                rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+            );
+            if (!isInDialog || e.target === modal) {
+                closeModalByBtn();
             }
         });
 
         // 點擊事件代理
         document.addEventListener('click', (e) => {
+            // 點擊備註按鈕
             const noteBtn = e.target.closest('.btn-note');
             if (noteBtn) {
                 openModal(noteBtn.getAttribute('data-title') || '備註資訊', decodeURIComponent(noteBtn.getAttribute('data-content')));
+                return;
+            }
+
+            // 點擊導覽按鈕
+            const guideBtn = e.target.closest('.btn-guide');
+            if (guideBtn) {
+                openGuideModal(
+                    guideBtn.getAttribute('data-title') || '景點導覽',
+                    guideBtn.getAttribute('data-image') || '',
+                    decodeURIComponent(guideBtn.getAttribute('data-content') || '')
+                );
+                return;
             }
 
             // 彩蛋卡片 3D 翻轉切換 (單一翻開：翻開另一張時，原先那一張自動翻回)
@@ -1673,8 +1773,10 @@
                     day.spots.forEach((spot, spotIndex) => {
                         let spotActionsHtml = '';
                         let mapSearchUrl = spot.mapQuery ? getMapSearchUrl(spot.mapQuery, settings?.mapEngine) : '';
+                        const hasGuide = !!(spot.guide && String(spot.guide).trim());
+                        const hasNote = !!(spot.note && String(spot.note).trim());
 
-                        if (spot.note || mapSearchUrl) {
+                        if (hasNote || hasGuide || mapSearchUrl) {
                             spotActionsHtml = `<div class="flex items-center gap-2 mt-4 pt-4 border-t border-moss-300/30">`;
                             if (mapSearchUrl) {
                                 spotActionsHtml += `
@@ -1683,9 +1785,16 @@
                                     </a>
                                 `;
                             }
-                            if (spot.note) {
+                            if (hasGuide) {
                                 spotActionsHtml += `
-                                    <button class="btn-note w-8 h-8 rounded-full bg-transparent hover:bg-moss-200/40 text-moss-500 border border-moss-300/60 flex items-center justify-center transition-all font-bold active:scale-95" title="景點詳細備註" data-title="${escapeHtml(spot.name)}" data-content="${encodeURIComponent(spot.note)}">
+                                    <button type="button" class="btn-guide w-8 h-8 rounded-full bg-transparent hover:bg-moss-200/40 text-moss-500 border border-moss-300/60 flex items-center justify-center transition-all font-bold active:scale-95" title="景點詳細導覽" data-title="${escapeHtml(spot.name)}" data-image="${escapeHtml(spot.image || '')}" data-content="${encodeURIComponent(spot.guide.trim())}">
+                                        <i class="ph ph-book-open text-sm"></i>
+                                    </button>
+                                `;
+                            }
+                            if (hasNote) {
+                                spotActionsHtml += `
+                                    <button type="button" class="btn-note w-8 h-8 rounded-full bg-transparent hover:bg-moss-200/40 text-moss-500 border border-moss-300/60 flex items-center justify-center transition-all font-bold active:scale-95" title="景點詳細備註" data-title="${escapeHtml(spot.name)}" data-content="${encodeURIComponent(spot.note.trim())}">
                                         <i class="ph ph-info text-sm"></i>
                                     </button>
                                 `;
