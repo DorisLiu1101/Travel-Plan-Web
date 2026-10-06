@@ -135,8 +135,8 @@
       "fullDate": "2026/10/8 (四)",
       "title": "啟程星月國度",
       "weather": {
-        "icon": "ph-cloud-sun",
-        "temp": "29°C"
+        "icon": "ph-cloud",
+        "temp": "13-20°C"
       },
       "image": "",
       "mapImage": "",
@@ -176,7 +176,7 @@
       "title": "啟程星月國度 ｜ 漫步番紅花城",
       "weather": {
         "icon": "ph-cloud-sun",
-        "temp": "10-18°C"
+        "temp": "9-23°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103741-3950.webp",
       "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
@@ -205,10 +205,9 @@
           "description": "登臨番紅花城絕佳觀景台，俯瞰被列入世界遺產的古色古香山城全景。",
           "mapQuery": "希德爾立克山丘 土耳其",
           "image": "https://i0.wp.com/ninetyroadtravel.com/wp-content/uploads/2023/08/image-56-edited.png?resize=800%2C533&ssl=1",
-          "note": "",          
+          "note": "",
           "guide": "• 全景視野：站在山頂平台上，可以俯瞰整座老城區的經典紅瓦白牆鄂圖曼式建築群，層次分明。\n• 最佳拍攝點：這裡是捕捉番紅花城明信片風景照與全景最著名的首選地點。\n• 環境氛圍：需要步行爬一小段山路抵達，山丘上視野開闊，並設有咖啡座或休息區讓遊客賞景休憩。",
-          "todos": [],
-          "note": ""
+          "todos": []
         }
       ],
       "specialNotes": [
@@ -277,8 +276,8 @@
       "fullDate": "2026/10/10 (六)",
       "title": "首都安卡拉紀行 ｜ 奇幻卡巴德基亞之夜",
       "weather": {
-        "icon": "ph-cloud-moon",
-        "temp": "8-19°C"
+        "icon": "ph-cloud-fog",
+        "temp": "8-25°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103915-1290.webp",
       "todos": [],
@@ -369,8 +368,8 @@
       "fullDate": "2026/10/11 (日)",
       "title": "奇岩仙境深入探索 ｜ 基督徒地下城傳奇",
       "weather": {
-        "icon": "ph-sun",
-        "temp": "6-18°C"
+        "icon": "ph-cloud",
+        "temp": "7-17°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104037-1211.webp",
       "spots": [
@@ -479,8 +478,8 @@
       "fullDate": "2026/10/12 (一)",
       "title": "穿梭絲路驛站 ｜ 旋轉舞聖地孔亞",
       "weather": {
-        "icon": "ph-sun",
-        "temp": "12-24°C"
+        "icon": "ph-cloud",
+        "temp": "12-22°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104132-9210.webp",
       "spots": [
@@ -571,8 +570,8 @@
       "fullDate": "2026/10/13 (二)",
       "title": "蔚藍地中海乘風 ｜ 巴穆卡麗療癒溫泉鄉",
       "weather": {
-        "icon": "ph-sun",
-        "temp": "16-26°C"
+        "icon": "ph-cloud",
+        "temp": "20-26°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-145806-1210.webp",
       "spots": [
@@ -668,8 +667,8 @@
       "fullDate": "2026/10/14 (三)",
       "title": "霜雪梯堤棉堡奇蹟 ｜ 愛琴海濱夕照",
       "weather": {
-        "icon": "ph-sun",
-        "temp": "14-25°C"
+        "icon": "ph-cloud-rain",
+        "temp": "13-19°C"
       },
       "image": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
       "spots": [
@@ -776,7 +775,7 @@
       "title": "穿越以弗所古羅馬 ｜ 席林杰美酒山城",
       "weather": {
         "icon": "ph-cloud-sun",
-        "temp": "15-23°C"
+        "temp": "13-21°C"
       },
       "image": "https://i.pinimg.com/1200x/80/c6/7e/80c67e57d555174c3bf9929e0ad99b4c.jpg",
       "flights": [
@@ -866,8 +865,8 @@
       "fullDate": "2026/10/16 (五)",
       "title": "拜占庭與鄂圖曼 ｜ 伊斯坦堡千年榮光",
       "weather": {
-        "icon": "ph-cloud",
-        "temp": "12-19°C"
+        "icon": "ph-cloud-rain",
+        "temp": "13-16°C"
       },
       "image": "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=1200&auto=format&fit=crop",
       "spots": [
@@ -968,8 +967,8 @@
       "fullDate": "2026/10/17 (六) - 10/18 (日)",
       "title": "奢華皇宮巡禮 ｜ 賦歸",
       "weather": {
-        "icon": "ph-wind",
-        "temp": "11-18°C"
+        "icon": "ph-cloud-rain",
+        "temp": "15-19°C"
       },
       "image": "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200&auto=format&fit=crop",
       "flights": [
