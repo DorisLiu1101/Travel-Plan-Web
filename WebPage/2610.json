@@ -136,7 +136,7 @@
       "title": "啟程星月國度",
       "weather": {
         "icon": "ph-cloud",
-        "temp": "13-20°C"
+        "temp": "15-25°C"
       },
       "image": "",
       "mapImage": "",
@@ -176,7 +176,7 @@
       "title": "啟程星月國度 ｜ 漫步番紅花城",
       "weather": {
         "icon": "ph-cloud-sun",
-        "temp": "9-23°C"
+        "temp": "11-29°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103741-3950.webp",
       "mapImage": "https://www.unotour.com.tw/material/upload/image/TKY11D/MAP/TKY11TK60909.jpg",
@@ -276,8 +276,8 @@
       "fullDate": "2026/10/10 (六)",
       "title": "首都安卡拉紀行 ｜ 奇幻卡巴德基亞之夜",
       "weather": {
-        "icon": "ph-cloud-fog",
-        "temp": "8-25°C"
+        "icon": "ph-cloud",
+        "temp": "13-23°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-103915-1290.webp",
       "todos": [],
@@ -368,8 +368,8 @@
       "fullDate": "2026/10/11 (日)",
       "title": "奇岩仙境深入探索 ｜ 基督徒地下城傳奇",
       "weather": {
-        "icon": "ph-cloud",
-        "temp": "7-17°C"
+        "icon": "ph-cloud-rain",
+        "temp": "9-17°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104037-1211.webp",
       "spots": [
@@ -479,7 +479,7 @@
       "title": "穿梭絲路驛站 ｜ 旋轉舞聖地孔亞",
       "weather": {
         "icon": "ph-cloud",
-        "temp": "12-22°C"
+        "temp": "11-23°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-104132-9210.webp",
       "spots": [
@@ -570,8 +570,8 @@
       "fullDate": "2026/10/13 (二)",
       "title": "蔚藍地中海乘風 ｜ 巴穆卡麗療癒溫泉鄉",
       "weather": {
-        "icon": "ph-cloud",
-        "temp": "20-26°C"
+        "icon": "ph-cloud-rain",
+        "temp": "18-22°C"
       },
       "image": "https://www.unotour.com.tw/material/content/day/CONTENT_SSUBITEM1_0-20261002-145806-1210.webp",
       "spots": [
@@ -668,7 +668,7 @@
       "title": "霜雪梯堤棉堡奇蹟 ｜ 愛琴海濱夕照",
       "weather": {
         "icon": "ph-cloud-rain",
-        "temp": "13-19°C"
+        "temp": "14-20°C"
       },
       "image": "https://www.unotour.com.tw/tourfeatures/TKA11TK23A/image/b09.jpg",
       "spots": [
@@ -774,7 +774,7 @@
       "fullDate": "2026/10/15 (四)",
       "title": "穿越以弗所古羅馬 ｜ 席林杰美酒山城",
       "weather": {
-        "icon": "ph-cloud-sun",
+        "icon": "ph-cloud-fog",
         "temp": "13-21°C"
       },
       "image": "https://i.pinimg.com/1200x/80/c6/7e/80c67e57d555174c3bf9929e0ad99b4c.jpg",
@@ -865,8 +865,8 @@
       "fullDate": "2026/10/16 (五)",
       "title": "拜占庭與鄂圖曼 ｜ 伊斯坦堡千年榮光",
       "weather": {
-        "icon": "ph-cloud-rain",
-        "temp": "13-16°C"
+        "icon": "ph-cloud",
+        "temp": "14-17°C"
       },
       "image": "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=1200&auto=format&fit=crop",
       "spots": [
@@ -967,8 +967,8 @@
       "fullDate": "2026/10/17 (六) - 10/18 (日)",
       "title": "奢華皇宮巡禮 ｜ 賦歸",
       "weather": {
-        "icon": "ph-cloud-rain",
-        "temp": "15-19°C"
+        "icon": "ph-cloud",
+        "temp": "12-15°C"
       },
       "image": "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=1200&auto=format&fit=crop",
       "flights": [
